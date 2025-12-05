@@ -1,0 +1,47 @@
+.banner {
+  display: flex;
+  height: auto;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid var(--color-primary);
+  background: rgba(46, 45, 122, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 1px 10.4px 0px rgba(46, 44, 166, 0.40);
+  width: auto;
+  flex-grow: 0;
+  align-self: stretch;
+  margin: 0 20px;
+}
+
+.content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  height: auto;
+  align-self: center;
+}
+
+.title {
+  font-family: var(--font-secondary);
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-light);
+}
+
+.subtitle {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-light);
+}
+
+.highlight {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-secondary);
+}
+

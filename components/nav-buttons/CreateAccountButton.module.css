@@ -1,0 +1,45 @@
+.createAccountButton {
+  width: 100%;
+  height: 44.39px;
+  background: linear-gradient(
+    90deg,
+    #EBEBEB 0%,
+    #5168FF 50%,
+    #EBEBEB 100%
+  );
+  border: 1.17px solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(238, 238, 238, 0.78) 0%,
+    rgba(181, 181, 191, 0.78) 48.63%,
+    rgba(238, 238, 238, 0.78) 100%
+  ) 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11.68px;
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  transition: all 0.3s ease;
+}
+
+.createAccountButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.buttonText {
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logo {
+  width: 25.70px;
+  height: 25.70px;
+  background: url('https://via.placeholder.com/26x26') center/cover;
+  border-radius: 50%;
+}
+

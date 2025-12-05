@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy V3</title>
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="components/hero.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: url('https://i.imgur.com/Vy2e9Ej.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: var(--font-primary);
+        }
+
+        /* Banner Styles */
+        .banner {
+            width: 100%;
+            height: 52.5625px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(81, 104, 255, 1);
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://i.imgur.com/qF5Q7AN.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .banner-text {
+            position: relative;
+            z-index: 1;
+            color: #F3F3F3;
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            font-family: var(--font-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Component will be loaded here -->
+    <div id="hero-container"></div>
+
+    <!-- Banner -->
+    <div class="banner">
+        <p class="banner-text">The Onchain Digital Library Built To Reward Quality Information.</p>
+    </div>
+
+    <!-- Load Hero Component -->
+    <script src="components/hero.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+.libraryCard {
+  width: 100%;
+  height: 218.43px;
+  background: #ECECEC;
+  border: 1.17px solid #A4A4A4;
+  border-radius: 18.69px;
+  padding: 11.68px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.34px;
+  box-shadow: 0 2.34px 4.67px rgba(0, 0, 0, 0.13);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 21.02px;
+  padding: 0 16.35px;
+}
+
+.title {
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.icons {
+  display: flex;
+  gap: 9.34px;
+  align-items: center;
+}
+
+.iconFrame {
+  width: 18.69px;
+  height: 18.69px;
+  border-radius: 2px;
+  object-fit: contain;
+  display: block;
+}
+
+.wrapper {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(35, 35, 36, 1) 0%, rgba(21, 21, 27, 1) 100%);
+  border-radius: 16.35px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.transmissionCard {
+  flex: 1;
+  padding: 10.95px 16.35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5.84px;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.transmissionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://i.imgur.com/n0nkK7W.jpeg');
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  z-index: 0;
+}
+
+.transmissionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 33px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4.67px 4.67px rgba(255, 255, 255, 0.25));
+}
+
+.messageText,
+.transmissionText {
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+.progressBar {
+  width: 100%;
+  height: 9.34px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1.17px solid #FFFFFF;
+  border-radius: 7.01px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: block;
+}
+
+.progressFill {
+  height: 100%;
+  width: 60%;
+  background: linear-gradient(
+    to right,
+    rgba(63, 228, 143, 1) 0%,
+    rgba(63, 228, 143, 0.8) 50%,
+    rgba(217, 217, 217, 0) 100%
+  );
+  border-radius: 7.01px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.footer {
+  padding: 5.69px 16.35px;
+  position: relative;
+  z-index: 1;
+}
+
+.footerText {
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  text-transform: lowercase;
+}
+

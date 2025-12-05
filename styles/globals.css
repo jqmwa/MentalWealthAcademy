@@ -1,0 +1,291 @@
+/**
+ * Academy V3 Design System
+ * 
+ * A comprehensive design system with colors, typography, and utilities
+ */
+
+/* ============================================
+   CSS Custom Properties (Design Tokens)
+   ============================================ */
+
+:root {
+  /* Colors */
+  --color-background: #F4F5FE;
+  --color-primary: #5168FF;
+  --color-secondary: #62BE8F;
+  --color-text-dark: #000000;
+  --color-text-light: #ECECEC;
+  
+  /* Gradient Colors */
+  --gradient-futuristic-floss-start: #ECECFF;
+  --gradient-futuristic-floss-end: #E1E1FE;
+  
+  /* Gradients */
+  --gradient-futuristic-floss: linear-gradient(to bottom, var(--gradient-futuristic-floss-start), var(--gradient-futuristic-floss-end));
+  
+  /* Typography */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Space Grotesk', sans-serif;
+  --font-button: 'IBM Plex Mono', monospace;
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+/* ============================================
+   Font Imports
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-image: url('https://i.imgur.com/Vy2e9Ej.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+/* Paragraphs - Poppins Light */
+p {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-dark);
+}
+
+/* Headings - Space Grotesk */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Buttons - IBM Plex Mono */
+button,
+.btn {
+  font-family: var(--font-button);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.btn-primary:hover {
+  background-color: #3d52e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-light);
+}
+
+.btn-secondary:hover {
+  background-color: #4fa87a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-text-dark);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-text-dark);
+  color: var(--color-text-light);
+}
+
+.btn-dark {
+  background-color: var(--color-text-dark);
+  color: var(--color-text-light);
+}
+
+.btn-dark:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-light {
+  background-color: var(--color-text-light);
+  color: var(--color-text-dark);
+}
+
+.btn-light:hover {
+  background-color: #d4d4d4;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Gradient Utilities */
+.gradient-futuristic-floss {
+  background: var(--gradient-futuristic-floss);
+}
+
+.text-gradient-futuristic-floss {
+  background: var(--gradient-futuristic-floss);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Color Utilities */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-background {
+  background-color: var(--color-background);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-dark {
+  color: var(--color-text-dark);
+}
+
+.text-light {
+  color: var(--color-text-light);
+}
+
+/* Typography Utilities */
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+.font-button {
+  font-family: var(--font-button);
+}
+
+.font-light {
+  font-weight: var(--font-weight-light);
+}
+
+.font-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* ============================================
+   Responsive Typography
+   ============================================ */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+

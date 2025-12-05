@@ -1,0 +1,106 @@
+.footer {
+  display: flex;
+  padding: 36px 48px;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--color-primary);
+  background: rgba(46, 45, 122, 0.8);
+  box-shadow: 0px 6px 15px -2px rgba(16, 24, 40, 0.08);
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  width: 705px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: 46px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 57px;
+  letter-spacing: -0.92px;
+  background: var(--gradient-futuristic-floss);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.description {
+  height: 136px;
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 34px;
+  letter-spacing: -0.48px;
+  background: var(--gradient-futuristic-floss);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.primaryButton {
+  padding: 16px 24px;
+  background: var(--gradient-futuristic-floss);
+  color: var(--color-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  font-family: var(--font-primary);
+}
+
+.primaryButton:hover {
+  opacity: 0.9;
+}
+
+.secondaryButton {
+  padding: 16px 24px;
+  border: 2px solid;
+  border-image: linear-gradient(to bottom, var(--gradient-futuristic-floss-start), var(--gradient-futuristic-floss-end)) 1;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  background: var(--gradient-futuristic-floss);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+}
+
+.secondaryButton:hover {
+  background: rgba(236, 236, 255, 0.1);
+}
+
+.imageContainer {
+  width: 434px;
+  height: 326px;
+  transform: rotate(12deg);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
