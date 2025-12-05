@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Academy V3',
-  description: 'The Onchain Digital Library Built To Reward Quality Information.',
+  title: 'Mental Wealth Academy',
+  description: 'A pedagogical educational toolbox for small IRL communities looking to safely digitize their community and assets.',
+  icons: {
+    icon: '/icons/ethlogo.svg',
+  },
 };
 
 export default function RootLayout({

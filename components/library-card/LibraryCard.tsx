@@ -37,7 +37,7 @@ const LibraryCard: React.FC = () => {
         </div>
         
         <div className={styles.footer}>
-          <span className={styles.footerText}>let&apos;s check out some books...</span>
+          <span className={styles.footerText}>GM, let&apos;s check out some books...</span>
         </div>
       </div>
     </div>
