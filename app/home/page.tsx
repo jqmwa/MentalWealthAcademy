@@ -25,11 +25,11 @@ export default function Home() {
           <SideNavigation />
         </div>
         <div className={styles.middleSection}>
-          <div data-intro="banner-card">
-            <BannerCard />
-          </div>
           <div data-intro="quests">
             <Quests />
+          </div>
+          <div data-intro="banner-card">
+            <BannerCard />
           </div>
           <div className={styles.eventsAndPromptRow}>
           <div className={styles.eventsSection}>
