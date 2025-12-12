@@ -33,12 +33,18 @@
   min-width: 0;
 }
 
+.brandLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .logoWrapper {
-  width: 80px;
-  height: 80px;
+  width: clamp(140px, 18vw, 200px);
+  height: clamp(34px, 5vw, 56px);
   flex-shrink: 0;
   position: relative;
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
 }
 

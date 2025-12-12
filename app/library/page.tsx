@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Navbar from '@/components/navbar/Navbar';
 import BookCard from '@/components/book-card/BookCard';
 import { Footer } from '@/components/footer/Footer';
+import { AccountBanner } from '@/components/forum/AccountBanner';
 import styles from './page.module.css';
 
 const curatedBooks = [
@@ -83,6 +84,10 @@ export default function Library() {
           </div>
           <div className={styles.heroGlow} />
         </section>
+
+        <div className={styles.accountBannerWrap}>
+          <AccountBanner />
+        </div>
 
         <section className={styles.papersSection}>
           <div className={styles.sectionHeader}>

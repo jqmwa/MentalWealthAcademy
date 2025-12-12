@@ -97,6 +97,13 @@
   display: none;
 }
 
+.accountBannerWrap {
+  width: 100%;
+  max-width: 1180px;
+  margin: -28px auto 8px auto;
+  padding: 0 20px;
+}
+
 /* Outermost wrapper with F4F5FE background and 40px padding */
 .blackWrapper {
   background: #F4F5FE;

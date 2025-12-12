@@ -1,0 +1,113 @@
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.subtitle {
+  opacity: 0.75;
+  margin: 6px 0 0;
+}
+
+.panel {
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0px 1px 4px 0px rgba(81, 104, 255, 0.1);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid rgba(81, 104, 255, 0.25);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  background: white;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(81, 104, 255, 0.35);
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-button);
+}
+
+.buttonSecondary {
+  background: #fff;
+  color: var(--color-primary);
+}
+
+.threadList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.threadItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  color: inherit;
+}
+
+.threadTitle {
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+
+.threadMeta {
+  opacity: 0.75;
+  font-size: 14px;
+}
+
+.error {
+  color: #b42318;
+  margin-top: 10px;
+}

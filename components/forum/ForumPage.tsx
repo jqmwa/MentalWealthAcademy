@@ -1,13 +1,51 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ForumPage.module.css';
-import { AnnouncementBanner } from './AnnouncementBanner';
+import { AccountBanner } from './AccountBanner';
 import { ForumCard } from './ForumCard';
 import { Footer } from '@/components/footer/Footer';
 import { PixelIcon } from './PixelIcon';
 
 export function ForumPage() {
+  const router = useRouter();
+  const [categories, setCategories] = useState<
+    Array<{
+      id: string;
+      slug: string;
+      name: string;
+      description: string | null;
+      threads: number;
+      posts: number;
+    }>
+  >([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/forum/categories', { cache: 'no-store' });
+        const data = await res.json();
+        if (!cancelled) setCategories(Array.isArray(data?.categories) ? data.categories : []);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const groups = useMemo(() => {
+    const community = new Set(['general-discussion', 'design', 'education', 'art']);
+    return {
+      community: categories.filter((c) => community.has(c.slug)),
+      daemon: categories.filter((c) => !community.has(c.slug)),
+    };
+  }, [categories]);
+
   return (
     <div className={styles.container}>
       <section className={styles.hero}>
@@ -19,8 +57,20 @@ export function ForumPage() {
             Explore threads on quests, proposals, and general topics.
           </p>
           <div className={styles.heroActions}>
-            <button className={styles.primaryCta} type="button">Start Discussion</button>
-            <button className={styles.secondaryCta} type="button">Browse Threads</button>
+            <button
+              className={styles.primaryCta}
+              type="button"
+              onClick={() => router.push('/forum/general-discussion')}
+            >
+              Start Discussion
+            </button>
+            <button
+              className={styles.secondaryCta}
+              type="button"
+              onClick={() => router.push('/forum/general-discussion')}
+            >
+              Browse Threads
+            </button>
           </div>
         </div>
         <div className={styles.heroGlow} />
@@ -28,7 +78,7 @@ export function ForumPage() {
 
       <div className={styles.mainContent}>
         <div className={styles.contentWrapper}>
-          <AnnouncementBanner />
+          <AccountBanner />
 
           <div className={styles.forumHeaders}>
             <div className={styles.headerLabel}>Threads</div>
@@ -37,58 +87,40 @@ export function ForumPage() {
 
           <div className={styles.forumContent}>
             <div className={styles.categoryHeader}>
-              <div className={styles.categoryTitle}>
-                General Discussion
-              </div>
+              <div className={styles.categoryTitle}>Community</div>
             </div>
 
-            <ForumCard
-              title="General Discussion"
-              description="Discuss ongoing events and upcoming cleanup projects, share experiences from past events."
-              badge={{ text: 'Public', variant: 'default' }}
-              icon={<PixelIcon />}
-            />
+            {loading && <div style={{ opacity: 0.7, padding: '12px 0' }}>Loading…</div>}
 
-            <ForumCard
-              title="General Discussion"
-              description="Discuss ongoing events and upcoming cleanup projects, share experiences from past events."
-              badge={{ text: 'Members', variant: 'default' }}
-              icon={<PixelIcon />}
-            />
-
-            <ForumCard
-              title="General Discussion"
-              description="Discuss ongoing events and upcoming cleanup projects, share experiences from past events."
-              badge={{ text: 'Members', variant: 'default' }}
-              icon={<PixelIcon />}
-            />
-
-            <ForumCard
-              title="General Discussion"
-              description="Discuss ongoing events and upcoming cleanup projects, share experiences from past events."
-              badge={{ text: 'Members', variant: 'default' }}
-              icon={<PixelIcon />}
-            />
+            {!loading &&
+              groups.community.map((c) => (
+                <ForumCard
+                  key={c.id}
+                  title={c.name}
+                  description={c.description || ''}
+                  threads={c.threads}
+                  posts={c.posts}
+                  href={`/forum/${c.slug}`}
+                  icon={<PixelIcon />}
+                />
+              ))}
 
             <div className={styles.categoryHeader}>
-              <div className={styles.categoryTitle}>
-                Daemon Database
-              </div>
+              <div className={styles.categoryTitle}>Daemon Database</div>
             </div>
 
-            <ForumCard
-              title="Quest Discussions"
-              description="Discuss ongoing proposals and public goods, contribute to the ethos and conversation by sharing your valuable insight with the ecosystem."
-              badge={{ text: 'Public', variant: 'default' }}
-              icon={<PixelIcon />}
-            />
-
-            <ForumCard
-              title="Token Talk"
-              description="Best practices for organizing your proposals and pitches."
-              badge={{ text: '500 $DAEMON', variant: 'cyan' }}
-              icon={<PixelIcon />}
-            />
+            {!loading &&
+              groups.daemon.map((c) => (
+                <ForumCard
+                  key={c.id}
+                  title={c.name}
+                  description={c.description || ''}
+                  threads={c.threads}
+                  posts={c.posts}
+                  href={`/forum/${c.slug}`}
+                  icon={<PixelIcon />}
+                />
+              ))}
           </div>
 
           <Footer />

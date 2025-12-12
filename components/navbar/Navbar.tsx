@@ -64,7 +64,18 @@ const Navbar: React.FC = () => {
       {/* Top Section */}
       <div className={styles.topSection}>
         <div className={styles.leftContent}>
-          <h1 className={styles.academyName}>Mental Wealth Academy</h1>
+          <Link href="/home" className={styles.brandLink} aria-label="Mental Wealth Academy">
+            <div className={styles.logoWrapper}>
+              <Image
+                src="/uploads/NEWLOGO.png"
+                alt="Mental Wealth Academy"
+                fill
+                priority
+                sizes="(max-width: 250px) 140px, 180px"
+                className={styles.logo}
+              />
+            </div>
+          </Link>
         </div>
 
         {/* Search Bar - Hidden on mobile, icon only on tablet */}
@@ -105,6 +116,18 @@ const Navbar: React.FC = () => {
               <span className={isActive('/home') ? styles.buttonLabelActive : styles.buttonLabel}>Home</span>
             </Link>
 
+            {/* Daemon Button */}
+            <Link href="/daemon" className={`${styles.navButton} ${isActive('/daemon') ? styles.navButtonActive : ''}`}>
+              <Image
+                src="/icons/daemon.svg"
+                alt="Daemon"
+                width={20}
+                height={20}
+                className={styles.questIcon}
+              />
+              <span className={isActive('/daemon') ? styles.buttonLabelActive : styles.buttonLabel}>Daemon</span>
+            </Link>
+
             {/* Forum Button */}
             <Link href="/forum" className={`${styles.navButton} ${isActive('/forum') ? styles.navButtonActive : ''}`}>
               <Image
@@ -129,8 +152,8 @@ const Navbar: React.FC = () => {
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
-            {/* Library Button */}
-            <Link href="/library" className={`${styles.navButton} ${isActive('/library') ? styles.navButtonActive : ''}`}>
+          {/* Library Button */}
+          <Link href="/library" className={`${styles.navButton} ${isActive('/library') ? styles.navButtonActive : ''}`}>
               <Image
                 src="/icons/bookicon.svg"
                 alt="Library"
@@ -138,7 +161,7 @@ const Navbar: React.FC = () => {
                 height={20}
                 className={styles.questIcon}
               />
-              <span className={isActive('/library') ? styles.buttonLabelActive : styles.buttonLabel}>Library</span>
+            <span className={isActive('/library') ? styles.buttonLabelActive : styles.buttonLabel}>Library</span>
             </Link>
           </div>
 
@@ -188,6 +211,20 @@ const Navbar: React.FC = () => {
               className={styles.homeIcon}
             />
             <span>Home</span>
+          </Link>
+          <Link 
+            href="/daemon" 
+            className={`${styles.mobileNavButton} ${isActive('/daemon') ? styles.mobileNavButtonActive : ''}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <Image
+              src="/icons/daemon.svg"
+              alt="Daemon"
+              width={20}
+              height={20}
+              className={styles.questIcon}
+            />
+            <span>Daemon</span>
           </Link>
           <Link 
             href="/forum" 
