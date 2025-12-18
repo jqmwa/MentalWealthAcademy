@@ -126,7 +126,7 @@ export function Footer() {
           </div>
           <div className={styles.legalLinks}>
             <a
-              href="https://app.gitbook.com/o/3CvYIzSdbGYzrVfWEaKq/s/EBjSZb2HEhDar6AGYUxE/"
+              href="https://mental-wealth-academy.gitbook.io/mental-wealth-academy-docs/"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.legalLink}
