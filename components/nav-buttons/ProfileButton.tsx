@@ -1,13 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePrivy } from '@privy-io/react-auth';
+import YourAccountsModal from './YourAccountsModal';
 import styles from './ProfileButton.module.css';
 
 const ProfileButton: React.FC = () => {
   const { authenticated } = usePrivy();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Don't show button if not authenticated
   if (!authenticated) {
@@ -15,20 +16,27 @@ const ProfileButton: React.FC = () => {
   }
 
   return (
-    <Link 
-      href="/profile" 
-      className={styles.profileButton} 
-      data-intro="profile"
-    >
-      <Image 
-        src="/icons/ethlogo.svg" 
-        alt="Profile" 
-        width={24}
-        height={24}
-        className={styles.profileIcon}
-      />
-      <span className={styles.buttonText}>Profile</span>
-    </Link>
+    <>
+      <button 
+        className={styles.profileButton} 
+        data-intro="profile"
+        onClick={() => setIsModalOpen(true)}
+        type="button"
+      >
+        <Image 
+          src="/icons/ethlogo.svg" 
+          alt="Your Accounts" 
+          width={24}
+          height={24}
+          className={styles.profileIcon}
+        />
+        <span className={styles.buttonText}>Your Accounts</span>
+      </button>
+
+      {isModalOpen && (
+        <YourAccountsModal onClose={() => setIsModalOpen(false)} />
+      )}
+    </>
   );
 };
 

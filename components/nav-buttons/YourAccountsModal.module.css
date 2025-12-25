@@ -1,0 +1,384 @@
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  opacity: 1;
+  transform: none;
+}
+
+.modal {
+  width: 100%;
+  max-width: 980px;
+  background: rgba(244, 245, 254, 0.96);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 22px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(81, 104, 255, 0.2);
+}
+
+.modalTitle {
+  font-family: var(--font-secondary);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.modalCloseBtn:hover {
+  opacity: 0.8;
+}
+
+.animatedButtonTextContainer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+}
+
+.animatedButtonText {
+  display: block;
+  transition: transform 0.3s ease;
+  will-change: transform;
+  transform: none;
+}
+
+.animatedButtonTextClone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(100%);
+}
+
+.modalCloseBtn:hover .animatedButtonText {
+  transform: translateY(-100%);
+}
+
+.modalCloseBtn:hover .animatedButtonTextClone {
+  transform: translateY(0);
+}
+
+.modalBody {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.bgPluses {
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(81, 104, 255, 0.03) 20px, rgba(81, 104, 255, 0.03) 21px),
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(81, 104, 255, 0.03) 20px, rgba(81, 104, 255, 0.03) 21px);
+}
+
+.connectionsModal {
+  background-color: rgba(244, 245, 254, 0.98);
+}
+
+.connectionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.strokedText {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  -webkit-text-stroke: 1px var(--color-text-dark);
+  text-stroke: 1px var(--color-text-dark);
+}
+
+.strokedText.large {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.walletsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wallet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.wallet > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.wallet svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
+}
+
+.shadowInnerGlow {
+  box-shadow: inset 0 2px 8px rgba(81, 104, 255, 0.1);
+}
+
+.animatedButton {
+  background: transparent;
+  border: 1px solid rgba(81, 104, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.animatedButton:hover {
+  background: rgba(81, 104, 255, 0.1);
+  border-color: var(--color-primary);
+}
+
+.animatedButtonDisconnect {
+  color: #b42318;
+  border-color: rgba(180, 35, 24, 0.3);
+}
+
+.animatedButtonDisconnect:hover {
+  background: rgba(180, 35, 24, 0.1);
+  border-color: #b42318;
+}
+
+.walletDisconnectButton,
+.socialDisconnectButton {
+  min-width: 80px;
+}
+
+.socialsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  border-radius: 12px;
+}
+
+.iconPair {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
+}
+
+.emptyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px dashed rgba(81, 104, 255, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  gap: 8px;
+}
+
+.emptyContainer span {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: rgba(26, 29, 51, 0.6);
+}
+
+.emptyContainer.tall {
+  min-height: 120px;
+}
+
+.emptyContainer.gap {
+  gap: 8px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn.connect {
+  background-color: rgb(74, 74, 74);
+  color: white;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.btn.connect:hover {
+  background-color: rgb(94, 94, 94);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn.wide {
+  width: 100%;
+  background: var(--color-primary);
+  color: white;
+  margin-top: 12px;
+}
+
+.btn.wide:hover {
+  background: #3d52e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.socialConnectButton {
+  position: relative;
+  overflow: visible;
+}
+
+.socialConnectTextContainer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+}
+
+.socialConnectText {
+  display: block;
+  transition: transform 0.3s ease;
+  will-change: transform;
+  transform: none;
+}
+
+.socialConnectTextClone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(100%);
+}
+
+.socialConnectButton:hover .socialConnectText {
+  transform: translateY(-100%);
+}
+
+.socialConnectButton:hover .socialConnectTextClone {
+  transform: translateY(0);
+}
+
+/* Specific button colors from example */
+.socialConnectButton:nth-of-type(2) {
+  background-color: rgb(168, 168, 168) !important;
+}
+
+.socialConnectButton:nth-of-type(3) {
+  background-color: rgb(147, 148, 194) !important;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+
+  .modalHeader {
+    padding: 16px 20px;
+  }
+
+  .modalTitle {
+    font-size: 16px;
+  }
+
+  .modalBody {
+    padding: 20px;
+  }
+
+  .connectionsContainer {
+    gap: 24px;
+  }
+
+  .strokedText.large {
+    font-size: 18px;
+  }
+}
+
