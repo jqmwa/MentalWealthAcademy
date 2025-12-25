@@ -55,9 +55,6 @@ export default function Home() {
       <Navbar />
       <Banner />
       <div className={styles.content}>
-        <div data-intro="side-navigation">
-          <SideNavigation />
-        </div>
         <div className={styles.middleSection}>
           <div data-intro="quests">
             <Quests />
@@ -86,6 +83,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        <div data-intro="side-navigation">
+          <SideNavigation />
         </div>
       </div>
       <Footer />

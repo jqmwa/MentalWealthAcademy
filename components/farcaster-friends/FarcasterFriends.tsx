@@ -38,7 +38,7 @@ const FarcasterFriends: React.FC = () => {
   return (
     <div className={styles.container} data-intro="farcaster-friends">
       <div className={styles.header}>
-        <h2 className={styles.title}>Farcaster & Friends</h2>
+        <h2 className={styles.title}>Top Friends</h2>
         <p className={styles.description}>Top contributors from Farcaster platform.</p>
       </div>
       

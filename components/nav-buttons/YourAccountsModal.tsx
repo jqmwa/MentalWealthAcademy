@@ -26,37 +26,9 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   }, [onClose]);
 
   // Extract wallet addresses from Privy user
+  // Only show wallets that are explicitly linked through our system
   const wallets: string[] = [];
-  if (privyUser) {
-    // Try linkedAccounts first
-    if ((privyUser as any).linkedAccounts) {
-      const walletAccounts = (privyUser as any).linkedAccounts.filter(
-        (account: any) => account.type === 'wallet' || account.walletClientType
-      );
-      walletAccounts.forEach((account: any) => {
-        if (account.address) {
-          wallets.push(account.address);
-        }
-      });
-    }
-    
-    // Try wallet property directly
-    if ((privyUser as any).wallet?.address) {
-      const addr = (privyUser as any).wallet.address;
-      if (!wallets.includes(addr)) {
-        wallets.push(addr);
-      }
-    }
-    
-    // Try wallets array
-    if ((privyUser as any).wallets && Array.isArray((privyUser as any).wallets)) {
-      (privyUser as any).wallets.forEach((wallet: any) => {
-        if (wallet?.address && !wallets.includes(wallet.address)) {
-          wallets.push(wallet.address);
-        }
-      });
-    }
-  }
+  // TODO: Implement wallet linking system - for now, show no wallets
 
   // Format wallet address for display
   const formatAddress = (address: string) => {
