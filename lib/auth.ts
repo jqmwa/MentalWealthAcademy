@@ -14,12 +14,13 @@ export type CurrentUser = {
   createdAt: string;
   email: string | null;
   walletAddress: string;
+  shardCount: number;
 };
 
 export async function getSessionTokenFromCookies() {
-  // Legacy session support - kept for backward compatibility
+  // Support both legacy and new session cookie names
   const cookieStore = await import('next/headers').then(m => m.cookies());
-  return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
+  return cookieStore.get('session_token')?.value || cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
 }
 
 export function setSessionCookie(response: NextResponse, token: string) {
@@ -68,9 +69,10 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
           created_at: string;
           email: string | null;
           wallet_address: string;
+          shard_count: number;
         }>
       >(
-        `SELECT u.id, u.username, u.avatar_url, u.created_at, u.email, u.wallet_address
+        `SELECT u.id, u.username, u.avatar_url, u.created_at, u.email, u.wallet_address, u.shard_count
          FROM users u
          WHERE u.privy_user_id = :privyUserId
          LIMIT 1`,
@@ -86,6 +88,7 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
           createdAt: user.created_at,
           email: user.email,
           walletAddress: user.wallet_address,
+          shardCount: user.shard_count,
         };
       }
     }
@@ -94,7 +97,7 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
     console.warn('Privy auth failed, falling back to session auth:', error);
   }
 
-  // Fallback to legacy session-based auth
+  // Fallback to session-based auth
   const token = await getSessionTokenFromCookies();
   if (!token) return null;
 
@@ -106,9 +109,10 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
       created_at: string;
       email: string | null;
       wallet_address: string;
+      shard_count: number;
     }>
   >(
-    `SELECT u.id, u.username, u.avatar_url, u.created_at, u.email, u.wallet_address
+    `SELECT u.id, u.username, u.avatar_url, u.created_at, u.email, u.wallet_address, u.shard_count
      FROM sessions s
      JOIN users u ON u.id = s.user_id
      WHERE s.token = :token AND s.expires_at > NOW()
@@ -126,5 +130,6 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
     createdAt: user.created_at,
     email: user.email,
     walletAddress: user.wallet_address,
+    shardCount: user.shard_count,
   };
 }

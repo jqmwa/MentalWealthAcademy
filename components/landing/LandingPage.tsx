@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import SignInButton from '@/components/nav-buttons/SignInButton';
+import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import styles from './LandingPage.module.css';
 
 // Dynamically import Scene to avoid SSR issues with Three.js
@@ -18,6 +19,7 @@ const LandingPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -170,9 +172,13 @@ const LandingPage: React.FC = () => {
 
                 <SignInButton />
 
-                <div className={styles.signupLink}>
+                <button 
+                  type="button"
+                  className={styles.signupLink}
+                  onClick={() => setShowOnboarding(true)}
+                >
                   Become a MWA Researcher, <span className={styles.highlight}>Join Mental Wealth Academy</span>
-                </div>
+                </button>
                 
                 <div className={styles.termsText}>
                   By logging in, you agree to our{' '}
@@ -184,6 +190,12 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Onboarding Modal */}
+      <OnboardingModal 
+        isOpen={showOnboarding} 
+        onClose={() => setShowOnboarding(false)} 
+      />
     </div>
   );
 };

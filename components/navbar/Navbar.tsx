@@ -176,18 +176,6 @@ const Navbar: React.FC = () => {
               <span className={styles.buttonLabelDisabled}>Daemon</span>
             </div>
 
-            {/* Forum Button - Disabled */}
-            <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
-              <Image
-                src="/icons/Survey.svg"
-                alt="Forum"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
-              <span className={styles.buttonLabelDisabled}>Forum</span>
-            </div>
-
             {/* Library Button - Disabled */}
             <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
               <Image
@@ -277,20 +265,6 @@ const Navbar: React.FC = () => {
               className={styles.questIcon}
             />
             <span>Daemon</span>
-          </div>
-          <div 
-            className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}
-            title="Coming soon"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <Image
-              src="/icons/Survey.svg"
-              alt="Forum"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
-            <span>Forum</span>
           </div>
           <div 
             className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}
