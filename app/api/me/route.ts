@@ -92,7 +92,8 @@ export async function PUT(request: Request) {
       }
     );
   } catch (err: any) {
-    if (err?.code === 'ER_DUP_ENTRY') {
+    // PostgreSQL error code 23505 for unique constraint violations
+    if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {
       return NextResponse.json({ error: 'Username already taken.' }, { status: 409 });
     }
     throw err;

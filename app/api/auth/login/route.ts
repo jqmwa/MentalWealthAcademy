@@ -168,7 +168,8 @@ export async function POST(request: Request) {
     setSessionCookie(response, session.token);
     return response;
   } catch (err: any) {
-    if (err?.code === 'ER_DUP_ENTRY') {
+    // PostgreSQL error code 23505 for unique constraint violations
+    if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {
       return NextResponse.json(
         { error: 'Account creation failed due to duplicate data.' },
         { status: 409 }

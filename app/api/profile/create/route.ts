@@ -238,8 +238,23 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Error creating profile:', error);
     
-    // Handle duplicate key errors
-    if (error?.code === 'ER_DUP_ENTRY') {
+    // Handle duplicate key errors (PostgreSQL error code 23505)
+    if (error?.code === '23505' || error?.code === 'ER_DUP_ENTRY') {
+      const constraint = error?.constraint || '';
+      const message = error?.message || '';
+      
+      if (constraint.includes('username') || message.includes('username')) {
+        return NextResponse.json(
+          { error: 'Username already taken.' },
+          { status: 409 }
+        );
+      }
+      if (constraint.includes('email') || message.includes('email')) {
+        return NextResponse.json(
+          { error: 'Email already taken.' },
+          { status: 409 }
+        );
+      }
       return NextResponse.json(
         { error: 'Username or email already exists.' },
         { status: 409 }

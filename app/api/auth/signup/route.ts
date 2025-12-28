@@ -185,15 +185,18 @@ export async function POST(request: Request) {
       );
     }
   } catch (err: any) {
-    // Duplicate username or other constraint violation
-    if (err?.code === 'ER_DUP_ENTRY') {
-      if (err?.message?.includes('username')) {
+    // Duplicate username or other constraint violation (PostgreSQL error code 23505)
+    if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {
+      const constraint = err?.constraint || '';
+      const message = err?.message || '';
+      
+      if (constraint.includes('username') || message.includes('username')) {
         return NextResponse.json({ error: 'Username already taken.' }, { status: 409 });
       }
-      if (err?.message?.includes('email')) {
+      if (constraint.includes('email') || message.includes('email')) {
         return NextResponse.json({ error: 'Email already taken.' }, { status: 409 });
       }
-      if (err?.message?.includes('wallet_address')) {
+      if (constraint.includes('wallet_address') || message.includes('wallet_address')) {
         return NextResponse.json({ error: 'Wallet already linked to another account.' }, { status: 409 });
       }
       return NextResponse.json({ error: 'Account creation failed due to duplicate data.' }, { status: 409 });
