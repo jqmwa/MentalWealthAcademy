@@ -146,3 +146,63 @@ export async function sqlQuery<T = unknown>(
     throw error;
   }
 }
+
+/**
+ * Execute a SQL query with a client (for use within transactions)
+ * Converts named parameters (:param) to PostgreSQL positional parameters ($1, $2, etc.)
+ */
+export function sqlQueryWithClient<T = unknown>(
+  client: PoolClient,
+  query: string,
+  params?: Record<string, unknown> | unknown[]
+): Promise<T> {
+  // If params is an array, use it directly (positional)
+  if (Array.isArray(params)) {
+    return client.query(query, params).then(result => result.rows as T);
+  }
+
+  // If params is an object, convert named parameters to positional
+  if (params && typeof params === 'object') {
+    // Extract parameter names in order they appear in the query
+    const paramNames: string[] = [];
+    const paramValues: unknown[] = [];
+    
+    // Replace :paramName with $1, $2, etc.
+    const convertedQuery = query.replace(/:(\w+)/g, (match, paramName) => {
+      if (!paramNames.includes(paramName)) {
+        paramNames.push(paramName);
+        paramValues.push(params[paramName]);
+      }
+      const index = paramNames.indexOf(paramName) + 1;
+      return `$${index}`;
+    });
+
+    return client.query(convertedQuery, paramValues).then(result => result.rows as T);
+  }
+
+  // No parameters
+  return client.query(query).then(result => result.rows as T);
+}
+
+/**
+ * Execute a function within a database transaction
+ * The function receives a client that can be used to execute queries
+ */
+export async function withTransaction<T>(
+  callback: (client: PoolClient) => Promise<T>
+): Promise<T> {
+  const pool = getPool();
+  const client = await pool.connect();
+  
+  try {
+    await client.query('BEGIN');
+    const result = await callback(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}

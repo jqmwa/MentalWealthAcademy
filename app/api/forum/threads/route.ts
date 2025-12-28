@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { ensureForumSchema } from '@/lib/ensureForumSchema';
 import { getCurrentUserFromRequestCookie } from '@/lib/auth';
-import { getPool, isDbConfigured, sqlQuery } from '@/lib/db';
+import { isDbConfigured, sqlQuery, withTransaction, sqlQueryWithClient } from '@/lib/db';
 import { demoThreadsForCategory, demoThreads, demoCategories } from '@/lib/forumDemo';
 
 export const runtime = 'nodejs';
@@ -140,56 +140,55 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Post body is required.' }, { status: 400 });
   }
 
-  const pool = getPool();
-  const conn = await pool.getConnection();
-
   try {
-    await conn.beginTransaction();
+    const result = await withTransaction(async (client) => {
+      const catRows = await sqlQueryWithClient<Array<{ id: string }>>(
+        client,
+        `SELECT id FROM forum_categories WHERE slug = :slug LIMIT 1`,
+        { slug: String(categorySlug).trim() }
+      );
 
-    const [catRows] = (await conn.query(
-      `SELECT id FROM forum_categories WHERE slug = :slug LIMIT 1`,
-      { slug: String(categorySlug).trim() }
-    )) as unknown as [Array<{ id: string }>, unknown];
+      const categoryId = catRows[0]?.id;
+      if (!categoryId) {
+        throw new Error('Category not found.');
+      }
 
-    const categoryId = catRows[0]?.id;
-    if (!categoryId) {
-      await conn.rollback();
+      const threadId = uuidv4();
+      await sqlQueryWithClient(
+        client,
+        `INSERT INTO forum_threads (id, category_id, author_user_id, title)
+         VALUES (:id, :categoryId, :authorUserId, :title)`,
+        {
+          id: threadId,
+          categoryId,
+          authorUserId: user.id,
+          title: String(title).trim(),
+        }
+      );
+
+      const postId = uuidv4();
+      await sqlQueryWithClient(
+        client,
+        `INSERT INTO forum_posts (id, thread_id, author_user_id, body, attachment_url, attachment_mime)
+         VALUES (:id, :threadId, :authorUserId, :body, :attachmentUrl, :attachmentMime)`,
+        {
+          id: postId,
+          threadId,
+          authorUserId: user.id,
+          body: String(postBody).trim(),
+          attachmentUrl,
+          attachmentMime,
+        }
+      );
+
+      return { threadId };
+    });
+
+    return NextResponse.json({ ok: true, threadId: result.threadId });
+  } catch (err: any) {
+    if (err?.message === 'Category not found.') {
       return NextResponse.json({ error: 'Category not found.' }, { status: 404 });
     }
-
-    const threadId = uuidv4();
-    await conn.query(
-      `INSERT INTO forum_threads (id, category_id, author_user_id, title)
-       VALUES (:id, :categoryId, :authorUserId, :title)`,
-      {
-        id: threadId,
-        categoryId,
-        authorUserId: user.id,
-        title: String(title).trim(),
-      }
-    );
-
-    const postId = uuidv4();
-    await conn.query(
-      `INSERT INTO forum_posts (id, thread_id, author_user_id, body, attachment_url, attachment_mime)
-       VALUES (:id, :threadId, :authorUserId, :body, :attachmentUrl, :attachmentMime)`,
-      {
-        id: postId,
-        threadId,
-        authorUserId: user.id,
-        body: String(postBody).trim(),
-        attachmentUrl,
-        attachmentMime,
-      }
-    );
-
-    await conn.commit();
-
-    return NextResponse.json({ ok: true, threadId });
-  } catch (err) {
-    await conn.rollback();
     throw err;
-  } finally {
-    conn.release();
   }
 }
