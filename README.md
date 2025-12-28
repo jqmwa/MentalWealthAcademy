@@ -44,6 +44,7 @@ Mental Wealth Academy is designed to help small real-world communities transitio
 
 - Node.js 18+
 - npm or yarn
+- PostgreSQL database (local or cloud-hosted like Supabase)
 
 ### Installation
 
@@ -52,12 +53,66 @@ Mental Wealth Academy is designed to help small real-world communities transitio
 npm install
 ```
 
-2. Run the development server:
+2. Set up your database configuration:
+
+   Create a `.env.local` file in the root directory with your database connection:
+
+   **Option 1: Using DATABASE_URL (Recommended)**
+   ```bash
+   DATABASE_URL=postgresql://user:password@host:5432/database
+   ```
+
+   **Option 2: Using individual environment variables**
+   ```bash
+   POSTGRES_HOST=localhost
+   POSTGRES_USER=your_username
+   POSTGRES_PASSWORD=your_password
+   POSTGRES_DATABASE=your_database
+   POSTGRES_PORT=5432
+   ```
+
+   **For Supabase users:**
+   - Get your connection string from Supabase Dashboard → Settings → Database
+   - Use the "Connection string" → "URI" format
+   - The connection string should look like: `postgresql://postgres:[YOUR-PASSWORD]@[PROJECT-REF].supabase.co:5432/postgres`
+
+3. Set up the database schema:
+
+   If using Supabase, run the SQL from `db/schema.sql` in the Supabase SQL Editor.
+   
+   Otherwise, the schema will be automatically created on first API call.
+
+4. Test your database connection:
+```bash
+npm run test-db
+```
+
+5. Run the development server:
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Troubleshooting Database Connection
+
+If you encounter database connection errors:
+
+1. **Test your connection:**
+   ```bash
+   npm run test-db
+   ```
+
+2. **Common issues:**
+   - **ECONNREFUSED**: Database server is not running or not accessible
+   - **ENOTFOUND**: Hostname cannot be resolved (check your DATABASE_URL)
+   - **IPv6 issues**: If your connection string uses IPv6 and you're having issues, try using the IPv4 address instead
+   - **SSL/TLS**: For cloud databases (Supabase), SSL is automatically configured
+
+3. **Verify your environment variables:**
+   - Make sure `.env.local` is in the root directory
+   - Restart your development server after changing environment variables
+   - Check that your `.env.local` file is not committed to git (it should be in `.gitignore`)
 
 ### Build for Production
 

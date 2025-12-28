@@ -42,7 +42,33 @@ export async function POST(request: Request) {
       { status: 503 }
     );
   }
-  await ensureForumSchema();
+
+  // Ensure schema is set up, handle connection errors gracefully
+  try {
+    await ensureForumSchema();
+  } catch (error: any) {
+    // Check if this is a database connection error
+    if (error?.code === 'ECONNREFUSED' || error?.code === 'ENOTFOUND' || error?.code === 'ETIMEDOUT' || error?.message?.includes('connection')) {
+      console.error('Database connection error:', error);
+      
+      // Extract troubleshooting info from error message if available
+      const errorMessage = error?.message || 'Unknown connection error';
+      const troubleshootingMatch = errorMessage.match(/Troubleshooting:\s*([\s\S]*?)(?:\n\nOriginal error|$)/);
+      const troubleshooting = troubleshootingMatch ? troubleshootingMatch[1].trim() : null;
+      
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed.',
+          message: 'Unable to connect to the database. Please check your database configuration and ensure the server is running.',
+          troubleshooting: process.env.NODE_ENV === 'development' && troubleshooting ? troubleshooting : undefined,
+          details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+        },
+        { status: 503 }
+      );
+    }
+    // Re-throw other errors
+    throw error;
+  }
 
   // Parse request body
   let body: CreateProfileBody;

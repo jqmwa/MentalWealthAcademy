@@ -81,9 +81,9 @@ const LandingPage: React.FC = () => {
         <div className={styles.promoCard}>
           <div className={styles.promoContent}>
             <div className={styles.promoText}>
-              <h2 className={styles.promoTitle}>JOIN THE GREATEST ONCHAIN ACADEMIA <br /> IN THE WORLD</h2>
+              <h2 className={styles.promoTitle}>TRAINING HUMANS FOR THE AGE OF AI</h2>
               <p className={styles.promoDescription}>
-                Explore the latest academic research, access agentic daemon tools, and connect with dedicated peers and mentors inside of MWAs Next Gen Learning Lab.
+                Explore academic research, access agentic tools, and connect with peers and mentors in MWAs Next Gen Learning Lab.
               </p>
             </div>
           </div>

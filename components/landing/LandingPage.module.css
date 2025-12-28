@@ -63,11 +63,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/uploads/d70b69d4-862f-4a74-8936-5a9262bd9243.png');
+  background-image: url('https://i.imgur.com/YG9NzfS.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: blur(0px);
+  filter: grayscale(100%) brightness(0.9);
   opacity: 0.85;
   z-index: 1;
 }
@@ -80,8 +80,8 @@
   right: 0;
   bottom: 0;
   background: var(--color-primary);
-  mix-blend-mode: multiply;
-  opacity: 0.95;
+  mix-blend-mode: color;
+  opacity: 0.8;
   z-index: 2;
 }
 
@@ -89,15 +89,27 @@
   padding: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   height: 100%;
-  color: white;
+  color: rgb(244, 234, 234);
   position: relative;
   z-index: 3;
 }
 
+.promoContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(81, 104, 255, 1), rgba(81, 104, 255, 0));
+  z-index: -1;
+  pointer-events: none;
+}
+
 .promoText {
-  max-width: 100%;
+  max-width: 85%;
 }
 
 .promoTitle {
@@ -115,10 +127,11 @@
 .promoDescription {
   font-size: 16px;
   font-family: var(--font-primary);
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
   color: white;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  max-width: 100%;
 }
 
 .canvas::after {
@@ -606,17 +619,21 @@
 .signupLink {
   text-align: left;
   color: var(--color-text-dark);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: var(--font-weight-medium);
   font-family: var(--font-primary);
   margin-top: 24px;
   margin-bottom: 24px;
-  white-space: nowrap;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.5;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  width: 100%;
+  max-width: 100%;
 }
 
 .signupLink:hover {
