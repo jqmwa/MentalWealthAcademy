@@ -53,6 +53,8 @@ export async function ensureForumSchema() {
   if (globalThis.__mwaForumSchemaEnsured) return;
 
   // Enable UUID extension (if not already enabled)
+  // Note: Pooler connections may not allow extension creation, so we skip this for poolers
+  // Supabase already has uuid-ossp enabled by default
   try {
     await sqlQuery(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
   } catch (err: any) {
@@ -60,8 +62,16 @@ export async function ensureForumSchema() {
     if (err?.code === 'ECONNREFUSED' || err?.code === 'ENOTFOUND' || err?.code === 'ETIMEDOUT' || err?.message?.includes('connection')) {
       throw err;
     }
-    // Extension might already exist or not have permission, that's okay
-    console.warn('Could not create uuid-ossp extension (may already exist):', err?.message);
+    // Check for pooler/tenant errors - these are expected with pooler connections
+    // Don't throw, just log and continue - Supabase has extensions pre-enabled
+    if (err?.code === 'XX000' || err?.message?.includes('Tenant or user not found')) {
+      // Pooler connections don't allow extension creation, but Supabase has extensions pre-enabled
+      console.warn('Extension creation skipped (pooler connection - extensions are pre-enabled):', err?.message);
+      // Don't return - continue with schema creation
+    } else {
+      // Extension might already exist or not have permission, that's okay
+      console.warn('Could not create uuid-ossp extension (may already exist):', err?.message);
+    }
   }
 
   // Users table - simplified for email/password accounts

@@ -144,42 +144,42 @@ export async function POST(request: Request) {
     const result = await withTransaction(async (client) => {
       const catRows = await sqlQueryWithClient<Array<{ id: string }>>(
         client,
-        `SELECT id FROM forum_categories WHERE slug = :slug LIMIT 1`,
-        { slug: String(categorySlug).trim() }
+      `SELECT id FROM forum_categories WHERE slug = :slug LIMIT 1`,
+      { slug: String(categorySlug).trim() }
       );
 
-      const categoryId = catRows[0]?.id;
-      if (!categoryId) {
+    const categoryId = catRows[0]?.id;
+    if (!categoryId) {
         throw new Error('Category not found.');
+    }
+
+    const threadId = uuidv4();
+      await sqlQueryWithClient(
+        client,
+      `INSERT INTO forum_threads (id, category_id, author_user_id, title)
+       VALUES (:id, :categoryId, :authorUserId, :title)`,
+      {
+        id: threadId,
+        categoryId,
+        authorUserId: user.id,
+        title: String(title).trim(),
       }
+    );
 
-      const threadId = uuidv4();
+    const postId = uuidv4();
       await sqlQueryWithClient(
         client,
-        `INSERT INTO forum_threads (id, category_id, author_user_id, title)
-         VALUES (:id, :categoryId, :authorUserId, :title)`,
-        {
-          id: threadId,
-          categoryId,
-          authorUserId: user.id,
-          title: String(title).trim(),
-        }
-      );
-
-      const postId = uuidv4();
-      await sqlQueryWithClient(
-        client,
-        `INSERT INTO forum_posts (id, thread_id, author_user_id, body, attachment_url, attachment_mime)
-         VALUES (:id, :threadId, :authorUserId, :body, :attachmentUrl, :attachmentMime)`,
-        {
-          id: postId,
-          threadId,
-          authorUserId: user.id,
-          body: String(postBody).trim(),
-          attachmentUrl,
-          attachmentMime,
-        }
-      );
+      `INSERT INTO forum_posts (id, thread_id, author_user_id, body, attachment_url, attachment_mime)
+       VALUES (:id, :threadId, :authorUserId, :body, :attachmentUrl, :attachmentMime)`,
+      {
+        id: postId,
+        threadId,
+        authorUserId: user.id,
+        body: String(postBody).trim(),
+        attachmentUrl,
+        attachmentMime,
+      }
+    );
 
       return { threadId };
     });

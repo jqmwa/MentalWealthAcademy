@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
   // Ensure schema is set up, handle connection errors gracefully
   try {
-    await ensureForumSchema();
+  await ensureForumSchema();
   } catch (error: any) {
     // Check if this is a database connection error
     if (error?.code === 'ECONNREFUSED' || error?.code === 'ENOTFOUND' || error?.code === 'ETIMEDOUT' || error?.message?.includes('connection')) {
@@ -205,15 +205,15 @@ export async function POST(request: Request) {
          WHERE id = :userId`,
         {
           userId,
-          username,
+        username,
           selectedAvatarId: avatar_id,
-          avatarUrl: avatar.image_url,
+        avatarUrl: avatar.image_url,
           email: email || null,
           gender: gender || null,
           birthday: birthday || null,
-          shardCount: WELCOME_SHARDS,
-        }
-      );
+        shardCount: WELCOME_SHARDS,
+      }
+    );
 
       // Store all 5 avatar choices for this user
       for (const assignedAvatar of assignedAvatars) {
@@ -308,7 +308,7 @@ export async function POST(request: Request) {
     const errorMessage = process.env.NODE_ENV === 'development' 
       ? (error?.message || 'Failed to create profile.')
       : 'Failed to create profile.';
-    
+
     return NextResponse.json(
       { error: errorMessage, details: process.env.NODE_ENV === 'development' ? error?.stack : undefined },
       { status: 500 }

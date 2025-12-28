@@ -18,16 +18,46 @@ export function isDbConfigured() {
   );
 }
 
+// Helper function to mask password in connection string for logging
+function maskConnectionString(url: string): string {
+  try {
+    // Match pattern: postgresql://user:password@host
+    return url.replace(/(postgresql?:\/\/[^:]+:)([^@]+)(@.+)/, '$1***$3');
+  } catch {
+    return '***';
+  }
+}
+
 function createPool(): Pool {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl) {
     // Supabase connection string format:
-    // postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres
+    // For pooler: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@[POOLER-HOST]:5432/postgres
+    // For direct: postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
     // Use connectionString directly for better compatibility with Vercel/serverless
+    // Clean the connection string to remove any whitespace or hidden characters
+    const cleanUrl = databaseUrl.trim().replace(/\s+/g, '');
+    
+    // Log connection info (masked) for debugging
+    const isDirectConnection = cleanUrl.includes('db.') && cleanUrl.includes('.supabase.co');
+    const isPoolerConnection = cleanUrl.includes('pooler.supabase.com') || cleanUrl.includes('pooler.supabase.co');
+    
+    if (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV) {
+      console.log('[DB] Initializing connection pool');
+      console.log('[DB] Connection type:', isDirectConnection ? 'Direct' : isPoolerConnection ? 'Pooler' : 'Unknown');
+      console.log('[DB] Connection string:', maskConnectionString(cleanUrl));
+      
+      // Warn if using direct connection on Vercel
+      if (isDirectConnection && process.env.VERCEL) {
+        console.warn('[DB] WARNING: Using direct connection on Vercel. Consider using pooler connection for better reliability.');
+        console.warn('[DB] Get pooler connection string from: Supabase Dashboard → Settings → Database → Connection Pooling');
+      }
+    }
+    
     return new Pool({
-      connectionString: databaseUrl,
-      ssl: databaseUrl.includes('supabase.co') ? { rejectUnauthorized: false } : undefined,
+      connectionString: cleanUrl,
+      ssl: (cleanUrl.includes('supabase.co') || cleanUrl.includes('supabase.com')) ? { rejectUnauthorized: false } : undefined,
       max: 10, // Connection pool size
       connectionTimeoutMillis: 10000, // 10 second timeout
       idleTimeoutMillis: 30000, // 30 seconds
@@ -64,7 +94,18 @@ function createPool(): Pool {
 
 export function getPool(): Pool {
   if (!pool) {
-    pool = createPool();
+    try {
+      pool = createPool();
+    } catch (error: any) {
+      // Log the error with masked connection info
+      const databaseUrl = process.env.DATABASE_URL;
+      console.error('[DB] Failed to create connection pool');
+      if (databaseUrl) {
+        console.error('[DB] Connection string:', maskConnectionString(databaseUrl));
+      }
+      console.error('[DB] Error:', error?.message || error);
+      throw error;
+    }
   }
   return pool;
 }
@@ -125,10 +166,25 @@ export async function sqlQuery<T = unknown>(
           '4. If using IPv6, try using IPv4 address instead in your DATABASE_URL';
       } else if (error?.code === 'ENOTFOUND') {
         errorMessage = 'Database host not found.';
+        const databaseUrl = process.env.DATABASE_URL;
+        const isDirectConnection = databaseUrl?.includes('db.') && databaseUrl?.includes('.supabase.co');
+        const isVercel = process.env.VERCEL === '1';
+        
         troubleshooting = 'The database hostname cannot be resolved. Please check:\n' +
           '1. Is your DATABASE_URL or POSTGRES_HOST correct?\n' +
           '2. Is your DNS working correctly?\n' +
           '3. If using a cloud database (Supabase, etc.), verify the connection string';
+        
+        // Add specific guidance for Vercel + direct connections
+        if (isDirectConnection && isVercel) {
+          troubleshooting += '\n\n⚠️ IMPORTANT: Direct connections (db.*.supabase.co) often fail on Vercel/serverless.\n' +
+            'Please use the POOLER connection string instead:\n' +
+            '1. Go to Supabase Dashboard → Settings → Database → Connection Pooling\n' +
+            '2. Select "Transaction" mode (recommended for most apps)\n' +
+            '3. Copy the connection string (port 6543)\n' +
+            '4. Update DATABASE_URL in Vercel environment variables\n' +
+            '5. Pooler format: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres';
+        }
       } else {
         errorMessage = 'Database connection timed out.';
         troubleshooting = 'The connection attempt timed out. Please check:\n' +
@@ -147,6 +203,16 @@ export async function sqlQuery<T = unknown>(
       
       const fullMessage = `${errorMessage}\n\nTroubleshooting:\n${troubleshooting}\n\nOriginal error: ${error?.message || 'Unknown error'}`;
       throw new Error(fullMessage);
+    }
+    
+    // Handle Supabase pooler authentication errors
+    if (error?.code === 'XX000' || error?.message?.includes('Tenant or user not found')) {
+      const troubleshooting = 'This error usually means:\n' +
+        '1. The connection string username format is incorrect\n' +
+        '2. For pooler connections, use: postgres.[PROJECT-REF]@pooler.supabase.com\n' +
+        '3. The password might be incorrect\n' +
+        '4. Verify the connection string in Supabase Dashboard → Settings → Database → Connection Pooling';
+      throw new Error(`Database authentication failed: ${error?.message}\n\nTroubleshooting:\n${troubleshooting}`);
     }
     
     // Re-throw other errors as-is

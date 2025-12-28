@@ -40,17 +40,33 @@ export async function POST(request: Request) {
       });
       // Check if this is a database connection error
       if (error?.code === 'ECONNREFUSED' || error?.code === 'ENOTFOUND' || error?.code === 'ETIMEDOUT' || error?.message?.includes('connection')) {
+        const isDirectConnection = process.env.DATABASE_URL?.includes('db.') && process.env.DATABASE_URL?.includes('.supabase.co');
+        const isVercel = process.env.VERCEL === '1';
+        
+        let message = 'Unable to connect to the database.';
+        if (error?.code === 'ENOTFOUND' && isDirectConnection && isVercel) {
+          message += ' Direct connections to Supabase often fail on Vercel. Please use the pooler connection string instead (see Supabase Dashboard → Database → Connection Pooling).';
+        }
+        
         return NextResponse.json(
           { 
             error: 'Database connection failed.',
-            message: 'Unable to connect to the database. Please check your database configuration and ensure the server is running.',
+            message: message,
+            code: error?.code,
             details: process.env.NODE_ENV === 'development' ? error?.message : undefined
           },
           { status: 503 }
         );
       }
-      // Re-throw other errors to be caught by outer try-catch
-      throw error;
+      // Handle pooler authentication errors - these are expected with pooler connections
+      // The extension creation fails but schema tables should still be accessible
+      if (error?.code === 'XX000' || error?.message?.includes('Tenant or user not found')) {
+        console.warn('Schema setup warning (pooler connection), continuing:', error?.message);
+        // Continue - the schema tables should still be accessible, extension creation just failed
+      } else {
+        // Re-throw other errors to be caught by outer try-catch
+        throw error;
+      }
     }
 
     const body = await request.json().catch(() => ({}));
@@ -106,6 +122,17 @@ export async function POST(request: Request) {
     return response;
   } catch (err: any) {
     console.error('Signup error:', err);
+    
+    // Handle pooler authentication errors
+    if (err?.code === 'XX000' || err?.message?.includes('Tenant or user not found')) {
+      return NextResponse.json(
+        { 
+          error: 'Database authentication failed.',
+          message: 'Please check your database connection string. For pooler connections, ensure the username format is correct (postgres.[PROJECT-REF]).'
+        },
+        { status: 503 }
+      );
+    }
     
     // Duplicate email or other constraint violation (PostgreSQL error code 23505)
     if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {

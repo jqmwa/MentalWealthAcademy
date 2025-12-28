@@ -55,18 +55,18 @@ export async function POST(request: Request) {
     }
 
     const user = users[0];
-
+      
     // Check if user has a password (email/password account)
     if (!user.password_hash) {
-      return NextResponse.json(
+          return NextResponse.json(
         { error: 'This account was created with a different method. Please use the appropriate login method.' },
         { status: 401 }
-      );
-    }
+          );
+        }
 
     // Verify password
     if (!verifyPassword(password, user.password_hash)) {
-      return NextResponse.json(
+        return NextResponse.json(
         { error: 'Invalid email or password.' },
         { status: 401 }
       );
@@ -79,9 +79,9 @@ export async function POST(request: Request) {
     return response;
   } catch (err: any) {
     console.error('Login error:', err);
-    return NextResponse.json(
+      return NextResponse.json(
       { error: 'Login failed. Please try again.' },
       { status: 500 }
-    );
+      );
   }
 }

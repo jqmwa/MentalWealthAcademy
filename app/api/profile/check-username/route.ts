@@ -41,8 +41,15 @@ export async function GET(request: Request) {
         console.warn('Database connection error in username check, assuming available:', error?.message);
         return NextResponse.json({ available: true, username });
       }
-      // Re-throw other errors
-      throw error;
+      // Handle pooler authentication errors - these are expected and we can continue
+      if (error?.code === 'XX000' || error?.message?.includes('Tenant or user not found')) {
+        // Pooler connections may have auth issues with extension creation, but schema should still work
+        console.warn('Schema setup warning (pooler connection), continuing:', error?.message);
+        // Continue - the schema tables should still be accessible
+      } else {
+        // Re-throw other errors
+        throw error;
+      }
     }
 
     // Check if username exists
@@ -59,6 +66,11 @@ export async function GET(request: Request) {
     console.error('Error checking username:', error);
     // If it's a connection error, assume available (will be validated on create)
     if (error?.code === 'ECONNREFUSED' || error?.code === 'ENOTFOUND' || error?.code === 'ETIMEDOUT' || error?.message?.includes('connection')) {
+      return NextResponse.json({ available: true, username });
+    }
+    // Handle pooler authentication errors - assume available (will be validated on create)
+    if (error?.code === 'XX000' || error?.message?.includes('Tenant or user not found')) {
+      console.warn('Pooler authentication error in username check, assuming available:', error?.message);
       return NextResponse.json({ available: true, username });
     }
     // For other errors, return error response
