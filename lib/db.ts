@@ -1,4 +1,11 @@
 import { Pool, PoolClient } from 'pg';
+import dns from 'dns';
+
+// Force IPv4-first DNS resolution (Node.js 17+)
+// This helps avoid IPv6 connection issues with Supabase
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 let pool: Pool | undefined;
 
@@ -17,15 +24,46 @@ function createPool(): Pool {
   if (databaseUrl) {
     // Supabase connection string format:
     // postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres
-    return new Pool({
-      connectionString: databaseUrl,
+    // Parse URL and use host/port directly to avoid IPv6 issues
+    let poolConfig: any = {
       ssl: databaseUrl.includes('supabase.co') ? { rejectUnauthorized: false } : undefined,
       max: 10, // Connection pool size
       connectionTimeoutMillis: 10000, // 10 second timeout
       idleTimeoutMillis: 30000, // 30 seconds
-      // Handle connection errors
       allowExitOnIdle: false,
-    });
+    };
+
+    // For Supabase, parse the URL and use individual connection params
+    // This gives us more control over DNS resolution
+    if (databaseUrl.includes('supabase.co')) {
+      try {
+        const url = new URL(databaseUrl.replace(/^postgresql:/, 'http:'));
+        const password = url.password;
+        const username = url.username;
+        const hostname = url.hostname;
+        const port = url.port || '5432';
+        const database = url.pathname.slice(1) || 'postgres';
+
+        poolConfig = {
+          ...poolConfig,
+          host: hostname,
+          port: parseInt(port, 10),
+          user: username,
+          password: password,
+          database: database,
+          // Force IPv4 by using family option in dns lookup
+          // Note: pg library doesn't directly support this, but we can set it via lookup
+        };
+      } catch (err) {
+        // If URL parsing fails, fall back to connectionString
+        console.warn('Failed to parse DATABASE_URL, using connectionString:', err);
+        poolConfig.connectionString = databaseUrl;
+      }
+    } else {
+      poolConfig.connectionString = databaseUrl;
+    }
+
+    return new Pool(poolConfig);
   }
 
   // Fallback to individual env vars

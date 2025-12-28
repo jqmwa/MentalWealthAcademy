@@ -234,14 +234,22 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       const signupResponse = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           email,
           password,
         }),
       });
 
-      const signupData = await signupResponse.json();
+      let signupData;
+      try {
+        const text = await signupResponse.text();
+        signupData = text ? JSON.parse(text) : {};
+      } catch (err) {
+        console.error('Failed to parse signup response:', err);
+        setError('Failed to create account. Please try again.');
+        setIsLoading(false);
+        return;
+      }
 
       if (!signupResponse.ok) {
         setError(signupData.error || 'Failed to create account');
@@ -253,7 +261,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       const profileResponse = await fetch('/api/profile/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           username,
           email,
@@ -263,7 +270,16 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
         }),
       });
 
-      const profileData = await profileResponse.json();
+      let profileData;
+      try {
+        const text = await profileResponse.text();
+        profileData = text ? JSON.parse(text) : {};
+      } catch (err) {
+        console.error('Failed to parse profile response:', err);
+        setError('Failed to create profile. Please try again.');
+        setIsLoading(false);
+        return;
+      }
 
       if (profileResponse.ok) {
         setCurrentStep('complete');
@@ -277,8 +293,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       }
     } catch (err) {
       console.error('Profile creation error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred. Please try again.';
-      setError(errorMessage);
+      setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }

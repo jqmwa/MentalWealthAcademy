@@ -20,33 +20,51 @@ function isValidPassword(password: unknown): password is string {
 }
 
 export async function POST(request: Request) {
-  if (!isDbConfigured()) {
-    return NextResponse.json(
-      { error: 'Database is not configured on the server.' },
-      { status: 503 }
-    );
-  }
-  await ensureForumSchema();
-
-  const body = await request.json().catch(() => ({}));
-  const email = body?.email;
-  const password = body?.password;
-
-  if (!isValidEmail(email)) {
-    return NextResponse.json(
-      { error: 'Valid email is required.' },
-      { status: 400 }
-    );
-  }
-
-  if (!isValidPassword(password)) {
-    return NextResponse.json(
-      { error: 'Password must be at least 8 characters.' },
-      { status: 400 }
-    );
-  }
-
   try {
+    if (!isDbConfigured()) {
+      return NextResponse.json(
+        { error: 'Database is not configured on the server.' },
+        { status: 503 }
+      );
+    }
+
+    // Ensure schema is set up, handle connection errors gracefully
+    try {
+      await ensureForumSchema();
+    } catch (error: any) {
+      console.error('Schema setup error:', error);
+      // Check if this is a database connection error
+      if (error?.code === 'ECONNREFUSED' || error?.code === 'ENOTFOUND' || error?.code === 'ETIMEDOUT' || error?.message?.includes('connection')) {
+        return NextResponse.json(
+          { 
+            error: 'Database connection failed.',
+            message: 'Unable to connect to the database. Please check your database configuration.'
+          },
+          { status: 503 }
+        );
+      }
+      // Re-throw other errors to be caught by outer try-catch
+      throw error;
+    }
+
+    const body = await request.json().catch(() => ({}));
+    const email = body?.email;
+    const password = body?.password;
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: 'Valid email is required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!isValidPassword(password)) {
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters.' },
+        { status: 400 }
+      );
+    }
+
     // Check if email already exists
     const existingUser = await sqlQuery<Array<{ id: string }>>(
       `SELECT id FROM users WHERE email = :email LIMIT 1`,
@@ -81,6 +99,8 @@ export async function POST(request: Request) {
     setSessionCookie(response, session.token);
     return response;
   } catch (err: any) {
+    console.error('Signup error:', err);
+    
     // Duplicate email or other constraint violation (PostgreSQL error code 23505)
     if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {
       const constraint = err?.constraint || '';
@@ -91,6 +111,14 @@ export async function POST(request: Request) {
       }
       return NextResponse.json({ error: 'Account creation failed due to duplicate data.' }, { status: 409 });
     }
-    throw err;
+    
+    // Ensure we always return JSON, even on unexpected errors
+    return NextResponse.json(
+      { 
+        error: 'Failed to create account.',
+        message: process.env.NODE_ENV === 'development' ? err?.message : undefined
+      },
+      { status: 500 }
+    );
   }
 }
