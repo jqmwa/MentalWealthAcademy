@@ -34,6 +34,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
   const checkingRef = useRef<string | null>(null); // Track which username we're currently checking
+  const [userId, setUserId] = useState<string | null>(null); // Store userId after signup
 
   // Username validation (minimum 5 characters) - memoized to prevent re-renders
   const usernameRegex = useMemo(() => /^[a-zA-Z0-9_]{5,32}$/, []);
@@ -82,7 +83,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   // Personal step validation (gender and birthday) - SECOND STEP
   const isPersonalStepValid = gender !== '' && isBirthdayValid;
 
-  // Generate avatar choices when username is confirmed
+  // Generate avatar choices using userId (after account is created)
   const fetchAvatarChoices = useCallback(async (userSeed: string) => {
     try {
       const response = await fetch('/api/profile/preview-avatars', {
@@ -216,7 +217,53 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
         setError('Password must be at least 8 characters');
         return;
       }
-      setCurrentStep('personal');
+      
+      // Create the account now so we can use userId for avatar generation
+      setIsLoading(true);
+      try {
+        const signupResponse = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        let signupData;
+        try {
+          const text = await signupResponse.text();
+          signupData = text ? JSON.parse(text) : {};
+        } catch (err) {
+          console.error('Failed to parse signup response:', err);
+          setError('Failed to create account. Please try again.');
+          setIsLoading(false);
+          return;
+        }
+
+        if (!signupResponse.ok) {
+          // If account already exists, we can't proceed - user needs to sign in instead
+          if (signupResponse.status === 409) {
+            setError('An account with this email already exists. Please sign in instead.');
+          } else {
+            setError(signupData.error || 'Failed to create account');
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        // Store userId for avatar generation
+        if (signupData.userId) {
+          setUserId(signupData.userId);
+        }
+        
+        setCurrentStep('personal');
+      } catch (err) {
+        console.error('Signup error:', err);
+        setError('An error occurred. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     } else if (currentStep === 'personal') {
       if (!gender) {
         setError('Please select a gender');
@@ -226,15 +273,20 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
         setError('You must be at least 13 years old to create an account');
         return;
       }
-      // Generate seed from username for avatar selection
-      await fetchAvatarChoices(username + Date.now().toString());
+      // Generate avatars using userId (account was created in previous step)
+      if (userId) {
+        await fetchAvatarChoices(userId);
+      } else {
+        setError('Account creation failed. Please try again.');
+        return;
+      }
       setCurrentStep('avatar');
     } else if (currentStep === 'avatar') {
       if (!selectedAvatar) {
         setError('Please select an avatar');
         return;
       }
-      // Create profile
+      // Create profile (account already exists, just update it)
       await createProfile();
     }
   };
@@ -242,6 +294,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   const handlePrevStep = () => {
     setError(null);
     if (currentStep === 'personal') {
+      // Reset userId when going back to account step
+      // This allows user to change email if needed
+      setUserId(null);
       setCurrentStep('account');
     } else if (currentStep === 'avatar') {
       setCurrentStep('personal');
@@ -253,34 +308,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
     setError(null);
 
     try {
-      // First, sign up with email/password
-      const signupResponse = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      let signupData;
-      try {
-        const text = await signupResponse.text();
-        signupData = text ? JSON.parse(text) : {};
-      } catch (err) {
-        console.error('Failed to parse signup response:', err);
-        setError('Failed to create account. Please try again.');
-        setIsLoading(false);
-        return;
-      }
-
-      if (!signupResponse.ok) {
-        setError(signupData.error || 'Failed to create account');
-        setIsLoading(false);
-        return;
-      }
-
-      // Then create the profile with username, avatar, gender, birthday
+      // Account was already created in the account step, just create/update the profile
       const profileResponse = await fetch('/api/profile/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -453,9 +481,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
             <button 
               className={styles.primaryButton}
               onClick={handleNextStep}
-              disabled={!isAccountStepValid}
+              disabled={!isAccountStepValid || isLoading}
             >
-              Continue
+              {isLoading ? 'Creating Account...' : 'Continue'}
             </button>
           </div>
         )}

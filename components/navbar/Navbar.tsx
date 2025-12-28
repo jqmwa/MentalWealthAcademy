@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { usePrivy } from '@privy-io/react-auth';
-import { SearchModal } from '@/components/search-modal/SearchModal';
 import styles from './Navbar.module.css';
 
 // Menu Icon Component
@@ -17,61 +16,47 @@ const MenuIcon: React.FC<{ size?: number }> = ({ size = 32 }) => {
   );
 };
 
-// Search Icon Component
-const SearchIcon: React.FC<{ size?: number }> = ({ size = 20 }) => {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.searchIcon}>
-      <circle cx="11" cy="11" r="8" stroke="rgba(156, 163, 175, 1)" strokeWidth="2" fill="none"/>
-      <path d="m21 21-4.35-4.35" stroke="rgba(156, 163, 175, 1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-};
-
-// Notification Icon Component
-const NotificationIcon: React.FC<{ size?: number }> = ({ size = 36 }) => {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.notificationIcon}>
-      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="rgba(17, 25, 40, 1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="rgba(17, 25, 40, 1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="9" y1="12" x2="9" y2="12" stroke="rgba(17, 25, 40, 1)" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="9" y1="15" x2="9" y2="15" stroke="rgba(17, 25, 40, 1)" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-};
-
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { authenticated, ready } = usePrivy();
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [shardCount, setShardCount] = useState<number | null>(null);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  // Fetch user shards only when authenticated
+  // Fetch user data only when authenticated
   useEffect(() => {
     if (!ready || !authenticated) {
       setShardCount(null);
+      setUsername(null);
+      setAvatarUrl(null);
       return;
     }
 
-    const fetchShards = async () => {
+    const fetchUserData = async () => {
       try {
         const response = await fetch('/api/me', { cache: 'no-store' });
         const data = await response.json();
-        if (data?.user?.shardCount !== undefined) {
-          setShardCount(data.user.shardCount);
+        if (data?.user) {
+          if (data.user.shardCount !== undefined) {
+            setShardCount(data.user.shardCount);
+          }
+          setUsername(data.user.username || null);
+          setAvatarUrl(data.user.avatarUrl || null);
         }
       } catch (error) {
-        console.error('Failed to fetch shards:', error);
+        console.error('Failed to fetch user data:', error);
         setShardCount(0);
+        setUsername(null);
+        setAvatarUrl(null);
       }
     };
 
-    fetchShards();
+    fetchUserData();
 
     // Listen for shard updates
     const handleShardsUpdate = () => {
-      fetchShards();
+      fetchUserData();
     };
     window.addEventListener('shardsUpdated', handleShardsUpdate);
 
@@ -87,13 +72,6 @@ const Navbar: React.FC = () => {
     return pathname === path || pathname?.startsWith(path + '/');
   };
 
-  const handleSearchClick = () => {
-    setIsSearchModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsSearchModalOpen(false);
-  };
 
   return (
     <nav className={styles.navbar}>
@@ -114,29 +92,6 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Search Bar - Hidden on mobile, icon only on tablet */}
-        <div className={styles.searchContainer} ref={searchContainerRef}>
-          <div className={styles.searchInputContainer}>
-            <div className={styles.searchInputWrapper}>
-              <div className={styles.searchIconLeft}>
-                <SearchIcon size={20} />
-              </div>
-              <input
-                type="text"
-                placeholder="Search with Daemon Model"
-                className={styles.searchInput}
-                onClick={handleSearchClick}
-                readOnly
-              />
-            </div>
-          </div>
-          <SearchModal 
-            isOpen={isSearchModalOpen} 
-            onClose={handleCloseModal}
-            searchContainerRef={searchContainerRef}
-          />
-        </div>
-
         <div className={styles.rightContent}>
           {/* Desktop Navigation Links */}
           <div className={styles.linksContainer}>
@@ -151,30 +106,6 @@ const Navbar: React.FC = () => {
               />
               <span className={isActive('/home') ? styles.buttonLabelActive : styles.buttonLabel}>Home</span>
             </Link>
-
-            {/* Quests Button */}
-            <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
-              <Image
-                src="/icons/Teleport.svg"
-                alt="Quests"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
-              <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
-            </Link>
-
-            {/* Daemon Button - Disabled */}
-            <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
-              <Image
-                src="/icons/daemon.svg"
-                alt="Daemon"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
-              <span className={styles.buttonLabelDisabled}>Daemon</span>
-            </div>
 
             {/* Library Button - Disabled */}
             <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
@@ -204,11 +135,21 @@ const Navbar: React.FC = () => {
                 {shardCount !== null ? String(shardCount).padStart(3, '0') : '000'}
               </span>
             </div>
-            <button className={styles.messageButton} title="Messages">
-              <div className={styles.messageIcon}>
-                <span className={styles.notificationDot}></span>
+            {/* User Info */}
+            {authenticated && username && (
+              <div className={styles.userInfo}>
+                {avatarUrl && (
+                  <Image
+                    src={avatarUrl}
+                    alt={username}
+                    width={32}
+                    height={32}
+                    className={styles.userAvatar}
+                  />
+                )}
+                <span className={styles.username}>@{username}</span>
               </div>
-            </button>
+            )}
             {/* Mobile Menu Toggle */}
             <button 
               className={styles.mobileMenuButton}
@@ -238,34 +179,6 @@ const Navbar: React.FC = () => {
             />
             <span>Home</span>
           </Link>
-          <Link 
-            href="/quests" 
-            className={`${styles.mobileNavButton} ${isActive('/quests') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <Image
-              src="/icons/Teleport.svg"
-              alt="Quests"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
-            <span>Quests</span>
-          </Link>
-          <div 
-            className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}
-            title="Coming soon"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <Image
-              src="/icons/daemon.svg"
-              alt="Daemon"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
-            <span>Daemon</span>
-          </div>
           <div 
             className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}
             title="Coming soon"

@@ -254,6 +254,31 @@
   font-variant-numeric: tabular-nums;
 }
 
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+}
+
+.username {
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: #000000;
+}
+
 .messageButton {
   display: flex;
   width: 37px;
