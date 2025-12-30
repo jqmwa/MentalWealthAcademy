@@ -49,13 +49,27 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   // Birthday validation (must be at least 13 years old) - reactive
   const isBirthdayValid = useMemo(() => {
     if (!birthday) return false;
+    
+    // Check if date is valid
     const birthDate = new Date(birthday);
+    if (isNaN(birthDate.getTime())) return false;
+    
+    // Check if date is not in the future
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    birthDate.setHours(0, 0, 0, 0);
+    if (birthDate > today) return false;
+    
+    // Check if date is not too far in the past (reasonable limit: 120 years)
+    const minDate = new Date(today);
+    minDate.setFullYear(today.getFullYear() - 120);
+    if (birthDate < minDate) return false;
+    
+    // Calculate exact age
     const age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
     const dayDiff = today.getDate() - birthDate.getDate();
     
-    // Calculate exact age
     let exactAge = age;
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
       exactAge = age - 1;
@@ -192,8 +206,19 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
         setError('Please select a gender');
         return;
       }
+      if (!birthday) {
+        setError('Please enter your birthday');
+        return;
+      }
       if (!isBirthdayValid) {
-        setError('You must be at least 13 years old to create an account');
+        const birthDate = new Date(birthday);
+        if (isNaN(birthDate.getTime())) {
+          setError('Please enter a valid birthday');
+        } else if (birthDate > new Date()) {
+          setError('Birthday cannot be in the future');
+        } else {
+          setError('You must be at least 13 years old to create an account');
+        }
         return;
       }
       
@@ -470,16 +495,37 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                     const selectedDate = e.target.value;
                     setBirthday(selectedDate);
                     // Clear error when user selects a date
-                    if (error && error.includes('13 years old')) {
+                    if (error && error.includes('birthday')) {
                       setError(null);
                     }
                   }}
                   onBlur={(e) => {
-                    // Validate on blur
+                    // Validate on blur - check if date is valid and meets age requirement
                     const selectedDate = e.target.value;
-                    if (selectedDate && selectedDate > maxDate) {
-                      setError('You must be at least 13 years old to create an account');
-                      setBirthday('');
+                    if (selectedDate) {
+                      const birthDate = new Date(selectedDate);
+                      const today = new Date();
+                      const age = today.getFullYear() - birthDate.getFullYear();
+                      const monthDiff = today.getMonth() - birthDate.getMonth();
+                      const dayDiff = today.getDate() - birthDate.getDate();
+                      let exactAge = age;
+                      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                        exactAge = age - 1;
+                      }
+                      
+                      if (isNaN(birthDate.getTime())) {
+                        setError('Please enter a valid birthday');
+                        setBirthday('');
+                      } else if (birthDate > today) {
+                        setError('Birthday cannot be in the future');
+                        setBirthday('');
+                      } else if (exactAge < 13) {
+                        setError('You must be at least 13 years old to create an account');
+                        setBirthday('');
+                      } else if (selectedDate > maxDate) {
+                        setError('You must be at least 13 years old to create an account');
+                        setBirthday('');
+                      }
                     }
                   }}
                   className={styles.input}
