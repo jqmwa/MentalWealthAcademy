@@ -82,6 +82,7 @@ export async function ensureForumSchema() {
       email VARCHAR(255) NOT NULL UNIQUE,
       password_hash VARCHAR(255) NOT NULL,
       selected_avatar_id VARCHAR(50) NULL,
+      avatar_url VARCHAR(1024) NULL,
       privy_user_id VARCHAR(255) NULL UNIQUE,
       wallet_address VARCHAR(255) NULL,
       gender VARCHAR(10) NULL,
@@ -91,6 +92,16 @@ export async function ensureForumSchema() {
       updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  // Add avatar_url column if it doesn't exist (for existing databases)
+  try {
+    await sqlQuery(`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(1024) NULL`);
+  } catch (err: any) {
+    // Column might already exist, ignore error
+    if (!err?.message?.includes('already exists') && !err?.message?.includes('duplicate')) {
+      console.warn('Could not add avatar_url column (may already exist):', err?.message);
+    }
+  }
 
   // Create indexes for users
   try {

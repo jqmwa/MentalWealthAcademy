@@ -237,7 +237,7 @@ export async function POST(request: Request) {
              selected_avatar_id = :selectedAvatarId,
              avatar_url = :avatarUrl,
              email = COALESCE(:email, email),
-             gender = COALESCE(:gender, gender),
+             gender = :gender,
              birthday = COALES(:birthday, birthday)${WELCOME_SHARDS !== undefined ? ', shard_count = :shardCount' : ''}
          WHERE id = :userId`,
         updateParams
