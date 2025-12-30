@@ -14,12 +14,15 @@ import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import EventCard from '@/components/event-card/EventCard';
+import AvatarSelectionModal from '@/components/avatar-selection/AvatarSelectionModal';
 import styles from './page.module.css';
 
 export default function Home() {
   const { authenticated, ready } = usePrivy();
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [me, setMe] = useState<{ avatarUrl: string | null } | null>(null);
 
   // Handle X auth callback
   useEffect(() => {
@@ -38,6 +41,45 @@ export default function Home() {
         }, 500);
       }
     }
+  }, []);
+
+  // Fetch user data to check if avatar is needed
+  useEffect(() => {
+    if (authenticated && ready) {
+      fetch('/api/me')
+        .then(res => res.json())
+        .then(data => {
+          if (data.user) {
+            setMe(data.user);
+            // Show avatar modal if user has no avatar
+            if (!data.user.avatarUrl) {
+              setShowAvatarModal(true);
+            }
+          }
+        })
+        .catch(err => console.error('Failed to fetch user data:', err));
+    }
+  }, [authenticated, ready]);
+
+  // Listen for profile updates to refresh avatar status
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      fetch('/api/me')
+        .then(res => res.json())
+        .then(data => {
+          if (data.user) {
+            setMe(data.user);
+            // Close modal if avatar was selected
+            if (data.user.avatarUrl) {
+              setShowAvatarModal(false);
+            }
+          }
+        })
+        .catch(err => console.error('Failed to fetch user data:', err));
+    };
+
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
   }, []);
 
   useEffect(() => {
@@ -70,6 +112,21 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      <AvatarSelectionModal 
+        isOpen={showAvatarModal}
+        onClose={() => setShowAvatarModal(false)}
+        onAvatarSelected={() => {
+          // Refresh user data after avatar selection
+          fetch('/api/me')
+            .then(res => res.json())
+            .then(data => {
+              if (data.user) {
+                setMe(data.user);
+              }
+            })
+            .catch(err => console.error('Failed to fetch user data:', err));
+        }}
+      />
       <OnboardingTour />
       <Navbar />
       <Banner />

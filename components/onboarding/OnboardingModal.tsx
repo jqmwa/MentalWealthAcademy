@@ -16,7 +16,7 @@ interface OnboardingModalProps {
   onClose: () => void;
 }
 
-type Step = 'account' | 'avatar' | 'complete';
+type Step = 'account';
 
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
@@ -259,12 +259,11 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
           return;
         }
 
-        // Store userId for avatar generation
+        // Store userId for profile creation
         if (signupData.userId) {
           setUserId(signupData.userId);
-          // Generate avatars using userId
-          await fetchAvatarChoices(signupData.userId);
-          setCurrentStep('avatar');
+          // Create profile with username, gender, birthday (no avatar yet)
+          await createProfile();
         } else {
           setError('Account creation failed. Please try again.');
         }
@@ -274,26 +273,12 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       } finally {
         setIsLoading(false);
       }
-    } else if (currentStep === 'avatar') {
-      if (!selectedAvatar) {
-        setError('Please select an avatar');
-        return;
-      }
-      // Create profile (account already exists, just update it)
-      await createProfile();
     }
   };
 
   const handlePrevStep = () => {
     setError(null);
-    if (currentStep === 'avatar') {
-      // Reset userId when going back to account step
-      // This allows user to change email if needed
-      setUserId(null);
-      setAvatarChoices([]);
-      setSelectedAvatar(null);
-      setCurrentStep('account');
-    }
+    // No previous step now - account is the only step
   };
 
   const createProfile = async () => {
@@ -302,15 +287,16 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
 
     try {
       // Account was already created in the account step, just create/update the profile
+      // Note: avatar_id is not included - user will select avatar on homepage
       const profileResponse = await fetch('/api/profile/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username,
           email,
-          avatar_id: selectedAvatar?.id,
           gender,
           birthday,
+          // No avatar_id - user selects avatar on homepage
         }),
       });
 
@@ -328,12 +314,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
       if (profileResponse.ok) {
         // Dispatch event to notify navbar of profile update
         window.dispatchEvent(new Event('profileUpdated'));
-        setCurrentStep('complete');
-        // Redirect to home after brief celebration
-        setTimeout(() => {
-          router.push('/home');
-          onClose();
-        }, 2500);
+        // Redirect to home immediately - avatar selection will happen there
+        router.push('/home');
+        onClose();
       } else {
         // Log detailed error for debugging
         console.error('Profile creation failed:', {
@@ -341,7 +324,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
           statusText: profileResponse.statusText,
           data: profileData,
           username,
-          avatar_id: selectedAvatar?.id,
         });
         const errorMessage = profileData.message || profileData.error || 'Failed to create profile';
         setError(`${errorMessage}${profileData.validChoices ? ` Valid choices: ${profileData.validChoices.join(', ')}` : ''}`);
@@ -357,7 +339,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && currentStep !== 'complete') {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
@@ -383,8 +365,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
           <div 
             className={styles.progressFill} 
             style={{ 
-              width: currentStep === 'account' ? '50%' 
-                : currentStep === 'avatar' ? '100%' 
+              width: currentStep === 'account' ? '100%' 
                 : '100%' 
             }} 
           />
@@ -553,8 +534,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
           </div>
         )}
 
-        {/* Step 2: Avatar Selection */}
-        {currentStep === 'avatar' && (
+        {/* Avatar selection moved to homepage */}
+        {false && currentStep === 'avatar' && (
           <div className={styles.stepContent}>
             <div className={styles.stepIcon}>
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
@@ -619,44 +600,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
         )}
 
 
-        {/* Step 4: Complete */}
-        {currentStep === 'complete' && (
-          <div className={styles.stepContent}>
-            <div className={styles.celebrationIcon}>
-              <div className={styles.confettiContainer}>
-                {[...Array(20)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={styles.confetti} 
-                    style={{ 
-                      '--delay': `${i * 0.1}s`,
-                      '--x': `${(Math.random() - 0.5) * 200}px`,
-                      '--rotation': `${Math.random() * 360}deg`,
-                    } as React.CSSProperties}
-                  />
-                ))}
-              </div>
-              {selectedAvatar && (
-                <Image
-                  src={selectedAvatar.image_url}
-                  alt="Your avatar"
-                  width={120}
-                  height={120}
-                  className={styles.completedAvatar}
-                  unoptimized
-                />
-              )}
-            </div>
-            <h2 className={styles.stepTitle}>Welcome to the Academy!</h2>
-            <p className={styles.stepDescription}>
-              Your profile is ready, <strong>@{username}</strong>. Let&apos;s start your research journey.
-            </p>
-            <div className={styles.shardReward}>
-              <Image src="/icons/shard.svg" alt="Shard" width={24} height={24} />
-              <span>+10 Welcome Shards</span>
-            </div>
-          </div>
-        )}
+        {/* Complete step removed - redirecting directly to home */}
       </div>
     </div>
   );

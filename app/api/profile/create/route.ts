@@ -104,13 +104,14 @@ export async function POST(request: Request) {
     );
   }
 
-  // Validate avatar_id format
-  if (!avatar_id || typeof avatar_id !== 'string') {
-    return NextResponse.json(
-      { error: 'avatar_id is required.' },
-      { status: 400 }
-    );
-  }
+  // Validate avatar_id format (optional now - user selects avatar on homepage)
+  // Avatar selection is now handled separately via /api/avatars/select
+  // if (!avatar_id || typeof avatar_id !== 'string') {
+  //   return NextResponse.json(
+  //     { error: 'avatar_id is required.' },
+  //     { status: 400 }
+  //   );
+  // }
 
   // Get current user from session (created via signup)
   const currentUser = await getCurrentUserFromRequestCookie();
@@ -133,45 +134,49 @@ export async function POST(request: Request) {
     !existingUser[0].username.startsWith('user_');
 
   try {
-    // Validate avatar is in assigned choices for this user
-    // Skip validation if user already has a profile (allowing updates)
-    if (!hasExistingProfile && !isAvatarValidForUser(userId, avatar_id)) {
-      // Since this is a new user, we need to get their choices based on the new ID
-      // and check if the avatar is valid
-      const assignedAvatars = getAssignedAvatars(userId);
-      const validIds = assignedAvatars.map(a => a.id);
-      
-      return NextResponse.json(
-        { 
-          error: 'Invalid avatar selection.',
-          message: 'Please select from your assigned avatar choices.',
-          validChoices: validIds
-        },
-        { status: 400 }
-      );
-    }
-
-    // Get the full avatar object
-    // If user has existing profile, we can update directly without strict validation
-    let avatar;
-    if (hasExistingProfile) {
-      // For existing profiles, try to get avatar but allow updating even if not in assigned choices
-      avatar = getAvatarByAvatarId(avatar_id);
-      if (!avatar) {
-        // If avatar_id is invalid, still allow update but log it
-        console.warn(`Avatar ${avatar_id} not found for existing profile update`);
-        // Use a default or existing avatar_url
-        const existingAvatarUrl = existingUser[0].avatar_url;
-        avatar = existingAvatarUrl ? { id: avatar_id, image_url: existingAvatarUrl, metadata_url: '' } : null;
-      }
-    } else {
-      // For new profiles, avatar must be valid
-      avatar = getAvatarByAvatarId(avatar_id);
-      if (!avatar) {
+    // Avatar selection is now optional - user selects avatar on homepage
+    // Only validate if avatar_id is provided
+    let avatar = null;
+    if (avatar_id) {
+      // Validate avatar is in assigned choices for this user
+      // Skip validation if user already has a profile (allowing updates)
+      if (!hasExistingProfile && !isAvatarValidForUser(userId, avatar_id)) {
+        // Since this is a new user, we need to get their choices based on the new ID
+        // and check if the avatar is valid
+        const assignedAvatars = getAssignedAvatars(userId);
+        const validIds = assignedAvatars.map(a => a.id);
+        
         return NextResponse.json(
-          { error: 'Avatar not found.' },
-          { status: 404 }
+          { 
+            error: 'Invalid avatar selection.',
+            message: 'Please select from your assigned avatar choices.',
+            validChoices: validIds
+          },
+          { status: 400 }
         );
+      }
+
+      // Get the full avatar object
+      // If user has existing profile, we can update directly without strict validation
+      if (hasExistingProfile) {
+        // For existing profiles, try to get avatar but allow updating even if not in assigned choices
+        avatar = getAvatarByAvatarId(avatar_id);
+        if (!avatar) {
+          // If avatar_id is invalid, still allow update but log it
+          console.warn(`Avatar ${avatar_id} not found for existing profile update`);
+          // Use a default or existing avatar_url
+          const existingAvatarUrl = existingUser[0].avatar_url;
+          avatar = existingAvatarUrl ? { id: avatar_id, image_url: existingAvatarUrl, metadata_url: '' } : null;
+        }
+      } else {
+        // For new profiles, avatar must be valid
+        avatar = getAvatarByAvatarId(avatar_id);
+        if (!avatar) {
+          return NextResponse.json(
+            { error: 'Avatar not found.' },
+            { status: 404 }
+          );
+        }
       }
     }
 
@@ -219,7 +224,7 @@ export async function POST(request: Request) {
       const updateParams: any = {
         userId,
         username,
-        selectedAvatarId: avatar_id,
+        selectedAvatarId: avatar_id || null,
         avatarUrl: avatar?.image_url || null,
         email: email || null,
         gender: gender || null,
@@ -259,7 +264,7 @@ export async function POST(request: Request) {
               userId,
               avatarId: assignedAvatar.id,
               avatarUrl: assignedAvatar.image_url,
-              isSelected: assignedAvatar.id === avatar_id,
+              isSelected: avatar_id ? (assignedAvatar.id === avatar_id) : false,
             }
           );
         }

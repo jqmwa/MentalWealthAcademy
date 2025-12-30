@@ -83,8 +83,26 @@ export async function POST(request: Request) {
   try {
     // Persist the selected avatar to the database
     await sqlQuery(
-      `UPDATE users SET avatar_url = :avatarUrl WHERE id = :userId`,
-      { avatarUrl: avatar.image_url, userId: user.id }
+      `UPDATE users 
+       SET avatar_url = :avatarUrl, 
+           selected_avatar_id = :avatarId 
+       WHERE id = :userId`,
+      { 
+        avatarUrl: avatar.image_url, 
+        avatarId: avatar_id,
+        userId: user.id 
+      }
+    );
+
+    // Update user_avatars table to mark this avatar as selected
+    await sqlQuery(
+      `UPDATE user_avatars 
+       SET is_selected = CASE 
+         WHEN avatar_id = :avatarId THEN true 
+         ELSE false 
+       END
+       WHERE user_id = :userId`,
+      { avatarId: avatar_id, userId: user.id }
     );
 
     return NextResponse.json({
