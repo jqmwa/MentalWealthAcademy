@@ -157,7 +157,7 @@ export function AccountLinkingModal({
             
             {shardsEarned !== undefined && shardsEarned > 0 && (
               <div className={styles.rewardMessage}>
-                <p>You've earned <strong>{shardsEarned} shards</strong>! To receive your rewards, sync an eligible account.</p>
+                <p>You&apos;ve earned <strong>{shardsEarned} shards</strong>! To receive your rewards, sync an eligible account.</p>
               </div>
             )}
 

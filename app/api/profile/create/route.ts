@@ -16,7 +16,6 @@ import { NextResponse } from 'next/server';
 import { ensureForumSchema } from '@/lib/ensureForumSchema';
 import { isDbConfigured, sqlQuery, withTransaction, sqlQueryWithClient } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { cookies } from 'next/headers';
 import { getCurrentUserFromRequestCookie } from '@/lib/auth';
 import { isAvatarValidForUser, getAvatarByAvatarId, getAssignedAvatars } from '@/lib/avatars';
 
@@ -267,32 +266,9 @@ export async function POST(request: Request) {
       }
     });
 
-    // Create a session for the new user
-    const sessionToken = uuidv4();
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 30); // 30 day session
-
-    await sqlQuery(
-      `INSERT INTO sessions (id, user_id, token, expires_at)
-       VALUES (:id, :userId, :token, :expiresAt)`,
-      {
-        id: uuidv4(),
-        userId,
-        token: sessionToken,
-        expiresAt,
-      }
-    );
-
-    // Set session cookie
-    const cookieStore = await cookies();
-    cookieStore.set('session_token', sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      expires: expiresAt,
-    });
-
+    // Note: Session was already created during signup, so we don't need to create a new one
+    // The session cookie is already set from the signup step
+    
     return NextResponse.json({
       ok: true,
       message: 'Profile created successfully!',
@@ -300,7 +276,7 @@ export async function POST(request: Request) {
         id: userId,
         username,
         email: email || null,
-        avatarUrl: avatar.image_url,
+        avatarUrl: avatar?.image_url || null,
         shardCount: WELCOME_SHARDS,
       }
     });
