@@ -37,15 +37,8 @@ const Navbar: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch user data only when authenticated
+  // Fetch user data - works for both Privy and session-based auth
   useEffect(() => {
-    if (!ready || !authenticated) {
-      setShardCount(null);
-      setUsername(null);
-      setAvatarUrl(null);
-      return;
-    }
-
     const fetchUserData = async () => {
       try {
         const response = await fetch('/api/me', { cache: 'no-store' });
@@ -56,15 +49,21 @@ const Navbar: React.FC = () => {
           }
           setUsername(data.user.username || null);
           setAvatarUrl(data.user.avatarUrl || null);
+        } else {
+          // No user data - clear state
+          setShardCount(null);
+          setUsername(null);
+          setAvatarUrl(null);
         }
       } catch (error) {
         console.error('Failed to fetch user data:', error);
-        setShardCount(0);
+        setShardCount(null);
         setUsername(null);
         setAvatarUrl(null);
       }
     };
 
+    // Fetch immediately and also when Privy auth state changes (for Privy users)
     fetchUserData();
 
     // Listen for shard updates and profile updates
@@ -82,7 +81,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener('shardsUpdated', handleShardsUpdate);
       window.removeEventListener('profileUpdated', handleProfileUpdate);
     };
-  }, [authenticated, ready]);
+  }, [authenticated, ready]); // Still include dependencies to refetch when Privy state changes
 
   const isActive = (path: string) => {
     if (path === '/home') {
@@ -198,7 +197,7 @@ const Navbar: React.FC = () => {
               </span>
             </div>
             {/* User Info */}
-            {authenticated && username && !username.startsWith('user_') && (
+            {username && !username.startsWith('user_') && (
               <div className={styles.userInfo}>
                 {avatarUrl && (
                   <Image
@@ -214,7 +213,7 @@ const Navbar: React.FC = () => {
               </div>
             )}
             {/* Show incomplete profile message if username is temporary */}
-            {authenticated && username && username.startsWith('user_') && (
+            {username && username.startsWith('user_') && (
               <button
                 className={styles.incompleteProfile}
                 onClick={() => {

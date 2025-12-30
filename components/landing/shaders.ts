@@ -28,8 +28,11 @@ const float bayerMatrix8x8[64] = float[64](
 );
 
 vec3 dither(vec2 uv, vec3 color) {
-  int x = int(uv.x * resolution.x) % 8;
-  int y = int(uv.y * resolution.y) % 8;
+  // Use a fixed reference resolution for consistent dithering across all screen sizes
+  // This ensures the pattern looks the same regardless of actual resolution
+  float refResolution = 1920.0; // Reference resolution for consistent dithering scale
+  int x = int(uv.x * refResolution) % 8;
+  int y = int(uv.y * refResolution) % 8;
   float threshold = bayerMatrix8x8[y * 8 + x] - 0.25;
 
   color.rgb += threshold;
@@ -73,8 +76,11 @@ const float bayerMatrix8x8[64] = float[64](
 );
 
 vec3 dither(vec2 uv, vec3 color) {
-  int x = int(uv.x * resolution.x) % 8;
-  int y = int(uv.y * resolution.y) % 8;
+  // Use a fixed reference resolution for consistent dithering across all screen sizes
+  // This ensures the pattern looks the same regardless of actual resolution
+  float refResolution = 1920.0; // Reference resolution for consistent dithering scale
+  int x = int(uv.x * refResolution) % 8;
+  int y = int(uv.y * refResolution) % 8;
   float threshold = bayerMatrix8x8[y * 8 + x] - 0.25;
 
   color.rgb += threshold;
@@ -198,10 +204,12 @@ void main() {
   // Increase overall saturation and brightness for more solid appearance
   col = mix(col, col * 1.1, 0.3);
 
-  // Apply dithering directly
-  vec2 screenUV = gl_FragCoord.xy;
-  vec2 normalizedPixelSize = pixelSize / resolution;  
-  vec2 uvPixel = normalizedPixelSize * floor(screenUV / normalizedPixelSize);
+  // Apply dithering using normalized UV coordinates for consistent pattern across resolutions
+  // Use vUv (normalized 0-1 coordinates) instead of screen coordinates
+  vec2 ditherUV = vUv;
+  // Scale by pixelSize to maintain consistent dithering density
+  float ditherScale = pixelSize * 1920.0; // Scale relative to reference resolution
+  vec2 uvPixel = (1.0 / ditherScale) * floor(ditherUV * ditherScale);
   col = dither(uvPixel, col);
 
   gl_FragColor = vec4(col, 1.0);
