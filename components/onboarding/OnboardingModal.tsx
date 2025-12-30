@@ -437,66 +437,14 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                   type="date"
                   value={birthday}
                   onChange={(e) => {
+                    // Simply set the value without validation - allow user to type freely
+                    // Validation will happen on blur and before form submission
                     const selectedDate = e.target.value;
-                    
-                    // Validate immediately on change to prevent invalid submissions
-                    if (selectedDate) {
-                      const birthDate = new Date(selectedDate);
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0);
-                      birthDate.setHours(0, 0, 0, 0);
-                      
-                      // Check if date is valid
-                      if (isNaN(birthDate.getTime())) {
-                        setError('Please enter a valid birthday');
-                        setBirthday('');
-                        return;
-                      }
-                      
-                      // Check if date is in the future
-                      if (birthDate > today) {
-                        setError('Birthday cannot be in the future');
-                        setBirthday('');
-                        return;
-                      }
-                      
-                      // Check if date is too old (reasonable limit: 120 years)
-                      const minDateObj = new Date(minDate);
-                      if (birthDate < minDateObj) {
-                        setError('Please enter a valid birthday');
-                        setBirthday('');
-                        return;
-                      }
-                      
-                      // Check age requirement (must be at least 13 years old)
-                      const age = today.getFullYear() - birthDate.getFullYear();
-                      const monthDiff = today.getMonth() - birthDate.getMonth();
-                      const dayDiff = today.getDate() - birthDate.getDate();
-                      let exactAge = age;
-                      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-                        exactAge = age - 1;
-                      }
-                      
-                      if (exactAge < 13) {
-                        setError('You must be at least 13 years old to create an account');
-                        setBirthday('');
-                        return;
-                      }
-                      
-                      // Check if date exceeds maxDate (13 years ago)
-                      if (selectedDate > maxDate) {
-                        setError('You must be at least 13 years old to create an account');
-                        setBirthday('');
-                        return;
-                      }
-                      
-                      // Date is valid, clear any previous errors
-                      if (error && error.includes('birthday')) {
-                        setError(null);
-                      }
-                    }
-                    
                     setBirthday(selectedDate);
+                    // Clear any existing birthday errors when user types
+                    if (error && error.includes('birthday')) {
+                      setError(null);
+                    }
                   }}
                   onBlur={(e) => {
                     // Validate on blur - check if date is valid and meets age requirement
@@ -504,13 +452,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                     if (selectedDate) {
                       const birthDate = new Date(selectedDate);
                       const today = new Date();
-                      const age = today.getFullYear() - birthDate.getFullYear();
-                      const monthDiff = today.getMonth() - birthDate.getMonth();
-                      const dayDiff = today.getDate() - birthDate.getDate();
-                      let exactAge = age;
-                      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-                        exactAge = age - 1;
-                      }
+                      today.setHours(0, 0, 0, 0);
+                      birthDate.setHours(0, 0, 0, 0);
                       
                       if (isNaN(birthDate.getTime())) {
                         setError('Please enter a valid birthday');
@@ -518,12 +461,20 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                       } else if (birthDate > today) {
                         setError('Birthday cannot be in the future');
                         setBirthday('');
-                      } else if (exactAge < 13) {
-                        setError('You must be at least 13 years old to create an account');
-                        setBirthday('');
-                      } else if (selectedDate > maxDate) {
-                        setError('You must be at least 13 years old to create an account');
-                        setBirthday('');
+                      } else {
+                        // Check age requirement (must be at least 13 years old)
+                        const age = today.getFullYear() - birthDate.getFullYear();
+                        const monthDiff = today.getMonth() - birthDate.getMonth();
+                        const dayDiff = today.getDate() - birthDate.getDate();
+                        let exactAge = age;
+                        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                          exactAge = age - 1;
+                        }
+                        
+                        if (exactAge < 13 || selectedDate > maxDate) {
+                          setError('You must be at least 13 years old to create an account');
+                          setBirthday('');
+                        }
                       }
                     }
                   }}

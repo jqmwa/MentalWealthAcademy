@@ -48,7 +48,11 @@ const LandingPage: React.FC = () => {
 
       if (loginResponse.ok) {
         // Login successful - redirect to home
-        window.location.href = '/home';
+        // Use replace instead of href to avoid back button issues
+        // Small delay to ensure cookie is set in Chrome
+        setTimeout(() => {
+          window.location.replace('/home');
+        }, 100);
         return;
       }
 

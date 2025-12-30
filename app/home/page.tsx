@@ -23,6 +23,8 @@ export default function Home() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [me, setMe] = useState<{ avatarUrl: string | null } | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [hasValidSession, setHasValidSession] = useState(false);
 
   // Handle X auth callback
   useEffect(() => {
@@ -43,10 +45,38 @@ export default function Home() {
     }
   }, []);
 
-  // Fetch user data to check if avatar is needed
+  // Check authentication via /api/me (supports both Privy and session-based auth)
   useEffect(() => {
-    if (authenticated && ready) {
-      fetch('/api/me')
+    const checkAuth = async () => {
+      setIsCheckingAuth(true);
+      try {
+        const response = await fetch('/api/me', { cache: 'no-store' });
+        const data = await response.json();
+        if (data.user) {
+          setHasValidSession(true);
+          setMe(data.user);
+          // Show avatar modal if user has no avatar
+          if (!data.user.avatarUrl) {
+            setShowAvatarModal(true);
+          }
+        } else {
+          setHasValidSession(false);
+        }
+      } catch (err) {
+        console.error('Failed to check authentication:', err);
+        setHasValidSession(false);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Fetch user data when Privy auth state changes (for Privy users)
+  useEffect(() => {
+    if (authenticated && ready && hasValidSession) {
+      fetch('/api/me', { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           if (data.user) {
@@ -59,7 +89,7 @@ export default function Home() {
         })
         .catch(err => console.error('Failed to fetch user data:', err));
     }
-  }, [authenticated, ready]);
+  }, [authenticated, ready, hasValidSession]);
 
   // Listen for profile updates to refresh avatar status
   useEffect(() => {
@@ -83,19 +113,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Wait for Privy to be ready before checking authentication
-    // Add a small delay to ensure authentication state is stable
-    if (ready && !authenticated && !isRedirecting) {
+    // Redirect if we've finished checking auth and user has no valid session
+    // This works for both Privy auth and session-based auth
+    if (!isCheckingAuth && !hasValidSession && !isRedirecting) {
       const timer = setTimeout(() => {
         setIsRedirecting(true);
         router.push('/');
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [authenticated, ready, router, isRedirecting]);
+  }, [isCheckingAuth, hasValidSession, router, isRedirecting]);
 
   // Show loading state while checking authentication
-  if (!ready) {
+  if (isCheckingAuth) {
     return (
       <main className={styles.main}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -106,7 +136,7 @@ export default function Home() {
   }
 
   // Redirect if not authenticated (this will be handled by useEffect)
-  if (!authenticated) {
+  if (!hasValidSession) {
     return null;
   }
 
