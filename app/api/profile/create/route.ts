@@ -243,7 +243,7 @@ export async function POST(request: Request) {
              avatar_url = :avatarUrl,
              email = COALESCE(:email, email),
              gender = :gender,
-             birthday = COALES(:birthday, birthday)${WELCOME_SHARDS !== undefined ? ', shard_count = :shardCount' : ''}
+             birthday = :birthday${WELCOME_SHARDS !== undefined ? ', shard_count = :shardCount' : ''}
          WHERE id = :userId`,
         updateParams
       );

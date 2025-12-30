@@ -81,7 +81,7 @@
   bottom: 0;
   background: var(--color-primary);
   mix-blend-mode: color;
-  opacity: 0.8;
+  opacity: 0.5;
   z-index: 2;
 }
 

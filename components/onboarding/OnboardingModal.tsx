@@ -38,13 +38,21 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
   // Password validation
   const isPasswordValid = password.length >= 8;
   
-  // Calculate max date (13 years ago from today)
-  const maxDate = (() => {
+  // Calculate max date (13 years ago from today) - memoized to prevent recalculation
+  const maxDate = useMemo(() => {
     const today = new Date();
-    const maxDate = new Date(today);
-    maxDate.setFullYear(today.getFullYear() - 13);
-    return maxDate.toISOString().split('T')[0];
-  })();
+    const max = new Date(today);
+    max.setFullYear(today.getFullYear() - 13);
+    return max.toISOString().split('T')[0];
+  }, []);
+  
+  // Calculate min date (120 years ago from today) - for validation
+  const minDate = useMemo(() => {
+    const today = new Date();
+    const min = new Date(today);
+    min.setFullYear(today.getFullYear() - 120);
+    return min.toISOString().split('T')[0];
+  }, []);
 
   // Birthday validation (must be at least 13 years old) - reactive
   const isBirthdayValid = useMemo(() => {
@@ -61,9 +69,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
     if (birthDate > today) return false;
     
     // Check if date is not too far in the past (reasonable limit: 120 years)
-    const minDate = new Date(today);
-    minDate.setFullYear(today.getFullYear() - 120);
-    if (birthDate < minDate) return false;
+    const minDateObj = new Date(minDate);
+    if (birthDate < minDateObj) return false;
     
     // Calculate exact age
     const age = today.getFullYear() - birthDate.getFullYear();
@@ -493,11 +500,65 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                   value={birthday}
                   onChange={(e) => {
                     const selectedDate = e.target.value;
-                    setBirthday(selectedDate);
-                    // Clear error when user selects a date
-                    if (error && error.includes('birthday')) {
-                      setError(null);
+                    
+                    // Validate immediately on change to prevent invalid submissions
+                    if (selectedDate) {
+                      const birthDate = new Date(selectedDate);
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      birthDate.setHours(0, 0, 0, 0);
+                      
+                      // Check if date is valid
+                      if (isNaN(birthDate.getTime())) {
+                        setError('Please enter a valid birthday');
+                        setBirthday('');
+                        return;
+                      }
+                      
+                      // Check if date is in the future
+                      if (birthDate > today) {
+                        setError('Birthday cannot be in the future');
+                        setBirthday('');
+                        return;
+                      }
+                      
+                      // Check if date is too old (reasonable limit: 120 years)
+                      const minDateObj = new Date(minDate);
+                      if (birthDate < minDateObj) {
+                        setError('Please enter a valid birthday');
+                        setBirthday('');
+                        return;
+                      }
+                      
+                      // Check age requirement (must be at least 13 years old)
+                      const age = today.getFullYear() - birthDate.getFullYear();
+                      const monthDiff = today.getMonth() - birthDate.getMonth();
+                      const dayDiff = today.getDate() - birthDate.getDate();
+                      let exactAge = age;
+                      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                        exactAge = age - 1;
+                      }
+                      
+                      if (exactAge < 13) {
+                        setError('You must be at least 13 years old to create an account');
+                        setBirthday('');
+                        return;
+                      }
+                      
+                      // Check if date exceeds maxDate (13 years ago)
+                      if (selectedDate > maxDate) {
+                        setError('You must be at least 13 years old to create an account');
+                        setBirthday('');
+                        return;
+                      }
+                      
+                      // Date is valid, clear any previous errors
+                      if (error && error.includes('birthday')) {
+                        setError(null);
+                      }
                     }
+                    
+                    setBirthday(selectedDate);
                   }}
                   onBlur={(e) => {
                     // Validate on blur - check if date is valid and meets age requirement
@@ -529,6 +590,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                     }
                   }}
                   className={styles.input}
+                  min={minDate}
                   max={maxDate}
                   autoComplete="bday"
                 />
