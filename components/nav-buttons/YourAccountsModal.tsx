@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './YourAccountsModal.module.css';
 import { XConnectingModal } from '../x-connecting/XConnectingModal';
+import { BlockchainAccountModal } from '../blockchain-account/BlockchainAccountModal';
 
 interface YourAccountsModalProps {
   onClose: () => void;
@@ -134,83 +135,52 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
     console.log('Disconnect wallet:', address);
   };
 
-  // Handle blockchain account sync
-  const handleSyncBlockchainAccount = async () => {
-    if (!isConnected || !address) {
-      alert('Please connect your wallet to sync your blockchain account.');
-      return;
-    }
+  const [showBlockchainModal, setShowBlockchainModal] = useState(false);
 
-    try {
-      const response = await fetch('/api/account/link', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getWalletAuthHeaders(address),
-        },
-        credentials: 'include',
-        body: JSON.stringify({}),
-      });
-
-      // Parse response
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        console.error('Failed to parse response:', parseError);
-        alert('Failed to sync blockchain account. Please try again.');
-        return;
-      }
-
-      if (!response.ok) {
-        // Show specific error message
-        const errorMessage = data.error || 'Failed to sync blockchain account.';
-        if (response.status === 404) {
-          alert('Please create an account first before syncing your blockchain account.');
-        } else {
-          alert(errorMessage);
-        }
-        return;
-      }
-
-      if (data.ok) {
-        // Update local state to reflect synced wallet
-        setSyncedWalletAddress(address);
-        alert('Blockchain account synced successfully!');
-        // Refresh account data
-        window.dispatchEvent(new Event('xAccountUpdated'));
-      }
-    } catch (error) {
-      console.error('Failed to sync blockchain account:', error);
-      alert('Failed to sync blockchain account. Please try again.');
-    }
+  // Handle blockchain account sync - opens modal instead of direct sync
+  const handleSyncBlockchainAccount = () => {
+    setShowBlockchainModal(true);
   };
 
-  // Handle social connect
+  const handleAccountSynced = () => {
+    // Refresh account data
+    const fetchAccountData = async () => {
+      try {
+        if (isConnected && address) {
+          const accountStatusResponse = await fetch('/api/account/status', {
+            cache: 'no-store',
+            credentials: 'include',
+            headers: getWalletAuthHeaders(address)
+          });
+          
+          if (accountStatusResponse.ok) {
+            const accountStatus = await accountStatusResponse.json();
+            if (accountStatus.walletAddress) {
+              setSyncedWalletAddress(accountStatus.walletAddress);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to refresh account data:', error);
+      }
+    };
+    fetchAccountData();
+    window.dispatchEvent(new Event('xAccountUpdated'));
+  };
+
+  // Handle social connect - X account connection is now independent
   const handleSocialConnect = async (platform: string) => {
     if (platform === 'twitter' || platform === 'x') {
       if (serviceUnavailable) {
         return; // Don't attempt if service is unavailable
       }
       
-      // Check authentication and if wallet is synced
-      if (!isConnected || !address) {
-        alert('Please connect your wallet first to connect your X account.');
-        return;
-      }
-      
-      // Check if wallet is synced to the account
-      if (!syncedWalletAddress) {
-        alert('Please sync your blockchain account first to connect your X account.');
-        return;
-      }
-      
       setIsConnecting(true);
       setShowConnectingModal(true);
       try {
-        // Initiate X OAuth flow with wallet address authentication
+        // Initiate X OAuth flow - no wallet connection required
         const response = await fetch('/api/x-auth/initiate', {
-          headers: getWalletAuthHeaders(address),
+          credentials: 'include',
         });
         
         // Handle 503 (database not configured) gracefully
@@ -432,6 +402,11 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         </div>
       </div>
       <XConnectingModal isOpen={showConnectingModal} />
+      <BlockchainAccountModal
+        isOpen={showBlockchainModal}
+        onClose={() => setShowBlockchainModal(false)}
+        onAccountSynced={handleAccountSynced}
+      />
     </div>
   );
 };

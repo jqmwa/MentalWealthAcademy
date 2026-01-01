@@ -52,7 +52,8 @@ const CreateAccountButton: React.FC = () => {
 
   async function handleSave() {
     if (!isConnected || !address) {
-      setError('Please connect your wallet first');
+      // Open ConnectKit to connect wallet
+      setConnectKitOpen(true);
       return;
     }
 

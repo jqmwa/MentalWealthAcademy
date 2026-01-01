@@ -198,19 +198,13 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   }, [quest, isConnected, address, step2Completed]);
 
   const handleConnectTwitter = async () => {
-    // Check authentication before attempting connection
-    if (!isConnected || !address) {
-      alert('Please sync your blockchain account first to connect your X account.');
-      return;
-    }
-    
     try {
       // Show connecting modal
       setShowConnectingModal(true);
       
-      // Initiate X OAuth flow with wallet address authentication
+      // Initiate X OAuth flow - no wallet connection required
       const response = await fetch('/api/x-auth/initiate', {
-        headers: getWalletAuthHeaders(address),
+        credentials: 'include',
       });
       
       // Handle 401 (not authenticated) - user needs to sign in
@@ -247,18 +241,12 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   };
 
   const handleCheckFollow = async () => {
-    if (!isConnected || !address) {
-      alert('Please sync your blockchain account to verify follow status.');
-      return;
-    }
-    
     setIsCheckingFollow(true);
     try {
       const response = await fetch('/api/x-auth/check-follow', {
         method: 'POST',
         cache: 'no-store',
         credentials: 'include',
-        headers: getWalletAuthHeaders(address)
       });
       const data = await response.json();
       

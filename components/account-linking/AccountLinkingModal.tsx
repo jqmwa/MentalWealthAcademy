@@ -65,7 +65,7 @@ export function AccountLinkingModal({
 
   const handleLinkAccount = async () => {
     if (!isConnected || !address) {
-      setError('Please connect your wallet first.');
+      // Open ConnectKit to connect wallet
       setConnectKitOpen(true);
       return;
     }
@@ -108,6 +108,7 @@ export function AccountLinkingModal({
       setIsLinking(false);
     }
   };
+
 
   if (!shouldRender) return null;
 
