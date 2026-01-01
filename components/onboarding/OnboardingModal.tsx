@@ -83,7 +83,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
     }
     
     return exactAge >= 13;
-  }, [birthday]);
+  }, [birthday, minDate]);
   
   // Account step validation (email, username, password, gender, birthday) - FIRST STEP
   const isAccountStepValid = 
