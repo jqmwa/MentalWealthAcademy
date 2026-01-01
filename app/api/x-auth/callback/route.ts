@@ -31,14 +31,13 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const oauthToken = searchParams.get('oauth_token');
   const oauthVerifier = searchParams.get('oauth_verifier');
-  const state = searchParams.get('state');
   const denied = searchParams.get('denied');
 
   if (denied) {
     return NextResponse.redirect(new URL('/home?x_auth=denied', request.url));
   }
 
-  if (!oauthToken || !oauthVerifier || !state) {
+  if (!oauthToken || !oauthVerifier) {
     return NextResponse.redirect(new URL('/home?x_auth=error', request.url));
   }
 
@@ -50,7 +49,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Verify state token
+    // Look up state by oauth_token (Twitter doesn't pass state back)
     const stateRows = await sqlQuery<Array<{
       id: string;
       user_id: string;
@@ -60,9 +59,9 @@ export async function GET(request: Request) {
     }>>(
       `SELECT id, user_id, oauth_token, oauth_token_secret, expires_at
        FROM x_oauth_states
-       WHERE state_token = :state AND expires_at > NOW()
+       WHERE oauth_token = :oauthToken AND expires_at > NOW()
        LIMIT 1`,
-      { state }
+      { oauthToken }
     );
 
     if (stateRows.length === 0) {
@@ -70,12 +69,9 @@ export async function GET(request: Request) {
     }
 
     const stateData = stateRows[0];
-    if (stateData.oauth_token !== oauthToken) {
-      return NextResponse.redirect(new URL('/home?x_auth=error', request.url));
-    }
 
     // Exchange for access token
-    const accessTokenUrl = 'https://api.x.com/oauth/access_token';
+    const accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
     
     const oauthParams: Record<string, string> = {
       oauth_consumer_key: xApiKey,
@@ -119,32 +115,7 @@ export async function GET(request: Request) {
       return NextResponse.redirect(new URL('/home?x_auth=error', request.url));
     }
 
-    // Get user info from X API
-    const userInfoUrl = 'https://api.x.com/1.1/account/verify_credentials.json';
-    const userInfoParams: Record<string, string> = {
-      oauth_consumer_key: xApiKey,
-      oauth_token: accessToken,
-      oauth_nonce: crypto.randomBytes(16).toString('hex'),
-      oauth_signature_method: 'HMAC-SHA1',
-      oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-      oauth_version: '1.0',
-    };
-
-    userInfoParams.oauth_signature = generateOAuthSignature('GET', userInfoUrl, userInfoParams, xSecret, accessTokenSecret);
-
-    const userInfoAuthHeader = `OAuth ${Object.keys(userInfoParams)
-      .sort()
-      .map(key => `${encodeURIComponent(key)}="${encodeURIComponent(userInfoParams[key])}"`)
-      .join(', ')}`;
-
-    const userInfoResponse = await fetch(userInfoUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': userInfoAuthHeader,
-      },
-    });
-
-    // Store X account
+    // Store X account (we already have user_id and screen_name from access_token response)
     await sqlQuery(
       `INSERT INTO x_accounts (id, user_id, x_user_id, x_username, access_token, access_token_secret)
        VALUES (:id, :userId, :xUserId, :xUsername, :accessToken, :accessTokenSecret)

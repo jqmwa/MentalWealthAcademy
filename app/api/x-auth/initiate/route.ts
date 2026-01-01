@@ -48,7 +48,7 @@ export async function GET() {
 
   try {
     // Generate request token
-    const requestTokenUrl = 'https://api.x.com/oauth/request_token';
+    const requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
     const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/x-auth/callback`;
     
     const oauthParams: Record<string, string> = {
@@ -96,8 +96,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Failed to get OAuth tokens.' }, { status: 500 });
     }
 
-    // Store state for callback verification
-    const stateToken = uuidv4();
+    // Store state for callback verification (using oauth_token as lookup key since Twitter doesn't pass state back)
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 10); // 10 minute expiry
 
@@ -108,7 +107,7 @@ export async function GET() {
         {
           id: uuidv4(),
           userId: user.id,
-          stateToken,
+          stateToken: uuidv4(), // Still store state_token for reference, but lookup by oauth_token
           oauthToken,
           oauthTokenSecret,
           expiresAt,
@@ -119,13 +118,12 @@ export async function GET() {
       throw new Error(`Database error: ${dbError?.message || 'Unknown error'}`);
     }
 
-    // Redirect to X authorization
-    const authUrl = `https://api.x.com/oauth/authorize?oauth_token=${oauthToken}&state=${stateToken}`;
+    // Redirect to X authentication
+    const authUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`;
 
     return NextResponse.json(
       { 
-        authUrl,
-        stateToken 
+        authUrl
       },
       {
         headers: {
