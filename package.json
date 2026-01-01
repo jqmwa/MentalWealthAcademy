@@ -24,7 +24,7 @@
     "bs58": "^6.0.0",
     "canvas-confetti": "^1.9.4",
     "connectkit": "^1.7.0",
-    "family": "^1.0.0",
+    "family": "^0.1.2",
     "intro.js": "^8.3.2",
     "mysql2": "^3.15.3",
     "next": "^14.0.0",
