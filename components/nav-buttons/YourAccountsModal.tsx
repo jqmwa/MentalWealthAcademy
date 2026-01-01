@@ -16,7 +16,7 @@ interface XAccount {
 }
 
 const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
-  const { user: privyUser } = usePrivy();
+  const { user: privyUser, authenticated, ready } = usePrivy();
   const [xAccount, setXAccount] = useState<XAccount | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -116,6 +116,18 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       if (serviceUnavailable) {
         return; // Don't attempt if service is unavailable
       }
+      
+      // Check authentication before attempting connection
+      if (!ready) {
+        console.log('Privy not ready yet, please wait...');
+        return;
+      }
+      
+      if (!authenticated) {
+        alert('Please sign in to connect your X account.');
+        return;
+      }
+      
       setIsConnecting(true);
       setShowConnectingModal(true);
       try {
@@ -125,6 +137,24 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         // Handle 503 (database not configured) gracefully
         if (response.status === 503) {
           setServiceUnavailable(true);
+          setIsConnecting(false);
+          setShowConnectingModal(false);
+          return;
+        }
+        
+        // Handle 401 (not authenticated) - user needs to sign in
+        if (response.status === 401) {
+          console.error('Not authenticated. Please sign in first.');
+          setIsConnecting(false);
+          setShowConnectingModal(false);
+          alert('Please sign in to connect your X account.');
+          return;
+        }
+        
+        // Check if response is OK before parsing JSON
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+          console.error('Failed to initiate X OAuth:', errorData);
           setIsConnecting(false);
           setShowConnectingModal(false);
           return;

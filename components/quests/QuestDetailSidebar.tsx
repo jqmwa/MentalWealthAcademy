@@ -178,12 +178,35 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   }, [quest, authenticated, step2Completed]);
 
   const handleConnectTwitter = async () => {
+    // Check authentication before attempting connection
+    if (!authenticated) {
+      alert('Please sign in to connect your X account.');
+      return;
+    }
+    
     try {
       // Show connecting modal
       setShowConnectingModal(true);
       
       // Initiate X OAuth flow
       const response = await fetch('/api/x-auth/initiate');
+      
+      // Handle 401 (not authenticated) - user needs to sign in
+      if (response.status === 401) {
+        console.error('Not authenticated. Please sign in first.');
+        setShowConnectingModal(false);
+        alert('Please sign in to connect your X account.');
+        return;
+      }
+      
+      // Check if response is OK before parsing JSON
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Failed to initiate X OAuth:', errorData);
+        setShowConnectingModal(false);
+        return;
+      }
+      
       const data = await response.json();
       
       if (data.authUrl) {
