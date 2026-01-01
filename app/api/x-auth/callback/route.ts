@@ -75,7 +75,7 @@ export async function GET(request: Request) {
     }
 
     // Exchange for access token
-    const accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
+    const accessTokenUrl = 'https://api.x.com/oauth/access_token';
     
     const oauthParams: Record<string, string> = {
       oauth_consumer_key: xApiKey,
@@ -120,7 +120,7 @@ export async function GET(request: Request) {
     }
 
     // Get user info from X API
-    const userInfoUrl = 'https://api.twitter.com/1.1/account/verify_credentials.json';
+    const userInfoUrl = 'https://api.x.com/1.1/account/verify_credentials.json';
     const userInfoParams: Record<string, string> = {
       oauth_consumer_key: xApiKey,
       oauth_token: accessToken,
@@ -148,10 +148,10 @@ export async function GET(request: Request) {
     await sqlQuery(
       `INSERT INTO x_accounts (id, user_id, x_user_id, x_username, access_token, access_token_secret)
        VALUES (:id, :userId, :xUserId, :xUsername, :accessToken, :accessTokenSecret)
-       ON DUPLICATE KEY UPDATE
-         x_username = VALUES(x_username),
-         access_token = VALUES(access_token),
-         access_token_secret = VALUES(access_token_secret),
+       ON CONFLICT (user_id) DO UPDATE SET
+         x_username = EXCLUDED.x_username,
+         access_token = EXCLUDED.access_token,
+         access_token_secret = EXCLUDED.access_token_secret,
          updated_at = CURRENT_TIMESTAMP`,
       {
         id: uuidv4(),

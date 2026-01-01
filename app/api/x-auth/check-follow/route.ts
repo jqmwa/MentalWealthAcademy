@@ -73,7 +73,7 @@ export async function POST() {
     const xAccount = xAccountRows[0];
 
     // First, get the target user's ID using Bearer token (simpler)
-    const targetUserUrl = `https://api.twitter.com/2/users/by/username/${TARGET_USERNAME}`;
+    const targetUserUrl = `https://api.x.com/2/users/by/username/${TARGET_USERNAME}`;
     const targetUserResponse = await fetch(targetUserUrl, {
       headers: {
         'Authorization': `Bearer ${bearerToken}`,
@@ -92,7 +92,7 @@ export async function POST() {
     }
 
     // Check if user follows the target using OAuth 1.0a
-    const followCheckBaseUrl = 'https://api.twitter.com/1.1/friendships/show.json';
+    const followCheckBaseUrl = 'https://api.x.com/1.1/friendships/show.json';
     const followCheckParams = new URLSearchParams({
       source_id: xAccount.x_user_id,
       target_id: targetUserId,
