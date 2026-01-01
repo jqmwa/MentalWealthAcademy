@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { ensureForumSchema } from '@/lib/ensureForumSchema';
 import { getCurrentUserFromRequestCookie } from '@/lib/auth';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
-import { getPrivyUserFromRequest } from '@/lib/privy-auth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

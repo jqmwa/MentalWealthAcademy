@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   // Enable static page generation and prefetching
   experimental: {
-    optimizePackageImports: ['@privy-io/react-auth'],
+    optimizePackageImports: ['connectkit', 'wagmi'],
   },
   // Optimize compilation
   swcMinify: true,
@@ -27,7 +27,26 @@ const nextConfig = {
     ],
     unoptimized: false,
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
+    // ConnectKit webpack config
+    config.resolve.fallback = { 
+      fs: false, 
+      net: false, 
+      tls: false 
+    };
+    
+    // Ignore optional Solana/Coinbase dependencies that aren't needed for Ethereum-only
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^bs58$/,
+        contextRegExp: /@coinbase\/cdp-sdk/,
+      }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^@solana\/kit$/,
+        contextRegExp: /@solana-program/,
+      })
+    );
+    
     if (!isServer) {
       config.module.rules.push({
         test: /\.glsl$/,

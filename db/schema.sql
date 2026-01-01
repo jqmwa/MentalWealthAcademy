@@ -25,9 +25,7 @@ CREATE TABLE users (
   gender VARCHAR(10) NULL,
   birthday DATE NULL,
   shard_count INTEGER NOT NULL DEFAULT 0,
-  -- Optional: For future wallet/Privy integration
-  privy_user_id VARCHAR(255) NULL UNIQUE,
-  wallet_address VARCHAR(255) NULL,
+  wallet_address VARCHAR(255) NULL UNIQUE,
   -- Timestamps
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -67,8 +65,7 @@ CREATE TABLE sessions (
 -- Users table indexes
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_privy_user_id ON users(privy_user_id) WHERE privy_user_id IS NOT NULL;
-CREATE INDEX idx_users_wallet_address ON users(wallet_address) WHERE wallet_address IS NOT NULL;
+CREATE INDEX idx_users_wallet_address ON users(wallet_address);
 
 -- User avatars indexes
 CREATE INDEX idx_user_avatars_user_id ON user_avatars(user_id);

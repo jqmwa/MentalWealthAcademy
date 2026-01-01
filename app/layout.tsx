@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import { PrivyProvider } from '@/components/privy/PrivyProvider';
+import { Web3Provider } from '@/components/web3/Web3Provider';
 
 export const metadata: Metadata = {
   title: 'Mental Wealth Academy',
@@ -40,7 +40,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <PrivyProvider>{children}</PrivyProvider>
+        <Web3Provider>{children}</Web3Provider>
       </body>
     </html>
   );

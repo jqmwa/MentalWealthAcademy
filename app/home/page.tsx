@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
@@ -20,7 +20,7 @@ import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
 import styles from './page.module.css';
 
 export default function Home() {
-  const { authenticated, ready } = usePrivy();
+  const { isConnected } = useAccount();
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -125,9 +125,9 @@ export default function Home() {
     checkAuth();
   }, []);
 
-  // Fetch user data when Privy auth state changes (for Privy users)
+  // Fetch user data when wallet connection state changes
   useEffect(() => {
-    if (authenticated && ready && hasValidSession) {
+    if (isConnected && hasValidSession) {
       fetch('/api/me', { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
@@ -141,7 +141,7 @@ export default function Home() {
         })
         .catch(err => console.error('Failed to fetch user data:', err));
     }
-  }, [authenticated, ready, hasValidSession]);
+  }, [isConnected, hasValidSession]);
 
   // Listen for profile updates to refresh avatar status
   useEffect(() => {

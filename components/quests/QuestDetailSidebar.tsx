@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
+import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './QuestDetailSidebar.module.css';
 import { ConfettiCelebration } from './ConfettiCelebration';
 import { ShardAnimation } from './ShardAnimation';
@@ -52,7 +53,7 @@ interface QuestDetailSidebarProps {
 const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose, quest }) => {
   const [shouldRender, setShouldRender] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
-  const { user: privyUser, authenticated } = usePrivy();
+  const { address, isConnected } = useAccount();
   const [step1Completed, setStep1Completed] = useState(false);
   const [step2Completed, setStep2Completed] = useState(false);
   const [isCheckingFollow, setIsCheckingFollow] = useState(false);
@@ -97,15 +98,30 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
 
   // Check if Twitter is linked via X OAuth and auto-check follow status
   useEffect(() => {
-    if (!quest || quest.questType !== 'twitter-follow' || !authenticated) {
+    if (!quest || quest.questType !== 'twitter-follow' || !isConnected) {
       setStep1Completed(false);
       setStep2Completed(false);
       return;
     }
     
     const checkXAccountAndFollow = async (autoCheckFollow = false) => {
+      if (!isConnected || !address) {
+        setStep1Completed(false);
+        return;
+      }
+      
       try {
-        const response = await fetch('/api/x-auth/status', { cache: 'no-store' });
+        const response = await fetch('/api/x-auth/status', { 
+          cache: 'no-store',
+          credentials: 'include',
+          headers: getWalletAuthHeaders(address)
+        });
+        
+        if (response.status === 401) {
+          setStep1Completed(false);
+          return;
+        }
+        
         const data = await response.json();
         const isConnected = data.connected === true;
         setStep1Completed(isConnected);
@@ -115,6 +131,8 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
           const followResponse = await fetch('/api/x-auth/check-follow', {
             method: 'POST',
             cache: 'no-store',
+            credentials: 'include',
+            headers: getWalletAuthHeaders(address)
           });
           const followData = await followResponse.json();
           
@@ -126,6 +144,8 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
               const completeResponse = await fetch('/api/quests/auto-complete-twitter-quest', {
                 method: 'POST',
                 cache: 'no-store',
+                credentials: 'include',
+                headers: getWalletAuthHeaders(address)
               });
               const completeData = await completeResponse.json();
               
@@ -175,12 +195,12 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [quest, authenticated, step2Completed]);
+  }, [quest, isConnected, address, step2Completed]);
 
   const handleConnectTwitter = async () => {
     // Check authentication before attempting connection
-    if (!authenticated) {
-      alert('Please sign in to connect your X account.');
+    if (!isConnected || !address) {
+      alert('Please connect your wallet to connect your X account.');
       return;
     }
     
@@ -188,8 +208,10 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
       // Show connecting modal
       setShowConnectingModal(true);
       
-      // Initiate X OAuth flow
-      const response = await fetch('/api/x-auth/initiate');
+      // Initiate X OAuth flow with wallet address authentication
+      const response = await fetch('/api/x-auth/initiate', {
+        headers: getWalletAuthHeaders(address),
+      });
       
       // Handle 401 (not authenticated) - user needs to sign in
       if (response.status === 401) {
@@ -225,11 +247,18 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   };
 
   const handleCheckFollow = async () => {
+    if (!isConnected || !address) {
+      alert('Please connect your wallet to verify follow status.');
+      return;
+    }
+    
     setIsCheckingFollow(true);
     try {
       const response = await fetch('/api/x-auth/check-follow', {
         method: 'POST',
         cache: 'no-store',
+        credentials: 'include',
+        headers: getWalletAuthHeaders(address)
       });
       const data = await response.json();
       
@@ -505,7 +534,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
                       <span className={styles.requirementTitle}>Step 1: Connect X Account</span>
                       <span className={styles.requirementDescription}>Link your X (Twitter) account to get started</span>
                     </div>
-                    {!step1Completed && authenticated && (
+                    {!step1Completed && isConnected && (
                       <button 
                         className={styles.stepButton}
                         onClick={handleConnectTwitter}
@@ -567,7 +596,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
                   </button>
                 )}
 
-                {!authenticated && (
+                {!isConnected && (
                   <div className={styles.zkInfo}>
                     <p className={styles.zkInfoText}>
                       Please sign in to complete this quest.

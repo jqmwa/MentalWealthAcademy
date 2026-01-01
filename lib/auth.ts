@@ -1,8 +1,7 @@
-import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { sqlQuery } from './db';
-import { getPrivyUserFromRequest } from './privy-auth';
+import { getWalletAddressFromRequest } from './wallet-auth';
 
 const SESSION_COOKIE_NAME = 'mwa_session';
 const SESSION_DAYS = 30;
@@ -52,15 +51,15 @@ export async function createSessionForUser(userId: string) {
 }
 
 /**
- * Gets the current user from the request, using Privy authentication.
- * Falls back to legacy session-based auth for backward compatibility.
+ * Gets the current user from the request, supporting:
+ * 1. Wallet address authentication (via Authorization header)
+ * 2. Session-based auth (via cookies, legacy)
  */
 export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | null> {
-  // First, try to get user from Privy token
+  // First, try wallet address authentication
   try {
-    const privyUser = await getPrivyUserFromRequest();
-    if (privyUser) {
-      // Look up our internal user record by Privy user ID
+    const walletAddress = await getWalletAddressFromRequest();
+    if (walletAddress) {
       const rows = await sqlQuery<
         Array<{ 
           id: string; 
@@ -74,9 +73,9 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
       >(
         `SELECT u.id, u.username, u.avatar_url, u.created_at, u.email, u.wallet_address, u.shard_count
          FROM users u
-         WHERE u.privy_user_id = :privyUserId
+         WHERE LOWER(u.wallet_address) = LOWER(:walletAddress)
          LIMIT 1`,
-        { privyUserId: (privyUser as any).userId || (privyUser as any).id }
+        { walletAddress }
       );
 
       const user = rows[0];
@@ -93,8 +92,7 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
       }
     }
   } catch (error) {
-    // If Privy auth fails, fall back to legacy session auth
-    console.warn('Privy auth failed, falling back to session auth:', error);
+    console.warn('Wallet auth failed, trying session auth:', error);
   }
 
   // Fallback to session-based auth

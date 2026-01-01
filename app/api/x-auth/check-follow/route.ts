@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { ensureForumSchema } from '@/lib/ensureForumSchema';
 import { getCurrentUserFromRequestCookie } from '@/lib/auth';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
-import { getPrivyUserFromRequest } from '@/lib/privy-auth';
 import crypto from 'crypto';
 import { createHmac } from 'crypto';
 
@@ -34,13 +33,7 @@ export async function POST() {
   }
   await ensureForumSchema();
 
-  // Verify Privy authentication
-  const privyUser = await getPrivyUserFromRequest();
-  if (!privyUser) {
-    return NextResponse.json({ error: 'Not signed in.' }, { status: 401 });
-  }
-
-  // Get our internal user record
+  // Get our internal user record (authenticated via wallet address)
   const user = await getCurrentUserFromRequestCookie();
   if (!user) {
     return NextResponse.json({ error: 'User account not found. Please complete signup.' }, { status: 404 });

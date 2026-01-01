@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
+import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './YourAccountsModal.module.css';
 import { XConnectingModal } from '../x-connecting/XConnectingModal';
 
@@ -16,7 +17,7 @@ interface XAccount {
 }
 
 const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
-  const { user: privyUser, authenticated, ready } = usePrivy();
+  const { address, isConnected } = useAccount();
   const [xAccount, setXAccount] = useState<XAccount | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -44,9 +45,19 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
 
   // Fetch X account status
   useEffect(() => {
+    if (!isConnected || !address) {
+      setXAccount(null);
+      setIsLoading(false);
+      return;
+    }
+    
     const fetchXAccount = async () => {
       try {
-        const response = await fetch('/api/x-auth/status', { cache: 'no-store' });
+        const response = await fetch('/api/x-auth/status', { 
+          cache: 'no-store',
+          credentials: 'include',
+          headers: getWalletAuthHeaders(address)
+        });
         
         // Handle 503 (database not configured) gracefully
         if (response.status === 503) {
@@ -96,7 +107,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, []);
+  }, [isConnected, address]);
 
   // Format wallet address for display
   const formatAddress = (address: string) => {
@@ -118,21 +129,18 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       }
       
       // Check authentication before attempting connection
-      if (!ready) {
-        console.log('Privy not ready yet, please wait...');
-        return;
-      }
-      
-      if (!authenticated) {
-        alert('Please sign in to connect your X account.');
+      if (!isConnected || !address) {
+        alert('Please connect your wallet to connect your X account.');
         return;
       }
       
       setIsConnecting(true);
       setShowConnectingModal(true);
       try {
-        // Initiate X OAuth flow
-        const response = await fetch('/api/x-auth/initiate');
+        // Initiate X OAuth flow with wallet address authentication
+        const response = await fetch('/api/x-auth/initiate', {
+          headers: getWalletAuthHeaders(address),
+        });
         
         // Handle 503 (database not configured) gracefully
         if (response.status === 503) {

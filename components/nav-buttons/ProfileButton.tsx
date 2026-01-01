@@ -2,16 +2,16 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
 import YourAccountsModal from './YourAccountsModal';
 import styles from './ProfileButton.module.css';
 
 const ProfileButton: React.FC = () => {
-  const { authenticated } = usePrivy();
+  const { isConnected } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Don't show button if not authenticated
-  if (!authenticated) {
+  // Don't show button if not connected
+  if (!isConnected) {
     return null;
   }
 

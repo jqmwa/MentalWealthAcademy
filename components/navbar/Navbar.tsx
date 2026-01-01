@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
 import { SearchModal } from '@/components/search-modal/SearchModal';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import styles from './Navbar.module.css';
@@ -30,7 +30,7 @@ const SearchIcon: React.FC<{ size?: number }> = ({ size = 20 }) => {
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const { authenticated, ready } = usePrivy();
+  const { isConnected } = useAccount();
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
       }
     };
 
-    // Fetch immediately and also when Privy auth state changes (for Privy users)
+    // Fetch immediately and also when wallet connection state changes
     fetchUserData();
 
     // Listen for shard updates and profile updates
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener('shardsUpdated', handleShardsUpdate);
       window.removeEventListener('profileUpdated', handleProfileUpdate);
     };
-  }, [authenticated, ready]); // Still include dependencies to refetch when Privy state changes
+  }, [isConnected]); // Refetch when wallet connection state changes
 
   const isActive = (path: string) => {
     if (path === '/home') {

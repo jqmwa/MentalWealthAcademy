@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
+import { useModal } from 'connectkit';
+import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './AccountLinkingModal.module.css';
 
 interface AccountLinkingModalProps {
@@ -19,7 +21,8 @@ export function AccountLinkingModal({
   shardsEarned,
   onAccountLinked,
 }: AccountLinkingModalProps) {
-  const { user: privyUser, authenticated, connectWallet, createWallet, ready } = usePrivy();
+  const { address, isConnected } = useAccount();
+  const { setOpen: setConnectKitOpen } = useModal();
   const [isLinking, setIsLinking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -61,8 +64,9 @@ export function AccountLinkingModal({
   }, [isOpen, isLinking, onClose]);
 
   const handleLinkAccount = async () => {
-    if (!authenticated || !ready) {
-      setError('Please sign in first.');
+    if (!isConnected || !address) {
+      setError('Please connect your wallet first.');
+      setConnectKitOpen(true);
       return;
     }
 
@@ -70,31 +74,13 @@ export function AccountLinkingModal({
     setError(null);
 
     try {
-      // Check if user already has a wallet
-      const hasWallet = privyUser?.wallet;
-      
-      if (!hasWallet) {
-        // User doesn't have a wallet yet, create one
-        try {
-          await createWallet();
-          // Wait a moment for Privy to update
-          await new Promise(resolve => setTimeout(resolve, 1500));
-        } catch (err: any) {
-          // If createWallet fails, try connectWallet (for external wallets)
-          try {
-            await connectWallet();
-            await new Promise(resolve => setTimeout(resolve, 1500));
-          } catch (connectErr: any) {
-            throw new Error(connectErr?.message || 'Failed to connect account. Please try again.');
-          }
-        }
-      }
-
-      // Call the API to link the account
-      // The API will extract the wallet address from Privy server-side
+      // Call the API to link the account with wallet address authentication
       const response = await fetch('/api/account/link', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...getWalletAuthHeaders(address),
+        },
         body: JSON.stringify({}),
       });
 
@@ -180,7 +166,7 @@ export function AccountLinkingModal({
               <button
                 className={styles.primaryButton}
                 onClick={handleLinkAccount}
-                disabled={isLinking || !authenticated || !ready}
+                disabled={isLinking || !isConnected}
               >
                 {isLinking ? 'Linking...' : 'Link an Account'}
               </button>

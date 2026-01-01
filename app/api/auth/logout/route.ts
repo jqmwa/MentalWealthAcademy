@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 /**
  * Logout endpoint.
  * Clears the session cookie for backward compatibility.
- * Note: Privy logout is handled client-side via usePrivy().logout()
+ * Note: Wallet disconnect is handled client-side via useDisconnect().disconnect()
  */
 export async function POST() {
   const user = await getCurrentUserFromRequestCookie();
