@@ -32,45 +32,23 @@ export async function GET() {
         { status: 503 }
       );
     }
+    
     await ensureForumSchema();
-  } catch (error: any) {
-    console.error('Database setup error:', error);
-    return NextResponse.json({ 
-      error: `Database setup failed: ${error?.message || 'Unknown error'}` 
-    }, { status: 500 });
-  }
 
-  // Get our internal user record (authenticated via wallet address)
-  let user;
-  try {
-    user = await getCurrentUserFromRequestCookie();
+    const user = await getCurrentUserFromRequestCookie();
     if (!user) {
       return NextResponse.json({ error: 'User account not found. Please complete signup.' }, { status: 404 });
     }
-  } catch (error: any) {
-    console.error('User authentication error:', error);
-    return NextResponse.json({ 
-      error: `Authentication failed: ${error?.message || 'Unknown error'}` 
-    }, { status: 500 });
-  }
 
-  const xApiKey = process.env.X_API_KEY;
-  const xSecret = process.env.X_SECRET;
+    const xApiKey = process.env.X_API_KEY;
+    const xSecret = process.env.X_SECRET;
 
-  if (!xApiKey || !xSecret) {
-    return NextResponse.json({ error: 'X API credentials not configured.' }, { status: 500 });
-  }
+    if (!xApiKey || !xSecret) {
+      return NextResponse.json({ error: 'X API credentials not configured.' }, { status: 500 });
+    }
 
-  try {
-    // Generate request token
     const requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
     const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/x-auth/callback`;
-    
-    console.log('[X OAuth] Initiating request token:', {
-      callbackUrl,
-      hasApiKey: !!xApiKey,
-      hasSecret: !!xSecret,
-    });
     
     const oauthParams: Record<string, string> = {
       oauth_callback: callbackUrl,
@@ -88,7 +66,6 @@ export async function GET() {
       .map(key => `${encodeURIComponent(key)}="${encodeURIComponent(oauthParams[key])}"`)
       .join(', ')}`;
 
-    console.log('[X OAuth] Making request to Twitter API...');
     const response = await fetch(requestTokenUrl, {
       method: 'POST',
       headers: {
@@ -96,8 +73,6 @@ export async function GET() {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
-    
-    console.log('[X OAuth] Response status:', response.status, response.statusText);
 
     if (!response.ok) {
       const text = await response.text();
@@ -107,7 +82,7 @@ export async function GET() {
         body: text,
       });
       return NextResponse.json({ 
-        error: process.env.NODE_ENV === 'development' ? `X API error: ${text}` : 'Failed to initiate X OAuth.' 
+        error: `X API error: ${text || response.statusText || 'Unknown error'}` 
       }, { status: 500 });
     }
 
@@ -120,60 +95,29 @@ export async function GET() {
       return NextResponse.json({ error: 'Failed to get OAuth tokens.' }, { status: 500 });
     }
 
-    // Store state for callback verification (using oauth_token as lookup key since Twitter doesn't pass state back)
     const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 10); // 10 minute expiry
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-    try {
-      await sqlQuery(
-        `INSERT INTO x_oauth_states (id, user_id, state_token, oauth_token, oauth_token_secret, expires_at)
-         VALUES (:id, :userId, :stateToken, :oauthToken, :oauthTokenSecret, :expiresAt)`,
-        {
-          id: uuidv4(),
-          userId: user.id,
-          stateToken: uuidv4(), // Still store state_token for reference, but lookup by oauth_token
-          oauthToken,
-          oauthTokenSecret,
-          expiresAt,
-        }
-      );
-    } catch (dbError: any) {
-      console.error('Failed to store OAuth state in database:', dbError);
-      throw new Error(`Database error: ${dbError?.message || 'Unknown error'}`);
-    }
-
-    // Redirect to X authentication
-    const authUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`;
-
-    return NextResponse.json(
-      { 
-        authUrl
-      },
+    await sqlQuery(
+      `INSERT INTO x_oauth_states (id, user_id, state_token, oauth_token, oauth_token_secret, expires_at)
+       VALUES (:id, :userId, :stateToken, :oauthToken, :oauthTokenSecret, :expiresAt)`,
       {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        id: uuidv4(),
+        userId: user.id,
+        stateToken: uuidv4(),
+        oauthToken,
+        oauthTokenSecret,
+        expiresAt,
       }
     );
+
+    const authUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${encodeURIComponent(oauthToken)}`;
+
+    return NextResponse.json({ authUrl });
   } catch (error: any) {
-    console.error('X OAuth initiation error:', {
-      message: error?.message,
-      stack: error?.stack,
-      name: error?.name,
-      code: error?.code,
-      cause: error?.cause,
-    });
-    const errorMessage = error?.message || 'Unknown error';
-    // Always include error message in response for debugging
+    console.error('X OAuth initiation error:', error);
     return NextResponse.json({ 
-      error: errorMessage,
-      ...(process.env.NODE_ENV === 'development' && { 
-        stack: error?.stack,
-        details: {
-          name: error?.name,
-          code: error?.code,
-        }
-      })
+      error: error?.message || 'Failed to initiate X OAuth.' 
     }, { status: 500 });
   }
 }

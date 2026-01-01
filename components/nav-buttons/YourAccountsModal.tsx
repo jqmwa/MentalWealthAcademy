@@ -42,47 +42,58 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   const [syncedWalletAddress, setSyncedWalletAddress] = useState<string | null>(null);
 
   // Fetch account status (synced wallet and X account)
+  // Note: Fetch regardless of wallet connection since user might be authenticated via session
   useEffect(() => {
-    if (!isConnected || !address) {
-      setXAccount(null);
-      setSyncedWalletAddress(null);
-      setIsLoading(false);
-      return;
-    }
-    
     const fetchAccountData = async () => {
       try {
-        // Fetch account status to get synced wallet
+        // Fetch account status to get synced wallet (works with session or wallet auth)
         const accountStatusResponse = await fetch('/api/account/status', {
           cache: 'no-store',
           credentials: 'include',
-          headers: getWalletAuthHeaders(address)
+          headers: address ? getWalletAuthHeaders(address) : {}
         });
         
         if (accountStatusResponse.ok) {
           const accountStatus = await accountStatusResponse.json();
           if (accountStatus.walletAddress) {
             setSyncedWalletAddress(accountStatus.walletAddress);
+          } else {
+            setSyncedWalletAddress(null);
           }
+        } else if (accountStatusResponse.status === 401) {
+          // Not authenticated - clear state
+          setSyncedWalletAddress(null);
+          setXAccount(null);
+          setIsLoading(false);
+          return;
         }
         
-        // Fetch X account status
+        // Fetch X account status (works with session or wallet auth)
         const response = await fetch('/api/x-auth/status', { 
           cache: 'no-store',
           credentials: 'include',
-          headers: getWalletAuthHeaders(address)
+          headers: address ? getWalletAuthHeaders(address) : {}
         });
         
         // Handle 503 (database not configured) gracefully
         if (response.status === 503) {
           setServiceUnavailable(true);
           setXAccount(null);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Handle 401 (not authenticated)
+        if (response.status === 401) {
+          setXAccount(null);
+          setIsLoading(false);
           return;
         }
         
         // Handle other non-OK responses
         if (!response.ok) {
           setXAccount(null);
+          setIsLoading(false);
           return;
         }
         
@@ -94,9 +105,10 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         }
       } catch (error) {
         // Network errors - likely service unavailable
-        console.error('Failed to fetch X account:', error);
+        console.error('Failed to fetch account data:', error);
         setServiceUnavailable(true);
         setXAccount(null);
+        setSyncedWalletAddress(null);
       } finally {
         setIsLoading(false);
       }
@@ -121,7 +133,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [isConnected, address]);
+  }, [address]); // Fetch when address changes, but also fetch on mount even without address (session auth)
 
   // Format wallet address for display
   const formatAddress = (address: string) => {
@@ -143,21 +155,21 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   };
 
   const handleAccountSynced = () => {
-    // Refresh account data
+    // Refresh account data (works with session or wallet auth)
     const fetchAccountData = async () => {
       try {
-        if (isConnected && address) {
-          const accountStatusResponse = await fetch('/api/account/status', {
-            cache: 'no-store',
-            credentials: 'include',
-            headers: getWalletAuthHeaders(address)
-          });
-          
-          if (accountStatusResponse.ok) {
-            const accountStatus = await accountStatusResponse.json();
-            if (accountStatus.walletAddress) {
-              setSyncedWalletAddress(accountStatus.walletAddress);
-            }
+        const accountStatusResponse = await fetch('/api/account/status', {
+          cache: 'no-store',
+          credentials: 'include',
+          headers: address ? getWalletAuthHeaders(address) : {}
+        });
+        
+        if (accountStatusResponse.ok) {
+          const accountStatus = await accountStatusResponse.json();
+          if (accountStatus.walletAddress) {
+            setSyncedWalletAddress(accountStatus.walletAddress);
+          } else {
+            setSyncedWalletAddress(null);
           }
         }
       } catch (error) {
@@ -202,8 +214,9 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         
         // Check if response is OK before parsing JSON
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+          const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}: ${response.statusText}` }));
           console.error('Failed to initiate X OAuth:', errorData);
+          alert(`Failed to connect X account: ${errorData.error || 'Unknown error'}`);
           setIsConnecting(false);
           setShowConnectingModal(false);
           return;
@@ -212,12 +225,11 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         const data = await response.json();
         
         if (data.authUrl) {
-          // Small delay to show the modal, then redirect
-          setTimeout(() => {
-            window.location.href = data.authUrl;
-          }, 800);
+          // Immediately redirect to X authorization
+          window.location.href = data.authUrl;
         } else {
           console.error('Failed to get auth URL:', data);
+          alert(`Failed to get authorization URL: ${data.error || 'Unknown error'}`);
           setIsConnecting(false);
           setShowConnectingModal(false);
         }

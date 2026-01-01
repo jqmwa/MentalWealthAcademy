@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { base } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,6 +27,9 @@ const config = createConfig(
     appDescription: "Mental Wealth Academy is a virtual learning platform for the next generation.",
     appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://mentalwealthacademy.world",
     appIcon: `${process.env.NEXT_PUBLIC_APP_URL || "https://mentalwealthacademy.world"}/icons/favicon.png`,
+    
+    // Disable auto-connect - only connect when user explicitly opts in
+    autoConnect: false,
   }),
 );
 
