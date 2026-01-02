@@ -44,6 +44,12 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
   }, [emotion]);
 
   useEffect(() => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
     if (!autoStart) {
       setDisplayedText('');
       setIsTyping(false);
@@ -51,13 +57,17 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
       return;
     }
 
+    // Reset state
     setDisplayedText('');
     setIsTyping(true);
     isCompleteRef.current = false;
 
     let currentIndex = 0;
+    let isCancelled = false;
 
     const typeNextChar = () => {
+      if (isCancelled) return;
+      
       if (currentIndex < message.length) {
         setDisplayedText(message.slice(0, currentIndex + 1));
         currentIndex++;
@@ -75,8 +85,10 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
     timeoutRef.current = setTimeout(typeNextChar, 100);
 
     return () => {
+      isCancelled = true;
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
     };
   }, [message, autoStart, speed, onComplete]);

@@ -133,7 +133,7 @@ academyv3/
 ├── components/
 │   ├── forum/              # Forum components
 │   ├── nav-buttons/        # Navigation buttons
-│   ├── prompt-library-card/ # Prompt library card
+│   ├── messageboard-card/ # Messageboard card (links to forum)
 │   └── ...                 # Other components
 ├── styles/
 │   └── globals.css         # Global styles & design system

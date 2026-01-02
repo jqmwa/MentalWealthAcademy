@@ -90,7 +90,16 @@ export default function AdminVotingPage() {
                 Every quest submission lands here. Azura auto-votes with AgentKit while admins debate outcomes and settle the tally.
               </p>
             </div>
-            <div className={styles.badge}>Live</div>
+            <div className={styles.headerActions}>
+              <button
+                className={styles.howItWorksButton}
+                onClick={() => setShowTutorial(true)}
+                type="button"
+              >
+                Tutorial
+              </button>
+              <div className={styles.badge}>Live</div>
+            </div>
           </header>
 
           <section className={styles.grid}>

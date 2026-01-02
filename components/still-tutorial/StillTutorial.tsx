@@ -140,6 +140,7 @@ const StillTutorial: React.FC<StillTutorialProps> = ({
 
         <div className={styles.content}>
           <AzuraDialogue
+            key={currentStep}
             message={currentStepData.message}
             emotion={currentStepData.emotion}
             onComplete={handleDialogueComplete}

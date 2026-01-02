@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import styles from './PromptLibraryCard.module.css';
+import styles from './MessageboardCard.module.css';
 
-const PromptLibraryCard: React.FC = () => {
+const MessageboardCard: React.FC = () => {
   return (
-    <div className={styles.promptLibraryCard} data-intro="messageboard-card">
+    <div className={styles.messageboardCard} data-intro="messageboard-card">
       <div className={styles.wrapper}>
         <div className={styles.transmissionCard}>
           <div className={styles.transmissionHeader}>
@@ -23,5 +23,4 @@ const PromptLibraryCard: React.FC = () => {
   );
 };
 
-export default PromptLibraryCard;
-
+export default MessageboardCard;

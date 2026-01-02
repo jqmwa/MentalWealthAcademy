@@ -7,7 +7,7 @@ import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
 import AzuraFaucet from '@/components/azurafaucet/AzuraFaucet';
-import PromptLibraryCard from '@/components/prompt-library-card/PromptLibraryCard';
+import MessageboardCard from '@/components/messageboard-card/MessageboardCard';
 import Quests from '@/components/quests/Quests';
 import BookCard from '@/components/book-card/BookCard';
 import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
@@ -269,7 +269,7 @@ export default function Home() {
           </div>
           <div className={styles.promptSection}>
               <h1 className={styles.sectionTitle}>Messageboard</h1>
-              <PromptLibraryCard />
+              <MessageboardCard />
               <div data-intro="farcaster-friends">
                 <BookCard />
               </div>
