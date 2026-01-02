@@ -235,6 +235,12 @@ export const startOnboardingTour = async () => {
   const intro = introJs.tour();
   const steps = getTourSteps();
   
+  // Helper to get current step index (using type assertion for private property)
+  const getCurrentStepIndex = (): number => {
+    const introAny = intro as any;
+    return introAny._currentStep ?? introAny.currentStep ?? 0;
+  };
+  
   intro.setOptions({
     steps: steps.map(step => ({
       title: step.title,
@@ -255,8 +261,8 @@ export const startOnboardingTour = async () => {
   intro.onbeforechange((targetElement: HTMLElement) => {
     setTimeout(() => {
       applyStyles();
-      const currentStepIndex = intro._currentStep;
-      if (currentStepIndex !== undefined && steps[currentStepIndex]) {
+      const currentStepIndex = getCurrentStepIndex();
+      if (steps[currentStepIndex]) {
         const step = steps[currentStepIndex];
         const tooltip = document.querySelector('.introjs-tooltip') as HTMLElement;
         if (tooltip) {
@@ -270,8 +276,8 @@ export const startOnboardingTour = async () => {
   intro.onafterchange((targetElement: HTMLElement) => {
     setTimeout(() => {
       applyStyles();
-      const currentStepIndex = intro._currentStep;
-      if (currentStepIndex !== undefined && steps[currentStepIndex]) {
+      const currentStepIndex = getCurrentStepIndex();
+      if (steps[currentStepIndex]) {
         const step = steps[currentStepIndex];
         const tooltip = document.querySelector('.introjs-tooltip') as HTMLElement;
         if (tooltip) {
@@ -281,8 +287,8 @@ export const startOnboardingTour = async () => {
     }, 10);
     setTimeout(() => {
       applyStyles();
-      const currentStepIndex = intro._currentStep;
-      if (currentStepIndex !== undefined && steps[currentStepIndex]) {
+      const currentStepIndex = getCurrentStepIndex();
+      if (steps[currentStepIndex]) {
         const step = steps[currentStepIndex];
         const tooltip = document.querySelector('.introjs-tooltip') as HTMLElement;
         if (tooltip) {
