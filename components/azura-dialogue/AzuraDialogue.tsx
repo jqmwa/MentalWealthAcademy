@@ -37,6 +37,7 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
   const [currentEmotion, setCurrentEmotion] = useState<AzuraEmotion>(emotion);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isCompleteRef = useRef(false);
+  const lastMessageRef = useRef<string>('');
 
   useEffect(() => {
     // Update emotion when prop changes
@@ -50,48 +51,65 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
       timeoutRef.current = null;
     }
 
-    if (!autoStart) {
-      setDisplayedText('');
-      setIsTyping(false);
+    // Check if message changed - if so, we need to restart
+    const messageChanged = lastMessageRef.current !== message;
+    
+    if (messageChanged) {
+      // Message changed, update ref
+      lastMessageRef.current = message;
+      // Reset completion state for new message
       isCompleteRef.current = false;
+    }
+
+    // If message changed, we should restart typing (if autoStart is true)
+    // If message didn't change but autoStart became false after completion, keep the text
+    if (!autoStart) {
+      // Only clear if message changed or we haven't completed yet
+      if (messageChanged || !isCompleteRef.current) {
+        setDisplayedText('');
+        setIsTyping(false);
+      }
+      // Otherwise, keep the displayed text (don't clear it after completion)
       return;
     }
 
-    // Reset state
-    setDisplayedText('');
-    setIsTyping(true);
-    isCompleteRef.current = false;
+    // Only start typing if autoStart is true AND (message changed OR we haven't completed)
+    if (messageChanged || !isCompleteRef.current) {
+      // Reset state for new message
+      setDisplayedText('');
+      setIsTyping(true);
+      isCompleteRef.current = false;
 
-    let currentIndex = 0;
-    let isCancelled = false;
+      let currentIndex = 0;
+      let isCancelled = false;
 
-    const typeNextChar = () => {
-      if (isCancelled) return;
-      
-      if (currentIndex < message.length) {
-        setDisplayedText(message.slice(0, currentIndex + 1));
-        currentIndex++;
-        timeoutRef.current = setTimeout(typeNextChar, speed);
-      } else {
-        setIsTyping(false);
-        isCompleteRef.current = true;
-        if (onComplete) {
-          onComplete();
+      const typeNextChar = () => {
+        if (isCancelled) return;
+        
+        if (currentIndex < message.length) {
+          setDisplayedText(message.slice(0, currentIndex + 1));
+          currentIndex++;
+          timeoutRef.current = setTimeout(typeNextChar, speed);
+        } else {
+          setIsTyping(false);
+          isCompleteRef.current = true;
+          if (onComplete) {
+            onComplete();
+          }
         }
-      }
-    };
+      };
 
-    // Start typing after a brief delay
-    timeoutRef.current = setTimeout(typeNextChar, 100);
+      // Start typing after a brief delay
+      timeoutRef.current = setTimeout(typeNextChar, 100);
+    }
 
     return () => {
-      isCancelled = true;
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
     };
-  }, [message, autoStart, speed, onComplete]);
+  }, [message, autoStart, speed]);
 
   const handleSkip = () => {
     if (timeoutRef.current) {
@@ -108,31 +126,6 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
     }
   };
 
-  const handleStart = () => {
-    if (!isTyping && !isCompleteRef.current) {
-      setDisplayedText('');
-      setIsTyping(true);
-      isCompleteRef.current = false;
-
-      let currentIndex = 0;
-
-      const typeNextChar = () => {
-        if (currentIndex < message.length) {
-          setDisplayedText(message.slice(0, currentIndex + 1));
-          currentIndex++;
-          timeoutRef.current = setTimeout(typeNextChar, speed);
-        } else {
-          setIsTyping(false);
-          isCompleteRef.current = true;
-          if (onComplete) {
-            onComplete();
-          }
-        }
-      };
-
-      timeoutRef.current = setTimeout(typeNextChar, 100);
-    }
-  };
 
   return (
     <div className={styles.container}>
@@ -162,11 +155,6 @@ const AzuraDialogue: React.FC<AzuraDialogueProps> = ({
         {showSkip && isTyping && (
           <button className={styles.skipButton} onClick={handleSkip} type="button">
             Skip
-          </button>
-        )}
-        {!autoStart && !isTyping && !isCompleteRef.current && (
-          <button className={styles.startButton} onClick={handleStart} type="button">
-            Continue
           </button>
         )}
       </div>
