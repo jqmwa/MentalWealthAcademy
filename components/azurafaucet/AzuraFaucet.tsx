@@ -1,14 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
-import styles from './BannerCard.module.css';
+import styles from './AzuraFaucet.module.css';
 
-const BannerCard: React.FC = () => {
+const AzuraFaucet: React.FC = () => {
   return (
-    <div className={styles.bannerCard} data-intro="banner-card">
+    <div className={styles.azuraFaucet} data-intro="azurafaucet">
       <div className={styles.content}>
         <div className={styles.textSection}>
-          <h2 className={styles.title}>Discover Your Learning Path</h2>
-          <p className={styles.subtitle}>Reach your learning goals by finding hand-picked Digital Classes.</p>
+          <h2 className={styles.title}>Daily Shards</h2>
+          <p className={styles.subtitle}>Get shards for daily check-ins.</p>
         </div>
         <button className={styles.actionButton}>
           <span className={styles.buttonText}>Daily Faucet</span>
@@ -25,5 +25,4 @@ const BannerCard: React.FC = () => {
   );
 };
 
-export default BannerCard;
-
+export default AzuraFaucet;

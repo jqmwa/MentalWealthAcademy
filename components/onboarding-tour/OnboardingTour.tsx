@@ -25,9 +25,9 @@ const getTourSteps = (): TourStep[] => [
     emotion: 'happy',
   },
   {
-    title: 'Discover Your Learning Path',
-    intro: 'The Daily Faucet offers curated learning paths. These aren\'t just courses—they\'re frameworks for recognizing patterns and questioning assumptions.',
-    element: '[data-intro="banner-card"]',
+    title: 'Daily Shards',
+    intro: 'Check in daily to earn shards. Consistency builds understanding—each check-in reinforces your engagement with decentralized systems.',
+    element: '[data-intro="azurafaucet"]',
     emotion: 'happy',
   },
   {

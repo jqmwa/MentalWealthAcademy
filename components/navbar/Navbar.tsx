@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
           <Link href="/home" className={styles.brandLink} aria-label="Mental Wealth Academy">
             <div className={styles.logoWrapper}>
               <Image
-                src="https://i.imgur.com/G5kFo1Q.png"
+                src="https://i.imgur.com/wTQ3E9E.png"
                 alt="Mental Wealth Academy"
                 fill
                 priority
@@ -212,6 +212,12 @@ const Navbar: React.FC = () => {
 
           {/* Right Icons */}
           <div className={styles.rightIcons}>
+            {/* Message Button */}
+            <Link href="/forum" className={styles.messageButton} aria-label="Messages">
+              <div className={styles.messageIcon}>
+                <span className={styles.notificationDot}></span>
+              </div>
+            </Link>
             <div className={styles.shardsCounter}>
               <Image
                 src="/icons/shard.svg"

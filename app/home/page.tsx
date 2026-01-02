@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
-import BannerCard from '@/components/banner-card/BannerCard';
+import AzuraFaucet from '@/components/azurafaucet/AzuraFaucet';
 import PromptLibraryCard from '@/components/prompt-library-card/PromptLibraryCard';
 import Quests from '@/components/quests/Quests';
 import BookCard from '@/components/book-card/BookCard';
@@ -218,8 +218,8 @@ export default function Home() {
           <div data-intro="quests">
             <Quests />
           </div>
-          <div data-intro="banner-card">
-            <BannerCard />
+          <div data-intro="azurafaucet">
+            <AzuraFaucet />
           </div>
           <div className={styles.eventsAndPromptRow}>
           <div className={styles.eventsSection} data-intro="events">

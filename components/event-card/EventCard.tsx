@@ -27,7 +27,7 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({
-  imageUrl = 'https://imgur.com/L2wfBP8',
+  imageUrl = 'https://i.imgur.com/L2wfBP8.png',
   heading = 'Event Title',
   badge1Text = 'Category',
   badge2Text = 'Date',

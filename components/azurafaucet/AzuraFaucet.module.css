@@ -1,4 +1,4 @@
-.bannerCard {
+.azuraFaucet {
   width: 100%;
   background: #ECECEC;
   border: 1.17px solid #A4A4A4;
@@ -10,7 +10,7 @@
   transition: all 0.3s ease;
 }
 
-.bannerCard:hover {
+.azuraFaucet:hover {
   background: #d4d4d4;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -95,4 +95,3 @@
   flex-shrink: 0;
   filter: brightness(0) invert(1);
 }
-
