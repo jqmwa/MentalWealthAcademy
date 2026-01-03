@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useModal } from 'connectkit';
-import { FamilyAccountsSdk } from 'family';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './BlockchainAccountModal.module.css';
 
@@ -64,6 +63,25 @@ export function BlockchainAccountModal({
   const handleCreateWallet = async () => {
     try {
       setError(null);
+      
+      // Dynamically import Family SDK only when needed
+      const { FamilyAccountsSdk } = await import('family');
+      
+      // Ensure SDK is connected before using it
+      // Call connect() if available, ignore errors if already connected
+      if (typeof FamilyAccountsSdk.connect === 'function') {
+        try {
+          await FamilyAccountsSdk.connect();
+        } catch (connectError: any) {
+          // If already connected or other connection-related error, continue
+          // The session.create() call will handle the actual connection state
+          const errorMsg = connectError?.message?.toLowerCase() || '';
+          if (!errorMsg.includes('already') && !errorMsg.includes('connected')) {
+            // Only log unexpected errors, but continue anyway
+            console.warn('Family SDK connect warning:', connectError);
+          }
+        }
+      }
       
       // Use Family SDK to create/connect wallet
       await FamilyAccountsSdk.session.create();
