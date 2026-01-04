@@ -2,6 +2,7 @@ precision highp float;
 
 uniform vec2 resolution;
 uniform float time;
+uniform vec2 mouse;
 
 varying vec2 vUv;
 
@@ -60,41 +61,95 @@ float cnoise(vec2 P) {
     return 2.3 * n_xy;
 }
 
-const int OCTAVES = 8;
+const int OCTAVES = 5;
 
 float fbm(vec2 p) {
-    // Initial values
-    float value = -0.2;
-    float amplitude = 1.0;
-    float frequency = 2.5;
-    // Loop of octaves
+    float value = 0.0;
+    float amplitude = 0.5;
+    float frequency = 1.0;
+    
     for (int i = 0; i < OCTAVES; i++) {
-        value += amplitude * abs(cnoise(p));
-        p *= frequency;
-        amplitude *= 0.35;
+        value += amplitude * cnoise(p * frequency);
+        frequency *= 2.0;
+        amplitude *= 0.5;
     }
     return value;
 }
 
 float pattern(vec2 p) {  
-    vec2 p2 = p - time * 0.05;
-    vec2 p3 = p + cos(time * 0.1);
-
-    return fbm(p - fbm(p + fbm(p2)));
+    // Mouse interaction - create dynamic flow
+    vec2 mouseOffset = (mouse - 0.5) * 2.0;
+    
+    // Multiple layers for depth
+    vec2 p1 = p + mouseOffset * 0.4;
+    vec2 p2 = p * 1.3 - mouseOffset * 0.3 + time * 0.1;
+    vec2 p3 = p * 0.7 + mouseOffset * 0.2 - time * 0.05;
+    
+    float f1 = fbm(p1);
+    float f2 = fbm(p2);
+    float f3 = fbm(p3);
+    
+    // Combine layers with different weights
+    float pattern = f1 * 0.5 + f2 * 0.3 + f3 * 0.2;
+    
+    // Add time-based animation
+    pattern += sin(time * 0.3 + p.x * 2.0 + p.y * 2.0) * 0.1;
+    
+    return pattern;
 }
 
 void main() {
-
   vec2 uv = vUv;
   uv -= 0.5;
   uv.x *= resolution.x / resolution.y;
 
-  vec3 col = vec3(0.0);
-
+  // Get pattern value
   float f = pattern(uv);
-
-  col = mix( vec3(0.0), vec3(1.0), f );
+  f = (f + 1.0) * 0.5; // Normalize to 0-1
+  
+  // Simple directional lighting based on gradient
+  vec2 mousePos = (mouse - 0.5) * 2.0;
+  mousePos.x *= resolution.x / resolution.y;
+  
+  // Simple light direction (cheap approximation)
+  vec2 lightVec = normalize(mousePos - uv);
+  float lightAngle = dot(normalize(uv), lightVec);
+  
+  // Simple lighting - brighten areas facing the light
+  float lighting = mix(0.6, 1.2, lightAngle * 0.5 + 0.5);
+  
+  // Add subtle mouse glow
+  float mouseDist = length(uv - mousePos);
+  float mouseGlow = exp(-mouseDist * 1.2) * 0.4;
+  lighting += mouseGlow;
+  
+  // Color palette
+  vec3 darkBase = vec3(0.12, 0.12, 0.16);
+  vec3 darkMid = vec3(0.18, 0.18, 0.24);
+  vec3 purpleDark = vec3(0.22, 0.25, 0.38);
+  vec3 purpleMid = vec3(0.28, 0.35, 0.55);
+  vec3 purple = vec3(0.318, 0.408, 1.0);
+  vec3 purpleBright = vec3(0.45, 0.55, 1.0);
+  
+  // Base color from pattern
+  vec3 baseColor;
+  if (f < 0.2) {
+    baseColor = mix(darkBase, darkMid, f / 0.2);
+  } else if (f < 0.4) {
+    baseColor = mix(darkMid, purpleDark, (f - 0.2) / 0.2);
+  } else if (f < 0.6) {
+    baseColor = mix(purpleDark, purpleMid, (f - 0.4) / 0.2);
+  } else if (f < 0.8) {
+    baseColor = mix(purpleMid, purple, (f - 0.6) / 0.2);
+  } else {
+    baseColor = mix(purple, purpleBright, (f - 0.8) / 0.2);
+  }
+  
+  // Apply simple lighting
+  vec3 col = baseColor * lighting;
+  
+  // Final contrast
+  col = pow(col, vec3(0.9));
 
   gl_FragColor = vec4(col, 1.0);
 }
-

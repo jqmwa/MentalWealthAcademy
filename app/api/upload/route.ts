@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
 const ALLOWED_MIME = new Set([
   'image/png',
   'image/jpeg',
@@ -34,6 +35,14 @@ export async function POST(request: Request) {
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: 'Missing file.' }, { status: 400 });
+  }
+
+  // Validate file size (max 5MB)
+  if (file.size > MAX_FILE_SIZE) {
+    return NextResponse.json(
+      { error: `File size exceeds 5MB limit. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB` },
+      { status: 413 }
+    );
   }
 
   if (!ALLOWED_MIME.has(file.type)) {

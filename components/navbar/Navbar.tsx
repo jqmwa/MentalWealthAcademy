@@ -197,6 +197,18 @@ const Navbar: React.FC = () => {
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
+            {/* Games Button */}
+            <Link href="/games" className={`${styles.navButton} ${isActive('/games') ? styles.navButtonActive : ''}`}>
+              <Image
+                src="/icons/Venetian carnival.svg"
+                alt="Games"
+                width={20}
+                height={20}
+                className={styles.questIcon}
+              />
+              <span className={isActive('/games') ? styles.buttonLabelActive : styles.buttonLabel}>Games</span>
+            </Link>
+
             {/* Library Button - Disabled */}
             <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
               <Image
@@ -364,6 +376,20 @@ const Navbar: React.FC = () => {
               className={styles.questIcon}
             />
             <span>Quests</span>
+          </Link>
+          <Link 
+            href="/games" 
+            className={`${styles.mobileNavButton} ${isActive('/games') ? styles.mobileNavButtonActive : ''}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <Image
+              src="/icons/Venetian carnival.svg"
+              alt="Games"
+              width={20}
+              height={20}
+              className={styles.questIcon}
+            />
+            <span>Games</span>
           </Link>
           <div 
             className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}

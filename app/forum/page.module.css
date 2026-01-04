@@ -11,7 +11,7 @@
 
 .header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 12px;
@@ -30,6 +30,34 @@
   opacity: 0.75;
   margin: 6px 0 0;
   font-size: 16px;
+}
+
+.createThreadCTA {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px solid rgba(81, 104, 255, 0.35);
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-button);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.createThreadCTA:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 104, 255, 0.4);
+  background: #3d52e6;
+}
+
+.createThreadCTA:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.3);
 }
 
 .button {
@@ -531,6 +559,18 @@
   .container {
     height: calc(100vh - 70px);
     padding: 16px 16px 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .createThreadCTA {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 14px;
   }
 
   .chatboxLayout {

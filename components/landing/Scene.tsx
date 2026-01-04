@@ -7,12 +7,18 @@ import * as THREE from "three";
 import { waveFragmentShader, waveVertexShader } from './shaders';
 import './scene.css';
 
-const DPR = 1;
+// Use device pixel ratio for crisp rendering on high-DPI displays
+const getDPR = () => {
+  if (typeof window === 'undefined') return 1;
+  // Cap at 2 for performance, but allow higher on very high-DPI displays
+  return Math.min(window.devicePixelRatio || 1, 2);
+};
 
 const DitheredWaves = memo(() => {
   const mesh = useRef<THREE.Mesh>(null);
   const { viewport } = useThree();
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const dprRef = useRef(getDPR());
 
   // Initialize uniforms with proper default values
   // Three.js uniforms should be plain objects with 'value' property
@@ -22,8 +28,8 @@ const DitheredWaves = memo(() => {
     },
     resolution: {
       value: new THREE.Vector2(
-        typeof window !== 'undefined' ? window.innerWidth * DPR : 1920,
-        typeof window !== 'undefined' ? window.innerHeight * DPR : 1080
+        typeof window !== 'undefined' ? window.innerWidth * dprRef.current : 1920,
+        typeof window !== 'undefined' ? window.innerHeight * dprRef.current : 1080
       ),
     },
     colorNum: {
@@ -61,10 +67,11 @@ const DitheredWaves = memo(() => {
     if (typeof window === 'undefined') return;
     
     const updateResolution = () => {
+      dprRef.current = getDPR();
       if (uniforms.resolution.value && window.innerWidth > 0 && window.innerHeight > 0) {
         uniforms.resolution.value.set(
-          window.innerWidth * DPR,
-          window.innerHeight * DPR
+          window.innerWidth * dprRef.current,
+          window.innerHeight * dprRef.current
         );
       }
     };
@@ -114,13 +121,15 @@ const DitheredWaves = memo(() => {
 DitheredWaves.displayName = 'DitheredWaves';
 
 const Scene = memo(() => {
+  const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+  
   return (
     <Canvas 
       camera={{ position: [0, 0, 6] }} 
-      dpr={[1, 1]}
+      dpr={[dpr, dpr]}
       style={{ width: '100%', height: '100%', background: 'var(--color-background)' }}
       gl={{ 
-        antialias: false, 
+        antialias: true, 
         powerPreference: 'high-performance',
         alpha: false,
         stencil: false,

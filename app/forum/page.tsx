@@ -208,6 +208,21 @@ export default function Forum() {
             <h1 className={styles.title}>Community Forum</h1>
             <p className={styles.subtitle}>Join discussions, share insights, and connect with the community.</p>
           </div>
+          {me && (
+            <button
+              className={styles.createThreadCTA}
+              type="button"
+              onClick={() => {
+                setTitle('');
+                setBody('');
+                setAttachment(null);
+                const form = document.getElementById('new-thread-form');
+                form?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              + Create Thread
+            </button>
+          )}
         </div>
 
         <div className={styles.bannerWrapper}>
