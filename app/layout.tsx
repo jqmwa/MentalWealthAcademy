@@ -38,6 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="base:app_id" content="693c68f5e6be54f5ed71d80f" />
       </head>
       <body>
         <ConditionalWeb3Provider>{children}</ConditionalWeb3Provider>
