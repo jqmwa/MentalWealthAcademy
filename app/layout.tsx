@@ -42,18 +42,40 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Suppress MetaMask SDK analytics errors
+              // Suppress wallet SDK analytics errors (MetaMask and Coinbase Wallet)
               if (typeof window !== 'undefined') {
                 const originalError = window.console.error;
                 window.console.error = function(...args) {
                   const errorString = String(args[0] || '');
+                  const errorMessage = args.join(' ');
+                  
                   // Suppress MetaMask SDK analytics fetch errors
                   if (errorString.includes('Analytics SDK') && 
                       (errorString.includes('Failed to fetch') || 
                        errorString.includes('AnalyticsSDKApiError'))) {
                     return;
                   }
+                  
+                  // Suppress Coinbase Wallet SDK analytics errors
+                  if (errorMessage.includes('cca-lite.coinbase.com') ||
+                      errorMessage.includes('ERR_BLOCKED_BY_CLIENT') ||
+                      (errorString.includes('Analytics SDK') && 
+                       errorString.includes('Failed to fetch'))) {
+                    return;
+                  }
+                  
                   originalError.apply(console, args);
+                };
+                
+                // Suppress network warnings for blocked Coinbase Wallet telemetry requests
+                const originalWarn = window.console.warn;
+                window.console.warn = function(...args) {
+                  const warnMessage = args.join(' ');
+                  if (warnMessage.includes('cca-lite.coinbase.com') ||
+                      warnMessage.includes('ERR_BLOCKED_BY_CLIENT')) {
+                    return;
+                  }
+                  originalWarn.apply(console, args);
                 };
               }
             `,
