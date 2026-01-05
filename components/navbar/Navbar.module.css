@@ -479,6 +479,12 @@
   line-height: 1.2;
 }
 
+.dropdownDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 4px 0;
+}
+
 .incompleteProfile {
   display: flex;
   flex-direction: row;

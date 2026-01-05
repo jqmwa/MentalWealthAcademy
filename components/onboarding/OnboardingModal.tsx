@@ -22,7 +22,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [gender, setGender] = useState<'male' | 'female' | ''>('');
   const [birthday, setBirthday] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,13 +88,12 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
     return exactAge >= 13;
   }, [birthday, minDate]);
   
-  // Account step validation (email, username, password, gender, birthday) - FIRST STEP
+  // Account step validation (email, username, password, birthday) - FIRST STEP
   const isAccountStepValid = 
     isEmailValid &&
     isUsernameValid && 
     usernameAvailable !== false && // Only block if explicitly unavailable
     isPasswordValid &&
-    gender !== '' &&
     isBirthdayValid;
 
   // Check username availability
@@ -202,7 +200,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
         return;
       }
       if (!isUsernameValid) {
-        setError('Username must be 5-32 characters (letters, numbers, underscores only)');
+        setError('Username must be 5-32 characters (letters, numbers, underscores)');
         return;
       }
       if (usernameAvailable === false) {
@@ -211,10 +209,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
       }
       if (!isPasswordValid) {
         setError('Password must be at least 8 characters');
-        return;
-      }
-      if (!gender) {
-        setError('Please select a gender');
         return;
       }
       if (!birthday) {
@@ -283,7 +277,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
         // Store userId for profile creation
         if (signupData.userId) {
           setUserId(signupData.userId);
-          // Create profile with username, gender, birthday (no avatar yet)
+          // Create profile with username, birthday (no avatar yet)
           await createProfile();
         } else {
           setError('Account creation failed. Please try again.');
@@ -318,7 +312,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
 
       const requestBody: any = {
         username,
-        gender,
         birthday,
         // No avatar_id - user selects avatar on homepage
       };
@@ -425,7 +418,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
             </div>
             <h2 className={styles.stepTitle}>Create Your Account</h2>
             <p className={styles.stepDescription}>
-              Set up your login credentials.
+              Congrats on becoming a researcher
             </p>
             
             <div className={styles.formFields}>
@@ -508,7 +501,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                         }
                         
                         if (exactAge < 13 || selectedDate > maxDate) {
-                          setError('You must be at least 13 years old to create an account');
+                          setError('You must be at least 18 years old to create an account');
                           setBirthday('');
                         }
                       }
@@ -522,36 +515,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                 <p className={styles.inputHint}>
                   You must be at least 13 years old
                 </p>
-              </div>
-
-              <div className={styles.inputGroup}>
-                <fieldset>
-                  <legend className={styles.inputLabel}>Gender</legend>
-                  <div className={styles.radioGroup}>
-                    <label className={`${styles.radioOption} ${gender === 'male' ? styles.radioOptionChecked : ''}`}>
-                      <input
-                        id="onboarding-gender-male"
-                        name="gender"
-                        type="radio"
-                        value="male"
-                        checked={gender === 'male'}
-                        onChange={(e) => setGender(e.target.value as 'male' | 'female')}
-                      />
-                      <span>Male</span>
-                    </label>
-                    <label className={`${styles.radioOption} ${gender === 'female' ? styles.radioOptionChecked : ''}`}>
-                      <input
-                        id="onboarding-gender-female"
-                        name="gender"
-                        type="radio"
-                        value="female"
-                        checked={gender === 'female'}
-                        onChange={(e) => setGender(e.target.value as 'male' | 'female')}
-                      />
-                      <span>Female</span>
-                    </label>
-                  </div>
-                </fieldset>
               </div>
 
               <div className={styles.inputGroup}>
@@ -582,7 +545,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                   )}
                 </div>
                 <p className={styles.inputHint}>
-                  5-32 characters, letters, numbers, and underscores only
+                  5-32 characters, letters, numbers, and underscores
                 </p>
               </div>
             </div>

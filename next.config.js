@@ -5,6 +5,11 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['connectkit', 'wagmi'],
   },
+  // Suppress preload warnings for resources that may not be immediately used
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
   // Optimize compilation
   swcMinify: true,
   compiler: {
@@ -48,6 +53,11 @@ const nextConfig = {
       // Suppress MetaMask SDK async-storage warning (React Native dependency not needed in browser)
       new webpack.IgnorePlugin({
         resourceRegExp: /^@react-native-async-storage\/async-storage$/,
+        contextRegExp: /@metamask\/sdk/,
+      }),
+      // Suppress MetaMask SDK analytics to prevent fetch errors
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^@metamask\/sdk-analytics$/,
         contextRegExp: /@metamask\/sdk/,
       }),
       // Suppress pino-pretty warning - it's an optional dev dependency for pino logging

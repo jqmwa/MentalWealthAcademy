@@ -39,6 +39,26 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="base:app_id" content="693c68f5e6be54f5ed71d80f" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Suppress MetaMask SDK analytics errors
+              if (typeof window !== 'undefined') {
+                const originalError = window.console.error;
+                window.console.error = function(...args) {
+                  const errorString = String(args[0] || '');
+                  // Suppress MetaMask SDK analytics fetch errors
+                  if (errorString.includes('Analytics SDK') && 
+                      (errorString.includes('Failed to fetch') || 
+                       errorString.includes('AnalyticsSDKApiError'))) {
+                    return;
+                  }
+                  originalError.apply(console, args);
+                };
+              }
+            `,
+          }}
+        />
       </head>
       <body>
         <ConditionalWeb3Provider>{children}</ConditionalWeb3Provider>

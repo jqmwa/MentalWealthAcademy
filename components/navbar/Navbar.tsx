@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAccount, useDisconnect } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import { SearchModal } from '@/components/search-modal/SearchModal';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
@@ -31,7 +31,9 @@ const SearchIcon: React.FC<{ size?: number }> = ({ size = 20 }) => {
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { isConnected, address } = useAccount();
+  const { disconnect } = useDisconnect();
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -135,6 +137,30 @@ const Navbar: React.FC = () => {
   const handleYourAccountsClick = () => {
     setIsProfileDropdownOpen(false);
     setIsYourAccountsModalOpen(true);
+  };
+
+  const handleSignOut = async () => {
+    setIsProfileDropdownOpen(false);
+    
+    // Disconnect wallet if connected
+    if (isConnected) {
+      disconnect();
+    }
+    
+    // Clear session
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Failed to logout:', err);
+    }
+    
+    // Clear local state
+    setShardCount(null);
+    setUsername(null);
+    setAvatarUrl(null);
+    
+    // Redirect to landing page
+    router.push('/');
   };
 
 
@@ -324,6 +350,16 @@ const Navbar: React.FC = () => {
                         <div className={styles.dropdownItemInfo}>
                           <span className={styles.dropdownItemTitle}>accounts</span>
                           <span className={styles.dropdownItemLabel}>manage connections</span>
+                        </div>
+                      </button>
+                      <div className={styles.dropdownDivider} />
+                      <button 
+                        className={styles.dropdownItem}
+                        onClick={handleSignOut}
+                        type="button"
+                      >
+                        <div className={styles.dropdownItemInfo}>
+                          <span className={styles.dropdownItemTitle}>sign out</span>
                         </div>
                       </button>
                     </div>
