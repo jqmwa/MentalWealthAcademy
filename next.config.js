@@ -49,6 +49,11 @@ const nextConfig = {
       new webpack.IgnorePlugin({
         resourceRegExp: /^@react-native-async-storage\/async-storage$/,
         contextRegExp: /@metamask\/sdk/,
+      }),
+      // Suppress pino-pretty warning - it's an optional dev dependency for pino logging
+      // Not needed in production builds, especially for pages that don't use Web3
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^pino-pretty$/,
       })
     );
     
