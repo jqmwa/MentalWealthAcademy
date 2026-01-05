@@ -32,8 +32,8 @@ function getWagmiConfig() {
     // Required App Info
     appName: "Mental Wealth Academy",
     appDescription: "Mental Wealth Academy is a virtual learning platform for the next generation.",
-    appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://mentalwealthacademy.world",
-    appIcon: `${process.env.NEXT_PUBLIC_APP_URL || "https://mentalwealthacademy.world"}/icons/favicon.png`,
+    appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://www.mentalwealthacademy.world",
+    appIcon: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.mentalwealthacademy.world"}/icons/favicon.png`,
   })
 );
   }
