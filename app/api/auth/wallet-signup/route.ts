@@ -113,6 +113,12 @@ export async function POST(request: Request) {
     return response;
   } catch (err: any) {
     console.error('Wallet signup error:', err);
+    console.error('Error details:', {
+      code: err?.code,
+      message: err?.message,
+      constraint: err?.constraint,
+      stack: err?.stack,
+    });
     
     // Duplicate wallet address or other constraint violation
     if (err?.code === '23505' || err?.code === 'ER_DUP_ENTRY') {
@@ -125,10 +131,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Account creation failed due to duplicate data.' }, { status: 409 });
     }
     
+    // Handle database connection errors
+    if (err?.code === 'ECONNREFUSED' || err?.code === 'ENOTFOUND' || err?.code === 'ETIMEDOUT') {
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again later.' },
+        { status: 503 }
+      );
+    }
+    
     return NextResponse.json(
       { 
         error: 'Failed to create account.',
-        message: process.env.NODE_ENV === 'development' ? err?.message : undefined
+        message: process.env.NODE_ENV === 'development' ? err?.message : undefined,
+        details: process.env.NODE_ENV === 'development' ? {
+          code: err?.code,
+          constraint: err?.constraint,
+        } : undefined
       },
       { status: 500 }
     );

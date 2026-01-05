@@ -60,7 +60,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
             apiKey={process.env.NEXT_PUBLIC_CDP_API_KEY || process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || ''}
             config={{
               wallet: {
-                preference: 'smartWalletOnly', // Prioritize Base smart wallets instead of Family
+                preference: 'all', // Allow all wallet types including Family wallets
                 display: 'modal',
               },
             }}
