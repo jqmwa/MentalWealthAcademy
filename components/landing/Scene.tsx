@@ -130,7 +130,7 @@ RotatingCube.displayName = 'RotatingCube';
 const CubesScene = memo(() => {
   // Generate cubes with unique positions and rotation speeds
   const cubes = [];
-  const count = 20;
+  const count = 25;
   
   // Calculate viewport bounds for even distribution
   // Camera is at z=10, fov=75, so we can calculate visible area
@@ -168,7 +168,7 @@ const CubesScene = memo(() => {
     const scale = 1.0 + Math.random() * 1.5; // Range: 1.0 to 2.5
     
     // Vertical movement speed - some move up, some move down (positive = up, negative = down)
-    const verticalSpeed = (Math.random() - 0.5) * 0.5; // Range: -0.25 to 0.25
+    const verticalSpeed = (Math.random() - 0.5) * 1.0; // Range: -0.5 to 0.5 (doubled from 0.25)
     
     cubes.push({
       position: [x, y, z] as [number, number, number],
