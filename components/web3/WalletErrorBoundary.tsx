@@ -18,24 +18,6 @@ export class WalletErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
-    // Check if this is a Family wallet error
-    const errorMessage = error?.message || '';
-    const errorStack = error?.stack || '';
-    
-    const isFamilyWalletError = 
-      errorMessage.includes('The JSON sent is not a valid Request object') ||
-      errorMessage.includes('api.app.family.co') ||
-      errorStack.includes('family/lib/index') ||
-      errorStack.includes('family-accounts-connector') ||
-      errorMessage.includes('InvariantError');
-    
-    if (isFamilyWalletError) {
-      // Don't show error boundary for Family wallet errors - they're non-critical
-      // Just log and continue
-      console.warn('Family wallet error caught by error boundary (non-critical):', errorMessage);
-      return { hasError: false, error: null };
-    }
-    
     return { hasError: true, error };
   }
 

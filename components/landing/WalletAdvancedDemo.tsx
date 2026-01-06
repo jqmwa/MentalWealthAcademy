@@ -19,58 +19,14 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
   const { disconnect } = useDisconnect();
   const { setOpen } = useModal();
   
-  // Detect if connected wallet is Family wallet for better error handling
-  const isFamilyWallet = connector?.id === 'family' || 
-                         connector?.name?.toLowerCase().includes('family') ||
-                         (typeof window !== 'undefined' && window.location.hostname.includes('family.co'));
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedAddress, setProcessedAddress] = useState<string | null>(null);
   const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
-  const [familyWalletError, setFamilyWalletError] = useState<string | null>(null);
   const processingRef = useRef<string | null>(null); // Track which address is currently being processed
-  
-  // Monitor for Family wallet API errors and handle them gracefully
-  useEffect(() => {
-    if (!isFamilyWallet) return;
-    
-    const handleFamilyWalletError = (event: CustomEvent) => {
-      const errorMessage = event.detail?.message || '';
-      if (errorMessage.includes('The JSON sent is not a valid Request object')) {
-        // This is a deserialization error - Family wallet's internal communication issue
-        // It doesn't prevent the wallet from working, but we should notify the user
-        setFamilyWalletError('Family wallet communication issue detected. The wallet may still work, but if you experience problems, please try disconnecting and reconnecting.');
-      } else if (errorMessage.includes('api.app.family.co') || 
-                 errorMessage.includes('401') ||
-                 errorMessage.includes('Unauthorized')) {
-        setFamilyWalletError('Family wallet authentication failed. Please try disconnecting and reconnecting.');
-      } else if (errorMessage.includes('InvariantError') ||
-                 errorMessage.includes('Session state change')) {
-        setFamilyWalletError('Family wallet is experiencing connection issues. Please try disconnecting and reconnecting.');
-      }
-    };
-    
-    const handleError = (event: ErrorEvent) => {
-      const errorMessage = event.message || '';
-      if (errorMessage.includes('api.app.family.co') || 
-          errorMessage.includes('401') ||
-          errorMessage.includes('Unauthorized')) {
-        setFamilyWalletError('Family wallet authentication failed. The wallet may not be properly initialized.');
-      }
-    };
-    
-    window.addEventListener('familyWalletError', handleFamilyWalletError as EventListener);
-    window.addEventListener('error', handleError);
-    
-    return () => {
-      window.removeEventListener('familyWalletError', handleFamilyWalletError as EventListener);
-      window.removeEventListener('error', handleError);
-    };
-  }, [isFamilyWallet]);
 
-  // NOTE: The "readiness check" was overly complex and always returned true anyway.
   // If we have a valid address from wagmi's useAccount hook, that's sufficient.
-  // Family wallet may report isConnected before address is available, but we handle
-  // that by waiting for the address to appear, not by checking "readiness".
+  // Some wallets may report isConnected before address is available, but we handle
+  // that by waiting for the address to appear.
 
   // Handle wallet connection and user check/creation
   // IMPORTANT: Wait for user to complete the ConnectKit flow (select wallet, approve connection)
@@ -127,10 +83,8 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
         return;
       }
       
-      // Wait longer for Family wallet to ensure it's fully initialized after connection
-      // Family wallet needs more time to complete its internal initialization
-      // For other wallets, a shorter delay is usually sufficient
-      const delay = isFamilyWallet ? 1500 : 500;
+      // Wait for wallet to fully initialize after connection
+      const delay = 500;
       console.log(`Wallet connected! Waiting ${delay}ms for wallet to fully initialize before processing connection...`);
       console.log('Wallet address:', address);
       await new Promise(resolve => setTimeout(resolve, delay));
@@ -148,21 +102,11 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
       }
     })();
     
-    // NOTE: We do NOT call connector.getAccount() or connector.getProvider() directly
-    // because these methods trigger Family wallet's internal API calls (api.app.family.co)
-    // which cause 401 errors when their JWT token is expired/missing.
-    // 
-    // Family wallet's SDK has internal token refresh logic that can fail (401 errors)
-    // when their watchSessionStateChange subscription runs before token refresh completes.
-    // These are non-critical SDK initialization errors that we suppress - they don't
-    // affect wallet functionality or account creation.
-    //
-    // Instead, we rely on wagmi's useAccount hook which handles wallet connections
-    // properly without triggering these internal API calls. If address is not available
-    // from useAccount, we simply wait - wagmi will provide it when the wallet is
-    // fully connected and ready.
+    // We rely on wagmi's useAccount hook which handles wallet connections properly.
+    // If address is not available from useAccount, we simply wait - wagmi will provide
+    // it when the wallet is fully connected and ready.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected, address, isProcessing, processedAddress, connector, isFamilyWallet]);
+  }, [isConnected, address, isProcessing, processedAddress]);
 
   // Reset processed address when wallet disconnects
   useEffect(() => {
@@ -237,7 +181,6 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
     }
     
     console.log('handleWalletConnection - Processing wallet connection for:', walletAddress);
-    console.log('handleWalletConnection - Is Family wallet:', isFamilyWallet);
     setProcessedAddress(walletAddress);
     
     try {
@@ -378,13 +321,8 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
             }
           }
           
-          // For Family wallets, provide more helpful error message
-          const helpfulMessage = isFamilyWallet 
-            ? `${errorMessage}\n\nIf you're using Family wallet, please try:\n1. Disconnect and reconnect your wallet\n2. Refresh the page\n3. Try again\n\nNote: Family wallet may show internal errors, but account creation should still work.`
-            : errorMessage;
-          
-          console.error('Showing error alert to user:', helpfulMessage);
-          alert(helpfulMessage);
+          console.error('Showing error alert to user:', errorMessage);
+          alert(errorMessage);
         }
       }
     } catch (error) {
@@ -398,10 +336,7 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
         name: error instanceof Error ? error.name : undefined,
       });
       
-      const errorMessage = isFamilyWallet
-        ? `An error occurred while creating your account. This may be due to Family wallet connection issues.\n\nPlease try:\n1. Disconnect and reconnect your wallet\n2. Refresh the page\n3. Try again\n\nError: ${error instanceof Error ? error.message : String(error)}`
-        : `An error occurred. Please try again.\n\nError: ${error instanceof Error ? error.message : String(error)}`;
-      
+      const errorMessage = `An error occurred. Please try again.\n\nError: ${error instanceof Error ? error.message : String(error)}`;
       alert(errorMessage);
     } finally {
       setIsProcessing(false);
@@ -411,45 +346,10 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
 
   return (
     <div>
-      {familyWalletError && isFamilyWallet && (
-        <div style={{
-          padding: '12px',
-          marginBottom: '12px',
-          backgroundColor: '#fff3cd',
-          border: '1px solid #ffc107',
-          borderRadius: '4px',
-          fontSize: '14px',
-          color: '#856404'
-        }}>
-          <strong>Family Wallet Issue Detected:</strong> {familyWalletError}
-          <br />
-          <button
-            onClick={() => {
-              setFamilyWalletError(null);
-              // Force reconnection attempt
-              disconnect();
-              setTimeout(() => {
-                setOpen(true);
-              }, 500);
-            }}
-            style={{
-              marginTop: '8px',
-              padding: '6px 12px',
-              backgroundColor: '#ffc107',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Retry Connection
-          </button>
-        </div>
-      )}
       <button
         type="button"
         className={styles.connectWallet}
         onClick={() => {
-          setFamilyWalletError(null);
           setOpen(true);
         }}
         disabled={isProcessing}

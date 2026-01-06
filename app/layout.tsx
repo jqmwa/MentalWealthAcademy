@@ -40,100 +40,10 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="base:app_id" content="693c68f5e6be54f5ed71d80f" />
-        <script
+            <script
           dangerouslySetInnerHTML={{
             __html: `
-              // CRITICAL: Set up error handlers BEFORE any other scripts load
-              // This must run first to catch Family wallet errors early
-              (function() {
-                if (typeof window === 'undefined') return;
-                
-                // Handle unhandled promise rejections IMMEDIATELY
-                // Family wallet has internal errors that cause unhandled rejections
-                window.addEventListener('unhandledrejection', function(event) {
-                  try {
-                    const error = event.reason;
-                    // Try multiple ways to extract error information
-                    const errorMessage = error?.message || error?.error?.message || (error?.error ? String(error.error) : '') || String(error || '');
-                    const errorString = String(error || '');
-                    const errorStack = error?.stack || error?.error?.stack || '';
-                    const errorName = error?.name || error?.error?.name || '';
-                    const errorToString = error?.toString() || '';
-                    
-                    // Combine all error representations for matching
-                    const allErrorText = [
-                      errorMessage,
-                      errorString,
-                      errorToString,
-                      errorStack,
-                      errorName
-                    ].join(' ');
-                    
-                    // Comprehensive matching for Family wallet errors and WalletConnect errors
-                    // Check all possible error representations
-                    const isFamilyWalletError = 
-                      // Direct message matches
-                      allErrorText.includes('The JSON sent is not a valid Request object') ||
-                      allErrorText.includes('JSON sent is not a valid Request') ||
-                      // API errors
-                      allErrorText.includes('api.app.family.co') || 
-                      allErrorText.includes('app.family.co') ||
-                      // Stack trace matches (Family wallet script files)
-                      allErrorText.includes('family/lib/index') ||
-                      allErrorText.includes('family-accounts-connector') ||
-                      allErrorText.includes('607-749c0992edc06302.js') ||
-                      allErrorText.includes('family-accounts-connector-JRsEYbpv.js') ||
-                      allErrorText.includes('index-Cs-onntv.js') ||
-                      // InvariantError matches (various formats)
-                      allErrorText.includes('InvariantError: Session state change subscription returned no data') ||
-                      allErrorText.includes('InvariantError: Master key config not initialised') ||
-                      allErrorText.includes('Session state change subscription returned no data') ||
-                      allErrorText.includes('Master key config not initialised') ||
-                      (allErrorText.includes('Cannot read properties of undefined (reading') && allErrorText.includes('role')) ||
-                      (allErrorText.includes('InvariantError') && (allErrorText.includes('family') || allErrorText.includes('607-'))) ||
-                      // Catch any error from Family wallet's script files
-                      (allErrorText.includes('InvariantError') && allErrorText.includes('607-749c0992edc06302.js')) ||
-                      (allErrorText.includes('CombinedError') && allErrorText.includes('GraphQL') && allErrorText.includes('role')) ||
-                      // 401/Unauthorized errors
-                      (allErrorText.includes('family.co') && (allErrorText.includes('401') || allErrorText.includes('Unauthorized'))) ||
-                      // Check error name/type - catch ALL InvariantError from Family wallet
-                      errorName === 'InvariantError' ||
-                      (allErrorText.includes('InvariantError') && (allErrorText.includes('607-') || allErrorText.includes('family'))) ||
-                    (errorName === 'Error' && allErrorText.includes('JSON sent is not a valid Request'));
-                    
-                    // WalletConnect errors (Proposal expired, etc.)
-                    const isWalletConnectError = 
-                      allErrorText.includes('Proposal expired') ||
-                      allErrorText.includes('proposal expired') ||
-                      (allErrorText.includes('@walletconnect') && (allErrorText.includes('expired') || allErrorText.includes('timeout')));
-                    
-                    if (isFamilyWalletError || isWalletConnectError) {
-                      // CRITICAL: Prevent these errors from crashing the app
-                      event.preventDefault();
-                      event.stopPropagation();
-                      event.stopImmediatePropagation();
-                      // Silently handle - these are internal Family wallet issues
-                      // Dispatch event for components to handle if needed
-                      try {
-                        if (isFamilyWalletError) {
-                          window.dispatchEvent(new CustomEvent('familyWalletError', { 
-                            detail: { error, message: errorMessage || errorString } 
-                          }));
-                        }
-                      } catch (e) {
-                        // Ignore errors in event dispatch
-                      }
-                      return false;
-                    }
-                  } catch (handlerError) {
-                    // If error handler itself fails, log but don't crash
-                    console.warn('Error in unhandled rejection handler:', handlerError);
-                  }
-                }, true); // Use capture phase to catch early
-              })();
-              
-              // Suppress only non-critical wallet SDK analytics errors (MetaMask and Coinbase Wallet analytics)
-              // DO NOT suppress Family wallet errors - they indicate real issues that need to be addressed
+              // Suppress only non-critical wallet SDK analytics errors
               if (typeof window !== 'undefined') {
                 const originalError = window.console.error;
                 window.console.error = function(...args) {
@@ -143,11 +53,9 @@ export default function RootLayout({
                   // Check if any argument is an object with AnalyticsSDKApiError context
                   const hasAnalyticsContext = args.some(arg => {
                     if (typeof arg === 'object' && arg !== null) {
-                      // Check for context property
                       if (arg.context === 'AnalyticsSDKApiError') {
                         return true;
                       }
-                      // Check stringified version
                       try {
                         const argString = JSON.stringify(arg);
                         if (argString.includes('AnalyticsSDKApiError') || 
@@ -162,7 +70,6 @@ export default function RootLayout({
                   });
                   
                   // Suppress wallet SDK analytics fetch errors (non-critical)
-                  // These are telemetry/analytics errors that don't affect functionality
                   const isAnalyticsError = 
                     hasAnalyticsContext ||
                     ((errorString.includes('Analytics SDK') || errorMessage.includes('Analytics SDK')) &&
@@ -184,37 +91,6 @@ export default function RootLayout({
                     return;
                   }
                   
-                  // Suppress Family wallet internal errors from console (they're already handled by unhandledrejection)
-                  // These are internal Family wallet SDK issues that don't affect functionality
-                  const errorStack = args.find(arg => typeof arg === 'string' && arg.includes('at ')) || '';
-                  const allConsoleErrorText = [errorString, errorMessage, errorStack].join(' ');
-                  
-                  const isFamilyWalletConsoleError = 
-                    allConsoleErrorText.includes('The JSON sent is not a valid Request object') ||
-                    allConsoleErrorText.includes('JSON sent is not a valid Request') ||
-                    allConsoleErrorText.includes('api.app.family.co') ||
-                    allConsoleErrorText.includes('app.family.co') ||
-                    allConsoleErrorText.includes('InvariantError: Session state change') ||
-                    allConsoleErrorText.includes('InvariantError: Master key config') ||
-                    allConsoleErrorText.includes('Session state change subscription returned no data') ||
-                    allConsoleErrorText.includes('Master key config not initialised') ||
-                    (allConsoleErrorText.includes('Cannot read properties of undefined (reading') && allConsoleErrorText.includes('role')) ||
-                    (allConsoleErrorText.includes('CombinedError') && allConsoleErrorText.includes('GraphQL') && allConsoleErrorText.includes('role')) ||
-                    (allConsoleErrorText.includes('family.co') && (allConsoleErrorText.includes('401') || allConsoleErrorText.includes('Unauthorized'))) ||
-                    allConsoleErrorText.includes('family/lib/index') ||
-                    allConsoleErrorText.includes('family-accounts-connector') ||
-                    allConsoleErrorText.includes('607-749c0992edc06302.js') ||
-                    allConsoleErrorText.includes('index-Cs-onntv.js') ||
-                    allConsoleErrorText.includes('family-accounts-connector-JRsEYbpv.js') ||
-                    (allConsoleErrorText.includes('InvariantError') && allConsoleErrorText.includes('607-'));
-                  
-                  if (isFamilyWalletConsoleError) {
-                    // Suppress - these are already handled by unhandledrejection handler
-                    return;
-                  }
-                  
-                  // DO NOT suppress other Family wallet errors - log them for debugging
-                  // Family wallet errors indicate real issues that need to be fixed
                   originalError.apply(console, args);
                 };
                 
@@ -223,14 +99,11 @@ export default function RootLayout({
                 window.console.warn = function(...args) {
                   const warnMessage = args.join(' ');
                   if (warnMessage.includes('cca-lite.coinbase.com') ||
-                      warnMessage.includes('ERR_BLOCKED_BY_CLIENT') ||
-                      warnMessage.includes('api.app.family.co') ||
-                      warnMessage.includes('family/lib/index')) {
+                      warnMessage.includes('ERR_BLOCKED_BY_CLIENT')) {
                     return;
                   }
                   originalWarn.apply(console, args);
                 };
-                
               }
             `,
           }}

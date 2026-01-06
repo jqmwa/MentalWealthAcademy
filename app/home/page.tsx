@@ -7,7 +7,6 @@ import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
-import AzuraFaucet from '@/components/azurafaucet/AzuraFaucet';
 import MessageboardCard from '@/components/messageboard-card/MessageboardCard';
 import Quests from '@/components/quests/Quests';
 import BookCard from '@/components/book-card/BookCard';
@@ -249,9 +248,6 @@ export default function Home() {
         <div className={styles.middleSection}>
           <div data-intro="quests">
             <Quests />
-          </div>
-          <div data-intro="azurafaucet">
-            <AzuraFaucet />
           </div>
           <div className={styles.eventsAndPromptRow}>
           <div className={styles.eventsSection} data-intro="events">
