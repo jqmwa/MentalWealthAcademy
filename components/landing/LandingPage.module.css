@@ -1,9 +1,9 @@
 .container {
   position: static;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
-  height: auto;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .loginHeader {
@@ -50,6 +50,7 @@
   padding: 0;
   width: auto;
   height: auto;
+  pointer-events: auto;
 }
 
 .promoCard {
@@ -872,20 +873,17 @@
 
 /* Company Logos Section */
 .companyLogosSection {
-  position: absolute;
-  top: calc(100vh + 100px);
-  left: 0;
-  right: 0;
+  position: relative;
   width: 100%;
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 100vh auto 0;
   padding: 40px 24px;
-  z-index: 5;
   animation: fadeInLogos 400ms ease-out forwards;
   animation-delay: 200ms;
   opacity: 0;
   pointer-events: none;
-  background-color: #00000000;
+  background-color: transparent;
+  z-index: 1;
 }
 
 .companyLogosSection > * {
@@ -1106,27 +1104,461 @@
   }
 }
 
-/* Pattern Background Section */
-.patternSection {
-  position: absolute;
-  top: calc(100vh + 600px);
-  left: 0;
-  right: 0;
+/* The Opportunity Section */
+.opportunitySection {
+  position: relative;
   width: 100%;
-  min-height: 400px;
-  background-color: rgba(22, 23, 22, 0.98);
-  z-index: 4;
-  overflow: hidden;
+  background-color: var(--color-background);
+  padding: 48px 0;
+  z-index: 1;
 }
 
-.patternOverlay {
+@media (min-width: 768px) {
+  .opportunitySection {
+    padding: 96px 0;
+  }
+}
+
+.opportunityContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .opportunityContainer {
+    padding: 0 24px;
+  }
+}
+
+.opportunityGrid {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .opportunityGrid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+}
+
+.opportunityLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .opportunityLeft {
+    grid-column: span 5;
+  }
+}
+
+.opportunityRight {
+  margin-top: 48px;
+}
+
+@media (min-width: 1024px) {
+  .opportunityRight {
+    grid-column: 7 / span 6;
+    margin-top: 0;
+  }
+}
+
+.opportunityList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.opportunityListItem {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  grid-template-columns: repeat(12, 1fr);
+  align-items: start;
+}
+
+.opportunityListItem:first-child {
+  border-top: none;
+}
+
+.opportunityListItem:last-child {
+  padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .opportunityListItem {
+    gap: 20px;
+    grid-template-columns: repeat(6, 1fr);
+    padding-bottom: 40px;
+    padding-top: 32px;
+  }
+}
+
+.opportunityListItemIcon {
+  width: 64px;
+  grid-column: span 2;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .opportunityListItemIcon {
+    width: 128px;
+  }
+}
+
+.opportunityListItemIconContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+
+.opportunityListItemIconPlaceholder {
   position: absolute;
   inset: 0;
-  height: 100%;
   width: 100%;
-  opacity: 0.3;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='turbulence' baseFrequency='0.85' numOctaves='1' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  background-size: 12%;
-  filter: saturate(1.2) contrast(1.1);
+  height: 100%;
+  background-color: rgba(81, 104, 255, 0.15);
+  border-radius: 4px;
+}
+
+.opportunityListItemContent {
+  grid-column: 4 / span 9;
+  padding-top: 16px;
+  padding-bottom: 8px;
+  align-self: start;
+}
+
+@media (min-width: 768px) {
+  .opportunityListItemContent {
+    grid-column: span 4;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+.opportunityListItemTitle {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+  margin: 0 0 16px 0;
+}
+
+@media (min-width: 768px) {
+  .opportunityListItemTitle {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+}
+
+.opportunityListItemText {
+  margin-top: 0;
+}
+
+.opportunityListItemText p {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-light);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-dark);
+  margin: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .opportunityListItemText p {
+    font-size: 12px;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .opportunityListItem {
+    gap: 8px;
+  }
+  
+  .opportunityListItemIcon {
+    width: 64px;
+  }
+  
+  .opportunityListItemContent {
+    grid-column-start: 4;
+    grid-column-span: 9;
+  }
+}
+
+.opportunityTitle {
+  font-family: var(--font-primary);
+  font-size: 24px;
+  line-height: 1;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+  margin: 0;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .opportunityTitle {
+    font-size: 28px;
+    padding-left: 52px;
+  }
+}
+
+.opportunityTextTop {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .opportunityTextTop {
+    font-size: 16px;
+    padding-left: 52px;
+    padding-right: 24px;
+    padding-top: 24px;
+    padding-bottom: 32px;
+    max-width: 384px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .opportunityTextTop {
+    max-width: 384px;
+    padding-right: 32px;
+  }
+}
+
+.opportunityTextTop p {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-dark);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.opportunityImageWrapper {
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .opportunityImageWrapper {
+    padding: 0;
+  }
+}
+
+.opportunityImageContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 85%;
+  margin-top: 20px;
+}
+
+.opportunityImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.opportunityTextBottom {
+  padding-top: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+  max-width: 100%;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .opportunityTextBottom {
+    font-size: 16px;
+    padding-left: 52px;
+    padding-right: 24px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    max-width: 384px;
+    margin: 32px auto 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .opportunityTextBottom {
+    max-width: 384px;
+    margin: 32px 0 0;
+    padding-left: 52px;
+    padding-right: 32px;
+  }
+}
+
+.opportunityTextBottom p {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-dark);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Old pattern and footer styles removed - now in separate components */
+
+.footerContent {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footerText {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  margin: 0;
+}
+
+/* Donation Popup */
+.donationPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 93vh;
+  z-index: 50;
   pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .donationPopup {
+    display: block;
+  }
+}
+
+.donationPopupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 45px;
+  box-sizing: border-box;
+}
+
+.donationPopupContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 24px;
+  padding-bottom: 30px;
+  padding-left: 56px;
+  padding-right: 61px;
+  background-color: #000000;
+  color: #ffffff;
+  pointer-events: auto;
+}
+
+.donationPopupCorner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.donationPopupText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  z-index: 10;
+}
+
+.donationPopupHeading {
+  font-family: var(--font-primary);
+  font-size: 29px;
+  line-height: 38px;
+  font-weight: var(--font-weight-bold);
+  max-width: 250px;
+  padding-right: 16px;
+  border-right: 1px solid #666666;
+  margin: 0;
+  color: #ffffff;
+}
+
+.donationPopupDescription {
+  font-size: 14px;
+  line-height: 18px;
+  max-width: 322px;
+  color: #CDCDCD;
+  margin: 0;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+}
+
+.donationPopupButton {
+  font-family: var(--font-button);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  background-color: #ffffff;
+  color: #111111;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  display: inline-block;
+}
+
+.donationPopupButton:hover {
+  background-color: #C9C9BB;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.donationPopupClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.donationPopupClose:hover {
+  opacity: 0.7;
+}
+
+.donationPopupClose svg {
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .donationPopup {
+    display: none;
+  }
 }

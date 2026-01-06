@@ -7,6 +7,8 @@ import SignInButton from '@/components/nav-buttons/SignInButton';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { WalletConnectionHandler } from './WalletAdvancedDemo';
 import { HelpTooltip } from '@/components/help-tooltip/HelpTooltip';
+import { PatternTextSection } from './PatternTextSection';
+import { LandingFooter } from './LandingFooter';
 import styles from './LandingPage.module.css';
 
 // Dynamically import Scene with aggressive lazy loading
@@ -15,8 +17,71 @@ const Scene = dynamic(() => import('./Scene'), {
   loading: () => null, // No loading indicator to avoid blocking
 });
 
+// Donation Popup Component
+const DonationPopup: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Show popup on large screens only
+    const checkScreenSize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className={styles.donationPopup}>
+      <div className={styles.donationPopupContainer}>
+        <div className={styles.donationPopupContent}>
+          <div className={styles.donationPopupCorner}>
+            <svg width="138" height="130" viewBox="0 0 138 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M40.3487 0H0V40.3487H40.3487V0Z" fill="#232323"></path>
+              <path d="M137.556 0H97.2068V40.3487H137.556V0Z" fill="#232323"></path>
+              <path d="M40.3487 89.6514H0V130H40.3487V89.6514Z" fill="#232323"></path>
+              <path d="M88.9712 0H48.5847V130H137.707V89.6513H88.9712V0Z" fill="#232323"></path>
+            </svg>
+          </div>
+          <div className={styles.donationPopupText}>
+            <h2 className={styles.donationPopupHeading}>Reshape the future of mental health.</h2>
+            <p className={styles.donationPopupDescription}>
+              Long-term held cryptocurrency investments can unlock additional funds for charity
+            </p>
+          </div>
+          <a 
+            className={styles.donationPopupButton} 
+            href="https://app.aragon.org/dao/base-mainnet/0xC449fEDCCE04226d282CEa32E382F63e6434649a/proposals?proposals=0x20AD736C911C6197492b37aa25695A66029f6775-tokenvoting"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Donate now
+          </a>
+          <button 
+            className={styles.donationPopupClose}
+            onClick={() => setIsVisible(false)}
+            aria-label="Close donation popup"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.41431" width="20" height="2" transform="rotate(45 1.41431 0)" fill="white"></rect>
+              <rect x="0.000244141" y="14.3643" width="20" height="2" transform="rotate(-45 0.000244141 14.3643)" fill="white"></rect>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Rotating Text Component
-const RotatingTextSection: React.FC = () => {
+export const RotatingTextSection: React.FC = () => {
   const texts = React.useMemo(() => [
     'own and control their destiny',
     'fund holistic decisions',
@@ -333,7 +398,7 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.promoContent}>
             <div className={styles.promoText}>
-              <h2 className={styles.promoTitle}>ACADEMIC DESCI ENDOWMENT FOR MENTAL HEALTH</h2>
+              <h2 className={styles.promoTitle}>MENTAL HEALTH NEEDS A REFRESHER</h2>
               <p className={styles.promoDescription}>
                 A community owned fund driving mental health changes in cyber-culture, through pragmatic parasocial governance systems.
               </p>
@@ -596,12 +661,112 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
+      {/* The Opportunity Section */}
+      <section id="opportunity" className={styles.opportunitySection}>
+        <div className={styles.opportunityContainer}>
+          <div className={styles.opportunityGrid}>
+            <div className={styles.opportunityLeft}>
+              <h1 className={styles.opportunityTitle}>The Opportunity</h1>
+              <div className={styles.opportunityTextTop}>
+                <p>Over 1 in 5 U.S. adults experience mental illness. Access to care is the growing concern as wealth gap rises, making this one of the largest crises of our generation.</p>
+              </div>
+              <div className={styles.opportunityImageWrapper}>
+                <div className={styles.opportunityImageContainer}>
+                  <Image
+                    src="/uploads/opportunity.png"
+                    alt="Mental health opportunity"
+                    fill
+                    className={styles.opportunityImage}
+                    loading="lazy"
+                    sizes="(max-width: 767px) 100vw, (max-width: 1023px) 384px, 384px"
+                  />
+                </div>
+              </div>
+              <div className={styles.opportunityTextBottom}>
+                <p>We need providers that aren&apos;t overworked through exploitative contracts, and capable of helping low-income families who desire change. This isn&apos;t a labor problem, it&apos;s a systemic one. Mental Health solutions can&apos;t flourish under hyper-financialized systems. reshaping how we govern these funds, essentially gives humans more control.</p>
+              </div>
+            </div>
+            <div className={styles.opportunityRight}>
+              <ul className={styles.opportunityList}>
+                <li className={styles.opportunityListItem}>
+                  <div className={styles.opportunityListItemIcon}>
+                    <div className={styles.opportunityListItemIconContainer}>
+                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                    </div>
+                  </div>
+                  <div className={styles.opportunityListItemContent}>
+                    <h5 className={styles.opportunityListItemTitle}>Clinical Care</h5>
+                    <div className={styles.opportunityListItemText}>
+                      <p>Traditional mental health services often rely on outdated models that prioritize profit over patient outcomes. We&apos;re working to transform clinical care through community-governed funding that ensures providers can focus on healing rather than billing cycles.</p>
+                    </div>
+                  </div>
+                </li>
+                <li className={styles.opportunityListItem}>
+                  <div className={styles.opportunityListItemIcon}>
+                    <div className={styles.opportunityListItemIconContainer}>
+                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                    </div>
+                  </div>
+                  <div className={styles.opportunityListItemContent}>
+                    <h5 className={styles.opportunityListItemTitle}>Community Support</h5>
+                    <div className={styles.opportunityListItemText}>
+                      <p>Peer support networks and community-based care have shown remarkable effectiveness, yet they remain underfunded. We&apos;re building sustainable models that empower local communities to create and maintain their own mental wellness infrastructure.</p>
+                    </div>
+                  </div>
+                </li>
+                <li className={styles.opportunityListItem}>
+                  <div className={styles.opportunityListItemIcon}>
+                    <div className={styles.opportunityListItemIconContainer}>
+                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                    </div>
+                  </div>
+                  <div className={styles.opportunityListItemContent}>
+                    <h5 className={styles.opportunityListItemTitle}>Prevention & Early Intervention</h5>
+                    <div className={styles.opportunityListItemText}>
+                      <p>Early intervention can prevent mental health crises before they escalate, but current systems prioritize reactive care. We&apos;re funding programs that identify and address mental health challenges early, reducing long-term suffering and costs.</p>
+                    </div>
+                  </div>
+                </li>
+                <li className={styles.opportunityListItem}>
+                  <div className={styles.opportunityListItemIcon}>
+                    <div className={styles.opportunityListItemIconContainer}>
+                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                    </div>
+                  </div>
+                  <div className={styles.opportunityListItemContent}>
+                    <h5 className={styles.opportunityListItemTitle}>Crisis Response</h5>
+                    <div className={styles.opportunityListItemText}>
+                      <p>Mental health crises require immediate, compassionate response, yet many communities lack adequate crisis intervention services. We&apos;re supporting alternatives to traditional emergency responses that prioritize de-escalation and connection over institutionalization.</p>
+                    </div>
+                  </div>
+                </li>
+                <li className={styles.opportunityListItem}>
+                  <div className={styles.opportunityListItemIcon}>
+                    <div className={styles.opportunityListItemIconContainer}>
+                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                    </div>
+                  </div>
+                  <div className={styles.opportunityListItemContent}>
+                    <h5 className={styles.opportunityListItemTitle}>Holistic Wellness</h5>
+                    <div className={styles.opportunityListItemText}>
+                      <p>Mental health cannot be separated from physical health, housing stability, economic security, and social connection. We&apos;re funding integrated approaches that address the full spectrum of human needs, recognizing that wellness is interconnected.</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pattern Background Section */}
-      <div className={styles.patternSection}>
-        <div className={styles.patternOverlay}></div>
-        {/* Rotating Text Section */}
-        <RotatingTextSection />
-      </div>
+      <PatternTextSection />
+
+      {/* Footer */}
+      <LandingFooter />
+
+      {/* Donation Popup */}
+      <DonationPopup />
 
       {/* Onboarding Modal */}
       <OnboardingModal 
