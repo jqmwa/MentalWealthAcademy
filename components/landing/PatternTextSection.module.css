@@ -3,7 +3,8 @@
   width: 100%;
   min-height: 400px;
   background-color: rgba(22, 23, 22, 0.98);
-  overflow: hidden;
+  overflow-x: visible;
+  overflow-y: hidden;
   margin: 0;
   padding: 60px 0;
 }

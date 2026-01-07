@@ -175,7 +175,7 @@ export const RotatingTextSection: React.FC = () => {
               width: currentWidth > 0 ? `${currentWidth}px` : 'auto',
               height: '50px',
               perspective: '1000px',
-              overflow: 'hidden',
+              overflow: 'visible',
               display: 'inline-block',
               verticalAlign: 'middle',
               transition: 'width 400ms cubic-bezier(0.4, 0, 0.2, 1)'
@@ -691,7 +691,12 @@ const LandingPage: React.FC = () => {
                 <li className={styles.opportunityListItem}>
                   <div className={styles.opportunityListItemIcon}>
                     <div className={styles.opportunityListItemIconContainer}>
-                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                      <Image
+                        src="/icons/Clinical Icon.svg"
+                        alt="Clinical Care"
+                        fill
+                        className={styles.opportunityListItemIconImage}
+                      />
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
@@ -704,7 +709,12 @@ const LandingPage: React.FC = () => {
                 <li className={styles.opportunityListItem}>
                   <div className={styles.opportunityListItemIcon}>
                     <div className={styles.opportunityListItemIconContainer}>
-                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                      <Image
+                        src="/icons/Mental Health Icon.svg"
+                        alt="Community Support"
+                        fill
+                        className={styles.opportunityListItemIconImage}
+                      />
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
@@ -717,7 +727,12 @@ const LandingPage: React.FC = () => {
                 <li className={styles.opportunityListItem}>
                   <div className={styles.opportunityListItemIcon}>
                     <div className={styles.opportunityListItemIconContainer}>
-                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                      <Image
+                        src="/icons/Mental Health Icon (1).svg"
+                        alt="Prevention & Early Intervention"
+                        fill
+                        className={styles.opportunityListItemIconImage}
+                      />
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
@@ -730,7 +745,12 @@ const LandingPage: React.FC = () => {
                 <li className={styles.opportunityListItem}>
                   <div className={styles.opportunityListItemIcon}>
                     <div className={styles.opportunityListItemIconContainer}>
-                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                      <Image
+                        src="/icons/Mental Health Icon (2).svg"
+                        alt="Crisis Response"
+                        fill
+                        className={styles.opportunityListItemIconImage}
+                      />
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
@@ -743,13 +763,18 @@ const LandingPage: React.FC = () => {
                 <li className={styles.opportunityListItem}>
                   <div className={styles.opportunityListItemIcon}>
                     <div className={styles.opportunityListItemIconContainer}>
-                      <div className={styles.opportunityListItemIconPlaceholder}></div>
+                      <Image
+                        src="/icons/Mental Health Icon (3).svg"
+                        alt="AI-Governance"
+                        fill
+                        className={styles.opportunityListItemIconImage}
+                      />
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>Holistic Wellness</h5>
+                    <h5 className={styles.opportunityListItemTitle}>AI-Governance</h5>
                     <div className={styles.opportunityListItemText}>
-                      <p>Mental health cannot be separated from physical health, housing stability, economic security, and social connection. We&apos;re funding integrated approaches that address the full spectrum of human needs, recognizing that wellness is interconnected.</p>
+                      <p>Community-governed funds represent a new paradigm where collective decision-making meets intelligent automation. By partnering with adaptive AI systems, we&apos;re creating a future where human wisdom guides resource allocation while machine intelligence optimizes outcomes, ensuring every dollar serves those who need it most.</p>
                     </div>
                   </div>
                 </li>
