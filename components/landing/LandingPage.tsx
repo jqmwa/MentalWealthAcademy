@@ -82,9 +82,9 @@ const DonationPopup: React.FC = () => {
 // Rotating Text Component
 export const RotatingTextSection: React.FC = () => {
   const texts = React.useMemo(() => [
-    'own and control their destiny',
+    'gain agency in their lives',
     'fund holistic decisions',
-    'restore and secure control'
+    'control their own destiny'
   ], []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentWidth, setCurrentWidth] = useState(0);
@@ -104,7 +104,7 @@ export const RotatingTextSection: React.FC = () => {
   useEffect(() => {
     const measureAllWidths = () => {
       const fontSize = window.innerWidth >= 768 ? '2.65rem' : '1.2rem';
-      const widths = texts.map(text => {
+      const widths = texts.map((text, idx) => {
         const span = document.createElement('span');
         span.style.visibility = 'hidden';
         span.style.position = 'absolute';
@@ -128,7 +128,13 @@ export const RotatingTextSection: React.FC = () => {
         // Add generous buffer: 5% of width + fixed buffer based on font size
         const percentageBuffer = Math.ceil(width * 0.05);
         const fixedBuffer = window.innerWidth >= 768 ? 20 : 10;
-        return width + percentageBuffer + fixedBuffer;
+        const finalWidth = width + percentageBuffer + fixedBuffer;
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/69bedce5-31dc-4412-975e-d1c27b64aa56',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage.tsx:124',message:'Text width measurement',data:{textIndex:idx,text,measuredWidth:width,percentageBuffer,fixedBuffer,finalWidth,fontSize,windowWidth:window.innerWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+        
+        return finalWidth;
       });
       setTextWidths(widths);
     };
@@ -145,6 +151,17 @@ export const RotatingTextSection: React.FC = () => {
       if (element) {
         const rect = element.getBoundingClientRect();
         const actualWidth = Math.ceil(rect.width);
+        const computedStyle = window.getComputedStyle(element);
+        const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+        const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+        const transform = computedStyle.transform;
+        const left = computedStyle.left;
+        const boxSizing = computedStyle.boxSizing;
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/69bedce5-31dc-4412-975e-d1c27b64aa56',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage.tsx:147',message:'Actual rendered element measurement',data:{currentIndex,actualWidth,currentWidth,paddingLeft,paddingRight,transform,left,boxSizing,textWidth:rect.width,textHeight:rect.height,elementWidth:element.offsetWidth,scrollWidth:element.scrollWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A,C,E'})}).catch(()=>{});
+        // #endregion
+        
         // If actual width is larger than measured, use the larger value
         if (actualWidth > currentWidth) {
           setCurrentWidth(actualWidth + 10); // Add small buffer
@@ -157,6 +174,10 @@ export const RotatingTextSection: React.FC = () => {
   useEffect(() => {
     if (textWidths.length > 0 && textWidths[currentIndex]) {
       setCurrentWidth(textWidths[currentIndex]);
+      
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/69bedce5-31dc-4412-975e-d1c27b64aa56',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage.tsx:159',message:'Width updated for index',data:{currentIndex,newWidth:textWidths[currentIndex],allWidths:textWidths},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
     }
   }, [currentIndex, textWidths]);
 
@@ -170,6 +191,19 @@ export const RotatingTextSection: React.FC = () => {
           <span className={styles.rotatingTextStatic}>Helping people</span>
           <div 
             className={styles.rotatingTextWrapper}
+            ref={(el) => {
+              // #region agent log
+              if (el) {
+                setTimeout(() => {
+                  const rect = el.getBoundingClientRect();
+                  const computedStyle = window.getComputedStyle(el);
+                  const parentRect = el.parentElement?.getBoundingClientRect();
+                  
+                  fetch('http://127.0.0.1:7242/ingest/69bedce5-31dc-4412-975e-d1c27b64aa56',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage.tsx:172',message:'Wrapper element styles',data:{wrapperRect:{width:rect.width,height:rect.height,left:rect.left,right:rect.right},parentRect:parentRect?{width:parentRect.width,height:parentRect.height,left:parentRect.left,right:parentRect.right}:null,wrapperWidth:computedStyle.width,wrapperPaddingLeft:computedStyle.paddingLeft,wrapperPaddingRight:computedStyle.paddingRight,wrapperBoxSizing:computedStyle.boxSizing,wrapperOverflow:computedStyle.overflow,wrapperDisplay:computedStyle.display,currentWidth,userAgent:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D,E'})}).catch(()=>{});
+                }, 150);
+              }
+              // #endregion
+            }}
             style={{ 
               width: currentWidth > 0 ? `${currentWidth}px` : 'auto',
               height: '50px',
@@ -195,7 +229,22 @@ export const RotatingTextSection: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    ref={(el) => { textItemRefs.current[index] = el; }}
+                    ref={(el) => { 
+                      textItemRefs.current[index] = el;
+                      // #region agent log
+                      if (el && index === currentIndex) {
+                        setTimeout(() => {
+                          const rect = el.getBoundingClientRect();
+                          const wrapperEl = el.parentElement?.parentElement;
+                          const wrapperRect = wrapperEl?.getBoundingClientRect();
+                          const computedStyle = window.getComputedStyle(el);
+                          const wrapperStyle = wrapperEl ? window.getComputedStyle(wrapperEl) : null;
+                          
+                          fetch('http://127.0.0.1:7242/ingest/69bedce5-31dc-4412-975e-d1c27b64aa56',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage.tsx:196',message:'Element position after render',data:{index,text,itemRect:{width:rect.width,height:rect.height,left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom},wrapperRect:wrapperRect?{width:wrapperRect.width,height:wrapperRect.height,left:wrapperRect.left,right:wrapperRect.right}:null,itemTransform:computedStyle.transform,itemLeft:computedStyle.left,itemWidth:computedStyle.width,itemPaddingLeft:computedStyle.paddingLeft,itemPaddingRight:computedStyle.paddingRight,itemBoxSizing:computedStyle.boxSizing,wrapperWidth:wrapperStyle?.width,wrapperOverflow:wrapperStyle?.overflow,clippedLeft:rect.left < (wrapperRect?.left || 0),clippedRight:rect.right > (wrapperRect?.right || 0),currentWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'B,C,D,E'})}).catch(()=>{});
+                        }, 100);
+                      }
+                      // #endregion
+                    }}
                     className={styles.rotatingTextItem}
                     style={{
                       transform: `translateX(-50%) rotateX(${itemRotation}deg) translateZ(60px)`,
