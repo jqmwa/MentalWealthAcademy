@@ -58,7 +58,7 @@ const DonationPopup: React.FC = () => {
           </div>
           <a 
             className={styles.donationPopupButton} 
-            href="https://app.aragon.org/dao/base-mainnet/0xC449fEDCCE04226d282CEa32E382F63e6434649a/proposals?proposals=0x20AD736C911C6197492b37aa25695A66029f6775-tokenvoting"
+            href="https://artizen.fund/index/p/mental-wealth-academy?season=6"
             target="_blank"
             rel="noopener noreferrer"
           >
