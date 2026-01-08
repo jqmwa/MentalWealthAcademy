@@ -1,0 +1,70 @@
+{
+  "brandName": "Mental Wealth Academy",
+  "brandIdentityPrompt": "Create a full, multi-dimensional brand identity system for \"Mental Wealth Academy,\" a research-driven AI learning platform focused on improving cyber-psychology, pragmatic governance systems, and blockchain technology. The identity must feel educational, community-centered, transparent, accessible, empowering, collaborative, and forward-thinking.\n\nLOGO SYSTEM: Use a symbol that represents knowledge flow, community connection, and continuous learning—consider a flowing path, interconnected nodes, or an open book with digital elements. Wordmark: \"Mental Wealth Academy\" in bold geometric rounded sans serif (Poppins / Space Grotesk), open spacing. Variants: icon + wordmark, stacked, icon-only, white version, outlined version. Rules: maintain clarity and accessibility, minimum padding = 50% logo height, ensure readability at all sizes.\n\nCOLOR PALETTE: Core colors: Academy Blue #5168FF (primary actions, trust, knowledge); Growth Green #62BE8F (secondary elements, progress, community); Light Purple Background #F4F5FE (calm, clarity, learning space); Absolute Black #000000 (text, precision); Light Gray #ECECEC (text on dark, balance). Supporting: Futuristic Floss Gradient #ECECFF to #E1E1FE (subtle depth, modern feel). Meaning: Blue=knowledge and trust, Green=growth and community, Purple=calm learning environment, Black=clarity and precision.\n\nTYPOGRAPHY: Headlines in rounded geometric sans (Poppins Bold / Space Grotesk); body text in Poppins Light for readability; UI text and technical content in IBM Plex Mono for code, blockchain references, and structured information.\n\nGRAPHIC LANGUAGE: All visuals derived from educational and community themes: flowing knowledge paths, interconnected learning nodes, open book shapes, digital-to-analog transitions, community circles, transparent layers, gradient flows, quest pathways, governance decision trees, blockchain link patterns.\n\nBRAND PERSONALITY: Educational, community-centered, transparent, accessible, empowering, collaborative, research-driven, forward-thinking. Voice: clear, supportive, inclusive, confident, inspiring. Sample lines: \"Knowledge for all, together,\" \"Building transparent futures,\" \"Education that empowers communities,\" \"Grow stronger by empowering your community.\"\n\nMOTION DESIGN: Logo animates as knowledge flowing between nodes; community connections forming; pages turning into digital interfaces. UI motion uses gentle reveals, smooth transitions, collaborative formation patterns, quest progression indicators. Add educational energy layers: knowledge particle trails, community connection lines, transparent overlay reveals.\n\nAPPLICATIONS: Website hero with light purple background and subtle flowing knowledge paths; app icon with community/learning symbol centered on gradient field; product screens with clean UI, blue/green micro-highlights, mono font for technical content, flowing separators. Social templates: high contrast, community-focused imagery, educational iconography. Merch: hoodies, stickers, laptop skins, water bottles using the knowledge flow and community motifs. Posters: cinematic learning environments with flowing knowledge paths and community connection shapes.\n\nMATERIALS & LIGHTING: Soft matte surfaces, subtle educational textures, polished transparent layers, gentle gradient edges, stacked knowledge layers. Lighting with radial community glow, soft volumetric gradients, highlights following knowledge pathways.\n\nBRAND MYTHOLOGY: The flowing knowledge path symbolizes the Mental Wealth Field—an abstract educational fabric where ideas form, communities connect, and knowledge transforms into empowerment. Represents continuous learning, community collaboration, transparent governance, and the flow of accessible education that builds a better future for everyone.\n\nSUBJECTS & TOPICS: The brand identity should reflect Mental Wealth Academy's core subjects: cyber-psychology, pragmatic governance systems, blockchain technology, educational workshops, library resources, community discussion forums, interactive quests, decentralized systems, AI learning systems, pattern recognition, enframent, decision-making transparency, community empowerment, digital transition, knowledge preservation, and collaborative learning.",
+  "colorPalette": {
+    "primary": {
+      "name": "Academy Blue",
+      "hex": "#5168FF",
+      "meaning": "Primary actions, trust, knowledge"
+    },
+    "secondary": {
+      "name": "Growth Green",
+      "hex": "#62BE8F",
+      "meaning": "Secondary elements, progress, community"
+    },
+    "background": {
+      "name": "Light Purple Background",
+      "hex": "#F4F5FE",
+      "meaning": "Calm, clarity, learning space"
+    },
+    "textDark": {
+      "name": "Absolute Black",
+      "hex": "#000000",
+      "meaning": "Text, precision"
+    },
+    "textLight": {
+      "name": "Light Gray",
+      "hex": "#ECECEC",
+      "meaning": "Text on dark, balance"
+    },
+    "gradient": {
+      "name": "Futuristic Floss",
+      "start": "#ECECFF",
+      "end": "#E1E1FE",
+      "meaning": "Subtle depth, modern feel"
+    }
+  },
+  "typography": {
+    "headlines": "Poppins Bold / Space Grotesk (rounded geometric sans)",
+    "body": "Poppins Light",
+    "ui": "IBM Plex Mono (for code, blockchain references, structured information)"
+  },
+  "coreSubjects": [
+    "Cyber-psychology",
+    "Pragmatic governance systems",
+    "Blockchain technology",
+    "Educational workshops",
+    "Library resources",
+    "Community discussion forums",
+    "Interactive quests",
+    "Decentralized systems",
+    "AI learning systems",
+    "Pattern recognition",
+    "Enframent",
+    "Decision-making transparency",
+    "Community empowerment",
+    "Digital transition",
+    "Knowledge preservation",
+    "Collaborative learning"
+  ],
+  "keyFeatures": [
+    "Educational Workshops",
+    "Library",
+    "Messaging/Forum",
+    "Quests",
+    "Community Collaboration",
+    "AI-powered tools",
+    "Blockchain integration"
+  ],
+  "brandMission": "Mental Wealth Academy empowers communities to safely transition to digital platforms, preserve and share knowledge, grow stronger through collaboration, customize their experience with AI-powered tools, and onboard new members easily. The platform helps proliferate education by sharing digital tools for real-world communities, helping them transition into a digital future where education makes decision-making more transparent, crystal-clear, and accessible for everyone."
+}

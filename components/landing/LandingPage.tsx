@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import SignInButton from '@/components/nav-buttons/SignInButton';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { WalletConnectionHandler } from './WalletAdvancedDemo';
-import { HelpTooltip } from '@/components/help-tooltip/HelpTooltip';
 import { PatternTextSection } from './PatternTextSection';
 import { LandingFooter } from './LandingFooter';
 import styles from './LandingPage.module.css';
@@ -398,9 +397,9 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.promoContent}>
             <div className={styles.promoText}>
-              <h2 className={styles.promoTitle}>MENTAL HEALTH NEEDS A REFRESHER</h2>
+              <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-                A community owned fund driving mental health changes in cyber-culture, through pragmatic parasocial governance systems.
+                A community owned fund driving mental health changes and how we interact with cyber-culture, and parasocial governance.
               </p>
             </div>
           </div>
@@ -408,12 +407,6 @@ const LandingPage: React.FC = () => {
 
         {/* Login Card */}
         <div className={styles.loginCard}>
-          <div className={styles.helpTooltipWrapper}>
-            <HelpTooltip 
-              content="Welcome to Mental Wealth Academy! This is a virtual learning platform where you can take classes, complete quests, earn rewards, and learn together. We use blockchain and cryptocurrency to make learning more engaging and rewarding. If you need assistance, please contact our support team."
-              position="top-right"
-            />
-          </div>
           <div className={styles.cardContent}>
             <div className={styles.loginHeader}>
               <div className={styles.logoContainer}>
@@ -560,8 +553,8 @@ const LandingPage: React.FC = () => {
         <div className={styles.logosGrid}>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/Logo_ElizaOS_Blue_RGB.png"
-              alt="ElizaOS logo"
+              src="/companylogos/full-ethereum-logo.png"
+              alt="Ethereum logo"
               width={120}
               height={80}
               className={styles.logoImage}
@@ -570,8 +563,28 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/full-ethereum-logo.png"
-              alt="Ethereum logo"
+              src="/companylogos/OP_vertical_1200px.png"
+              alt="Optimism logo"
+              width={120}
+              height={80}
+              className={`${styles.logoImage} ${styles.optimismLogo}`}
+              loading="lazy"
+            />
+          </div>
+          <div className={styles.logoItem}>
+            <Image
+              src="/companylogos/Base-Logo-New-1.png"
+              alt="Base logo"
+              width={120}
+              height={80}
+              className={styles.logoImage}
+              loading="lazy"
+            />
+          </div>
+          <div className={styles.logoItem}>
+            <Image
+              src="/companylogos/foundation-dark.621f9c538e70-1.png"
+              alt="Foundation logo"
               width={120}
               height={80}
               className={styles.logoImage}
@@ -590,8 +603,8 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/OP_vertical_1200px.png"
-              alt="Optimism logo"
+              src="/companylogos/gitcoin.png"
+              alt="Gitcoin logo"
               width={120}
               height={80}
               className={styles.logoImage}
@@ -600,8 +613,8 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/foundation-dark.621f9c538e70-1.png"
-              alt="Foundation logo"
+              src="/companylogos/Logo_ElizaOS_Blue_RGB.png"
+              alt="ElizaOS logo"
               width={120}
               height={80}
               className={styles.logoImage}
@@ -640,8 +653,8 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/gitcoin.png"
-              alt="Gitcoin logo"
+              src="/companylogos/1_o5Q3503plQP12FtVSn0nXQ.png"
+              alt="Partner logo"
               width={120}
               height={80}
               className={styles.logoImage}
@@ -650,7 +663,7 @@ const LandingPage: React.FC = () => {
           </div>
           <div className={styles.logoItem}>
             <Image
-              src="/companylogos/1_o5Q3503plQP12FtVSn0nXQ.png"
+              src="/companylogos/ndW713QDOQJJBgB-aJvrIJ8U2HfKTYL4-h3RRtYNgX9DMzlziKfCVRdTnq4mHGltuCtutlq37GKdfB90YKodWg.webp"
               alt="Partner logo"
               width={120}
               height={80}

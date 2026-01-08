@@ -90,7 +90,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://i.imgur.com/WwbitCr.jpeg');
+  background-image: url('https://i.imgur.com/dV92Xwh.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -106,9 +106,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-primary);
-  mix-blend-mode: color-burn;
-  opacity: 0.5;
+  background: var(--color-background);
+  mix-blend-mode: none;
+  opacity: 0.0;
   z-index: 2;
 }
 
@@ -908,7 +908,7 @@
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.02rem;
-  color: #d7cdf2;
+  color: #ffffff;
   margin: 0 0 16px 0;
   border-radius: 4px;
 }
@@ -1065,14 +1065,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background-color: rgba(210, 216, 255, 0.98);
+  background-color: rgba(255, 255, 255, 0.939);
   padding: 16px;
   cursor: pointer;
   transition: background-color 200ms ease;
 }
 
 .logoItem:hover {
-  background-color: rgba(255, 255, 255, 0.939);
+  background-color: rgba(210, 216, 255, 0.98);
 }
 
 .logoItem .logoImage {
@@ -1082,7 +1082,7 @@
   max-width: 100%;
   object-fit: contain;
   opacity: 0.9;
-  filter: grayscale(100%);
+  filter: grayscale(0%);
   mix-blend-mode: multiply;
   transition: opacity 200ms ease;
 }
@@ -1090,6 +1090,10 @@
 .logoItem:hover .logoImage {
   opacity: 1;
   filter: grayscale(0%);
+}
+
+.logoItem .optimismLogo {
+  max-height: 50px;
 }
 
 @media (max-width: 768px) {
@@ -1109,6 +1113,10 @@
   
   .logoItem .logoImage {
     max-height: 32px;
+  }
+  
+  .logoItem .optimismLogo {
+    max-height: 40px;
   }
 }
 
