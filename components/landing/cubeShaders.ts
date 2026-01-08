@@ -87,9 +87,9 @@ void main() {
     
     // Use only 5 colors - assign to 6 faces (color1 used twice for opposite faces)
     vec3 color1 = ucolor1; // Primary: #5168FF
-    vec3 color2 = ucolor2; // Secondary:rgb(212, 84, 101)
-    vec3 color3 = ucolor3; // Green variant:rgb(101, 235, 23)
-    vec3 color4 = ucolor4; // Cyan:rgb(208, 246, 84)
+    vec3 color2 = ucolor2; // Secondary: #62BE8F (rgb(98, 190, 143))
+    vec3 color3 = ucolor3; // Green variant:rgb(235, 193, 23)
+    vec3 color4 = ucolor4; // White: rgb(255, 255, 255)
     vec3 color5 = ucolor5; // Dark purple: #1E0C39
     
     // Determine which face we're on based on the dominant normal component

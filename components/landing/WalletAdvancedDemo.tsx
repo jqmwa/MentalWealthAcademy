@@ -8,13 +8,14 @@ import styles from './WalletAdvancedDemo.module.css';
 
 interface WalletConnectionHandlerProps {
   onWalletConnected?: (address: string) => void;
+  buttonText?: string;
 }
 
 /**
  * Handles wallet connection, user authentication, and account creation.
  * This component manages the full flow from wallet connection to onboarding.
  */
-export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionHandlerProps) {
+export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Connect Wallet' }: WalletConnectionHandlerProps) {
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const { setOpen } = useModal();
@@ -373,14 +374,14 @@ export function WalletConnectionHandler({ onWalletConnected }: WalletConnectionH
   };
 
   return (
-    <div>
+    <div className={styles.walletButtonWrapper}>
       <button
         type="button"
         className={styles.connectWallet}
         onClick={handleConnectClick}
         disabled={isProcessing || hasAccount === null}
       >
-        {isProcessing ? 'Processing...' : hasAccount === null ? 'Checking...' : 'Connect Wallet'}
+        {isProcessing ? 'Processing...' : hasAccount === null ? 'Checking...' : buttonText}
       </button>
     </div>
   );

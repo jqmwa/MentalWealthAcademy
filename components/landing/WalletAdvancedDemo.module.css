@@ -1,6 +1,10 @@
+.walletButtonWrapper {
+  width: 100%;
+}
+
 .connectWallet {
   width: 100%;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   color: var(--color-text-light);
   border: none;
   padding: 12px 20px;
@@ -19,9 +23,9 @@
 }
 
 .connectWallet:hover:not(:disabled) {
-  background-color: #3d52e6;
+  background-color: #4fa87a;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
 }
 
 .connectWallet:active:not(:disabled) {

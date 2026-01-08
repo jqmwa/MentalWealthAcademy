@@ -21,18 +21,36 @@ const DonationPopup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Show popup on large screens only
-    const checkScreenSize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsVisible(true);
-      } else {
+    // Show popup on large screens only and after scrolling past company logos
+    const checkVisibility = () => {
+      if (window.innerWidth < 1024) {
         setIsVisible(false);
+        return;
       }
+
+      // Find the company logos section
+      const logosSection = document.querySelector('[class*="companyLogosSection"]');
+      if (!logosSection) {
+        setIsVisible(false);
+        return;
+      }
+
+      // Get the bottom position of the logos section
+      const logosRect = logosSection.getBoundingClientRect();
+      const logosBottom = logosRect.bottom + window.scrollY;
+      const currentScroll = window.scrollY + window.innerHeight;
+
+      // Show popup only if user has scrolled past the logos section
+      setIsVisible(currentScroll > logosBottom);
     };
 
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    checkVisibility();
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('resize', checkVisibility);
+    return () => {
+      window.removeEventListener('scroll', checkVisibility);
+      window.removeEventListener('resize', checkVisibility);
+    };
   }, []);
 
   if (!isVisible) return null;
@@ -448,7 +466,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-                A community owned fund driving mental health changes and how we interact with cyber-culture, and parasocial governance.
+              Master AI coding → Earn real income. Gain experience from domain experts. Earn tokens through challenges and vote on what matters to your community.
               </p>
             </div>
           </div>
@@ -494,14 +512,6 @@ const LandingPage: React.FC = () => {
                 </div>
               </div>
             )}
-              
-            {/* Wallet Connection */}
-            <div className={styles.walletSection}>
-              <WalletConnectionHandler onWalletConnected={(address) => {
-                setIsWalletSignup(true);
-                setShowOnboarding(true);
-              }} />
-            </div>
 
             {/* Form */}
             <form className={styles.loginForm} onSubmit={handleLogin}>
@@ -564,7 +574,7 @@ const LandingPage: React.FC = () => {
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-                      Keep me logged in
+                      Remember this device
                     </label>
                   </div>
                   <a href="#" className={styles.forgotLink}>
@@ -582,8 +592,19 @@ const LandingPage: React.FC = () => {
                   className={styles.loginButton}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Signing in...' : 'Continue'}
+                  {isLoading ? 'Signing in...' : 'Join Decentralized Members'}
                 </button>
+                
+                {/* Wallet Connection */}
+                <div className={styles.walletSection}>
+                  <WalletConnectionHandler 
+                    onWalletConnected={(address) => {
+                      setIsWalletSignup(true);
+                      setShowOnboarding(true);
+                    }}
+                    buttonText="Connect With Ethereum"
+                  />
+                </div>
                 
                 <div className={styles.termsText}>
                   By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}
