@@ -12,8 +12,12 @@ interface XConnectingModalProps {
 export const XConnectingModal: React.FC<XConnectingModalProps> = ({ isOpen, onClose }) => {
   const [dots, setDots] = useState('');
 
-  useEffect(() => {
-    if (!isOpen) return;
+useEffect(() => {
+  if (!isOpen) {
+    setDots(''); // Reset dots when modal closes
+    return;
+  }
+
 
     const interval = setInterval(() => {
       setDots((prev) => {
@@ -22,7 +26,10 @@ export const XConnectingModal: React.FC<XConnectingModalProps> = ({ isOpen, onCl
       });
     }, 500);
 
-    return () => clearInterval(interval);
+    return () => {
+    clearInterval(interval);
+    setDots(''); // Clean up on unmount
+  };
   }, [isOpen]);
 
   if (!isOpen) return null;
