@@ -11,9 +11,19 @@ const Web3Provider = dynamic(
   () => import('./Web3Provider').then(mod => ({ default: mod.Web3Provider })),
   { 
     ssr: false,
-    loading: () => null, // No loading state needed
+    loading: () => null,
+    // Add error boundary for import failures
+    onError: (error) => {
+      console.error('Failed to load Web3Provider:', error);
+    },
   }
 );
+
+// Add a fallback component
+const Web3ProviderFallback = ({ children }: { children: React.ReactNode }) => {
+  console.warn('Web3Provider failed to load, rendering without wallet functionality');
+  return <>{children}</>;
+};
 
 /**
  * Conditionally wraps children with Web3Provider only on pages that need wallet functionality.
