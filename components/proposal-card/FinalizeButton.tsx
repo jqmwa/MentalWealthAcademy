@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import styles from './FinalizeButton.module.css';
 
@@ -21,12 +21,7 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
 
-  // Check if already finalized on mount
-  useEffect(() => {
-    checkFinalizationStatus();
-  }, [proposalId]);
-
-  const checkFinalizationStatus = async () => {
+  const checkFinalizationStatus = useCallback(async () => {
     setChecking(true);
     try {
       const response = await fetch(`/api/voting/proposal/${proposalId}/finalize`);
@@ -40,7 +35,12 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
     } finally {
       setChecking(false);
     }
-  };
+  }, [proposalId]);
+
+  // Check if already finalized on mount
+  useEffect(() => {
+    checkFinalizationStatus();
+  }, [checkFinalizationStatus]);
 
   const handleFinalize = async () => {
     if (!isConnected || !address) {

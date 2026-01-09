@@ -131,3 +131,12 @@ export async function getCurrentUserFromRequestCookie(): Promise<CurrentUser | n
     shardCount: user.shard_count,
   };
 }
+
+/**
+ * Gets the current user from the request.
+ * This is a wrapper around getCurrentUserFromRequestCookie for compatibility.
+ * The Request parameter is ignored as the function uses Next.js APIs directly.
+ */
+export async function getUserFromRequest(_request?: Request): Promise<CurrentUser | null> {
+  return getCurrentUserFromRequestCookie();
+}

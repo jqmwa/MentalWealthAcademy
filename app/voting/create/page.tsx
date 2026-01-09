@@ -181,7 +181,7 @@ export default function CreateProposalPage() {
                   <p className={styles.eyebrow}>MWA • Proposal Submission</p>
                   <h1 className={styles.title}>Submit Your Vision</h1>
                   <p className={styles.subtitle}>
-                    Share your ideas with the community. Whether you're proposing an activation, research project, or community initiative, this is where great ideas begin their journey.
+                    Share your ideas with the community. Whether you&apos;re proposing an activation, research project, or community initiative, this is where great ideas begin their journey.
                   </p>
                 </div>
               </div>
