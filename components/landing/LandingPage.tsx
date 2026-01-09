@@ -466,7 +466,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              Master AI coding → Earn real income. Gain experience from domain experts. Earn tokens through challenges and vote on what matters to your community.
+              Take control of your mental wealth → Earn real income. Gain experience from domain experts. And achieve status within the digital community.
               </p>
             </div>
           </div>
