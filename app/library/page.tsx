@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/navbar/Navbar';
 import BookCard from '@/components/book-card/BookCard';
 import { Footer } from '@/components/footer/Footer';
-import { AccountBanner } from '@/components/forum/AccountBanner';
 import styles from './page.module.css';
 
 const curatedBooks = [
@@ -63,37 +62,35 @@ const communityBooks = [
 
 export default function Library() {
   const [activeTab, setActiveTab] = useState<'curated' | 'community'>('curated');
+  const [isLoaded, setIsLoaded] = useState(false);
   const activeBooks = activeTab === 'curated' ? curatedBooks : communityBooks;
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   return (
     <>
       <Navbar />
       <main className={styles.page}>
         <section className={styles.hero}>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Your Academic Research Library</h1>
-            <p className={styles.heroSubtitle}>
-              Discover papers, track what you&apos;re reading, rate and review.
-              <br />
-              Build a library that grows with your curiosity.
-            </p>
-            <div className={styles.heroActions}>
-              <button className={styles.primaryCta}>Get Started</button>
-              <button className={styles.secondaryCta}>Explore Papers</button>
+          <div className={`${styles.heroContent} ${isLoaded ? styles.heroContentLoaded : ''}`}>
+            <div className={styles.heroTitleWrapper}>
+              <span className={styles.heroLabel}>Research Library</span>
+              <h1 className={styles.heroTitle}>Knowledge Archive</h1>
             </div>
+            <p className={styles.heroSubtitle}>
+              Discover groundbreaking research, track your reading journey, and build a personal archive of academic insights.
+            </p>
           </div>
-          <div className={styles.heroGlow} />
+          <div className={styles.heroDecorative} aria-hidden="true">
+            <div className={styles.decorativeLine}></div>
+            <div className={styles.decorativeLine}></div>
+            <div className={styles.decorativeLine}></div>
+          </div>
         </section>
 
-        <div className={styles.accountBannerWrap}>
-          <AccountBanner />
-        </div>
-
         <section className={styles.papersSection}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>All Papers</h2>
-          </div>
-
           <div className={styles.tabs}>
             <button
               className={`${styles.tabCard} ${
@@ -101,11 +98,12 @@ export default function Library() {
               }`}
               onClick={() => setActiveTab('curated')}
               type="button"
+              aria-pressed={activeTab === 'curated'}
             >
-              <div className={styles.tabBadge}>Staff Curated</div>
-              <div className={styles.tabTextGroup}>
-                <span className={styles.tabTitle}>Library Picks</span>
-                <span className={styles.tabSubtitle}>Expert-reviewed, high-signal reads</span>
+              <div className={styles.tabIndicator}></div>
+              <div className={styles.tabContent}>
+                <span className={styles.tabTitle}>Curated</span>
+                <span className={styles.tabSubtitle}>Expert-selected research</span>
               </div>
             </button>
 
@@ -115,18 +113,25 @@ export default function Library() {
               }`}
               onClick={() => setActiveTab('community')}
               type="button"
+              aria-pressed={activeTab === 'community'}
             >
-              <div className={styles.tabBadge}>Community</div>
-              <div className={styles.tabTextGroup}>
-                <span className={styles.tabTitle}>Community Uploads</span>
-                <span className={styles.tabSubtitle}>Peer-shared papers and field notes</span>
+              <div className={styles.tabIndicator}></div>
+              <div className={styles.tabContent}>
+                <span className={styles.tabTitle}>Community</span>
+                <span className={styles.tabSubtitle}>Peer-shared knowledge</span>
               </div>
             </button>
           </div>
 
-          <div className={styles.booksGrid}>
-            {activeBooks.map((book) => (
-              <BookCard key={book.title} {...book} />
+          <div className={`${styles.booksGrid} ${isLoaded ? styles.booksGridLoaded : ''}`}>
+            {activeBooks.map((book, index) => (
+              <div 
+                key={book.title} 
+                className={styles.bookCardWrapper}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <BookCard {...book} />
+              </div>
             ))}
           </div>
         </section>

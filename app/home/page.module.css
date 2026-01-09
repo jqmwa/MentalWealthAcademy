@@ -1,6 +1,6 @@
 .main {
   min-height: 100vh;
-  background: var(--color-background);
+  /* Background removed to show global body background (same as quests page) */
 }
 
 .content {

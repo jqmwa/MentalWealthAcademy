@@ -33,8 +33,57 @@ The platform provides opportunities to take back sequestered knowledge and build
 | 📚 **Library** | Organized library of community resources and assets |
 | 💬 **Messaging** | Community discussion boards for knowledge sharing and collaboration |
 | 🎯 **Quests** | Interactive learning paths and community challenges |
+| 🎮 **Azura Voting Game** | AI-powered proposal funding with weighted admin voting system |
 
 </div>
+
+---
+
+## 🎮 Azura's Weighted Voting System
+
+**Play the funding game where AI meets human judgment!**
+
+Submit proposals for mental health projects, wellness initiatives, fitness programs, or educational resources. Azura AI reviews your proposal and assigns confidence levels that determine voting power:
+
+### The Levels
+
+<div align="center">
+
+| Level | Token Allocation | Azura's Voting Weight | Admin Buy-In Needed |
+|-------|------------------|----------------------|---------------------|
+| 🚫 **Level 0** | 0% (Rejected) | No vote | N/A |
+| ⭐ **Level 1** | 10% of pool | 10% weight | 40% needed |
+| ⭐⭐ **Level 2** | 20% of pool | 20% weight | 30% needed |
+| ⭐⭐⭐ **Level 3** | 30% of pool | 30% weight | 20% needed |
+| ⭐⭐⭐⭐ **Level 4** | 40% of pool | 40% weight | 10% needed |
+
+</div>
+
+### The Game
+
+```
+🎯 Threshold: 50% of total voting power needed to pass
+
+Example: Level 1 Proposal (10% allocation)
+├─ Azura votes with 10% weight (low confidence)
+├─ Needs 40% more from human admins
+└─ High community buy-in required ✋
+
+Example: Level 4 Proposal (40% allocation)
+├─ Azura votes with 40% weight (high confidence)
+├─ Needs only 10% more from human admins
+└─ Low buy-in needed - Azura believes in it! 🚀
+```
+
+**How it works:**
+1. 📝 Submit your proposal for mental health, wellness, fitness, or education
+2. 🤖 Azura AI analyzes quality, impact, feasibility, and budget
+3. ⚖️ Azura assigns confidence level (0-4) = voting weight
+4. 👥 Admin community votes to reach 50% threshold
+5. 💰 USDC transfers via Safe multisig when approved
+6. 🎉 Your project gets funded!
+
+> **Higher quality proposals = Higher Azura confidence = Less admin votes needed**
 
 ---
 
@@ -60,13 +109,23 @@ Ready to explore? **Create an account** and discover all of our features designe
 
 ## 🎯 Mission
 
-Mental Wealth Academy empowers communities to:
+Mental Wealth Academy is on a mission to bring **mental health, wellness, fitness, and education** to a global audience worldwide through innovative blockchain technology and AI-powered governance.
 
-- ✅ **Safely transition** to digital platforms
-- 📖 **Preserve and share** knowledge
-- 🤝 **Grow stronger** through collaboration
-- 🤖 **Customize their experience** with AI-powered tools
-- 👥 **Onboard new members** easily
+We empower communities to:
+
+- 🧠 **Access mental health resources** through transparent funding
+- 💪 **Build wellness & fitness programs** with community support
+- 📚 **Create educational content** that reaches everyone
+- 🤖 **Leverage AI assistance** (Azura) for fair resource allocation
+- 🌍 **Connect globally** while maintaining local community values
+- ⚖️ **Participate in governance** through weighted voting systems
+- 💎 **Fund innovative projects** with transparent, multisig-secured USDC
+
+### Our Core Values
+
+**Ingenuity** • **Transparency** • **Accessibility** • **Community-Driven** • **Evidence-Based**
+
+We believe in combining cutting-edge technology with human wisdom to create pragmatic governance systems that actually work for real communities.
 
 ---
 

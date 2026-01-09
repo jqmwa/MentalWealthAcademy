@@ -5,16 +5,28 @@ import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import Link from 'next/link';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
-import VotingStages from '@/components/voting-stages/VotingStages';
+import ProposalCard from '@/components/proposal-card/ProposalCard';
 import styles from './page.module.css';
 
-const communityAvatars = [
-  { name: 'Nova', color: '#5B8DEF' },
-  { name: 'Vale', color: '#7C8CFF' },
-  { name: 'Rune', color: '#9F8CFF' },
-  { name: 'Cyra', color: '#A5C8FF' },
-  { name: 'Iris', color: '#6AD9FF' },
-];
+interface Proposal {
+  id: string;
+  title: string;
+  proposalMarkdown: string;
+  status: 'pending_review' | 'approved' | 'rejected' | 'active' | 'completed';
+  walletAddress: string;
+  createdAt: string;
+  user: {
+    username: string | null;
+    avatarUrl: string | null;
+  };
+  review: {
+    decision: 'approved' | 'rejected';
+    reasoning: string;
+    tokenAllocation: number | null;
+    scores: any;
+    reviewedAt: string;
+  } | null;
+}
 
 const getTutorialSteps = (): TutorialStep[] => [
   {
@@ -44,6 +56,8 @@ const getTutorialSteps = (): TutorialStep[] => [
 
 export default function VotingPage() {
   const [showTutorial, setShowTutorial] = useState(false);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if user has seen the admin tutorial
@@ -57,9 +71,34 @@ export default function VotingPage() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchProposals();
+  }, []);
+
+  const fetchProposals = async () => {
+    try {
+      const response = await fetch('/api/voting/proposals');
+      const data = await response.json();
+      
+      if (data.ok && data.proposals) {
+        setProposals(data.proposals);
+      }
+    } catch (error) {
+      console.error('Error fetching proposals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleTutorialComplete = () => {
     localStorage.setItem('hasSeenAdminTutorial', 'true');
     setShowTutorial(false);
+  };
+
+  const handleViewDetails = (proposalId: string) => {
+    // TODO: Navigate to proposal details page or open modal
+    console.log('View proposal:', proposalId);
+    alert('Proposal details view coming soon!');
   };
 
   return (
@@ -75,128 +114,63 @@ export default function VotingPage() {
       />
       <main className={styles.page}>
         <div className={styles.content}>
-          <div className={styles.breadcrumbs}>
-            <Link href="/home">Home</Link>
-            <span className={styles.chevron}>/</span>
-            <span className={styles.current}>Voting</span>
-          </div>
+          <div className={styles.hero}>
+            <div className={styles.breadcrumbs}>
+              <Link href="/home">Home</Link>
+              <span className={styles.chevron}>/</span>
+              <span className={styles.current}>Voting</span>
+            </div>
 
-          <header className={styles.header}>
-            <div>
+            <header className={styles.header}>
               <p className={styles.eyebrow}>MWA • Decision Room</p>
               <h1 className={styles.title}>Funding Lab</h1>
               <p className={styles.subtitle}>
-                Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a significant number of voting tokens, carefully reviewing each proposal to ensure only the most beneficial ones are chosen. This is a welcoming space where users can seek grants, stipends, and other supportive resources.
+                Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
               </p>
-            </div>
-            <div className={styles.headerActions}>
-              <button
-                className={styles.howItWorksButton}
-                onClick={() => setShowTutorial(true)}
-                type="button"
-              >
-                Tutorial
-              </button>
-              <div className={styles.badge}>Live</div>
-            </div>
-          </header>
-
-          <section className={styles.votingStagesSection} data-tutorial-target="voting-stages">
-            <VotingStages 
-              stage={1} 
-              variants={['waiting', 'authenticated', 'kill']} 
-            />
-          </section>
-
-          <section className={styles.submissionCard} data-tutorial-target="submission">
-            <div className={styles.submissionHeader}>
-              <div className={styles.submissionHeaderContent}>
-                <div className={styles.submissionHeaderLeft}>
-                  <span className={styles.submissionEyebrow}>Submission</span>
-                  <h3 className={styles.submissionTitle}>Funding For Mental Health Resources</h3>
-                </div>
-                <div className={styles.statusPill}>
-                  <span className={styles.statusDot}></span>
-                  Awaiting member review
-                </div>
+              <div className={styles.heroActions}>
+                <Link href="/voting/create" className={styles.primaryCta}>
+                  Submit Form
+                </Link>
+                <button
+                  className={styles.secondaryCta}
+                  onClick={() => setShowTutorial(true)}
+                  type="button"
+                >
+                  Tutorial
+                </button>
               </div>
-            </div>
+            </header>
+          </div>
 
-            <div className={styles.submissionMeta}>
-              <div className={styles.metaItem}>
-                <span className={styles.metaLabel}>Submitted by</span>
-                <span className={styles.metaValue}>@riverstone_wellness</span>
-                <span className={styles.metaSeparator}> • </span>
-                <span className={styles.metaTime}>12 hours ago</span>
+          {/* Proposals Section */}
+          <section className={styles.proposalsSection}>
+            {loading ? (
+              <div className={styles.loadingState}>
+                <div className={styles.spinner}></div>
+                <p>Loading proposals...</p>
               </div>
-              <div className={styles.metaDivider}></div>
-              <div className={styles.metaItem}>
-                <span className={styles.metaLabel}>Azura&apos;s review</span>
-                <span className={styles.metaValue}>Mental Health Stipend</span>
-              </div>
-              <div className={styles.metaDivider}></div>
-              <div className={styles.metaItem}>
-                <span className={styles.metaLabel}>Proof</span>
-                <Link href="#" className={styles.metaLink}>
-                  View attachment
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.83333 2.33333H11.6667V8.16667M2.33333 11.6667L11.6667 2.33333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+            ) : proposals.length === 0 ? (
+              <div className={styles.emptyState}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <h3>No proposals yet</h3>
+                <p>Be the first to submit a proposal to the community!</p>
+                <Link href="/voting/create" className={styles.createFirstButton}>
+                  Create First Proposal
                 </Link>
               </div>
-            </div>
-
-            <div className={styles.submissionBody}>
-              <div className={styles.submissionQuote}>
-                <svg className={styles.quoteIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 21C3 17.4 5.4 15 9 15V12C9 11.4 9.4 11 10 11H13C13.6 11 14 11.4 14 12V21C14 21.6 13.6 22 13 22H4C3.4 22 3 21.6 3 21Z" fill="currentColor" opacity="0.15"/>
-                  <path d="M10 21C10 17.4 12.4 15 16 15V12C16 11.4 16.4 11 17 11H20C20.6 11 21 11.4 21 12V21C21 21.6 20.6 22 20 22H11C10.4 22 10 21.6 10 21Z" fill="currentColor" opacity="0.15"/>
-                </svg>
-                <p className={styles.submissionText}>
-                  I&apos;ve been working in community mental health for over eight years, and I&apos;ve seen firsthand how cyber-psychology and digital wellness programs can transform lives—when they&apos;re built on a foundation of genuine human connection. This proposal seeks funding to develop peer support networks that prioritize authentic relationships over transactional interactions. We&apos;re not looking to scale quickly; we want to build something that truly serves our community&apos;s needs before expanding. Every dollar would go directly toward training facilitators and creating safe spaces where people can be heard and supported. I&apos;d be honored to have your consideration.
-                </p>
+            ) : (
+              <div className={styles.proposalsGrid} data-tutorial-target="submission">
+                {proposals.map((proposal) => (
+                  <ProposalCard
+                    key={proposal.id}
+                    {...proposal}
+                    onViewDetails={handleViewDetails}
+                  />
+                ))}
               </div>
-            </div>
-
-            <div className={styles.submissionFooter}>
-              <div className={styles.submissionFooterLeft}>
-                <div className={styles.reviewersSection}>
-                  <span className={styles.reviewersLabel}>Under review by</span>
-                  <div className={styles.avatarRow}>
-                    {communityAvatars.slice(0, 3).map((avatar, index) => (
-                      <span
-                        key={avatar.name}
-                        className={styles.avatarSmall}
-                        style={{ 
-                          background: avatar.color, 
-                          zIndex: communityAvatars.length - index,
-                          marginLeft: index > 0 ? '-8px' : '0'
-                        }}
-                        aria-label={avatar.name}
-                        title={avatar.name}
-                      >
-                        {avatar.name[0]}
-                      </span>
-                    ))}
-                    <span className={styles.moreReviewers}>+2</span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.submissionActions}>
-                <button className={styles.secondaryButton} type="button">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 3.33333V12.6667M3.33333 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                  Request edit
-                </button>
-                <button className={styles.primaryButton} type="button">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Approve & publish
-                </button>
-              </div>
-            </div>
+            )}
           </section>
         </div>
       </main>

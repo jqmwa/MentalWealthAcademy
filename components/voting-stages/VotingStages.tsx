@@ -5,7 +5,7 @@ import Image from 'next/image';
 import styles from './VotingStages.module.css';
 import { AzuraEmotion } from '@/components/azura-dialogue/AzuraDialogue';
 
-export type Stage1Variant = 'waiting' | 'authenticated' | 'kill';
+export type Stage1Variant = 'waiting' | 'authenticated' | 'success';
 export type Stage2Variant = 'waiting' | 'in-progress' | 'failed-quorum' | 'pass';
 export type Stage3Variant = 'waiting' | 'execute' | 'success';
 
@@ -17,7 +17,7 @@ interface VotingStageProps {
 const emotionMap: Record<Stage1Variant, AzuraEmotion> = {
   waiting: 'confused',
   authenticated: 'happy',
-  kill: 'sad',
+  success: 'happy',
 };
 
 const emotionImages: Record<AzuraEmotion, string> = {
@@ -36,9 +36,9 @@ const stage1Config: Record<Stage1Variant, { title: string; description: string }
     title: 'Authenticated',
     description: 'Community has authenticated the submission. Proceeding to voting phase.',
   },
-  kill: {
-    title: 'Kill',
-    description: 'Vote has been killed by community consensus. This submission will not proceed.',
+  success: {
+    title: 'Success',
+    description: 'Submission approved! Funding will be distributed to the address listed in the proposal.',
   },
 };
 

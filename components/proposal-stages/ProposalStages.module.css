@@ -1,0 +1,242 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  position: relative;
+}
+
+.stageIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Stage 1: Azura Review */
+.stage1.waiting .stageIcon {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.15));
+  border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.stage1.analyzing .stageIcon {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.25));
+  border: 2px solid rgba(139, 92, 246, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.stage1.approved .stageIcon {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(22, 163, 74, 0.25));
+  border: 2px solid rgba(34, 197, 94, 0.5);
+}
+
+.stage1.rejected .stageIcon {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.25));
+  border: 2px solid rgba(239, 68, 68, 0.5);
+}
+
+/* Stage 2 & 3: Generic states */
+.stage2 .stageIcon,
+.stage3 .stageIcon {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.stage2.waiting .stageIcon,
+.stage3.waiting .stageIcon {
+  opacity: 0.5;
+}
+
+.stage2.processing .stageIcon,
+.stage3.active .stageIcon {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(79, 70, 229, 0.25));
+  border: 2px solid rgba(99, 102, 241, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.stage2.success .stageIcon,
+.stage3.completed .stageIcon {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(22, 163, 74, 0.25));
+  border: 2px solid rgba(34, 197, 94, 0.5);
+}
+
+.stage2.failed .stageIcon {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.25));
+  border: 2px solid rgba(239, 68, 68, 0.5);
+}
+
+.stageIcon svg {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.azuraAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.stageContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.stageName {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 4px 0;
+}
+
+.stageStatus {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.stage1.approved .stageStatus,
+.stage2.success .stageStatus,
+.stage3.completed .stageStatus {
+  color: rgba(34, 197, 94, 0.9);
+}
+
+.stage1.rejected .stageStatus,
+.stage2.failed .stageStatus {
+  color: rgba(239, 68, 68, 0.9);
+}
+
+.stage1.analyzing .stageStatus,
+.stage2.processing .stageStatus,
+.stage3.active .stageStatus {
+  color: rgba(139, 92, 246, 0.9);
+}
+
+.divider {
+  width: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.divider.active {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.5));
+}
+
+.tooltip {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.9);
+  border: 2px solid rgba(17, 24, 39, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  z-index: 2;
+}
+
+.tooltip svg {
+  width: 12px;
+  height: 12px;
+  color: white;
+}
+
+.tooltipContent {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(17, 24, 39, 0.98);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-width: 240px;
+  max-width: 320px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  white-space: normal;
+}
+
+.tooltip:hover .tooltipContent {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tooltipContent::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(139, 92, 246, 0.3);
+}
+
+.tokenAllocation {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  color: rgba(34, 197, 94, 0.9);
+  font-weight: 600;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stage {
+    width: 100%;
+  }
+
+  .divider {
+    width: 2px;
+    height: 24px;
+    transform: rotate(90deg);
+  }
+
+  .tooltipContent {
+    left: 0;
+    right: 0;
+    transform: none;
+    max-width: 100%;
+  }
+}

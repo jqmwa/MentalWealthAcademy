@@ -9,11 +9,79 @@ import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import styles from './Navbar.module.css';
 
-// Menu Icon Component
+// Menu Icon Component - Chunky Y2K style
 const MenuIcon: React.FC<{ size?: number }> = ({ size = 32 }) => {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.menuIcon}>
-      <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="3" y="5" width="18" height="3" rx="1" fill="currentColor"/>
+      <rect x="3" y="10.5" width="18" height="3" rx="1" fill="currentColor"/>
+      <rect x="3" y="16" width="18" height="3" rx="1" fill="currentColor"/>
+    </svg>
+  );
+};
+
+// Home Icon - Simple planet with rings Y2K style
+const HomeIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      {/* Central planet */}
+      <circle cx="12" cy="12" r="7" fill="currentColor"/>
+      {/* Ring behind */}
+      <ellipse cx="12" cy="12" rx="11" ry="3.5" fill="currentColor" fillOpacity="0.4"/>
+      {/* Inner detail */}
+      <circle cx="9" cy="10" r="2" fill="currentColor" fillOpacity="0.3"/>
+      <circle cx="15" cy="14" r="1.5" fill="currentColor" fillOpacity="0.3"/>
+    </svg>
+  );
+};
+
+// Quests Icon - Glowing star/beacon Y2K style
+const QuestsIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      {/* 4-pointed star - main structure */}
+      <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="currentColor"/>
+      {/* 4-pointed star - smaller angled */}
+      <path d="M12 6L13 10L17 11L13 12L12 16L11 12L7 11L11 10L12 6Z" fill="currentColor" fillOpacity="0.5"/>
+      {/* Center dot */}
+      <circle cx="12" cy="11" r="2" fill="currentColor"/>
+      {/* Sparkle details */}
+      <circle cx="8" cy="6" r="1" fill="currentColor"/>
+      <circle cx="16" cy="6" r="1" fill="currentColor"/>
+      <circle cx="16" cy="16" r="1" fill="currentColor"/>
+    </svg>
+  );
+};
+
+// Voting Icon - Checkmark document Y2K style
+const VotingIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      {/* Document base */}
+      <rect x="5" y="3" width="14" height="18" rx="2" fill="currentColor"/>
+      {/* Checkmark - solid triangular shape */}
+      <path d="M8 11L10 13L11 14L16 9L15 8L10.5 12L9 10.5L8 11Z" fill="currentColor" fillOpacity="0.4"/>
+      {/* Lines for document detail */}
+      <rect x="8" y="6" width="8" height="1.5" rx="0.5" fill="currentColor" fillOpacity="0.3"/>
+      <rect x="8" y="16" width="6" height="1.5" rx="0.5" fill="currentColor" fillOpacity="0.3"/>
+    </svg>
+  );
+};
+
+// Library Icon - Stacked books Y2K style
+const LibraryIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      {/* Book 1 - back left */}
+      <rect x="3" y="10" width="6" height="10" rx="1" fill="currentColor" fillOpacity="0.5"/>
+      {/* Book 2 - middle */}
+      <rect x="8" y="8" width="6" height="12" rx="1" fill="currentColor" fillOpacity="0.7"/>
+      {/* Book 3 - front right */}
+      <rect x="13" y="6" width="6" height="14" rx="1" fill="currentColor"/>
+      {/* Page lines on front book */}
+      <rect x="15" y="9" width="2" height="1" rx="0.5" fill="currentColor" fillOpacity="0.3"/>
+      <rect x="15" y="12" width="2" height="1" rx="0.5" fill="currentColor" fillOpacity="0.3"/>
+      <rect x="15" y="15" width="2" height="1" rx="0.5" fill="currentColor" fillOpacity="0.3"/>
     </svg>
   );
 };
@@ -151,7 +219,7 @@ const Navbar: React.FC = () => {
           <Link href="/home" className={styles.brandLink} aria-label="Mental Wealth Academy">
             <div className={styles.logoWrapper}>
               <Image
-                src="https://i.imgur.com/wTQ3E9E.png"
+                src="/icons/spacey2klogo.png"
                 alt="Mental Wealth Academy"
                 fill
                 priority
@@ -168,51 +236,27 @@ const Navbar: React.FC = () => {
           <div className={styles.linksContainer}>
             {/* Home Button */}
             <Link href="/home" className={`${styles.navButton} ${isActive('/home') ? styles.navButtonActive : ''}`}>
-              <Image
-                src="/icons/home.png"
-                alt="Home"
-                width={20}
-                height={20}
-                className={styles.homeIcon}
-              />
+              <HomeIcon size={20} className={styles.homeIcon} />
               <span className={isActive('/home') ? styles.buttonLabelActive : styles.buttonLabel}>Home</span>
             </Link>
 
             {/* Quests Button */}
             <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
-              <Image
-                src="/icons/Quest.png"
-                alt="Quests"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
+              <QuestsIcon size={20} className={styles.questIcon} />
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
             {/* Voting Button */}
             <Link href="/voting" className={`${styles.navButton} ${isActive('/voting') ? styles.navButtonActive : ''}`}>
-              <Image
-                src="/icons/Voting.png"
-                alt="Voting"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
+              <VotingIcon size={20} className={styles.questIcon} />
               <span className={isActive('/voting') ? styles.buttonLabelActive : styles.buttonLabel}>Voting</span>
             </Link>
 
-            {/* Library Button - Disabled */}
-            <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
-              <Image
-                src="/icons/Library.png"
-                alt="Library"
-                width={20}
-                height={20}
-                className={styles.questIcon}
-              />
-              <span className={styles.buttonLabelDisabled}>Library</span>
-            </div>
+            {/* Library Button */}
+            <Link href="/library" className={`${styles.navButton} ${isActive('/library') ? styles.navButtonActive : ''}`}>
+              <LibraryIcon size={20} className={styles.questIcon} />
+              <span className={isActive('/library') ? styles.buttonLabelActive : styles.buttonLabel}>Library</span>
+            </Link>
           </div>
 
           {/* Right Icons */}
@@ -225,7 +269,7 @@ const Navbar: React.FC = () => {
             </Link>
             <div className={styles.shardsCounter}>
               <Image
-                src="/icons/Coin Poly.svg"
+                src="/icons/shard.svg"
                 alt="Daemon"
                 width={20}
                 height={20}
@@ -357,13 +401,7 @@ const Navbar: React.FC = () => {
             className={`${styles.mobileNavButton} ${isActive('/home') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Image
-              src="/icons/home.png"
-              alt="Home"
-              width={20}
-              height={20}
-              className={styles.homeIcon}
-            />
+            <HomeIcon size={20} className={styles.homeIcon} />
             <span>Home</span>
           </Link>
           <Link 
@@ -371,13 +409,7 @@ const Navbar: React.FC = () => {
             className={`${styles.mobileNavButton} ${isActive('/quests') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Image
-              src="/icons/Quest.png"
-              alt="Quests"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
+            <QuestsIcon size={20} className={styles.questIcon} />
             <span>Quests</span>
           </Link>
           <Link 
@@ -385,29 +417,17 @@ const Navbar: React.FC = () => {
             className={`${styles.mobileNavButton} ${isActive('/voting') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Image
-              src="/icons/Voting.png"
-              alt="Voting"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
+            <VotingIcon size={20} className={styles.questIcon} />
             <span>Voting</span>
           </Link>
-          <div 
-            className={`${styles.mobileNavButton} ${styles.mobileNavButtonDisabled}`}
-            title="Coming soon"
+          <Link 
+            href="/library" 
+            className={`${styles.mobileNavButton} ${isActive('/library') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Image
-              src="/icons/Library.png"
-              alt="Library"
-              width={20}
-              height={20}
-              className={styles.questIcon}
-            />
+            <LibraryIcon size={20} className={styles.questIcon} />
             <span>Library</span>
-          </div>
+          </Link>
         </div>
       </div>
       {isYourAccountsModalOpen && (

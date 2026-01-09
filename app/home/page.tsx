@@ -288,8 +288,15 @@ export default function Home() {
   }
 
   // Redirect if not authenticated (this will be handled by useEffect)
-  if (!hasValidSession) {
-    return null;
+  // Show loading state while redirecting instead of returning null
+  if (!hasValidSession && hasCheckedAuthRef.current) {
+    return (
+      <main className={styles.main}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <div>Redirecting...</div>
+        </div>
+      </main>
+    );
   }
 
   return (
