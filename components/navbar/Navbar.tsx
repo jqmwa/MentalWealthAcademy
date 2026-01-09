@@ -358,7 +358,7 @@ const Navbar: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Image
-              src="/icons/home.svg"
+              src="/icons/home.png"
               alt="Home"
               width={20}
               height={20}
@@ -372,7 +372,7 @@ const Navbar: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Image
-              src="/icons/Survey.svg"
+              src="/icons/Quest.png"
               alt="Quests"
               width={20}
               height={20}
@@ -386,7 +386,7 @@ const Navbar: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Image
-              src="/icons/Venetian carnival.svg"
+              src="/icons/Voting.png"
               alt="Voting"
               width={20}
               height={20}
@@ -400,7 +400,7 @@ const Navbar: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Image
-              src="/icons/bookicon.svg"
+              src="/icons/Library.png"
               alt="Library"
               width={20}
               height={20}
