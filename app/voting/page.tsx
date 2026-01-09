@@ -5,6 +5,7 @@ import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import Link from 'next/link';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
+import VotingStages from '@/components/voting-stages/VotingStages';
 import styles from './page.module.css';
 
 const communityAvatars = [
@@ -23,7 +24,7 @@ const getTutorialSteps = (): TutorialStep[] => [
   {
     message: 'This is where I work. I read each submission, identify the underlying patterns, and draft recommendations. Think of me as a co-pilot—I highlight what matters, but you make the final call.',
     emotion: 'happy',
-    targetElement: '[data-tutorial-target="azura-card"]',
+    targetElement: '[data-tutorial-target="voting-stages"]',
   },
   {
     message: 'The Voting Room is where human judgment meets algorithmic analysis. You debate, question, and decide. I\'m here to clarify evidence and surface biases you might miss.',
@@ -83,9 +84,9 @@ export default function VotingPage() {
           <header className={styles.header}>
             <div>
               <p className={styles.eyebrow}>MWA • Decision Room</p>
-              <h1 className={styles.title}>Research, Funding, and Governance</h1>
+              <h1 className={styles.title}>Funding Lab</h1>
               <p className={styles.subtitle}>
-                Every quest submission lands here. Azura auto-votes with AgentKit while community debate outcomes and settle the tally.
+                Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a significant number of voting tokens, carefully reviewing each proposal to ensure only the most beneficial ones are chosen. This is a welcoming space where users can seek grants, stipends, and other supportive resources.
               </p>
             </div>
             <div className={styles.headerActions}>
@@ -100,127 +101,100 @@ export default function VotingPage() {
             </div>
           </header>
 
-          <section className={styles.grid}>
-            <div className={styles.cardDark} data-tutorial-target="azura-card">
-              <div className={styles.cardHeader}>
-                <div>
-                  <p className={styles.cardEyebrow}>AI Agentic Daemon</p>
-                  <h2 className={styles.cardTitle}>Azura</h2>
-                  <p className={styles.cardText}>
-                    Azura reads the submission, drafts a human-friendly recommendation, and sits beside members as a calm co-pilot.
-                  </p>
-                </div>
-                <span className={styles.autoChip}>Co-pilot</span>
-              </div>
-
-              <div className={styles.checklist}>
-                <div className={styles.checkItem}>
-                  <span className={styles.checkDot} />
-                  <div>
-                    <p className={styles.checkTitle}>Understands intent</p>
-                    <p className={styles.checkText}>Summarizes proof and highlights what matters for review.</p>
-                  </div>
-                </div>
-                <div className={styles.checkItem}>
-                  <span className={styles.checkDot} />
-                  <div>
-                    <p className={styles.checkTitle}>Drafts a stance</p>
-                    <p className={styles.checkText}>Offers a lean recommendation for members to accept or adjust.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.timeline}>
-                <p className={styles.timelineLabel}>Azura is active</p>
-                <div className={styles.timelineBar}>
-                  <span className={styles.timelineFill} />
-                </div>
-                <p className={styles.timelineFoot}>Reading, drafting, and syncing with members.</p>
-              </div>
-            </div>
-
-            <div className={styles.cardLight} data-tutorial-target="admin-room">
-              <div className={styles.cardHeader}>
-                <div>
-                  <p className={styles.cardEyebrowLight}>Community Council</p>
-                  <h2 className={styles.cardTitle}>Community Voting Room</h2>
-                  <p className={styles.cardTextLight}>
-                    A quiet room for members to discuss the submission, ask for edits, and land the final call with Azura&apos;s summary beside them.
-                  </p>
-                </div>
-                <div className={styles.avatarCluster}>
-                  {communityAvatars.map((avatar, index) => (
-                    <span
-                      key={avatar.name}
-                      className={styles.avatar}
-                      style={{ background: avatar.color, zIndex: communityAvatars.length - index }}
-                      aria-label={avatar.name}
-                    >
-                      {avatar.name[0]}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.threadBox}>
-                <div className={styles.threadPill}>Community thread</div>
-                <p className={styles.threadText}>
-                  Keep notes brief and human. Tag Azura to rephrase, clarify evidence, or propose next steps.
-                </p>
-              </div>
-
-              <div className={styles.footerActions}>
-                <button className={`${styles.primaryButton} ${styles.primaryButtonFull}`} type="button">Publish decision</button>
-              </div>
-            </div>
+          <section className={styles.votingStagesSection} data-tutorial-target="voting-stages">
+            <VotingStages 
+              stage={1} 
+              variants={['waiting', 'authenticated', 'kill']} 
+            />
           </section>
 
           <section className={styles.submissionCard} data-tutorial-target="submission">
             <div className={styles.submissionHeader}>
-              <div>
-                <p className={styles.submissionEyebrow}>Submission</p>
-                <h3 className={styles.submissionTitle}>Funding For Mental Health Resources</h3>
+              <div className={styles.submissionHeaderContent}>
+                <div className={styles.submissionHeaderLeft}>
+                  <span className={styles.submissionEyebrow}>Submission</span>
+                  <h3 className={styles.submissionTitle}>Funding For Mental Health Resources</h3>
+                </div>
+                <div className={styles.statusPill}>
+                  <span className={styles.statusDot}></span>
+                  Awaiting member review
+                </div>
               </div>
-              <div className={styles.statusPill}>Awaiting member review</div>
             </div>
 
             <div className={styles.submissionMeta}>
-              <div>
-                <p className={styles.metaLabel}>Submitted by</p>
-                <p className={styles.metaValue}>@hollistic_psych • 12 hours ago</p>
+              <div className={styles.metaItem}>
+                <span className={styles.metaLabel}>Submitted by</span>
+                <span className={styles.metaValue}>@riverstone_wellness</span>
+                <span className={styles.metaSeparator}> • </span>
+                <span className={styles.metaTime}>12 hours ago</span>
               </div>
-              <div>
-                <p className={styles.metaLabel}>Azura&apos;s review</p>
-                <p className={styles.metaValue}>Categorizes as: Mental Health Stipend</p>
+              <div className={styles.metaDivider}></div>
+              <div className={styles.metaItem}>
+                <span className={styles.metaLabel}>Azura&apos;s review</span>
+                <span className={styles.metaValue}>Mental Health Stipend</span>
               </div>
-              <div>
-                <p className={styles.metaLabel}>Proof</p>
-                <Link href="#" className={styles.metaLink}>View attachment</Link>
+              <div className={styles.metaDivider}></div>
+              <div className={styles.metaItem}>
+                <span className={styles.metaLabel}>Proof</span>
+                <Link href="#" className={styles.metaLink}>
+                  View attachment
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.83333 2.33333H11.6667V8.16667M2.33333 11.6667L11.6667 2.33333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </Link>
               </div>
             </div>
 
             <div className={styles.submissionBody}>
-              <p className={styles.submissionText}>
-                &quot;Cyber-psychology rests on the shoulders of mental health. We need to focus parasocial connections, and community needs before expanding.&quot;
-              </p>
+              <div className={styles.submissionQuote}>
+                <svg className={styles.quoteIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 21C3 17.4 5.4 15 9 15V12C9 11.4 9.4 11 10 11H13C13.6 11 14 11.4 14 12V21C14 21.6 13.6 22 13 22H4C3.4 22 3 21.6 3 21Z" fill="currentColor" opacity="0.15"/>
+                  <path d="M10 21C10 17.4 12.4 15 16 15V12C16 11.4 16.4 11 17 11H20C20.6 11 21 11.4 21 12V21C21 21.6 20.6 22 20 22H11C10.4 22 10 21.6 10 21Z" fill="currentColor" opacity="0.15"/>
+                </svg>
+                <p className={styles.submissionText}>
+                  I&apos;ve been working in community mental health for over eight years, and I&apos;ve seen firsthand how cyber-psychology and digital wellness programs can transform lives—when they&apos;re built on a foundation of genuine human connection. This proposal seeks funding to develop peer support networks that prioritize authentic relationships over transactional interactions. We&apos;re not looking to scale quickly; we want to build something that truly serves our community&apos;s needs before expanding. Every dollar would go directly toward training facilitators and creating safe spaces where people can be heard and supported. I&apos;d be honored to have your consideration.
+                </p>
+              </div>
             </div>
 
             <div className={styles.submissionFooter}>
-              <div className={styles.avatarRow}>
-                {communityAvatars.slice(0, 3).map((avatar, index) => (
-                  <span
-                    key={avatar.name}
-                    className={styles.avatarSmall}
-                    style={{ background: avatar.color, zIndex: communityAvatars.length - index }}
-                    aria-label={avatar.name}
-                  >
-                    {avatar.name[0]}
-                  </span>
-                ))}
+              <div className={styles.submissionFooterLeft}>
+                <div className={styles.reviewersSection}>
+                  <span className={styles.reviewersLabel}>Under review by</span>
+                  <div className={styles.avatarRow}>
+                    {communityAvatars.slice(0, 3).map((avatar, index) => (
+                      <span
+                        key={avatar.name}
+                        className={styles.avatarSmall}
+                        style={{ 
+                          background: avatar.color, 
+                          zIndex: communityAvatars.length - index,
+                          marginLeft: index > 0 ? '-8px' : '0'
+                        }}
+                        aria-label={avatar.name}
+                        title={avatar.name}
+                      >
+                        {avatar.name[0]}
+                      </span>
+                    ))}
+                    <span className={styles.moreReviewers}>+2</span>
+                  </div>
+                </div>
               </div>
               <div className={styles.submissionActions}>
-                <button className={styles.secondaryButton} type="button">Ask for edit</button>
-                <button className={styles.primaryButton} type="button">Approve & publish</button>
+                <button className={styles.secondaryButton} type="button">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3.33333V12.6667M3.33333 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  Request edit
+                </button>
+                <button className={styles.primaryButton} type="button">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Approve & publish
+                </button>
               </div>
             </div>
           </section>

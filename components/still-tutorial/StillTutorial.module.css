@@ -59,9 +59,15 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary, #5168FF), var(--color-secondary, #62BE8F));
+  background: linear-gradient(90deg, 
+    rgba(81, 104, 255, 0.6) 0%, 
+    rgba(81, 104, 255, 0.75) 30%,
+    rgba(81, 104, 255, 0.9) 60%,
+    rgba(81, 104, 255, 1) 100%
+  );
   border-radius: 10px;
   transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(81, 104, 255, 0.3);
 }
 
 .closeButton {

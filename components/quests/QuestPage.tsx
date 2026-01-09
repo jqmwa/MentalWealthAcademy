@@ -203,7 +203,7 @@ const QuestPage: React.FC = () => {
           <div className={styles.heroActions}>
             <button className={styles.primaryCta} type="button">
               <DaemonIcon size={12} />
-              <span>Get Started</span>
+              <span>CURRENCIES</span>
             </button>
             <button className={styles.secondaryCta} type="button">More Info</button>
           </div>
