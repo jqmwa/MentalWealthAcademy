@@ -18,7 +18,7 @@ class TransactionMonitor {
   private static instance: TransactionMonitor;
   private monitoring = false;
   private checkInterval = 10000; // 10 seconds
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // Type assertion needed due to viem type complexity with getBlock return types
   private publicClient: any;
 
   private constructor() {
