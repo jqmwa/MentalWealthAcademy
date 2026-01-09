@@ -169,7 +169,7 @@ const Navbar: React.FC = () => {
             {/* Home Button */}
             <Link href="/home" className={`${styles.navButton} ${isActive('/home') ? styles.navButtonActive : ''}`}>
               <Image
-                src="/icons/home.svg"
+                src="/icons/home.png"
                 alt="Home"
                 width={20}
                 height={20}
@@ -181,7 +181,7 @@ const Navbar: React.FC = () => {
             {/* Quests Button */}
             <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
               <Image
-                src="/icons/Survey.svg"
+                src="/icons/Quest.png"
                 alt="Quests"
                 width={20}
                 height={20}
@@ -193,7 +193,7 @@ const Navbar: React.FC = () => {
             {/* Voting Button */}
             <Link href="/voting" className={`${styles.navButton} ${isActive('/voting') ? styles.navButtonActive : ''}`}>
               <Image
-                src="/icons/Venetian carnival.svg"
+                src="/icons/Voting.png"
                 alt="Voting"
                 width={20}
                 height={20}
@@ -205,7 +205,7 @@ const Navbar: React.FC = () => {
             {/* Library Button - Disabled */}
             <div className={`${styles.navButton} ${styles.navButtonDisabled}`} title="Coming soon">
               <Image
-                src="/icons/bookicon.svg"
+                src="/icons/Library.png"
                 alt="Library"
                 width={20}
                 height={20}
