@@ -18,10 +18,12 @@ class TransactionMonitor {
   private static instance: TransactionMonitor;
   private monitoring = false;
   private checkInterval = 10000; // 10 seconds
-  private publicClient: ReturnType<typeof createPublicClient>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private publicClient: any;
 
   private constructor() {
     // Create public client for Base network
+    // Type assertion needed due to viem type complexity with getBlock return types
     this.publicClient = createPublicClient({
       chain: base,
       transport: http(
@@ -29,7 +31,7 @@ class TransactionMonitor {
           ? `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
           : undefined
       ),
-    });
+    }) as any;
   }
 
   public static getInstance(): TransactionMonitor {
