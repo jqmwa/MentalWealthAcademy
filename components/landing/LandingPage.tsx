@@ -466,7 +466,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              Take control of your mental wealth → Earn real income. Gain experience from domain experts. And achieve status within the digital community.
+              A nascent mental wealth education community using DAO tools to learn, organize, and grow together.
               </p>
             </div>
           </div>
