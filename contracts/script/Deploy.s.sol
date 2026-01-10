@@ -42,10 +42,10 @@ contract Deploy is Script {
         address usdcAddress;
         if (block.chainid == 84532) { // Base Sepolia
             usdcAddress = USDC_SEPOLIA;
-            console.log("Deploying to Base Sepolia...");
+            console.log("Deploying to Base Sepolia (Testnet)...");
         } else if (block.chainid == 8453) { // Base Mainnet
             usdcAddress = USDC_MAINNET;
-            console.log("Deploying to Base Mainnet...");
+            console.log("Deploying to Base Mainnet (Production)...");
         } else {
             revert("Unsupported network");
         }

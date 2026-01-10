@@ -19,7 +19,7 @@ runs = 256
 # Base network RPC URLs
 [rpc_endpoints]
 base_sepolia = "${BASE_SEPOLIA_RPC_URL}"
-base = "${BASE_MAINNET_RPC_URL}"
+base = "https://api.developer.coinbase.com/rpc/v1/base/9oU7BptpclCm3gy0G7d9bfbp9J2oUoQP"
 
 # Etherscan API keys for verification
 [etherscan]
