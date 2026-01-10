@@ -195,9 +195,16 @@ const QuestPage: React.FC = () => {
   return (
     <div className={styles.questPageContainer}>
       <div className={styles.hero}>
-        <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Earn Daemon by completing quests</h1>
-          <p className={styles.heroSubtitle}>
+        <div className={styles.breadcrumbs}>
+          <a href="/home">Home</a>
+          <span className={styles.chevron}>/</span>
+          <span className={styles.current}>Quests</span>
+        </div>
+
+        <header className={styles.header}>
+          <p className={styles.eyebrow}>MWA • Quest Room</p>
+          <h1 className={styles.title}>Complete Quests & Earn Rewards</h1>
+          <p className={styles.subtitle}>
             Quests are singular or collaborative tasks for users to complete, and Daemon are the rewarded currency that unlocks what comes next.
           </p>
           <div className={styles.heroActions}>
@@ -207,8 +214,7 @@ const QuestPage: React.FC = () => {
             </button>
             <button className={styles.secondaryCta} type="button">More Info</button>
           </div>
-        </div>
-        <div className={styles.heroGlow} />
+        </header>
       </div>
 
       {/* Quests directly under guest banner */}

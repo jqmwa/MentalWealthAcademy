@@ -115,12 +115,6 @@ export default function VotingPage() {
       <main className={styles.page}>
         <div className={styles.content}>
           <div className={styles.hero}>
-            <div className={styles.breadcrumbs}>
-              <Link href="/home">Home</Link>
-              <span className={styles.chevron}>/</span>
-              <span className={styles.current}>Voting</span>
-            </div>
-
             <header className={styles.header}>
               <p className={styles.eyebrow}>MWA • Decision Room</p>
               <h1 className={styles.title}>Funding Lab</h1>

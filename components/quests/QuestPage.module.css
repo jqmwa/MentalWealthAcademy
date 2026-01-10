@@ -23,30 +23,68 @@
   overflow: hidden;
 }
 
-.heroContent {
-  position: relative;
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: rgba(26, 29, 51, 0.7);
+  margin-bottom: 24px;
+}
+
+.breadcrumbs a {
+  color: var(--color-text-dark);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-primary);
+}
+
+.chevron {
+  opacity: 0.5;
+}
+
+.current {
+  font-weight: var(--font-weight-bold);
+}
+
+.header {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 720px;
-  z-index: 1;
+  position: relative;
+  margin-bottom: 32px;
 }
 
-.heroTitle {
-  font-family: var(--font-primary);
-  font-size: 40px;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
+.eyebrow {
   margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(26, 29, 51, 0.6);
+  font-family: var(--font-primary);
+}
+
+.title {
+  margin: 6px 0 4px;
+  font-size: 32px;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-dark);
 }
 
-.heroSubtitle {
-  font-family: var(--font-primary);
-  font-size: 18px;
-  line-height: 1.6;
-  color: rgba(26, 29, 51, 0.8);
-  margin: 0;
+.subtitle {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(26, 29, 51, 0.75);
+  max-width: 800px;
+  font-family: var(--font-secondary);
+  letter-spacing: -0.01em;
 }
 
 .heroActions {
@@ -91,10 +129,6 @@
 .secondaryCta:hover {
   background: rgba(81, 104, 255, 0.08);
   transform: translateY(-2px);
-}
-
-.heroGlow {
-  display: none;
 }
 
 .accountBannerWrap {

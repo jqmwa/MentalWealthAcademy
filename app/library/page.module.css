@@ -1,243 +1,137 @@
-/* Library Page - Editorial Refined Aesthetic */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+/* Library Page - Match Voting Page Style */
 
 .page {
   min-height: 100vh;
-  background: #F4F5FE;
+  padding: 40px 24px 80px;
   color: var(--color-text-dark);
-  padding: 0;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Hero Section - Refined Editorial */
+.content {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section - Match Voting Page */
 .hero {
   position: relative;
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 32px clamp(24px, 4vw, 80px) 32px;
-  background: linear-gradient(180deg, rgba(244, 245, 254, 0.95) 0%, rgba(244, 245, 254, 0.85) 100%);
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(81, 104, 255, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(98, 190, 143, 0.02) 0%, transparent 50%);
-  position: relative;
+  padding: 48px 56px;
+  background: #f4f5fe;
+  border: 2px solid #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(81, 104, 255, 0.3), transparent);
-}
-
-.heroContent {
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   position: relative;
-  max-width: 800px;
-  z-index: 1;
+  margin-bottom: 32px;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
 }
 
-.heroContentLoaded {
+.headerLoaded {
   opacity: 1;
   transform: translateY(0);
 }
 
-.heroTitleWrapper {
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.heroLabel {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(81, 104, 255, 0.8);
-  margin-bottom: 4px;
-}
-
-.heroTitle {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(48px, 6vw, 88px);
-  font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: #000000;
+.eyebrow {
   margin: 0;
-  background: linear-gradient(135deg, #000000 0%, rgba(81, 104, 255, 0.3) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(26, 29, 51, 0.6);
+  font-family: var(--font-primary);
 }
 
-.heroSubtitle {
-  font-family: 'Crimson Text', serif;
-  font-size: clamp(18px, 2.2vw, 24px);
-  line-height: 1.7;
-  color: rgba(0, 0, 0, 0.75);
-  margin: 0 0 40px 0;
-  font-style: italic;
-  max-width: 680px;
+.title {
+  margin: 6px 0 4px;
+  font-size: 32px;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+}
+
+.subtitle {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(26, 29, 51, 0.75);
+  max-width: 800px;
+  font-family: var(--font-secondary);
+  letter-spacing: -0.01em;
 }
 
 .heroActions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
 .primaryCta,
 .secondaryCta {
-  padding: 14px 32px;
-  border-radius: 0;
-  border: 2px solid #000000;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(81, 104, 255, 0.35);
+  font-family: var(--font-button);
+  font-size: 15px;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  transition: all 0.25s ease;
+  text-decoration: none;
 }
 
 .primaryCta {
-  background: #000000;
-  color: #F4F5FE;
-  box-shadow: 4px 4px 0px rgba(81, 104, 255, 0.4);
-}
-
-.primaryCta::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.primaryCta:hover::before {
-  left: 100%;
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(81, 104, 255, 0.25);
 }
 
 .primaryCta:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(81, 104, 255, 0.5);
-  background: #1a1a1a;
-}
-
-.primaryCta:active {
-  transform: translate(0, 0);
-  box-shadow: 2px 2px 0px rgba(81, 104, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(81, 104, 255, 0.35);
 }
 
 .secondaryCta {
-  background: transparent;
-  color: #000000;
-  box-shadow: 4px 4px 0px rgba(81, 104, 255, 0.2);
+  background: #ffffff;
+  color: var(--color-primary);
 }
 
 .secondaryCta:hover {
-  background: rgba(81, 104, 255, 0.05);
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(81, 104, 255, 0.3);
-  border-color: rgba(81, 104, 255, 0.5);
-}
-
-.secondaryCta:active {
-  transform: translate(0, 0);
-  box-shadow: 2px 2px 0px rgba(81, 104, 255, 0.2);
-}
-
-.heroDecorative {
-  position: absolute;
-  right: clamp(24px, 4vw, 80px);
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2px;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-.decorativeLine {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #000000, transparent);
-  transform: rotate(90deg);
-  transform-origin: center;
-}
-
-.accountBannerWrap {
-  max-width: 1400px;
-  margin: -40px auto 60px auto;
-  padding: 0 clamp(24px, 4vw, 80px);
-  position: relative;
-  z-index: 2;
+  background: rgba(81, 104, 255, 0.08);
+  transform: translateY(-2px);
 }
 
 /* Papers Section */
 .papersSection {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 4vw, 80px) 100px;
+  max-width: 1180px;
+  margin: 32px auto 0 auto;
+  padding: 0 24px 100px;
   display: flex;
   flex-direction: column;
   gap: 48px;
 }
 
-.sectionHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
-  padding-bottom: 24px;
-}
-
-.sectionHeader::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(81, 104, 255, 0.8), transparent);
-}
-
-.sectionTitle {
-  margin: 0;
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 4vw, 56px);
-  font-weight: 700;
-  color: #000000;
-  letter-spacing: -0.01em;
-}
-
-.sectionSubtitle {
-  font-family: 'Crimson Text', serif;
-  font-size: 18px;
-  font-style: italic;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0;
-}
-
-/* Tabs - Minimalist Refined */
+/* Tabs */
 .tabs {
   display: flex;
   gap: 16px;
@@ -249,14 +143,14 @@
   align-items: center;
   gap: 16px;
   padding: 20px 28px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(81, 104, 255, 0.2);
   background: #ffffff;
   cursor: pointer;
   text-align: left;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 12px;
   min-width: 240px;
 }
 
@@ -278,18 +172,18 @@
 }
 
 .tabCardActive {
-  border-color: #000000;
-  background: #000000;
-  box-shadow: 6px 6px 0px rgba(81, 104, 255, 0.3);
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
 }
 
 .tabCardActive::before {
-  background: rgba(81, 104, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .tabCardActive:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0px rgba(81, 104, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(81, 104, 255, 0.4);
 }
 
 .tabIndicator {
@@ -302,8 +196,8 @@
 }
 
 .tabCardActive .tabIndicator {
-  background: rgba(81, 104, 255, 1);
-  box-shadow: 0 0 12px rgba(81, 104, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   transform: scale(1.2);
 }
 
@@ -314,29 +208,28 @@
 }
 
 .tabTitle {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-primary);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #000000;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dark);
   transition: color 0.3s ease;
 }
 
 .tabCardActive .tabTitle {
-  color: #F4F5FE;
+  color: #ffffff;
 }
 
 .tabSubtitle {
-  font-family: 'Crimson Text', serif;
+  font-family: var(--font-secondary);
   font-size: 13px;
-  font-style: italic;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(26, 29, 51, 0.6);
   transition: color 0.3s ease;
 }
 
 .tabCardActive .tabSubtitle {
-  color: rgba(244, 245, 254, 0.8);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Books Grid - Staggered Animation */
@@ -368,7 +261,23 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hero {
-    padding: 60px clamp(24px, 4vw, 60px) 80px;
+    padding: 40px 32px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroActions {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .primaryCta,
+  .secondaryCta {
+    flex: 1;
+    justify-content: center;
   }
 
   .booksGrid {
@@ -383,40 +292,39 @@
 
 @media (max-width: 768px) {
   .page {
-    padding: 0;
+    padding: 32px 16px 60px;
   }
 
   .hero {
-    padding: 48px 24px 60px;
+    padding: 32px 24px;
+    border-radius: 20px;
   }
 
-  .heroDecorative {
-    display: none;
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .heroActions {
     flex-direction: column;
-    align-items: stretch;
+    width: 100%;
+    gap: 12px;
   }
 
   .primaryCta,
   .secondaryCta {
     width: 100%;
     justify-content: center;
+    flex: 1;
   }
 
-  .accountBannerWrap {
-    margin: -32px auto 40px auto;
-    padding: 0 24px;
+  .title {
+    font-size: 26px;
   }
 
   .papersSection {
-    padding: 0 24px 60px;
+    padding: 0 16px 60px;
     gap: 32px;
-  }
-
-  .sectionHeader::after {
-    width: 40px;
   }
 
   .tabs {
@@ -436,19 +344,15 @@
 
 @media (max-width: 480px) {
   .hero {
-    padding: 40px 20px 48px;
+    padding: 24px 20px;
   }
 
-  .heroSubtitle {
-    font-size: 16px;
-  }
-
-  .accountBannerWrap {
-    padding: 0 20px;
+  .subtitle {
+    font-size: 15px;
   }
 
   .papersSection {
-    padding: 0 20px 48px;
+    padding: 0 16px 48px;
   }
 
   .tabCard {

@@ -73,22 +73,25 @@ export default function Library() {
     <>
       <Navbar />
       <main className={styles.page}>
-        <section className={styles.hero}>
-          <div className={`${styles.heroContent} ${isLoaded ? styles.heroContentLoaded : ''}`}>
-            <div className={styles.heroTitleWrapper}>
-              <span className={styles.heroLabel}>Research Library</span>
-              <h1 className={styles.heroTitle}>Knowledge Archive</h1>
-            </div>
-            <p className={styles.heroSubtitle}>
-              Discover groundbreaking research, track your reading journey, and build a personal archive of academic insights.
-            </p>
+        <div className={styles.content}>
+          <div className={styles.hero}>
+            <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
+              <p className={styles.eyebrow}>MWA • Knowledge Archive</p>
+              <h1 className={styles.title}>Knowledge Archive</h1>
+              <p className={styles.subtitle}>
+                Discover groundbreaking research, track your reading journey, and build a personal archive of academic insights.
+              </p>
+              <div className={styles.heroActions}>
+                <button className={styles.primaryCta} type="button">
+                  Browse Collection
+                </button>
+                <button className={styles.secondaryCta} type="button">
+                  Upload Research
+                </button>
+              </div>
+            </header>
           </div>
-          <div className={styles.heroDecorative} aria-hidden="true">
-            <div className={styles.decorativeLine}></div>
-            <div className={styles.decorativeLine}></div>
-            <div className={styles.decorativeLine}></div>
-          </div>
-        </section>
+        </div>
 
         <section className={styles.papersSection}>
           <div className={styles.tabs}>

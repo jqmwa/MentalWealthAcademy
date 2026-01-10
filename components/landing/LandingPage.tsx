@@ -424,7 +424,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              A nascent mental wealth education community using DAO tools to learn, organize, and grow together.
+              The most complete citizen participation tool for an open, transparent and democratic digital governance spiritual endowment.
               </p>
             </div>
           </div>
@@ -550,7 +550,7 @@ const LandingPage: React.FC = () => {
                   className={styles.loginButton}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Signing in...' : 'Join Decentralized Members'}
+                  {isLoading ? 'Signing in...' : 'Sign in with password'}
                 </button>
                 
                 {/* Wallet Connection */}
