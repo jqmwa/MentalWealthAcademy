@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
@@ -22,6 +22,7 @@ import styles from './page.module.css';
 
 export default function Home() {
   const { isConnected, address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -114,9 +115,9 @@ export default function Home() {
       setIsCheckingAuth(true);
       try {
         // Include wallet auth headers if wallet is connected
-        const headers: HeadersInit = {};
+        let headers: HeadersInit = {};
         if (isConnected && address) {
-          Object.assign(headers, getWalletAuthHeaders(address));
+          headers = await getWalletAuthHeaders(address, signMessageAsync);
           lastCheckedAddressRef.current = address;
         }
         
@@ -135,9 +136,9 @@ export default function Home() {
           
           // Check if user needs onboarding (incomplete profile)
           // Fetch full profile to check for username, birthday, gender
-          const profileHeaders: HeadersInit = {};
+          let profileHeaders: HeadersInit = {};
           if (isConnected && address) {
-            Object.assign(profileHeaders, getWalletAuthHeaders(address));
+            profileHeaders = await getWalletAuthHeaders(address, signMessageAsync);
           }
           
           try {
@@ -205,9 +206,9 @@ export default function Home() {
   useEffect(() => {
     const handleProfileUpdate = async () => {
       // Include wallet auth headers if wallet is connected
-      const headers: HeadersInit = {};
+      let headers: HeadersInit = {};
       if (isConnected && address) {
-        Object.assign(headers, getWalletAuthHeaders(address));
+        headers = await getWalletAuthHeaders(address, signMessageAsync);
       }
       
       try {
@@ -309,11 +310,11 @@ export default function Home() {
       <AvatarSelectionModal 
         isOpen={showAvatarModal}
         onClose={() => setShowAvatarModal(false)}
-        onAvatarSelected={() => {
+        onAvatarSelected={async () => {
           // Refresh user data after avatar selection
-          const headers: HeadersInit = {};
+          let headers: HeadersInit = {};
           if (isConnected && address) {
-            Object.assign(headers, getWalletAuthHeaders(address));
+            headers = await getWalletAuthHeaders(address, signMessageAsync);
           }
           
           fetch('/api/me', { 

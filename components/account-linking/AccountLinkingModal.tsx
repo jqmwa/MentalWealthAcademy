@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { useModal } from 'connectkit';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './AccountLinkingModal.module.css';
@@ -22,6 +22,7 @@ export function AccountLinkingModal({
   onAccountLinked,
 }: AccountLinkingModalProps) {
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const { setOpen: setConnectKitOpen } = useModal();
   const [isLinking, setIsLinking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +80,7 @@ export function AccountLinkingModal({
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          ...getWalletAuthHeaders(address),
+          ...(await getWalletAuthHeaders(address, signMessageAsync)),
         },
         body: JSON.stringify({}),
       });

@@ -3,7 +3,8 @@ import { recoverMessageAddress } from 'viem';
 
 /**
  * Gets the wallet address from the request.
- * Checks Authorization header for wallet address and signature.
+ * Checks Authorization header for wallet address with signed message proof.
+ * Format: "Bearer <address>:<signature>:<timestamp>"
  * Returns the wallet address if valid, or null if not found.
  */
 export async function getWalletAddressFromRequest(): Promise<string | null> {
@@ -14,24 +15,55 @@ export async function getWalletAddressFromRequest(): Promise<string | null> {
     const authHeader = headersList.get('authorization');
     
     if (authHeader && authHeader.startsWith('Bearer ')) {
-      // For now, we'll use the wallet address directly in the Bearer token
-      // In production, you should verify a signature instead
-      const walletAddress = authHeader.substring(7);
+      const authData = authHeader.substring(7);
       
-      // Basic validation - check if it's a valid Ethereum address format
-      if (/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
-        return walletAddress.toLowerCase();
-      } else {
-        console.error('getWalletAddressFromRequest - Invalid address format:', walletAddress);
+      // Expected format: address:signature:timestamp
+      const parts = authData.split(':');
+      
+      if (parts.length === 3) {
+        const [walletAddress, signature, timestamp] = parts;
+        
+        // Basic validation - check if it's a valid Ethereum address format
+        if (!/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
+          // SECURITY: Don't log the invalid address (could be malicious input)
+          console.error('getWalletAddressFromRequest - Invalid address format');
+          return null;
+        }
+        
+        // Check timestamp is recent (within 5 minutes)
+        const timestampNum = parseInt(timestamp, 10);
+        const now = Date.now();
+        const fiveMinutes = 5 * 60 * 1000;
+        
+        if (isNaN(timestampNum) || Math.abs(now - timestampNum) > fiveMinutes) {
+          console.error('getWalletAddressFromRequest - Timestamp expired or invalid');
+          return null;
+        }
+        
+        // Verify signature
+        const message = `Sign in to Mental Wealth Academy\n\nWallet: ${walletAddress}\nTimestamp: ${timestamp}`;
+        const isValid = await verifyWalletSignature(message, signature, walletAddress);
+        
+        if (isValid) {
+          return walletAddress.toLowerCase();
+        } else {
+          // SECURITY: Log security event without sensitive data
+          console.warn('getWalletAddressFromRequest - Signature verification failed');
+          return null;
+        }
+      }
+      
+      // Fallback: Legacy format (single wallet address) - DEPRECATED, will be removed
+      // Only allow in development mode
+      if (process.env.NODE_ENV === 'development' && /^0x[a-fA-F0-9]{40}$/.test(authData)) {
+        console.warn('Using legacy wallet auth format - please update to use signature');
+        return authData.toLowerCase();
       }
     }
     
-    // Could also check cookies if needed for SSR
-    // For now, we'll rely on Authorization header only
-    
     return null;
   } catch (error) {
-    console.error('getWalletAddressFromRequest - Error getting headers:', error);
+    console.error('getWalletAddressFromRequest - Error:', error);
     return null;
   }
 }

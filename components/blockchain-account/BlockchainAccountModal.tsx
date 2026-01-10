@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { useModal } from 'connectkit';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './BlockchainAccountModal.module.css';
@@ -18,6 +18,7 @@ export function BlockchainAccountModal({
   onAccountSynced,
 }: BlockchainAccountModalProps) {
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const { setOpen: setConnectKitOpen } = useModal();
   const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +87,7 @@ export function BlockchainAccountModal({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...getWalletAuthHeaders(address),
+          ...(await getWalletAuthHeaders(address, signMessageAsync)),
         },
         body: JSON.stringify({}),
       });

@@ -59,9 +59,10 @@ function createPool(): Pool {
     const username = usernameMatch ? usernameMatch[1] : '';
     const hasCorrectPoolerUsername = username.includes('.') && username.startsWith('postgres.');
     
-    if (process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV) {
+    if (process.env.NODE_ENV === 'development') {
       console.log('[DB] Initializing connection pool');
       console.log('[DB] Connection type:', isDirectConnection ? 'Direct' : isPoolerConnection ? 'Pooler' : 'Unknown');
+      // SECURITY: Only log masked connection string in development
       console.log('[DB] Connection string:', maskConnectionString(cleanUrl));
       
       // Warn if using pooler connection with wrong username format

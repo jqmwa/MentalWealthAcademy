@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './AvatarSelectionModal.module.css';
 
@@ -24,6 +24,7 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
   onAvatarSelected 
 }) => {
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [avatarChoices, setAvatarChoices] = useState<Avatar[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,9 +36,9 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
     setError(null);
     try {
       // Include wallet auth headers if wallet is connected
-      const headers: HeadersInit = {};
+      let headers: HeadersInit = {};
       if (isConnected && address) {
-        Object.assign(headers, getWalletAuthHeaders(address));
+        headers = await getWalletAuthHeaders(address, signMessageAsync);
       }
       
       const response = await fetch('/api/avatars/choices', {
@@ -75,9 +76,10 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
 
     try {
       // Include wallet auth headers if wallet is connected
-      const headers: HeadersInit = { 'Content-Type': 'application/json' };
+      let headers: HeadersInit = { 'Content-Type': 'application/json' };
       if (isConnected && address) {
-        Object.assign(headers, getWalletAuthHeaders(address));
+        const authHeaders = await getWalletAuthHeaders(address, signMessageAsync);
+        headers = { ...headers, ...authHeaders };
       }
       
       const response = await fetch('/api/avatars/select', {

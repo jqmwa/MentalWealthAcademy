@@ -14,6 +14,31 @@ function isValidEmail(email: unknown): email is string {
 }
 
 export async function POST(request: Request) {
+  // SECURITY: Rate limiting for login attempts
+  const { checkRateLimit, getClientIdentifier, getRateLimitHeaders } = await import('@/lib/rate-limit');
+  
+  const body = await request.json().catch(() => ({}));
+  const email = body?.email;
+  
+  // Rate limit: 5 login attempts per 15 minutes per email/IP
+  const identifier = email ? `login:${email}` : getClientIdentifier(request);
+  const rateLimitResult = checkRateLimit({
+    max: 5,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    identifier,
+  });
+  
+  if (!rateLimitResult.allowed) {
+    const resetDate = new Date(rateLimitResult.resetAt);
+    return NextResponse.json(
+      { error: `Too many login attempts. Try again after ${resetDate.toLocaleTimeString()}` },
+      { 
+        status: 429,
+        headers: getRateLimitHeaders(rateLimitResult),
+      }
+    );
+  }
+
   if (!isDbConfigured()) {
     return NextResponse.json(
       { error: 'Database is not configured on the server.' },
@@ -22,8 +47,6 @@ export async function POST(request: Request) {
   }
   await ensureForumSchema();
 
-  const body = await request.json().catch(() => ({}));
-  const email = body?.email;
   const password = body?.password;
 
   if (!isValidEmail(email)) {

@@ -3,6 +3,8 @@ import { sqlQuery } from './db';
 declare global {
   // eslint-disable-next-line no-var
   var __mwaForumSchemaEnsured: boolean | undefined;
+  // eslint-disable-next-line no-var
+  var __mwaForumSchemaLock: Promise<void> | undefined;
 }
 
 const DEFAULT_CATEGORIES: Array<{
@@ -50,8 +52,31 @@ const DEFAULT_CATEGORIES: Array<{
 ];
 
 export async function ensureForumSchema() {
+  // If already ensured, return immediately
   if (globalThis.__mwaForumSchemaEnsured) return;
 
+  // If currently running, wait for it to finish
+  if (globalThis.__mwaForumSchemaLock) {
+    await globalThis.__mwaForumSchemaLock;
+    return;
+  }
+
+  // Create lock promise
+  const lockPromise = (async () => {
+    try {
+      await _ensureForumSchemaImpl();
+      globalThis.__mwaForumSchemaEnsured = true;
+    } finally {
+      // Release lock
+      globalThis.__mwaForumSchemaLock = undefined;
+    }
+  })();
+
+  globalThis.__mwaForumSchemaLock = lockPromise;
+  await lockPromise;
+}
+
+async function _ensureForumSchemaImpl() {
   // Enable UUID extension (if not already enabled)
   // Note: Pooler connections may not allow extension creation, so we skip this for poolers
   // Supabase already has uuid-ossp enabled by default
@@ -144,24 +169,28 @@ export async function ensureForumSchema() {
   // Make password_hash nullable for wallet-based signups (if not already nullable)
   // This is critical - wallet signups don't have passwords
   try {
-    const result = await sqlQuery(`
+    await sqlQuery(`
       ALTER TABLE users 
       ALTER COLUMN password_hash DROP NOT NULL
     `);
-    console.log('Successfully made password_hash nullable');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Successfully made password_hash nullable');
+    }
   } catch (err: any) {
     // Check if error is because column is already nullable or doesn't exist
     const errorMessage = err?.message || String(err || '');
     if (errorMessage.includes('does not exist') || 
         errorMessage.includes('cannot be cast') ||
         errorMessage.includes('already') ||
+        errorMessage.includes('tuple concurrently updated') ||
         errorMessage.includes('constraint') && errorMessage.includes('does not exist')) {
-      // Column might already be nullable or doesn't exist, which is fine
-      console.log('password_hash column is already nullable or constraint already dropped');
+      // Column might already be nullable or doesn't exist, or concurrent update - which is fine
+      if (process.env.NODE_ENV === 'development') {
+        console.log('password_hash column is already nullable or constraint already dropped');
+      }
     } else {
       // Log other errors so we can see what's happening
       console.warn('Error making password_hash nullable:', errorMessage);
-      console.warn('Full error:', err);
     }
   }
 
@@ -532,6 +561,4 @@ export async function ensureForumSchema() {
   } catch (err: any) {
     // Indexes might already exist
   }
-
-  globalThis.__mwaForumSchemaEnsured = true;
 }

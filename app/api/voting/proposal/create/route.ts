@@ -47,6 +47,14 @@ export async function POST(request: Request) {
     );
   }
 
+  // SECURITY: Limit proposal content length
+  if (proposalMarkdown.trim().length > 20000) {
+    return NextResponse.json(
+      { error: 'Proposal content must be 20,000 characters or less.' },
+      { status: 400 }
+    );
+  }
+
   if (!walletAddress || typeof walletAddress !== 'string') {
     return NextResponse.json(
       { error: 'Wallet address is required.' },

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 import { mkdir, writeFile } from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
+import { getCurrentUserFromRequestCookie } from '@/lib/auth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,6 +31,12 @@ function extForMime(mime: string) {
 }
 
 export async function POST(request: Request) {
+  // SECURITY: Require authentication
+  const user = await getCurrentUserFromRequestCookie();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+  }
+
   const form = await request.formData();
   const file = form.get('file');
 

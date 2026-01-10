@@ -35,26 +35,30 @@ export async function POST(request: Request) {
   const signature = request.headers.get('x-cdp-signature');
   const webhookSecret = process.env.CDP_WEBHOOK_SECRET;
 
+  // SECURITY: Always require webhook secret in production
   if (!webhookSecret) {
-    console.warn('CDP_WEBHOOK_SECRET not configured');
-  } else if (signature) {
-    // Verify signature
-    const body = await request.text();
-    const isValid = await verifyWebhookSignature(body, signature, webhookSecret);
-    
-    if (!isValid) {
-      console.error('Invalid webhook signature');
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
-    }
-    
-    // Re-parse body after verification
-    const event: CDPWebhookEvent = JSON.parse(body);
-    await processEvent(event);
-  } else {
-    // No signature, process anyway (for testing)
-    const event: CDPWebhookEvent = await request.json();
-    await processEvent(event);
+    console.error('CDP_WEBHOOK_SECRET not configured - rejecting webhook');
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
   }
+
+  // SECURITY: Always require signature
+  if (!signature) {
+    console.error('Missing webhook signature');
+    return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
+  }
+
+  // Verify signature
+  const body = await request.text();
+  const isValid = await verifyWebhookSignature(body, signature, webhookSecret);
+  
+  if (!isValid) {
+    console.error('Invalid webhook signature');
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+  }
+  
+  // Re-parse body after verification
+  const event: CDPWebhookEvent = JSON.parse(body);
+  await processEvent(event);
 
   return NextResponse.json({ ok: true, received: true });
 }

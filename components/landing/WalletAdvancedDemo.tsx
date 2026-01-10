@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import { useModal } from 'connectkit';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './WalletAdvancedDemo.module.css';
@@ -19,6 +19,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const { setOpen } = useModal();
+  const { signMessageAsync } = useSignMessage();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedAddress, setProcessedAddress] = useState<string | null>(null);
@@ -216,7 +217,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
       // Check if user exists with this wallet address
       console.log('Checking if user exists...');
       const meResponse = await fetch('/api/me', {
-        headers: getWalletAuthHeaders(walletAddress),
+        headers: await getWalletAuthHeaders(walletAddress, signMessageAsync),
       });
       
       if (!meResponse.ok) {
@@ -243,7 +244,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
         // Check profile completeness by fetching full profile
         console.log('User exists, checking profile completeness...');
         const profileResponse = await fetch('/api/profile', {
-          headers: getWalletAuthHeaders(walletAddress),
+          headers: await getWalletAuthHeaders(walletAddress, signMessageAsync),
         });
         
         let hasCompleteProfile = hasUsername;
@@ -273,7 +274,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
       } else {
         // User doesn't exist - create account with wallet address
         console.log('User does not exist, attempting to create account for:', walletAddress);
-        const authHeaders = getWalletAuthHeaders(walletAddress);
+        const authHeaders = await getWalletAuthHeaders(walletAddress, signMessageAsync);
         console.log('Wallet signup - Sending wallet address:', walletAddress);
         console.log('Wallet signup - Auth headers:', Object.keys(authHeaders));
         
@@ -301,7 +302,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           
           // Verify account was actually created by checking /api/me
           const verifyResponse = await fetch('/api/me', {
-            headers: getWalletAuthHeaders(walletAddress),
+            headers: await getWalletAuthHeaders(walletAddress, signMessageAsync),
           });
           const verifyData = await verifyResponse.json().catch(() => ({ user: null }));
           

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './YourAccountsModal.module.css';
 import { XConnectingModal } from '../x-connecting/XConnectingModal';
@@ -19,6 +19,7 @@ interface XAccount {
 
 const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [xAccount, setXAccount] = useState<XAccount | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -50,7 +51,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         const accountStatusResponse = await fetch('/api/account/status', {
           cache: 'no-store',
           credentials: 'include',
-          headers: address ? getWalletAuthHeaders(address) : {}
+          headers: address ? await getWalletAuthHeaders(address, signMessageAsync) : {}
         });
         
         if (accountStatusResponse.ok) {
@@ -72,7 +73,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         const response = await fetch('/api/x-auth/status', { 
           cache: 'no-store',
           credentials: 'include',
-          headers: address ? getWalletAuthHeaders(address) : {}
+          headers: address ? await getWalletAuthHeaders(address, signMessageAsync) : {}
         });
         
         // Handle 503 (database not configured) gracefully
@@ -161,7 +162,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
         const accountStatusResponse = await fetch('/api/account/status', {
           cache: 'no-store',
           credentials: 'include',
-          headers: address ? getWalletAuthHeaders(address) : {}
+          headers: address ? await getWalletAuthHeaders(address, signMessageAsync) : {}
         });
         
         if (accountStatusResponse.ok) {

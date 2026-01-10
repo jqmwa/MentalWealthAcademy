@@ -121,6 +121,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Not signed in.' }, { status: 401 });
   }
 
+  // SECURITY: Rate limiting for thread creation
+  const { checkRateLimit, getClientIdentifier, getRateLimitHeaders } = await import('@/lib/rate-limit');
+  
+  const rateLimitResult = checkRateLimit({
+    max: 10, // 10 threads per hour per user
+    windowMs: 60 * 60 * 1000, // 1 hour
+    identifier: getClientIdentifier(request, user.id),
+  });
+  
+  if (!rateLimitResult.allowed) {
+    const resetDate = new Date(rateLimitResult.resetAt);
+    return NextResponse.json(
+      { error: `Too many threads created. Try again after ${resetDate.toLocaleTimeString()}` },
+      { 
+        status: 429,
+        headers: getRateLimitHeaders(rateLimitResult),
+      }
+    );
+  }
+
   const body = await request.json().catch(() => ({}));
   const categorySlug = body?.categorySlug;
   const title = body?.title;
@@ -133,11 +153,12 @@ export async function POST(request: Request) {
   }
 
   if (!isNonEmptyString(title, 200)) {
-    return NextResponse.json({ error: 'Invalid title.' }, { status: 400 });
+    return NextResponse.json({ error: 'Title must be between 1 and 200 characters.' }, { status: 400 });
   }
 
+  // SECURITY: Limit post body length
   if (!isNonEmptyString(postBody, 10_000)) {
-    return NextResponse.json({ error: 'Post body is required.' }, { status: 400 });
+    return NextResponse.json({ error: 'Post body must be between 1 and 10,000 characters.' }, { status: 400 });
   }
 
   try {

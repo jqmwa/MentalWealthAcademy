@@ -16,11 +16,40 @@ function isValidEmail(email: unknown): email is string {
 
 function isValidPassword(password: unknown): password is string {
   if (typeof password !== 'string') return false;
-  return password.length >= 8;
+  
+  // SECURITY: Stronger password requirements
+  // At least 8 characters, with at least one uppercase, one lowercase, one number
+  if (password.length < 8) return false;
+  
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  
+  return hasUpperCase && hasLowerCase && hasNumber;
 }
 
 export async function POST(request: Request) {
   try {
+    // SECURITY: Rate limiting for signups
+    const { checkRateLimit, getClientIdentifier, getRateLimitHeaders } = await import('@/lib/rate-limit');
+    
+    const rateLimitResult = checkRateLimit({
+      max: 3, // Only 3 signups per hour per IP
+      windowMs: 60 * 60 * 1000, // 1 hour
+      identifier: getClientIdentifier(request),
+    });
+    
+    if (!rateLimitResult.allowed) {
+      const resetDate = new Date(rateLimitResult.resetAt);
+      return NextResponse.json(
+        { error: `Too many signup attempts. Try again after ${resetDate.toLocaleTimeString()}` },
+        { 
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
+      );
+    }
+
     if (!isDbConfigured()) {
       return NextResponse.json(
         { error: 'Database is not configured on the server.' },
@@ -32,12 +61,16 @@ export async function POST(request: Request) {
     try {
       await ensureForumSchema();
     } catch (error: any) {
-      console.error('Schema setup error:', error);
-      console.error('Error details:', {
-        code: error?.code,
-        message: error?.message,
-        stack: error?.stack,
-      });
+      // SECURITY: Only log detailed errors in development
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Schema setup error:', error);
+        console.error('Error details:', {
+          code: error?.code,
+          message: error?.message,
+        });
+      } else {
+        console.error('Schema setup error:', error?.code || 'Unknown error');
+      }
       
       // Handle password authentication failures (28P01) - this is a critical error
       if (error?.code === '28P01' || error?.message?.includes('password authentication failed')) {
@@ -97,7 +130,7 @@ export async function POST(request: Request) {
 
     if (!isValidPassword(password)) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters.' },
+        { error: 'Password must be at least 8 characters and include uppercase, lowercase, and a number.' },
         { status: 400 }
       );
     }
@@ -143,9 +176,11 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { 
           error: 'Database authentication failed.',
-          message: err?.message || 'Password authentication failed. Please check your DATABASE_URL connection string.',
-          code: err?.code,
-          details: process.env.NODE_ENV === 'development' ? err?.message : undefined
+          // SECURITY: Don't expose internal error details in production
+          message: process.env.NODE_ENV === 'development' 
+            ? (err?.message || 'Password authentication failed. Please check your DATABASE_URL connection string.')
+            : 'A database error occurred. Please contact support.',
+          code: process.env.NODE_ENV === 'development' ? err?.code : undefined
         },
         { status: 503 }
       );

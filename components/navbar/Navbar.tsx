@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import styles from './Navbar.module.css';
@@ -91,6 +91,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { signMessageAsync } = useSignMessage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
@@ -104,9 +105,9 @@ const Navbar: React.FC = () => {
     const fetchUserData = async () => {
       try {
         // Include wallet auth headers if wallet is connected
-        const headers: HeadersInit = {};
+        let headers: HeadersInit = {};
         if (isConnected && address) {
-          Object.assign(headers, getWalletAuthHeaders(address));
+          headers = await getWalletAuthHeaders(address, signMessageAsync);
         }
         
         const response = await fetch('/api/me', { 

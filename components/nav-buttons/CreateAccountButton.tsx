@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import { useModal } from 'connectkit';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './CreateAccountButton.module.css';
@@ -24,6 +24,7 @@ async function uploadIfPresent(file: File | null) {
 const CreateAccountButton: React.FC = () => {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const { signMessageAsync } = useSignMessage();
   const { setOpen: setConnectKitOpen } = useModal();
   const [me, setMe] = useState<MeResponse['user']>(null);
   const [open, setOpen] = useState(false);
@@ -68,7 +69,7 @@ const CreateAccountButton: React.FC = () => {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            ...getWalletAuthHeaders(address),
+            ...(await getWalletAuthHeaders(address, signMessageAsync)),
           },
           body: JSON.stringify({
             username,
@@ -83,7 +84,7 @@ const CreateAccountButton: React.FC = () => {
           method: 'PUT',
           headers: { 
             'Content-Type': 'application/json',
-            ...getWalletAuthHeaders(address),
+            ...(await getWalletAuthHeaders(address, signMessageAsync)),
           },
           body: JSON.stringify({
             username,

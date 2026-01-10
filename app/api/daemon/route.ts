@@ -31,6 +31,33 @@ ${toneLine}`.trim();
 }
 
 export async function POST(request: Request) {
+  // SECURITY: Require authentication and rate limiting
+  const { getCurrentUserFromRequestCookie } = await import('@/lib/auth');
+  const { checkRateLimit, getClientIdentifier, getRateLimitHeaders } = await import('@/lib/rate-limit');
+  
+  const user = await getCurrentUserFromRequestCookie();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+  }
+  
+  // Rate limit: 20 requests per hour per user
+  const rateLimitResult = checkRateLimit({
+    max: 20,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    identifier: getClientIdentifier(request, user.id),
+  });
+  
+  if (!rateLimitResult.allowed) {
+    const resetDate = new Date(rateLimitResult.resetAt);
+    return NextResponse.json(
+      { error: `Rate limit exceeded. Try again after ${resetDate.toLocaleTimeString()}` },
+      { 
+        status: 429,
+        headers: getRateLimitHeaders(rateLimitResult),
+      }
+    );
+  }
+
   const body = await request.json().catch(() => ({}));
   const mode = body?.mode as Mode;
   const tone = body?.tone as Tone;
@@ -39,6 +66,11 @@ export async function POST(request: Request) {
 
   if (!input.trim()) {
     return NextResponse.json({ error: 'Input is required.' }, { status: 400 });
+  }
+  
+  // SECURITY: Limit input length to prevent abuse
+  if (input.length > 5000) {
+    return NextResponse.json({ error: 'Input too long. Maximum 5000 characters.' }, { status: 400 });
   }
 
   const apiKey = process.env.DEEPSEEK_API_KEY;
@@ -90,5 +122,19 @@ export async function POST(request: Request) {
       ? String(data.choices[0].message.content)
       : '';
 
-  return NextResponse.json({ output: text || '' });
+  // Add rate limit headers to successful response
+  const { getRateLimitHeaders } = await import('@/lib/rate-limit');
+  const { checkRateLimit, getClientIdentifier } = await import('@/lib/rate-limit');
+  const { getCurrentUserFromRequestCookie } = await import('@/lib/auth');
+  const user = await getCurrentUserFromRequestCookie();
+  const rateLimitResult = checkRateLimit({
+    max: 20,
+    windowMs: 60 * 60 * 1000,
+    identifier: getClientIdentifier(request, user?.id),
+  });
+
+  return NextResponse.json(
+    { output: text || '' },
+    { headers: getRateLimitHeaders(rateLimitResult) }
+  );
 }

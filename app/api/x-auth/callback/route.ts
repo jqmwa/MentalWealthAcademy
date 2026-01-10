@@ -100,7 +100,8 @@ export async function GET(request: Request) {
 
     if (!response.ok) {
       const text = await response.text();
-      console.error('X OAuth access token error:', text);
+      // SECURITY: Don't log full OAuth response (may contain sensitive data)
+      console.error('X OAuth access token error - status:', response.status);
       return NextResponse.redirect(new URL('/home?x_auth=error', request.url));
     }
 

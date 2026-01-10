@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './OnboardingModal.module.css';
 
@@ -18,6 +18,7 @@ type Step = 'account';
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWalletSignup = false }) => {
   const router = useRouter();
   const { address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [currentStep, setCurrentStep] = useState<Step>('account');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -314,7 +315,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
       
       // Add wallet auth headers if this is a wallet signup
       if (isWalletSignup && address) {
-        Object.assign(headers, getWalletAuthHeaders(address));
+        const authHeaders = await getWalletAuthHeaders(address, signMessageAsync);
+        Object.assign(headers, authHeaders);
       }
 
       const requestBody: any = {

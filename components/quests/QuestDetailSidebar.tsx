@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './QuestDetailSidebar.module.css';
 import { ConfettiCelebration } from './ConfettiCelebration';
@@ -54,6 +54,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   const [shouldRender, setShouldRender] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const [step1Completed, setStep1Completed] = useState(false);
   const [step2Completed, setStep2Completed] = useState(false);
   const [isCheckingFollow, setIsCheckingFollow] = useState(false);
@@ -114,7 +115,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
         const response = await fetch('/api/x-auth/status', { 
           cache: 'no-store',
           credentials: 'include',
-          headers: getWalletAuthHeaders(address)
+          headers: await getWalletAuthHeaders(address, signMessageAsync)
         });
         
         if (response.status === 401) {
@@ -132,7 +133,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
             method: 'POST',
             cache: 'no-store',
             credentials: 'include',
-            headers: getWalletAuthHeaders(address)
+            headers: await getWalletAuthHeaders(address, signMessageAsync)
           });
           const followData = await followResponse.json();
           
@@ -145,7 +146,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
                 method: 'POST',
                 cache: 'no-store',
                 credentials: 'include',
-                headers: getWalletAuthHeaders(address)
+                headers: await getWalletAuthHeaders(address, signMessageAsync)
               });
               const completeData = await completeResponse.json();
               
