@@ -871,6 +871,16 @@
   }
 }
 
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 32px auto;
+}
+
 /* Proposals Section */
 .proposalsSection {
   width: 100%;
@@ -1090,7 +1100,20 @@
   height: 14px;
 }
 
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
 @media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
   .proposalsSection {
     padding: 0 4px;
   }

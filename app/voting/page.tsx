@@ -155,12 +155,21 @@ export default function VotingPage() {
             </header>
           </div>
 
-          {/* Azura Power Indicator */}
-          <AzuraPowerIndicator 
-            soulGems="40000"
-            walletAddress={AZURA_ADDRESS}
-            governanceTokenAddress={GOV_TOKEN_ADDRESS}
-          />
+          {/* Stats Grid */}
+          <div className={styles.statsGrid}>
+            {/* Azura Power Indicator */}
+            <AzuraPowerIndicator 
+              soulGems="40000"
+              walletAddress={AZURA_ADDRESS}
+              governanceTokenAddress={GOV_TOKEN_ADDRESS}
+            />
+
+            {/* Treasury Display */}
+            <TreasuryDisplay
+              contractAddress={CONTRACT_ADDRESS}
+              usdcAddress={USDC_ADDRESS}
+            />
+          </div>
 
           {/* Proposals Section */}
           <section className={styles.proposalsSection}>
