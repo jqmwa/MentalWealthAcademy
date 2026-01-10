@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { BrowserProvider, Contract } from 'ethers';
+import React, { useState, useEffect, useCallback } from 'react';
+import { providers, Contract } from 'ethers';
 import styles from './TreasuryDisplay.module.css';
 
 interface TreasuryDisplayProps {
@@ -21,18 +21,10 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
   const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadBalance();
-    
-    // Refresh every 30 seconds
-    const interval = setInterval(loadBalance, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadBalance = async () => {
+  const loadBalance = useCallback(async () => {
     try {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new BrowserProvider(window.ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
         const usdcContract = new Contract(usdcAddress, USDC_ABI, provider);
         
         const balanceRaw = await usdcContract.balanceOf(contractAddress);
@@ -50,7 +42,15 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [contractAddress, usdcAddress]);
+
+  useEffect(() => {
+    loadBalance();
+    
+    // Refresh every 30 seconds
+    const interval = setInterval(loadBalance, 30000);
+    return () => clearInterval(interval);
+  }, [loadBalance]);
 
   const handleRefresh = () => {
     setLoading(true);

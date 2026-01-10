@@ -2,12 +2,11 @@
 
 <img width="4608" height="2307" alt="Mental Wealth Academy" src="https://github.com/user-attachments/assets/34e5d681-18f5-487d-9c92-8b4d590ec2ed" />
 
-# 🧠 Mental Wealth Academy
+# Mental Wealth Academy 🏛️👩🏽‍⚖️🏗️
 
-**The most complete citizen participation tool for an open, transparent and democratic digital academia and cyber-culture research fund.
-**
+**The most complete citizen participation tool for an open, transparent, and democratic digital governance controlling the cyber-culture wellness research fund.**
 
-Azura Blockchain Address: 0x0920553CcA188871b146ee79f562B4Af46aB4f8a
+Azura AI: 0x0920553CcA188871b146ee79f562B4Af46aB4f8a
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)

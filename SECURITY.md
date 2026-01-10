@@ -210,7 +210,7 @@ Current implementation uses in-memory storage. For production deployments with m
 If you discover a security vulnerability:
 
 **✅ DO:**
-- Email: security@mentalwealthacademy.com
+- Email: research@mentalwealthacademy.net
 - Provide detailed description
 - Include steps to reproduce (if applicable)
 - Allow reasonable time for fix before public disclosure

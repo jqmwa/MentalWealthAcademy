@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BrowserProvider } from 'ethers';
+import { providers } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import Link from 'next/link';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
 import { AzuraPowerIndicator } from '@/components/soul-gems/SoulGemDisplay';
+import TreasuryDisplay from '@/components/treasury-display/TreasuryDisplay';
 import VoteProgressBar from '@/components/vote-progress/VoteProgressBar';
 import VoteButtons from '@/components/vote-buttons/VoteButtons';
 import { 
@@ -66,6 +67,7 @@ const getTutorialSteps = (): TutorialStep[] => [
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
 const GOV_TOKEN_ADDRESS = process.env.NEXT_PUBLIC_GOVERNANCE_TOKEN_ADDRESS || '0x84939fEc50EfdEDC8522917645AAfABFd5b3EA6F';
+const USDC_ADDRESS = process.env.NEXT_PUBLIC_USDC_ADDRESS || '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'; // Base mainnet USDC
 const AZURA_ADDRESS = '0x0920553CcA188871b146ee79f562B4Af46aB4f8a';
 const TOTAL_SUPPLY = '100000'; // 100k tokens
 
@@ -95,7 +97,7 @@ export default function VotingPage() {
     try {
       // Connect to blockchain to read proposals
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new BrowserProvider(window.ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
         const onChainProposals = await fetchAllProposals(CONTRACT_ADDRESS, provider);
         setProposals(onChainProposals);
       } else {

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAccount } from 'wagmi';
-import { BrowserProvider } from 'ethers';
+import { providers } from 'ethers';
 import { voteOnProposal, getUserVotingPower, formatTokenAmount } from '@/lib/azura-contract';
 import { SoulGemDisplay } from '@/components/soul-gems/SoulGemDisplay';
 import styles from './VoteButtons.module.css';
@@ -27,25 +27,25 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
   const [votingPower, setVotingPower] = useState<string>('0');
   const [userHasVoted, setUserHasVoted] = useState(hasVoted);
 
-  useEffect(() => {
-    if (isConnected && address) {
-      loadVotingPower();
-    }
-  }, [isConnected, address]);
-
-  const loadVotingPower = async () => {
+  const loadVotingPower = useCallback(async () => {
     if (!address) return;
     
     try {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new BrowserProvider(window.ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
         const power = await getUserVotingPower(contractAddress, address, provider);
         setVotingPower(power);
       }
     } catch (error) {
       console.error('Error loading voting power:', error);
     }
-  };
+  }, [address, contractAddress]);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      loadVotingPower();
+    }
+  }, [isConnected, address, loadVotingPower]);
 
   const handleVote = async (support: boolean) => {
     if (!isConnected || !address) {
@@ -62,7 +62,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
 
     try {
       if (typeof window.ethereum !== 'undefined') {
-        const provider = new BrowserProvider(window.ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
         
         const txHash = await voteOnProposal(
           contractAddress,

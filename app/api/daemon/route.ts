@@ -123,16 +123,6 @@ export async function POST(request: Request) {
       : '';
 
   // Add rate limit headers to successful response
-  const { getRateLimitHeaders } = await import('@/lib/rate-limit');
-  const { checkRateLimit, getClientIdentifier } = await import('@/lib/rate-limit');
-  const { getCurrentUserFromRequestCookie } = await import('@/lib/auth');
-  const user = await getCurrentUserFromRequestCookie();
-  const rateLimitResult = checkRateLimit({
-    max: 20,
-    windowMs: 60 * 60 * 1000,
-    identifier: getClientIdentifier(request, user?.id),
-  });
-
   return NextResponse.json(
     { output: text || '' },
     { headers: getRateLimitHeaders(rateLimitResult) }

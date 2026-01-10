@@ -1,4 +1,4 @@
-import { Contract, BrowserProvider } from 'ethers';
+import { Contract, providers } from 'ethers';
 
 /**
  * AzuraKillStreak Contract Interface
@@ -63,7 +63,7 @@ export interface VotingProgress {
  */
 export function getAzuraKillStreakContract(
   contractAddress: string,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Contract {
   return new Contract(contractAddress, AZURA_KILLSTREAK_ABI, provider);
 }
@@ -73,9 +73,9 @@ export function getAzuraKillStreakContract(
  */
 export async function getAzuraKillStreakContractWithSigner(
   contractAddress: string,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<Contract> {
-  const signer = await provider.getSigner();
+  const signer = provider.getSigner();
   return new Contract(contractAddress, AZURA_KILLSTREAK_ABI, signer);
 }
 
@@ -85,7 +85,7 @@ export async function getAzuraKillStreakContractWithSigner(
 export async function fetchProposal(
   contractAddress: string,
   proposalId: number,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<OnChainProposal> {
   const contract = getAzuraKillStreakContract(contractAddress, provider);
   const proposal = await contract.getProposal(proposalId);
@@ -113,7 +113,7 @@ export async function fetchProposal(
  */
 export async function fetchAllProposals(
   contractAddress: string,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<OnChainProposal[]> {
   const contract = getAzuraKillStreakContract(contractAddress, provider);
   const count = await contract.proposalCount();
@@ -139,7 +139,7 @@ export async function fetchAllProposals(
 export async function getVotingProgress(
   contractAddress: string,
   proposalId: number,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<VotingProgress> {
   const contract = getAzuraKillStreakContract(contractAddress, provider);
   const [forVotes, againstVotes, percentageFor] = await contract.getVotingProgress(proposalId);
@@ -157,7 +157,7 @@ export async function getVotingProgress(
 export async function getUserVotingPower(
   contractAddress: string,
   userAddress: string,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<string> {
   const contract = getAzuraKillStreakContract(contractAddress, provider);
   const power = await contract.getVotingPower(userAddress);
@@ -174,7 +174,7 @@ export async function createProposalOnChain(
   title: string,
   description: string,
   votingPeriodDays: number,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<{ proposalId: number; txHash: string }> {
   const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
   
@@ -216,7 +216,7 @@ export async function voteOnProposal(
   contractAddress: string,
   proposalId: number,
   support: boolean,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<string> {
   const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
   
@@ -232,7 +232,7 @@ export async function voteOnProposal(
 export async function executeProposal(
   contractAddress: string,
   proposalId: number,
-  provider: BrowserProvider
+  provider: providers.Web3Provider
 ): Promise<string> {
   const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
   

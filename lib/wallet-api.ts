@@ -3,7 +3,7 @@
  * This should be used in client components that need to make authenticated API calls
  * 
  * @param address - The wallet address
- * @param signMessage - Function to sign a message (from wagmi's useSignMessage hook)
+ * @param signMessageAsync - Function to sign a message (from wagmi's useSignMessage hook)
  * @returns Promise with Authorization header
  * 
  * @example
@@ -19,16 +19,16 @@
  */
 export async function getWalletAuthHeaders(
   address: string | undefined,
-  signMessage?: (message: string) => Promise<string>
+  signMessageAsync?: any // wagmi v2 SignMessageMutateAsync type
 ): Promise<HeadersInit> {
   if (!address) {
     return {};
   }
 
-  // If no signMessage function provided, use legacy format (development only)
-  if (!signMessage) {
+  // If no signMessageAsync function provided, use legacy format (development only)
+  if (!signMessageAsync) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('[Wallet Auth] Using legacy format without signature - update to use signMessage');
+      console.warn('[Wallet Auth] Using legacy format without signature - update to use signMessageAsync');
       return {
         'Authorization': `Bearer ${address}`,
       };
@@ -42,7 +42,8 @@ export async function getWalletAuthHeaders(
     const timestamp = Date.now().toString();
     const message = `Sign in to Mental Wealth Academy\n\nWallet: ${address}\nTimestamp: ${timestamp}`;
     
-    const signature = await signMessage(message);
+    // Call wagmi's signMessageAsync with proper parameters
+    const signature = await signMessageAsync({ message });
     const token = `${address}:${signature}:${timestamp}`;
     
     return {
