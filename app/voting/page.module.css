@@ -932,42 +932,22 @@
 .emptyState svg {
   width: 64px;
   height: 64px;
-  color: rgba(139, 92, 246, 0.4);
+  color: #6b7280;
   margin-bottom: 8px;
 }
 
 .emptyState h3 {
   font-size: 24px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
+  color: #4b5563;
   margin: 0;
 }
 
 .emptyState p {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0 0 24px 0;
+  color: #6b7280;
+  margin: 0;
   max-width: 400px;
-}
-
-.createFirstButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(99, 102, 241, 0.9));
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.createFirstButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
 }
 
 @keyframes spin {

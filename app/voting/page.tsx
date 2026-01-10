@@ -187,9 +187,6 @@ export default function VotingPage() {
                 </svg>
                 <h3>No proposals yet</h3>
                 <p>Be the first to submit a proposal to the community!</p>
-                <Link href="/voting/create" className={styles.createFirstButton}>
-                  Create First Proposal
-                </Link>
               </div>
             ) : error ? (
               <div className={styles.errorState}>
