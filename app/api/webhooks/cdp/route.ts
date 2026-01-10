@@ -47,18 +47,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
   }
 
-  // Verify signature
-  const body = await request.text();
-  const isValid = await verifyWebhookSignature(body, signature, webhookSecret);
-  
-  if (!isValid) {
-    console.error('Invalid webhook signature');
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
-  }
-  
-  // Re-parse body after verification
-  const event: CDPWebhookEvent = JSON.parse(body);
-  await processEvent(event);
+    // Verify signature
+    const body = await request.text();
+    const isValid = await verifyWebhookSignature(body, signature, webhookSecret);
+    
+    if (!isValid) {
+      console.error('Invalid webhook signature');
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    }
+    
+    // Re-parse body after verification
+    const event: CDPWebhookEvent = JSON.parse(body);
+    await processEvent(event);
 
   return NextResponse.json({ ok: true, received: true });
 }

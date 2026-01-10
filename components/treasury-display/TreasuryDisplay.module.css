@@ -102,6 +102,18 @@
   margin-left: 8px;
 }
 
+.error {
+  font-size: 12px;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
 .subtext {
   font-size: 13px;
   color: rgba(26, 29, 51, 0.6);
@@ -139,6 +151,31 @@
   font-weight: 700;
   color: var(--color-text-dark);
   margin: 0;
+}
+
+.contractLink {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.contractLink:hover {
+  color: #22c55e;
+  transform: translateX(2px);
+}
+
+.contractLink svg {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.contractLink:hover svg {
+  opacity: 1;
 }
 
 .loading {

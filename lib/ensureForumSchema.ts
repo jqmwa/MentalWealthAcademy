@@ -174,7 +174,7 @@ async function _ensureForumSchemaImpl() {
       ALTER COLUMN password_hash DROP NOT NULL
     `);
     if (process.env.NODE_ENV === 'development') {
-      console.log('Successfully made password_hash nullable');
+    console.log('Successfully made password_hash nullable');
     }
   } catch (err: any) {
     // Check if error is because column is already nullable or doesn't exist
@@ -186,7 +186,7 @@ async function _ensureForumSchemaImpl() {
         errorMessage.includes('constraint') && errorMessage.includes('does not exist')) {
       // Column might already be nullable or doesn't exist, or concurrent update - which is fine
       if (process.env.NODE_ENV === 'development') {
-        console.log('password_hash column is already nullable or constraint already dropped');
+      console.log('password_hash column is already nullable or constraint already dropped');
       }
     } else {
       // Log other errors so we can see what's happening

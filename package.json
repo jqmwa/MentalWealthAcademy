@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test-db": "tsx scripts/test-db-connection.ts"
+    "test-db": "tsx scripts/test-db-connection.ts",
+    "check-treasury": "tsx scripts/check-treasury-balance.ts"
   },
   "dependencies": {
     "@coinbase/coinbase-sdk": "^0.25.0",

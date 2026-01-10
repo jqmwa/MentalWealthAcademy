@@ -63,11 +63,11 @@ export async function POST(request: Request) {
     } catch (error: any) {
       // SECURITY: Only log detailed errors in development
       if (process.env.NODE_ENV === 'development') {
-        console.error('Schema setup error:', error);
-        console.error('Error details:', {
-          code: error?.code,
-          message: error?.message,
-        });
+      console.error('Schema setup error:', error);
+      console.error('Error details:', {
+        code: error?.code,
+        message: error?.message,
+      });
       } else {
         console.error('Schema setup error:', error?.code || 'Unknown error');
       }

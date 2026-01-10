@@ -22,8 +22,8 @@ export async function getWalletAddressFromRequest(): Promise<string | null> {
       
       if (parts.length === 3) {
         const [walletAddress, signature, timestamp] = parts;
-        
-        // Basic validation - check if it's a valid Ethereum address format
+      
+      // Basic validation - check if it's a valid Ethereum address format
         if (!/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
           // SECURITY: Don't log the invalid address (could be malicious input)
           console.error('getWalletAddressFromRequest - Invalid address format');
@@ -45,8 +45,8 @@ export async function getWalletAddressFromRequest(): Promise<string | null> {
         const isValid = await verifyWalletSignature(message, signature, walletAddress);
         
         if (isValid) {
-          return walletAddress.toLowerCase();
-        } else {
+        return walletAddress.toLowerCase();
+      } else {
           // SECURITY: Log security event without sensitive data
           console.warn('getWalletAddressFromRequest - Signature verification failed');
           return null;

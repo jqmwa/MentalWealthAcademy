@@ -20,25 +20,64 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
 }) => {
   const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const loadBalance = useCallback(async () => {
     try {
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new providers.Web3Provider(window.ethereum);
-        const usdcContract = new Contract(usdcAddress, USDC_ABI, provider);
-        
-        const balanceRaw = await usdcContract.balanceOf(contractAddress);
-        const decimals = await usdcContract.decimals();
-        
-        // Format USDC (6 decimals)
-        const balanceNum = Number(balanceRaw) / (10 ** Number(decimals));
-        setBalance(balanceNum.toLocaleString('en-US', { 
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2 
-        }));
+      setError(null);
+
+      // Try multiple RPC providers in order of preference
+      let provider: providers.Provider | null = null;
+      
+      // 1. Try Alchemy if configured
+      if (process.env.NEXT_PUBLIC_ALCHEMY_ID) {
+        const alchemyUrl = `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`;
+        console.log('Trying Alchemy provider...');
+        provider = new providers.JsonRpcProvider(alchemyUrl);
+      }
+      // 2. Try user's wallet provider if available
+      else if (typeof window !== 'undefined' && window.ethereum) {
+        console.log('Trying Web3Provider (MetaMask/wallet)...');
+        provider = new providers.Web3Provider(window.ethereum);
+      }
+      // 3. Fall back to public RPC
+      else {
+        const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
+        console.log('Using public RPC:', rpcUrl);
+        provider = new providers.JsonRpcProvider(rpcUrl);
+      }
+      
+      const usdcContract = new Contract(usdcAddress, USDC_ABI, provider);
+      
+      console.log('Treasury Display - Fetching balance...');
+      console.log('Contract Address:', contractAddress);
+      console.log('USDC Address:', usdcAddress);
+      
+      const balanceRaw = await usdcContract.balanceOf(contractAddress);
+      const decimals = await usdcContract.decimals();
+      
+      console.log('Raw balance:', balanceRaw.toString());
+      console.log('Decimals:', decimals.toString());
+      
+      // Format USDC (typically 6 decimals)
+      const balanceNum = Number(balanceRaw) / (10 ** Number(decimals));
+      
+      console.log('Formatted balance (USDC):', balanceNum);
+      
+      setBalance(balanceNum.toLocaleString('en-US', { 
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2 
+      }));
+      
+      // If balance is 0, show a helpful message
+      if (balanceNum === 0) {
+        setError('Treasury is empty. Fund the contract with USDC to enable proposals.');
       }
     } catch (error) {
       console.error('Error loading treasury balance:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load balance';
+      setError(errorMessage);
+      setBalance('0');
     } finally {
       setLoading(false);
     }
@@ -90,6 +129,11 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
         ${balance}
         <span className={styles.currency}>USDC</span>
       </p>
+      {error && (
+        <p className={styles.error}>
+          ⚠️ {error}
+        </p>
+      )}
       <p className={styles.subtext}>
         Available for approved proposals
       </p>
@@ -97,9 +141,17 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <p className={styles.statLabel}>Contract</p>
-          <p className={styles.statValue}>
+          <a 
+            href={`https://basescan.org/address/${contractAddress}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.contractLink}
+          >
             {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
-          </p>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </a>
         </div>
         <div className={styles.statItem}>
           <p className={styles.statLabel}>Network</p>
