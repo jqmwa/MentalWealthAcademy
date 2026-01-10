@@ -975,6 +975,121 @@
   }
 }
 
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  gap: 16px;
+}
+
+.errorState svg {
+  width: 64px;
+  height: 64px;
+  color: rgba(239, 68, 68, 0.6);
+  margin-bottom: 8px;
+}
+
+.errorState h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.errorState p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  max-width: 400px;
+}
+
+.retryButton {
+  padding: 12px 24px;
+  background: rgba(139, 92, 246, 0.9);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+}
+
+.proposalCardWrapper {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.6), rgba(31, 41, 55, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.proposalCardWrapper:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+}
+
+.proposalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.proposalTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+}
+
+.proposalId {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(139, 92, 246, 0.7);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+
+.proposalMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.viewOnChain {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(99, 102, 241, 0.9);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.viewOnChain:hover {
+  color: rgba(139, 92, 246, 0.9);
+  transform: translateX(2px);
+}
+
+.viewOnChain svg {
+  width: 14px;
+  height: 14px;
+}
+
 @media (max-width: 768px) {
   .proposalsSection {
     padding: 0 4px;
@@ -990,5 +1105,21 @@
 
   .emptyState p {
     font-size: 14px;
+  }
+
+  .proposalCardWrapper {
+    padding: 20px;
+  }
+
+  .proposalHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .proposalMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }

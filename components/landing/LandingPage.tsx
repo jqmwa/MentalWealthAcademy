@@ -424,7 +424,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              The most complete citizen participation tool for an open, transparent and democratic digital governance spiritual endowment.
+              The most complete citizen participation tool for an open, transparent and democratic digital academia and cyber-culture research fund.
               </p>
             </div>
           </div>

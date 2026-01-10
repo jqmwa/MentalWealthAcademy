@@ -1,11 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { BrowserProvider } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import Link from 'next/link';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
-import ProposalCard from '@/components/proposal-card/ProposalCard';
+import { AzuraPowerIndicator } from '@/components/soul-gems/SoulGemDisplay';
+import VoteProgressBar from '@/components/vote-progress/VoteProgressBar';
+import VoteButtons from '@/components/vote-buttons/VoteButtons';
+import { 
+  fetchAllProposals, 
+  getVotingProgress,
+  OnChainProposal,
+  formatTokenAmount,
+  ProposalStatus
+} from '@/lib/azura-contract';
 import styles from './page.module.css';
 
 interface Proposal {
@@ -54,10 +64,16 @@ const getTutorialSteps = (): TutorialStep[] => [
   },
 ];
 
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
+const GOV_TOKEN_ADDRESS = process.env.NEXT_PUBLIC_GOVERNANCE_TOKEN_ADDRESS || '0x84939fEc50EfdEDC8522917645AAfABFd5b3EA6F';
+const AZURA_ADDRESS = '0x0920553CcA188871b146ee79f562B4Af46aB4f8a';
+const TOTAL_SUPPLY = '100000'; // 100k tokens
+
 export default function VotingPage() {
   const [showTutorial, setShowTutorial] = useState(false);
-  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [proposals, setProposals] = useState<OnChainProposal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user has seen the admin tutorial
@@ -77,14 +93,17 @@ export default function VotingPage() {
 
   const fetchProposals = async () => {
     try {
-      const response = await fetch('/api/voting/proposals');
-      const data = await response.json();
-      
-      if (data.ok && data.proposals) {
-        setProposals(data.proposals);
+      // Connect to blockchain to read proposals
+      if (typeof window.ethereum !== 'undefined') {
+        const provider = new BrowserProvider(window.ethereum);
+        const onChainProposals = await fetchAllProposals(CONTRACT_ADDRESS, provider);
+        setProposals(onChainProposals);
+      } else {
+        setError('Please install MetaMask or another Web3 wallet');
       }
     } catch (error) {
       console.error('Error fetching proposals:', error);
+      setError('Failed to load proposals from blockchain');
     } finally {
       setLoading(false);
     }
@@ -136,6 +155,13 @@ export default function VotingPage() {
             </header>
           </div>
 
+          {/* Azura Power Indicator */}
+          <AzuraPowerIndicator 
+            soulGems="40000"
+            walletAddress={AZURA_ADDRESS}
+            governanceTokenAddress={GOV_TOKEN_ADDRESS}
+          />
+
           {/* Proposals Section */}
           <section className={styles.proposalsSection}>
             {loading ? (
@@ -154,15 +180,60 @@ export default function VotingPage() {
                   Create First Proposal
                 </Link>
               </div>
+            ) : error ? (
+              <div className={styles.errorState}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <h3>Error Loading Proposals</h3>
+                <p>{error}</p>
+                <button onClick={() => window.location.reload()} className={styles.retryButton}>
+                  Retry
+                </button>
+              </div>
             ) : (
               <div className={styles.proposalsGrid} data-tutorial-target="submission">
-                {proposals.map((proposal) => (
-                  <ProposalCard
-                    key={proposal.id}
-                    {...proposal}
-                    onViewDetails={handleViewDetails}
-                  />
-                ))}
+                {proposals.map((proposal) => {
+                  const onChainProposal = proposal as OnChainProposal;
+                  return (
+                    <div key={onChainProposal.id} className={styles.proposalCardWrapper}>
+                      <div className={styles.proposalHeader}>
+                        <h3 className={styles.proposalTitle}>{onChainProposal.title}</h3>
+                        <span className={styles.proposalId}>#{onChainProposal.id}</span>
+                      </div>
+                      
+                      <VoteProgressBar
+                        forVotes={formatTokenAmount(onChainProposal.forVotes)}
+                        againstVotes={formatTokenAmount(onChainProposal.againstVotes)}
+                        totalSupply={TOTAL_SUPPLY}
+                        threshold={50}
+                      />
+                      
+                      <div className={styles.proposalMeta}>
+                        <span>Azura Level: ⭐ x {onChainProposal.azuraLevel}</span>
+                        <a 
+                          href={`https://basescan.org/address/${CONTRACT_ADDRESS}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.viewOnChain}
+                        >
+                          View on BaseScan
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        </a>
+                      </div>
+                      
+                      {onChainProposal.status === ProposalStatus.Active && !onChainProposal.executed && (
+                        <VoteButtons
+                          proposalId={onChainProposal.id}
+                          contractAddress={CONTRACT_ADDRESS}
+                          onVoted={fetchProposals}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </section>

@@ -4,7 +4,10 @@
 
 # 🧠 Mental Wealth Academy
 
-**A research-driven AI learning system focused on improving cyber-psychology and pragmatic governance systems using blockchain technology.**
+**The most complete citizen participation tool for an open, transparent and democratic digital academia and cyber-culture research fund.
+**
+
+Azura Blockchain Address: 0x0920553CcA188871b146ee79f562B4Af46aB4f8a
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
