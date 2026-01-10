@@ -12,23 +12,18 @@ export async function getWalletAddressFromRequest(): Promise<string | null> {
     
     // Try Authorization header first (for API calls)
     const authHeader = headersList.get('authorization');
-    console.log('getWalletAddressFromRequest - Authorization header present:', !!authHeader);
     
     if (authHeader && authHeader.startsWith('Bearer ')) {
       // For now, we'll use the wallet address directly in the Bearer token
       // In production, you should verify a signature instead
       const walletAddress = authHeader.substring(7);
-      console.log('getWalletAddressFromRequest - Extracted address:', walletAddress ? `${walletAddress.substring(0, 10)}...` : 'null');
       
       // Basic validation - check if it's a valid Ethereum address format
       if (/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
-        console.log('getWalletAddressFromRequest - Valid address format, returning:', walletAddress.toLowerCase());
         return walletAddress.toLowerCase();
       } else {
         console.error('getWalletAddressFromRequest - Invalid address format:', walletAddress);
       }
-    } else {
-      console.log('getWalletAddressFromRequest - No Bearer token found in Authorization header');
     }
     
     // Could also check cookies if needed for SSR
