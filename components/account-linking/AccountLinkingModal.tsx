@@ -30,6 +30,33 @@ export function AccountLinkingModal({
   const [shouldRender, setShouldRender] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // AccountLinkingModal.tsx - Update the useEffect
+useEffect(() => {
+  if (isOpen && address) {
+    // Check link status when modal opens
+    const checkLinkStatus = async () => {
+      try {
+        const response = await fetch(`/api/account/status?address=${address}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.linked) {
+            // Already linked - show appropriate message
+            setIsAlreadyLinked(true);
+            setLinkedAccount(data.accountId);
+            // Optionally auto-close after showing message
+            setTimeout(() => onClose(), 3000);
+          }
+        }
+      } catch (err) {
+        // Silent fail - allow user to try linking
+        console.log('Could not check link status');
+      }
+    };
+    
+    checkLinkStatus();
+  }
+}, [isOpen, address, onClose]);
+
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
