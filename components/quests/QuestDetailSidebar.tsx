@@ -196,7 +196,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [quest, isConnected, address, step2Completed]);
+  }, [quest, isConnected, address, step2Completed, signMessageAsync]);
 
   const handleConnectTwitter = async () => {
     try {

@@ -76,8 +76,9 @@ export function AccountBanner() {
         const assignedAvatars = getAssignedAvatars(data.user.id);
         setAvatars(assignedAvatars);
         // If user has an avatar, find its ID
-        if (data.user.avatarUrl) {
-          const currentAvatar = assignedAvatars.find(a => a.image_url === data.user.avatarUrl);
+        const userAvatarUrl = data.user.avatarUrl;
+        if (userAvatarUrl) {
+          const currentAvatar = assignedAvatars.find(a => a.image_url === userAvatarUrl);
           if (currentAvatar) {
             setSelectedAvatarId(currentAvatar.id);
           } else if (assignedAvatars.length > 0) {

@@ -134,7 +134,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [address]); // Fetch when address changes, but also fetch on mount even without address (session auth)
+  }, [address, signMessageAsync]); // Fetch when address changes, but also fetch on mount even without address (session auth)
 
   // Format wallet address for display
   const formatAddress = (address: string) => {

@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener('shardsUpdated', handleShardsUpdate);
       window.removeEventListener('profileUpdated', handleProfileUpdate);
     };
-  }, [isConnected, address]); // Refetch when wallet connection state changes
+  }, [isConnected, address, signMessageAsync]); // Refetch when wallet connection state changes
 
   const isActive = (path: string) => {
     if (path === '/home') {
