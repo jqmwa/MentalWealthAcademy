@@ -1,0 +1,443 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5, 24px);
+  width: 100%;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  background: white;
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-5, 24px);
+  box-shadow: var(--shadow-card, 0 4px 16px rgba(81, 104, 255, 0.1));
+}
+
+.welcomeContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+}
+
+.greetingTime {
+  font-family: var(--font-secondary, 'Space Grotesk', sans-serif);
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.welcomeName {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: 28px;
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-text-dark, #000);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary, #5168FF);
+}
+
+.activeDot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-secondary, #62BE8F);
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3, 12px);
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statCard {
+  background: white;
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-4, 16px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  cursor: default;
+  transition: box-shadow var(--duration-fast, 150ms) var(--ease-out);
+}
+
+.statCard:hover {
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.statIconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIcon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+.statEmoji {
+  font-size: 22px;
+}
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statValue {
+  font-family: var(--font-primary);
+  font-size: 24px;
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-text-dark, #000);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Section Headers */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3, 12px);
+}
+
+.sectionTitle {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-dark, #000);
+  margin: 0;
+}
+
+.viewAllLink {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: var(--color-primary, #5168FF);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium, 500);
+  transition: opacity var(--duration-fast, 150ms);
+}
+
+.viewAllLink:hover {
+  opacity: 0.8;
+}
+
+/* Continue Learning Section */
+.continueSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.continueCard {
+  background: linear-gradient(135deg, var(--color-primary, #5168FF), #7B8FFF);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-5, 24px);
+  text-decoration: none;
+  transition: transform var(--duration-fast, 150ms) var(--ease-out),
+              box-shadow var(--duration-fast, 150ms) var(--ease-out);
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.3);
+}
+
+.continueCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.4);
+}
+
+.continueCardContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4, 16px);
+}
+
+.continueIcon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.continueInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.continueTitle {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: white;
+  margin: 0 0 var(--space-1, 4px);
+}
+
+.continueDescription {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 var(--space-3, 12px);
+  line-height: 1.4;
+}
+
+.continueProgress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: white;
+  border-radius: var(--radius-full, 9999px);
+  transition: width var(--duration-slow, 400ms) var(--ease-out);
+}
+
+.progressText {
+  font-family: var(--font-button);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+.continueArrow {
+  font-size: 24px;
+  color: white;
+  opacity: 0.8;
+  transition: transform var(--duration-fast, 150ms) var(--ease-out);
+}
+
+.continueCard:hover .continueArrow {
+  transform: translateX(4px);
+}
+
+/* Daily Quest Section */
+.dailyQuestSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.questBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-secondary, #62BE8F);
+  background: rgba(98, 190, 143, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+.dailyQuestCard {
+  background: white;
+  border: 2px solid var(--color-background, #F4F5FE);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-4, 16px) var(--space-5, 24px);
+  text-decoration: none;
+  transition: border-color var(--duration-fast, 150ms) var(--ease-out),
+              box-shadow var(--duration-fast, 150ms) var(--ease-out);
+}
+
+.dailyQuestCard:hover {
+  border-color: var(--color-secondary, #62BE8F);
+  box-shadow: 0 4px 16px rgba(98, 190, 143, 0.15);
+}
+
+.questCardContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4, 16px);
+}
+
+.questIconWrapper {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-secondary, #62BE8F), #8EDBB1);
+  border-radius: var(--radius-lg, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.questIcon {
+  font-size: 24px;
+}
+
+.questInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.questTitle {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-dark, #000);
+  margin: 0 0 var(--space-1, 4px);
+}
+
+.questReward {
+  font-family: var(--font-secondary);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.questStatus {
+  flex-shrink: 0;
+}
+
+.questComplete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-secondary, #62BE8F);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.questPending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-primary, #5168FF);
+  color: white;
+  border-radius: var(--radius-md, 8px);
+  font-family: var(--font-button);
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .dashboard {
+    gap: var(--space-4, 16px);
+  }
+
+  .welcomeSection {
+    padding: var(--space-4, 16px);
+  }
+
+  .welcomeName {
+    font-size: 22px;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .statsGrid {
+    gap: var(--space-2, 8px);
+  }
+
+  .statCard {
+    padding: var(--space-3, 12px);
+  }
+
+  .statIconWrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .statIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .statEmoji {
+    font-size: 18px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .continueCard {
+    padding: var(--space-4, 16px);
+  }
+
+  .continueIcon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .continueTitle {
+    font-size: 16px;
+  }
+
+  .dailyQuestCard {
+    padding: var(--space-3, 12px) var(--space-4, 16px);
+  }
+
+  .questIconWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .questIcon {
+    font-size: 20px;
+  }
+}

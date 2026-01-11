@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { useAccount, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './AvatarSelectionModal.module.css';
 
 interface Avatar {
@@ -23,8 +21,6 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
   onClose,
   onAvatarSelected 
 }) => {
-  const { address, isConnected } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const [avatarChoices, setAvatarChoices] = useState<Avatar[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,14 +31,9 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
     setIsFetching(true);
     setError(null);
     try {
-      // Include wallet auth headers if wallet is connected
-      let headers: HeadersInit = {};
-      if (isConnected && address) {
-        headers = await getWalletAuthHeaders(address, signMessageAsync);
-      }
-      
+      // Use session-based auth - no wallet signature needed
       const response = await fetch('/api/avatars/choices', {
-        headers
+        credentials: 'include',
       });
       const data = await response.json();
       if (response.ok && data.choices) {
@@ -56,7 +47,7 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
     } finally {
       setIsFetching(false);
     }
-  }, [isConnected, address]);
+  }, []);
 
   // Fetch avatar choices when modal opens
   useEffect(() => {
@@ -75,16 +66,11 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
     setError(null);
 
     try {
-      // Include wallet auth headers if wallet is connected
-      let headers: HeadersInit = { 'Content-Type': 'application/json' };
-      if (isConnected && address) {
-        const authHeaders = await getWalletAuthHeaders(address, signMessageAsync);
-        headers = { ...headers, ...authHeaders };
-      }
-      
+      // Use session-based auth - no wallet signature needed
       const response = await fetch('/api/avatars/select', {
         method: 'POST',
-        headers,
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           avatar_id: selectedAvatar.id,
         }),

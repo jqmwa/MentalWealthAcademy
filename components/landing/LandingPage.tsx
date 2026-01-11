@@ -543,7 +543,20 @@ const LandingPage: React.FC = () => {
 
               {/* Actions */}
               <div className={styles.actions}>
-                <SignInButton onClick={() => setShowOnboarding(true)} />
+                {/* Primary CTA - Wallet Connection */}
+                <div className={styles.walletSectionPrimary}>
+                  <WalletConnectionHandler 
+                    onWalletConnected={(address) => {
+                      setIsWalletSignup(true);
+                      setShowOnboarding(true);
+                    }}
+                    buttonText="Connect with Base"
+                  />
+                </div>
+                
+                <div className={styles.authDivider}>
+                  <span className={styles.authDividerText}>or continue with email</span>
+                </div>
 
                 <button
                   type="submit"
@@ -553,16 +566,7 @@ const LandingPage: React.FC = () => {
                   {isLoading ? 'Signing in...' : 'Sign in with password'}
                 </button>
                 
-                {/* Wallet Connection */}
-                <div className={styles.walletSection}>
-                  <WalletConnectionHandler 
-                    onWalletConnected={(address) => {
-                      setIsWalletSignup(true);
-                      setShowOnboarding(true);
-                    }}
-                    buttonText="Connect With Ethereum"
-                  />
-                </div>
+                <SignInButton onClick={() => setShowOnboarding(true)} />
                 
                 <div className={styles.termsText}>
                   By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}

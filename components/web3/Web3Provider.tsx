@@ -3,8 +3,8 @@
 import React, { useMemo } from 'react';
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { base } from "wagmi/chains";
+import { coinbaseWallet } from "wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 
 // Lazy-create config only when Web3Provider is actually rendered
@@ -13,31 +13,23 @@ let queryClientInstance: QueryClient | null = null;
 
 function getWagmiConfig() {
   if (!wagmiConfig) {
-    wagmiConfig = createConfig(
-  getDefaultConfig({
-    // Your dApps chains - using Base mainnet
-    chains: [base],
-    transports: {
-      // RPC URL for Base mainnet
-      [base.id]: http(
-        process.env.NEXT_PUBLIC_ALCHEMY_ID
-          ? `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
-          : undefined,
-      ),
-    },
-
-    // Required API Keys
-    // Family wallet explicit configuration:
-    // - WalletConnect Project ID: Set as NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID environment variable
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
-
-    // Required App Info
-    appName: "Mental Wealth Academy",
-    appDescription: "Mental Wealth Academy is a virtual learning platform for the next generation.",
-    appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://www.mentalwealthacademy.world",
-    appIcon: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.mentalwealthacademy.world"}/icons/favicon.png`,
-  })
-);
+    wagmiConfig = createConfig({
+      chains: [base],
+      connectors: [
+        coinbaseWallet({
+          appName: "Mental Wealth Academy",
+          // Enable Smart Wallet (no browser extension required)
+          preference: 'smartWalletOnly',
+        }),
+      ],
+      transports: {
+        [base.id]: http(
+          process.env.NEXT_PUBLIC_ALCHEMY_ID
+            ? `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
+            : 'https://mainnet.base.org',
+        ),
+      },
+    });
   }
   return wagmiConfig;
 }
@@ -56,21 +48,18 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider theme="soft">
-          <OnchainKitProvider
-            chain={base}
-            apiKey={process.env.NEXT_PUBLIC_CDP_API_KEY || process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || ''}
-            config={{
-              wallet: {
-                preference: 'all', // Allow all wallet types including Family wallets
-                display: 'modal',
-                // Family wallet configuration
-              },
-            }}
-          >
-            {children}
-          </OnchainKitProvider>
-        </ConnectKitProvider>
+        <OnchainKitProvider
+          chain={base}
+          apiKey={process.env.NEXT_PUBLIC_CDP_API_KEY || process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || ''}
+          config={{
+            wallet: {
+              preference: 'smartWalletOnly', // Only Coinbase Smart Wallet
+              display: 'modal',
+            },
+          }}
+        >
+          {children}
+        </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

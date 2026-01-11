@@ -2,8 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount } from 'wagmi';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
@@ -18,11 +17,11 @@ import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { ShardAnimation } from '@/components/quests/ShardAnimation';
 import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
 import ImpactSnapshot from '@/components/impact-snapshot/ImpactSnapshot';
+import PersonalDashboard from '@/components/personal-dashboard/PersonalDashboard';
 import styles from './page.module.css';
 
 export default function Home() {
   const { isConnected, address } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -33,7 +32,6 @@ export default function Home() {
   const [showRewardAnimation, setShowRewardAnimation] = useState(false);
   const [rewardData, setRewardData] = useState<{ shards: number; startingShards: number } | null>(null);
   const hasCheckedAuthRef = useRef(false);
-  const lastCheckedAddressRef = useRef<string | undefined>(undefined);
 
   // Handle X auth callback and auto quest completion
   useEffect(() => {
@@ -104,26 +102,21 @@ export default function Home() {
 
   // Check authentication via /api/me (supports both Privy and session-based auth)
   useEffect(() => {
-    // Only check if we haven't checked yet, or if wallet address changed
-    const shouldCheck = !hasCheckedAuthRef.current || 
-      (isConnected && address && address !== lastCheckedAddressRef.current);
-    
-    if (!shouldCheck) return;
+    // Only check if we haven't checked yet
+    // Don't re-check just because wallet address changed - session cookie is sufficient
+    if (hasCheckedAuthRef.current) {
+      return;
+    }
     
     let isMounted = true;
     const checkAuth = async () => {
       setIsCheckingAuth(true);
       try {
-        // Include wallet auth headers if wallet is connected
-        let headers: HeadersInit = {};
-        if (isConnected && address) {
-          headers = await getWalletAuthHeaders(address, signMessageAsync);
-          lastCheckedAddressRef.current = address;
-        }
-        
+        // FIRST: Try session-based auth (no wallet signature needed)
+        // This works if user just logged in from landing page
         const response = await fetch('/api/me', { 
           cache: 'no-store',
-          headers
+          credentials: 'include', // Include session cookie
         });
         const data = await response.json();
         
@@ -135,16 +128,11 @@ export default function Home() {
           hasCheckedAuthRef.current = true;
           
           // Check if user needs onboarding (incomplete profile)
-          // Fetch full profile to check for username, birthday, gender
-          let profileHeaders: HeadersInit = {};
-          if (isConnected && address) {
-            profileHeaders = await getWalletAuthHeaders(address, signMessageAsync);
-          }
-          
+          // Session cookie will be included automatically
           try {
             const profileResponse = await fetch('/api/profile', {
               cache: 'no-store',
-              headers: profileHeaders
+              credentials: 'include',
             });
             
             if (profileResponse.ok) {
@@ -181,6 +169,7 @@ export default function Home() {
             }
           }
         } else {
+          // No session - redirect to login
           setHasValidSession(false);
         }
       } catch (err) {
@@ -200,21 +189,16 @@ export default function Home() {
     return () => {
       isMounted = false;
     };
-  }, [isConnected, address]); // Re-check only when wallet connection state actually changes
+  }, []); // Run once on mount - session cookie handles auth
 
   // Listen for profile updates to refresh avatar status and check onboarding
   useEffect(() => {
     const handleProfileUpdate = async () => {
-      // Include wallet auth headers if wallet is connected
-      let headers: HeadersInit = {};
-      if (isConnected && address) {
-        headers = await getWalletAuthHeaders(address, signMessageAsync);
-      }
-      
+      // Use session-based auth - no wallet signature needed
       try {
         const meResponse = await fetch('/api/me', { 
           cache: 'no-store',
-          headers
+          credentials: 'include',
         });
         const meData = await meResponse.json();
         
@@ -226,7 +210,7 @@ export default function Home() {
             // Fetch full profile to check if it's now complete
             const profileResponse = await fetch('/api/profile', {
               cache: 'no-store',
-              headers
+              credentials: 'include',
             });
             
             if (profileResponse.ok) {
@@ -262,7 +246,7 @@ export default function Home() {
 
     window.addEventListener('profileUpdated', handleProfileUpdate);
     return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
-  }, [isConnected, address, showOnboarding]);
+  }, [showOnboarding]);
 
   useEffect(() => {
     // Redirect if we've finished checking auth and user has no valid session
@@ -311,15 +295,10 @@ export default function Home() {
         isOpen={showAvatarModal}
         onClose={() => setShowAvatarModal(false)}
         onAvatarSelected={async () => {
-          // Refresh user data after avatar selection
-          let headers: HeadersInit = {};
-          if (isConnected && address) {
-            headers = await getWalletAuthHeaders(address, signMessageAsync);
-          }
-          
+          // Refresh user data after avatar selection - use session auth
           fetch('/api/me', { 
             cache: 'no-store',
-            headers
+            credentials: 'include',
           })
             .then(res => res.json())
             .then(data => {
@@ -335,6 +314,19 @@ export default function Home() {
       <Banner />
       <div className={styles.content}>
         <div className={styles.middleSection}>
+          {/* Personal Dashboard - Inspired by Blinkist/Habitica */}
+          <div data-intro="personal-dashboard">
+            <PersonalDashboard
+              username={me?.username}
+              avatarUrl={me?.avatarUrl}
+              shardCount={me?.shardCount}
+              ideasLearned={0}
+              ideasSaved={0}
+              streak={0}
+              dailyQuestTitle="Learn 5 Ideas Today"
+              dailyQuestReward={15}
+            />
+          </div>
           <div data-intro="impact-snapshot">
             <ImpactSnapshot />
           </div>

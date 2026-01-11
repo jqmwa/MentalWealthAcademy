@@ -1,0 +1,475 @@
+{
+  "version": "1.0.0",
+  "categories": {
+    "mental-health": {
+      "name": "Mental Health",
+      "color": "#9B7ED9",
+      "icon": "brain",
+      "description": "Mindfulness, stress management, and cognitive patterns"
+    },
+    "productivity": {
+      "name": "Productivity",
+      "color": "#5168FF",
+      "icon": "rocket",
+      "description": "Focus techniques, time management, and habit formation"
+    },
+    "wealth": {
+      "name": "Wealth",
+      "color": "#62BE8F",
+      "icon": "coins",
+      "description": "Financial literacy, investing basics, and crypto fundamentals"
+    }
+  },
+  "cards": [
+    {
+      "id": "mh-001",
+      "category": "mental-health",
+      "title": "The 5-4-3-2-1 Grounding Technique",
+      "microContent": "When anxiety hits, ground yourself by naming 5 things you see, 4 you hear, 3 you feel, 2 you smell, and 1 you taste. This sensory exercise interrupts spiraling thoughts and anchors you to the present moment.",
+      "expertCommentary": "Research shows grounding techniques activate the parasympathetic nervous system, reducing cortisol levels within 60 seconds. Practice daily to build neural pathways for automatic stress response.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-002",
+      "category": "mental-health",
+      "title": "Cognitive Reframing",
+      "microContent": "Your thoughts aren't facts. When facing a negative thought, ask: 'What evidence supports this? What evidence contradicts it?' This simple question can shift your entire perspective.",
+      "expertCommentary": "Cognitive Behavioral Therapy research demonstrates that regular reframing practice can reduce depressive symptoms by 40-60% over 8 weeks.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-003",
+      "category": "mental-health",
+      "title": "The Power of Micro-Journaling",
+      "microContent": "Write just 3 sentences each morning: what you're grateful for, what would make today great, and one affirmation. This 60-second practice rewires your brain for positivity.",
+      "expertCommentary": "Studies from positive psychology show gratitude journaling increases well-being by 25% and improves sleep quality within 2 weeks of consistent practice.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-004",
+      "category": "mental-health",
+      "title": "Breath as a Remote Control",
+      "microContent": "Your breath is the only autonomic function you can consciously control. Slow exhales (longer than inhales) activate your rest-and-digest system within seconds.",
+      "expertCommentary": "Box breathing (4-4-4-4 pattern) is used by Navy SEALs for performance under pressure. Heart Rate Variability data shows measurable calm within 3 breath cycles.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-005",
+      "category": "mental-health",
+      "title": "The Negativity Bias Hack",
+      "microContent": "Your brain weighs negative experiences 5x more than positive ones—an evolutionary survival trait. Counter this by consciously savoring positive moments for 15+ seconds.",
+      "expertCommentary": "Neuroplasticity research shows that prolonged attention to positive experiences physically strengthens neural pathways for resilience and optimism.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-006",
+      "category": "mental-health",
+      "title": "Emotional Labeling",
+      "microContent": "Simply naming your emotions ('I feel anxious') reduces their intensity by up to 50%. This technique, called affect labeling, creates distance between you and your feelings.",
+      "expertCommentary": "fMRI studies show that emotional labeling decreases amygdala activation and increases prefrontal cortex activity—literally shifting from reactive to rational brain regions.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-007",
+      "category": "mental-health",
+      "title": "The 20-Minute Nature Prescription",
+      "microContent": "Spending just 20 minutes in nature—even a local park—significantly lowers cortisol levels. Trees release phytoncides that boost immune function and reduce stress hormones.",
+      "expertCommentary": "Japanese 'forest bathing' research shows nature exposure reduces blood pressure, heart rate, and cortisol while increasing cancer-fighting NK cells.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-008",
+      "category": "mental-health",
+      "title": "Sleep Hygiene Fundamentals",
+      "microContent": "Your bedroom should be cool (65-68°F), dark, and device-free. Blue light from screens suppresses melatonin for up to 3 hours after exposure.",
+      "expertCommentary": "Sleep deprivation mimics symptoms of anxiety and depression. Just one night of poor sleep reduces emotional regulation by 60% and increases amygdala reactivity.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-009",
+      "category": "mental-health",
+      "title": "The Comparison Trap",
+      "microContent": "Social media shows highlight reels, not real life. Each hour of social media correlates with a 9% increase in depression risk. Curate your feed intentionally.",
+      "expertCommentary": "Research on 'Facebook depression' shows passive scrolling is most harmful. Active engagement and limiting to 30 min/day can actually improve well-being.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-010",
+      "category": "mental-health",
+      "title": "Self-Compassion Over Self-Esteem",
+      "microContent": "Self-esteem requires feeling superior; self-compassion accepts imperfection. Treat yourself as you would a good friend—acknowledge struggles without harsh judgment.",
+      "expertCommentary": "Dr. Kristin Neff's research shows self-compassion correlates with less anxiety, depression, and perfectionism while maintaining motivation and accountability.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-011",
+      "category": "mental-health",
+      "title": "The Vagus Nerve Shortcut",
+      "microContent": "Cold water on your face activates the dive reflex, immediately stimulating your vagus nerve and calming your nervous system. Splash cold water when stressed.",
+      "expertCommentary": "Vagal tone is measurable through HRV. Regular cold exposure, humming, and deep breathing strengthen this 'relaxation nerve' over time.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-012",
+      "category": "mental-health",
+      "title": "Mindful Single-Tasking",
+      "microContent": "Multitasking is a myth—your brain rapidly switches between tasks, losing 40% efficiency. Focus fully on one task, and you'll finish faster with less stress.",
+      "expertCommentary": "Research shows task-switching increases cortisol and adrenaline. Sustained attention for 90-minute blocks optimizes performance and reduces mental fatigue.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-013",
+      "category": "mental-health",
+      "title": "The Power of Human Touch",
+      "microContent": "A 20-second hug releases oxytocin, lowers blood pressure, and reduces cortisol. Physical touch is a biological need, not just an emotional preference.",
+      "expertCommentary": "Touch deprivation increases aggression and depression. Even self-touch (hand on heart) or weighted blankets can trigger similar calming responses.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-014",
+      "category": "mental-health",
+      "title": "Values-Based Living",
+      "microContent": "When decisions align with your core values, stress decreases and meaning increases. Identify your top 5 values and let them guide major life choices.",
+      "expertCommentary": "Acceptance and Commitment Therapy (ACT) shows values clarification reduces psychological rigidity and increases life satisfaction, even during hardship.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-015",
+      "category": "mental-health",
+      "title": "The Worry Window",
+      "microContent": "Schedule 15 minutes daily for dedicated worrying. When anxious thoughts arise outside this window, note them and postpone. This contains anxiety to a controlled space.",
+      "expertCommentary": "Stimulus control research shows contained worry periods reduce overall anxiety by 35% while maintaining necessary problem-solving capacity.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-016",
+      "category": "mental-health",
+      "title": "Movement as Medicine",
+      "microContent": "30 minutes of moderate exercise is as effective as antidepressants for mild-to-moderate depression. Movement releases BDNF, which grows new brain cells.",
+      "expertCommentary": "Exercise is neuroprotective and neurogenic. The hippocampus, critical for mood regulation, grows with consistent aerobic activity.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "mh-017",
+      "category": "mental-health",
+      "title": "The RAIN Technique",
+      "microContent": "When emotions overwhelm: Recognize what's happening, Allow it to be there, Investigate with kindness, and Nurture with self-compassion. This Buddhist-derived method processes difficult feelings.",
+      "expertCommentary": "RAIN activates both insight and compassion networks simultaneously, creating lasting emotional intelligence rather than temporary suppression.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-001",
+      "category": "productivity",
+      "title": "The 2-Minute Rule",
+      "microContent": "If a task takes less than 2 minutes, do it immediately. This simple rule prevents small tasks from accumulating into overwhelming backlogs.",
+      "expertCommentary": "David Allen's GTD system shows that decision fatigue from repeatedly postponing micro-tasks costs more mental energy than immediate completion.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-002",
+      "category": "productivity",
+      "title": "Deep Work Blocks",
+      "microContent": "Schedule 2-4 hour blocks for cognitively demanding work. Protect these times ruthlessly—no meetings, no email, no notifications. This is where real progress happens.",
+      "expertCommentary": "Cal Newport's research shows knowledge workers average only 2.5 hours of productive work daily due to fragmentation. Deep work multiplies output exponentially.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-003",
+      "category": "productivity",
+      "title": "The Eisenhower Matrix",
+      "microContent": "Categorize tasks by urgency and importance: Do urgent+important, Schedule important+not urgent, Delegate urgent+not important, Delete neither. Most people live in the wrong quadrant.",
+      "expertCommentary": "Quadrant 2 (important but not urgent) is where strategic growth happens. Successful people spend 60%+ of time here, while most spend under 20%.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-004",
+      "category": "productivity",
+      "title": "Energy Management Over Time",
+      "microContent": "Track your energy, not just your time. Schedule creative work for peak hours, routine tasks for slumps. A focused hour outperforms 5 fatigued ones.",
+      "expertCommentary": "Chronobiology shows most people have peak cognitive function 2-4 hours after waking. Night owls peak in late afternoon. Know your rhythm.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-005",
+      "category": "productivity",
+      "title": "The Pomodoro Technique",
+      "microContent": "Work for 25 minutes, break for 5. After 4 cycles, take a longer 15-30 minute break. This rhythm maintains focus while preventing burnout.",
+      "expertCommentary": "The technique works because it creates artificial urgency and mandatory recovery. Ultradian rhythms suggest 90-minute cycles may be even more effective for some.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-006",
+      "category": "productivity",
+      "title": "Eat the Frog First",
+      "microContent": "Start your day with your most difficult or dreaded task. Willpower depletes throughout the day—tackle hard things when your self-control tank is full.",
+      "expertCommentary": "Research on ego depletion shows decision quality decreases by up to 40% by end of day. Morning completion of challenging tasks reduces all-day anxiety.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-007",
+      "category": "productivity",
+      "title": "The Power of No",
+      "microContent": "Every yes is a no to something else. Protect your time fiercely. A polite no today saves hours of resentful work tomorrow.",
+      "expertCommentary": "High performers say no to almost everything. Warren Buffett: 'The difference between successful people and very successful people is that very successful people say no to almost everything.'",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-008",
+      "category": "productivity",
+      "title": "Environment Design",
+      "microContent": "Make good habits obvious and easy, bad habits invisible and hard. Want to read more? Put books on your pillow. Want less phone time? Charge it in another room.",
+      "expertCommentary": "James Clear's Atomic Habits research shows environment accounts for 50%+ of behavior. Willpower is finite; environment design is sustainable.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-009",
+      "category": "productivity",
+      "title": "The 80/20 Principle",
+      "microContent": "80% of results come from 20% of efforts. Identify your high-leverage activities and ruthlessly prioritize them. Not all work is created equal.",
+      "expertCommentary": "Pareto's Principle applies fractally—the top 20% of your 20% (4%) often produces 64% of results. Find and protect these vital few activities.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-010",
+      "category": "productivity",
+      "title": "Weekly Reviews",
+      "microContent": "Spend 30 minutes weekly reviewing what worked, what didn't, and what's next. This reflection prevents drift and compounds improvement over time.",
+      "expertCommentary": "GTD's weekly review is the 'secret weapon' of productive people. It closes open loops, updates commitments, and maintains system trust.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-011",
+      "category": "productivity",
+      "title": "Batch Similar Tasks",
+      "microContent": "Group similar activities together: all emails at once, all calls in one block, all errands in one trip. Context switching has a 23-minute recovery cost.",
+      "expertCommentary": "Research shows it takes an average of 23 minutes and 15 seconds to fully recover focus after an interruption. Batching eliminates these costly transitions.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-012",
+      "category": "productivity",
+      "title": "The One Thing",
+      "microContent": "Ask daily: 'What's the ONE thing I can do today that makes everything else easier or unnecessary?' Focus on the domino that topples others.",
+      "expertCommentary": "Gary Keller's research shows extraordinary results come from narrowing focus, not expanding it. Multitasking reduces IQ more than being high.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-013",
+      "category": "productivity",
+      "title": "Implementation Intentions",
+      "microContent": "Don't just set goals—specify when, where, and how. 'I will exercise' fails. 'I will run at 7am on the park trail' succeeds 2-3x more often.",
+      "expertCommentary": "Psychology research shows implementation intentions increase goal achievement by 91%. The specificity eliminates decision friction when the moment arrives.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-014",
+      "category": "productivity",
+      "title": "The Progress Principle",
+      "microContent": "Small wins boost motivation more than big rewards. Track daily progress on meaningful work—even tiny advances create positive momentum.",
+      "expertCommentary": "Harvard research shows the #1 factor for workplace satisfaction is making progress on meaningful work, not recognition, incentives, or interpersonal support.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-015",
+      "category": "productivity",
+      "title": "Decision Fatigue Prevention",
+      "microContent": "Reduce trivial decisions: meal prep, capsule wardrobes, automated payments. Save mental bandwidth for decisions that actually matter.",
+      "expertCommentary": "Studies show judges grant parole 65% at morning, 0% before lunch. Decision quality degrades predictably. Automate the trivial, reserve willpower for the critical.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-016",
+      "category": "productivity",
+      "title": "The Ivy Lee Method",
+      "microContent": "Each night, write 6 tasks for tomorrow in priority order. Start with #1 and don't move on until it's done. This 100-year-old method still works.",
+      "expertCommentary": "Charles Schwab paid Ivy Lee $25,000 (1918 dollars) for this advice. The constraint forces prioritization and prevents task-switching throughout the day.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "prod-017",
+      "category": "productivity",
+      "title": "Strategic Procrastination",
+      "microContent": "Procrastination can be productive if redirected. Put important-but-hard tasks on your list, then 'procrastinate' by doing other important tasks instead.",
+      "expertCommentary": "Structured procrastination leverages avoidance psychology. The key is having a hierarchy of valuable tasks so avoidance remains productive.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-001",
+      "category": "wealth",
+      "title": "Pay Yourself First",
+      "microContent": "Automate savings before you see the money. 20% of income should vanish into investments before bills, wants, or lifestyle inflation can claim it.",
+      "expertCommentary": "Behavioral economics shows we adapt spending to available funds. Invisible savings accumulate without willpower battles or perceived sacrifice.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-002",
+      "category": "wealth",
+      "title": "Compound Interest Magic",
+      "microContent": "A single dollar invested at 10% annual return becomes $117 in 50 years. Start early—time is your greatest wealth-building asset. Every year of delay costs exponentially.",
+      "expertCommentary": "Einstein allegedly called compound interest the 8th wonder of the world. A 25-year-old investing $500/month at 8% reaches $1.75M by 65. Starting at 35 yields only $750K.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-003",
+      "category": "wealth",
+      "title": "The Latte Factor",
+      "microContent": "Small daily expenses compound into fortunes. $5/day invested instead of spent becomes $150K+ over 30 years. Identify your leaks and redirect them to assets.",
+      "expertCommentary": "Critics dismiss this as shaming, but the math is real. The deeper lesson: mindless spending vs. intentional allocation. Every dollar is a soldier—deploy wisely.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-004",
+      "category": "wealth",
+      "title": "Diversification Basics",
+      "microContent": "Don't put all eggs in one basket. Mix stocks, bonds, real estate, and alternative assets. Correlation determines whether diversification actually protects you.",
+      "expertCommentary": "Modern Portfolio Theory shows optimal portfolios maximize returns for given risk levels. True diversification means assets that zig when others zag.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-005",
+      "category": "wealth",
+      "title": "Index Funds Beat Most Pros",
+      "microContent": "Over 15 years, 90%+ of actively managed funds underperform simple index funds. Low fees compound into massive savings. Boring beats clever.",
+      "expertCommentary": "Warren Buffett famously bet $1M that an S&P 500 index fund would beat hedge fund picks over 10 years. He won decisively. Fees and overtrading destroy returns.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-006",
+      "category": "wealth",
+      "title": "Emergency Fund First",
+      "microContent": "Before investing, save 3-6 months of expenses in accessible cash. This prevents selling investments at the worst times and creates psychological stability.",
+      "expertCommentary": "Financial stress impairs cognitive function equivalent to losing 13 IQ points. An emergency fund isn't just financial protection—it's mental clarity insurance.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-007",
+      "category": "wealth",
+      "title": "Good Debt vs. Bad Debt",
+      "microContent": "Debt that builds assets (education, business, real estate) can accelerate wealth. Debt for consumption (cars, clothes, vacations) destroys it. Know the difference.",
+      "expertCommentary": "Leverage amplifies returns both ways. The wealthy use cheap debt strategically while the poor pay high interest on depreciating assets. Direction matters more than amount.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-008",
+      "category": "wealth",
+      "title": "Tax-Advantaged Accounts",
+      "microContent": "401(k)s, IRAs, and HSAs offer free money through tax savings or employer matches. Maximize these before taxable investing. It's an instant 20-40% return.",
+      "expertCommentary": "Leaving employer 401(k) match on the table is literally refusing free money. Tax-deferred compounding over decades creates massive additional wealth.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-009",
+      "category": "wealth",
+      "title": "Lifestyle Inflation Trap",
+      "microContent": "As income rises, spending tends to rise equally. Break this pattern: save raises, not spend them. Your future self will thank your present discipline.",
+      "expertCommentary": "Parkinson's Law (work expands to fill time) applies to money: spending expands to consume income. Consciously prevent this and wealth accumulates effortlessly.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-010",
+      "category": "wealth",
+      "title": "Multiple Income Streams",
+      "microContent": "The wealthy average 7 income sources. Salary alone is risky and limited. Build side hustles, investments, and passive income for security and acceleration.",
+      "expertCommentary": "Income diversity reduces risk and increases opportunity. Start with one additional stream; they compound as skills and capital grow.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-011",
+      "category": "wealth",
+      "title": "Blockchain Basics",
+      "microContent": "Blockchain is a transparent, tamper-proof ledger without central control. Cryptocurrencies use this to enable trustless transactions globally. This technology reshapes finance, governance, and ownership.",
+      "expertCommentary": "Beyond speculation, blockchain enables DAOs, DeFi, and digital ownership. Understanding the technology separates investors from gamblers.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-012",
+      "category": "wealth",
+      "title": "DeFi vs. Traditional Finance",
+      "microContent": "Decentralized finance (DeFi) offers lending, borrowing, and trading without banks. Higher yields, higher risks. Smart contracts replace intermediaries but introduce new vulnerabilities.",
+      "expertCommentary": "DeFi protocols have both produced 1000%+ yields and lost billions to hacks. Due diligence, diversification, and starting small are essential for exploration.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-013",
+      "category": "wealth",
+      "title": "Dollar-Cost Averaging",
+      "microContent": "Invest fixed amounts at regular intervals regardless of price. This removes emotion from investing and ensures you buy more shares when prices are low.",
+      "expertCommentary": "Lump sum beats DCA 67% of the time mathematically, but DCA produces better behavioral outcomes. Psychology trumps optimization for most investors.",
+      "difficulty": "beginner",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-014",
+      "category": "wealth",
+      "title": "The 4% Rule",
+      "microContent": "You can safely withdraw 4% of your portfolio annually in retirement without running out of money. $1M = $40K/year forever. This defines your 'number' for financial independence.",
+      "expertCommentary": "The Trinity Study established this baseline, but modern analysis suggests 3.5% is safer for early retirees. Your sequence of returns matters most in early years.",
+      "difficulty": "intermediate",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-015",
+      "category": "wealth",
+      "title": "Tokenized Ownership",
+      "microContent": "Blockchain enables fractional ownership of assets—real estate, art, companies. This democratizes investment access previously reserved for the wealthy.",
+      "expertCommentary": "Security tokens and NFTs represent legal ownership on-chain. Regulatory clarity is emerging; early understanding provides positioning advantages.",
+      "difficulty": "advanced",
+      "relatedQuestId": null
+    },
+    {
+      "id": "wealth-016",
+      "category": "wealth",
+      "title": "DAO Governance",
+      "microContent": "Decentralized Autonomous Organizations (DAOs) let communities govern shared resources through token voting. This is direct democracy for digital assets and decisions.",
+      "expertCommentary": "Mental Wealth Academy uses DAO structures for transparent fund allocation. Participation in governance is both a right and a responsibility of token holders.",
+      "difficulty": "advanced",
+      "relatedQuestId": "twitter-follow-quest"
+    }
+  ]
+}

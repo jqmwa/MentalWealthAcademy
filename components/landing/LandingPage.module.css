@@ -373,6 +373,63 @@
   justify-content: center;
 }
 
+.walletSectionPrimary {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.walletSectionPrimary button {
+  width: 100%;
+  background: linear-gradient(135deg, #627EEA 0%, #8A9FFF 100%);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(98, 126, 234, 0.3);
+}
+
+.walletSectionPrimary button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(98, 126, 234, 0.4);
+}
+
+.authDivider {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.authDivider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(81, 104, 255, 0.2);
+}
+
+.authDividerText {
+  position: relative;
+  background: rgba(244, 245, 254, 0.95);
+  padding: 0 16px;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text-dark);
+  opacity: 0.6;
+}
+
 .companyHeader {
   display: flex;
   align-items: center;
@@ -882,9 +939,14 @@
     width: 100px;
   }
   
-  /* Hide wallet section on mobile */
-  .walletSection {
-    display: none;
+  /* Show wallet section on mobile - primary CTA */
+  .walletSectionPrimary {
+    display: flex;
+  }
+  
+  .walletSectionPrimary button {
+    padding: 12px 20px;
+    font-size: 15px;
   }
 
   .trustSignals {

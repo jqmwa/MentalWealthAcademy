@@ -128,7 +128,7 @@
   font-family: var(--font-primary);
   font-size: 14px;
   font-weight: var(--font-weight-medium);
-  color: rgba(163, 163, 163, 1);
+  color: #CCCCCC;
   white-space: nowrap;
 }
 
@@ -146,6 +146,7 @@
   flex-shrink: 0;
   object-fit: contain;
   opacity: 1;
+  color: #CCCCCC;
 }
 
 .navButtonActive .homeIcon {
@@ -158,6 +159,7 @@
   height: 20px;
   flex-shrink: 0;
   object-fit: contain;
+  color: #CCCCCC;
 }
 
 .menuIcon {
@@ -715,7 +717,7 @@
   font-family: var(--font-primary);
   font-size: 16px;
   font-weight: var(--font-weight-medium);
-  color: rgba(163, 163, 163, 1);
+  color: #CCCCCC;
 }
 
 .mobileNavButton:hover {

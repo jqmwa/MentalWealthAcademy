@@ -18,6 +18,12 @@
   --color-secondary: #62BE8F;
   --color-text-dark: #000000;
   --color-text-light: #ECECEC;
+  --color-text-muted: #CCCCCC;
+  
+  /* Category Colors */
+  --color-mental-health: #9B7ED9;
+  --color-productivity: #5168FF;
+  --color-wealth: #62BE8F;
   
   /* Gradient Colors */
   --gradient-futuristic-floss-start: #ECECFF;
@@ -37,6 +43,57 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 4px 16px rgba(81, 104, 255, 0.1);
+  --shadow-card-hover: 0 8px 24px rgba(81, 104, 255, 0.2);
+  
+  /* Animation Tokens */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-swipe: 300ms;
+  
+  /* Z-Index Scale */
+  --z-base: 0;
+  --z-card: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 1000;
+  --z-toast: 2000;
+  
+  /* Mobile-First Breakpoints (as custom properties for reference) */
+  --bp-xs: 320px;
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
 }
 
 /* ============================================
@@ -259,31 +316,136 @@ button,
 }
 
 /* ============================================
-   Spacing Utilities
+   Spacing Utilities (using design tokens)
    ============================================ */
 
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 1rem; }
-.mt-4 { margin-top: 1.5rem; }
-.mt-5 { margin-top: 2rem; }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-7 { margin-top: var(--space-7); }
+.mt-8 { margin-top: var(--space-8); }
 
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 1rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.mb-5 { margin-bottom: 2rem; }
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-7 { margin-bottom: var(--space-7); }
+.mb-8 { margin-bottom: var(--space-8); }
 
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 1rem; }
-.p-4 { padding: 1.5rem; }
-.p-5 { padding: 2rem; }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.p-7 { padding: var(--space-7); }
+.p-8 { padding: var(--space-8); }
+
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+/* ============================================
+   Card Utilities
+   ============================================ */
+
+.card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--duration-normal) var(--ease-out),
+              transform var(--duration-normal) var(--ease-out);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-mental-health {
+  border-left: 4px solid var(--color-mental-health);
+}
+
+.card-productivity {
+  border-left: 4px solid var(--color-productivity);
+}
+
+.card-wealth {
+  border-left: 4px solid var(--color-wealth);
+}
+
+/* ============================================
+   Swipe Animation Utilities
+   ============================================ */
+
+.swipe-card {
+  transition: transform var(--duration-swipe) var(--ease-spring),
+              opacity var(--duration-swipe) var(--ease-out);
+  will-change: transform, opacity;
+}
+
+.swipe-left {
+  transform: translateX(-120%) rotate(-15deg);
+  opacity: 0;
+}
+
+.swipe-right {
+  transform: translateX(120%) rotate(15deg);
+  opacity: 0;
+}
+
+.swipe-up {
+  transform: translateY(-120%);
+  opacity: 0;
+}
 
 /* ============================================
    Responsive Typography
    ============================================ */
 
+/* Mobile First - Base styles are for mobile */
+
+/* Small screens and up (480px) */
+@media (min-width: 480px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+}
+
+/* Medium screens and up (768px) */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Large screens and up (1024px) */
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 3rem;
+  }
+  
+  h2 {
+    font-size: 2.25rem;
+  }
+}
+
+/* Legacy max-width queries for backwards compatibility */
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;

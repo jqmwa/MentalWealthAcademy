@@ -1,0 +1,206 @@
+.main {
+  min-height: 100vh;
+  background: var(--color-background, #F4F5FE);
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Paywall Modal */
+.paywallOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal, 400);
+  padding: var(--space-4, 16px);
+}
+
+.paywallModal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: var(--radius-2xl, 24px);
+  padding: var(--space-8, 32px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--space-4, 16px);
+  right: var(--space-4, 16px);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast, 150ms);
+}
+
+.closeButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--color-text-dark, #000000);
+}
+
+.paywallContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4, 16px);
+}
+
+.paywallIcon {
+  font-size: 48px;
+  margin-bottom: var(--space-2, 8px);
+}
+
+.paywallTitle {
+  font-family: var(--font-secondary, 'Space Grotesk', sans-serif);
+  font-size: var(--font-size-2xl, 24px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-text-dark, #000000);
+  margin: 0;
+}
+
+.paywallDescription {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-base, 16px);
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.6));
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  width: 100%;
+  padding: var(--space-4, 16px) 0;
+  text-align: left;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-dark, #000000);
+}
+
+.featureCheck {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(98, 190, 143, 0.15);
+  color: var(--color-secondary, #62BE8F);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold, 700);
+  flex-shrink: 0;
+}
+
+.pricingBox {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1, 4px);
+  padding: var(--space-4, 16px) var(--space-6, 24px);
+  background: linear-gradient(135deg, rgba(81, 104, 255, 0.08) 0%, rgba(155, 127, 230, 0.08) 100%);
+  border-radius: var(--radius-xl, 16px);
+}
+
+.price {
+  font-family: var(--font-secondary, 'Space Grotesk', sans-serif);
+  font-size: var(--font-size-4xl, 36px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-primary, #5168FF);
+}
+
+.pricePeriod {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-base, 16px);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
+}
+
+.subscribeButton {
+  width: 100%;
+  padding: var(--space-4, 16px);
+  background: linear-gradient(135deg, var(--color-primary, #5168FF) 0%, #7B8CFF 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg, 12px);
+  font-family: var(--font-button, 'IBM Plex Mono', monospace);
+  font-size: var(--font-size-base, 16px);
+  font-weight: var(--font-weight-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--duration-normal, 300ms) var(--ease-default);
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.3);
+}
+
+.subscribeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.4);
+}
+
+.disclaimer {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-xs, 12px);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.4));
+  margin: 0;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+  .paywallModal {
+    padding: var(--space-6, 24px);
+    border-radius: var(--radius-xl, 16px);
+  }
+
+  .paywallIcon {
+    font-size: 40px;
+  }
+
+  .paywallTitle {
+    font-size: var(--font-size-xl, 20px);
+  }
+
+  .paywallDescription {
+    font-size: var(--font-size-sm, 14px);
+  }
+
+  .price {
+    font-size: var(--font-size-3xl, 30px);
+  }
+}

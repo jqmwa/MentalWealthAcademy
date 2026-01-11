@@ -4,8 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount, useDisconnect } from 'wagmi';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import AvatarSelectorModal from '@/components/avatar-selector/AvatarSelectorModal';
 import styles from './Navbar.module.css';
@@ -78,12 +77,21 @@ const LibraryIcon: React.FC<{ size?: number; className?: string }> = ({ size = 2
   );
 };
 
+// Ideas Icon - Lightbulb for micro-learning
+const IdeasIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M9 21h6M12 3a6 6 0 0 0-6 6c0 2.22 1.21 4.16 3 5.19V17a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-2.81c1.79-1.03 3-2.97 3-5.19a6 6 0 0 0-6-6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9 14h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
+
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
-  const { signMessageAsync } = useSignMessage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
@@ -93,19 +101,14 @@ const Navbar: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Fetch user data - works for both Privy and session-based auth
+  // Fetch user data - uses session-based auth (no wallet signature needed)
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Include wallet auth headers if wallet is connected
-        let headers: HeadersInit = {};
-        if (isConnected && address) {
-          headers = await getWalletAuthHeaders(address, signMessageAsync);
-        }
-        
+        // Use session-based auth - session cookie is included automatically
         const response = await fetch('/api/me', { 
           cache: 'no-store',
-          headers
+          credentials: 'include',
         });
         const data = await response.json();
         if (data?.user) {
@@ -128,7 +131,7 @@ const Navbar: React.FC = () => {
       }
     };
 
-    // Fetch immediately and also when wallet connection state changes
+    // Fetch immediately
     fetchUserData();
 
     // Listen for shard updates and profile updates
@@ -146,7 +149,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener('shardsUpdated', handleShardsUpdate);
       window.removeEventListener('profileUpdated', handleProfileUpdate);
     };
-  }, [isConnected, address, signMessageAsync]); // Refetch when wallet connection state changes
+  }, []); // Run once on mount - session cookie handles auth
 
   const isActive = (path: string) => {
     if (path === '/home') {
@@ -247,6 +250,12 @@ const Navbar: React.FC = () => {
             <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
               <QuestsIcon size={20} className={styles.questIcon} />
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
+            </Link>
+
+            {/* Ideas Button */}
+            <Link href="/ideas" className={`${styles.navButton} ${isActive('/ideas') ? styles.navButtonActive : ''}`}>
+              <IdeasIcon size={20} className={styles.questIcon} />
+              <span className={isActive('/ideas') ? styles.buttonLabelActive : styles.buttonLabel}>Ideas</span>
             </Link>
 
             {/* Voting Button */}

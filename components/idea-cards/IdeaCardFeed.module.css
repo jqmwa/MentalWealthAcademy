@@ -1,0 +1,217 @@
+.feedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: var(--space-4, 16px);
+  background: var(--color-background, #F4F5FE);
+}
+
+/* Header */
+.feedHeader {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-4, 16px);
+  gap: var(--space-4, 16px);
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.feedTitle {
+  font-family: var(--font-secondary, 'Space Grotesk', sans-serif);
+  font-size: var(--font-size-2xl, 24px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-text-dark, #000000);
+  margin: 0 0 var(--space-1, 4px) 0;
+}
+
+.feedSubtitle {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.6));
+  margin: 0;
+}
+
+/* Session Stats */
+.sessionStats {
+  display: flex;
+  gap: var(--space-2, 8px);
+}
+
+.statBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  background: white;
+  border-radius: var(--radius-full, 9999px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.statEmoji {
+  font-size: var(--font-size-sm, 14px);
+}
+
+.statNumber {
+  font-family: var(--font-button, 'IBM Plex Mono', monospace);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-primary, #5168FF);
+}
+
+/* Category Filters */
+.filterContainer {
+  display: flex;
+  gap: var(--space-2, 8px);
+  width: 100%;
+  max-width: 440px;
+  overflow-x: auto;
+  padding-bottom: var(--space-2, 8px);
+  margin-bottom: var(--space-4, 16px);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filterContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: var(--space-2, 8px) var(--space-4, 16px);
+  background: white;
+  border: 2px solid transparent;
+  border-radius: var(--radius-full, 9999px);
+  cursor: pointer;
+  transition: all var(--duration-fast, 150ms) var(--ease-default);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filterButton:hover {
+  border-color: var(--filter-color, var(--color-primary));
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.filterButtonActive {
+  background: var(--filter-color, var(--color-primary));
+  border-color: var(--filter-color, var(--color-primary));
+}
+
+.filterButtonActive .filterName {
+  color: white;
+}
+
+.filterButtonActive .filterCount {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.filterName {
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-dark, #000000);
+}
+
+.filterCount {
+  font-family: var(--font-button, 'IBM Plex Mono', monospace);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* Card Stack Wrapper */
+.cardStackWrapper {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Quick Tips */
+.quickTips {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6, 24px);
+  padding: var(--space-4, 16px) 0;
+  margin-top: auto;
+}
+
+.tipItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
+}
+
+.keyHint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md, 8px);
+  font-family: var(--font-button, 'IBM Plex Mono', monospace);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-dark, #000000);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+  .feedContainer {
+    padding: var(--space-3, 12px);
+  }
+
+  .feedHeader {
+    flex-direction: column;
+    gap: var(--space-3, 12px);
+  }
+
+  .feedTitle {
+    font-size: var(--font-size-xl, 20px);
+  }
+
+  .sessionStats {
+    align-self: flex-start;
+  }
+
+  .filterButton {
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+  }
+
+  .filterName {
+    font-size: var(--font-size-xs, 12px);
+  }
+
+  .quickTips {
+    gap: var(--space-4, 16px);
+  }
+
+  .tipItem {
+    font-size: var(--font-size-xs, 12px);
+  }
+
+  .keyHint {
+    width: 24px;
+    height: 24px;
+    font-size: var(--font-size-xs, 12px);
+  }
+}

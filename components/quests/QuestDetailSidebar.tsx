@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAccount, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount } from 'wagmi';
 import styles from './QuestDetailSidebar.module.css';
 import { ConfettiCelebration } from './ConfettiCelebration';
 import { ShardAnimation } from './ShardAnimation';
@@ -54,7 +53,6 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
   const [shouldRender, setShouldRender] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
   const { address, isConnected } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const [step1Completed, setStep1Completed] = useState(false);
   const [step2Completed, setStep2Completed] = useState(false);
   const [isCheckingFollow, setIsCheckingFollow] = useState(false);
@@ -112,10 +110,10 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
       }
       
       try {
+        // Use session-based auth - no wallet signature needed
         const response = await fetch('/api/x-auth/status', { 
           cache: 'no-store',
           credentials: 'include',
-          headers: await getWalletAuthHeaders(address, signMessageAsync)
         });
         
         if (response.status === 401) {
@@ -133,7 +131,6 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
             method: 'POST',
             cache: 'no-store',
             credentials: 'include',
-            headers: await getWalletAuthHeaders(address, signMessageAsync)
           });
           const followData = await followResponse.json();
           
@@ -146,7 +143,6 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
                 method: 'POST',
                 cache: 'no-store',
                 credentials: 'include',
-                headers: await getWalletAuthHeaders(address, signMessageAsync)
               });
               const completeData = await completeResponse.json();
               
@@ -196,7 +192,7 @@ const QuestDetailSidebar: React.FC<QuestDetailSidebarProps> = ({ isOpen, onClose
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [quest, isConnected, address, step2Completed, signMessageAsync]);
+  }, [quest, isConnected, address, step2Completed]);
 
   const handleConnectTwitter = async () => {
     try {
