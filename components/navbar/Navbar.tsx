@@ -436,6 +436,14 @@ const Navbar: React.FC = () => {
             <span>Quests</span>
           </Link>
           <Link 
+            href="/ideas" 
+            className={`${styles.mobileNavButton} ${isActive('/ideas') ? styles.mobileNavButtonActive : ''}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <IdeasIcon size={20} className={styles.questIcon} />
+            <span>Ideas</span>
+          </Link>
+          <Link 
             href="/voting" 
             className={`${styles.mobileNavButton} ${isActive('/voting') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}

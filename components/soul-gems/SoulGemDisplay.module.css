@@ -4,7 +4,7 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-dark, #000000);
 }
 
 .gemIcon {
@@ -31,7 +31,7 @@
 }
 
 .label {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.6);
   font-weight: 500;
   font-size: 13px;
 }

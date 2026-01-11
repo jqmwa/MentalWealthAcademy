@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { WagmiProvider, createConfig, http } from "wagmi";
+import { WagmiProvider, createConfig, http, createStorage } from "wagmi";
 import { base } from "wagmi/chains";
 import { coinbaseWallet } from "wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,6 +10,13 @@ import { OnchainKitProvider } from '@coinbase/onchainkit';
 // Lazy-create config only when Web3Provider is actually rendered
 let wagmiConfig: ReturnType<typeof createConfig> | null = null;
 let queryClientInstance: QueryClient | null = null;
+
+// Custom storage that doesn't persist - prevents auto-reconnect on page load
+const noopStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
 
 function getWagmiConfig() {
   if (!wagmiConfig) {
@@ -29,6 +36,9 @@ function getWagmiConfig() {
             : 'https://mainnet.base.org',
         ),
       },
+      // Disable automatic reconnection on page load - user must click to connect
+      storage: createStorage({ storage: noopStorage }),
+      ssr: true,
     });
   }
   return wagmiConfig;

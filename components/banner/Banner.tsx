@@ -5,7 +5,7 @@ const Banner: React.FC = () => {
   return (
     <div className={styles.banner}>
       <p className={styles.bannerText}>
-        The Learning Management Software made for the Next Gen of Education.
+        Learn by doing
       </p>
     </div>
   );

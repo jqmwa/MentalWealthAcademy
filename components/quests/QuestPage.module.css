@@ -881,9 +881,62 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .hero {
+    padding: 40px 32px;
+    margin-bottom: 32px;
+  }
+
+  .heroActions {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .primaryCta,
+  .secondaryCta {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .questPageContainer {
     padding: 20px 16px;
+  }
+
+  .hero {
+    padding: 32px 24px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .breadcrumbs {
+    display: none;
+  }
+
+  .header {
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .primaryCta,
+  .secondaryCta {
+    width: 100%;
+    justify-content: center;
+    flex: 1;
   }
 
   .blackWrapper {
@@ -1066,6 +1119,24 @@
 
   .lockedButton {
     padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 20px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+  }
+
+  .subtitle {
     font-size: 14px;
   }
 }

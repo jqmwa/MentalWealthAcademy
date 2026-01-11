@@ -6,9 +6,7 @@ import { useAccount } from 'wagmi';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
-import MessageboardCard from '@/components/messageboard-card/MessageboardCard';
 import Quests from '@/components/quests/Quests';
-import BookCard from '@/components/book-card/BookCard';
 import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
@@ -333,11 +331,6 @@ export default function Home() {
           <div data-intro="quests">
             <Quests />
           </div>
-          <div className={styles.promptSection}>
-              <h1 className={styles.sectionTitle}>Messageboard</h1>
-              <MessageboardCard />
-              <BookCard />
-            </div>
         </div>
         <div data-intro="side-navigation">
           <SideNavigation />

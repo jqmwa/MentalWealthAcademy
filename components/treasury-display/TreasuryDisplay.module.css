@@ -25,19 +25,19 @@
 .icon {
   width: 40px;
   height: 40px;
-  background: rgba(34, 197, 94, 0.1);
-  border-radius: 12px;
+  background: rgba(98, 190, 143, 0.15);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(34, 197, 94, 0.2);
+  border: 2px solid rgba(98, 190, 143, 0.3);
   flex-shrink: 0;
 }
 
 .icon svg {
   width: 24px;
   height: 24px;
-  color: #22c55e;
+  color: #62BE8F;
 }
 
 .titleText {
@@ -62,12 +62,12 @@
 
 .refreshButton {
   padding: 8px 12px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: rgba(98, 190, 143, 0.15);
+  border: 1px solid rgba(98, 190, 143, 0.3);
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
-  color: #22c55e;
+  color: #62BE8F;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -76,8 +76,8 @@
 }
 
 .refreshButton:hover {
-  background: rgba(34, 197, 94, 0.15);
-  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(98, 190, 143, 0.25);
+  border-color: rgba(98, 190, 143, 0.5);
   transform: translateY(-1px);
 }
 
@@ -89,7 +89,7 @@
 .balance {
   font-size: 36px;
   font-weight: 900;
-  color: #22c55e;
+  color: #62BE8F;
   margin: 0;
   position: relative;
   z-index: 1;
@@ -98,7 +98,7 @@
 .currency {
   font-size: 18px;
   font-weight: 600;
-  color: rgba(34, 197, 94, 0.8);
+  color: rgba(98, 190, 143, 0.9);
   margin-left: 8px;
 }
 
@@ -133,9 +133,9 @@
 
 .statItem {
   padding: 12px;
-  background: rgba(34, 197, 94, 0.05);
+  background: rgba(98, 190, 143, 0.08);
   border-radius: 10px;
-  border: 1px solid rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(98, 190, 143, 0.15);
 }
 
 .statLabel {
@@ -165,7 +165,7 @@
 }
 
 .contractLink:hover {
-  color: #22c55e;
+  color: #62BE8F;
   transform: translateX(2px);
 }
 
