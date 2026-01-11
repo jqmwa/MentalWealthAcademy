@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAccount } from 'wagmi';
+import { useModal } from 'connectkit';
 import { providers } from 'ethers';
 import { voteOnProposal, getUserVotingPower, formatTokenAmount } from '@/lib/azura-contract';
 import { SoulGemDisplay } from '@/components/soul-gems/SoulGemDisplay';
@@ -23,6 +24,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
   userVote = null,
 }) => {
   const { address, isConnected } = useAccount();
+  const { setOpen: setConnectKitOpen } = useModal();
   const [voting, setVoting] = useState(false);
   const [votingPower, setVotingPower] = useState<string>('0');
   const [userHasVoted, setUserHasVoted] = useState(hasVoted);
@@ -49,7 +51,8 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
 
   const handleVote = async (support: boolean) => {
     if (!isConnected || !address) {
-      alert('Please connect your wallet to vote');
+      // Open ConnectKit modal to connect wallet
+      setConnectKitOpen(true);
       return;
     }
 
@@ -104,7 +107,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
         <button
           className={`${styles.voteButton} ${styles.approveButton}`}
           onClick={() => handleVote(true)}
-          disabled={voting || !isConnected}
+          disabled={voting}
           type="button"
         >
           {voting ? (
@@ -125,7 +128,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
         <button
           className={`${styles.voteButton} ${styles.rejectButton}`}
           onClick={() => handleVote(false)}
-          disabled={voting || !isConnected}
+          disabled={voting}
           type="button"
         >
           {voting ? (
