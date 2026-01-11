@@ -82,7 +82,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'www.larvalabs.com' },
       { protocol: 'https', hostname: 'i.pinimg.com' },
-      { protocol: 'https', hostname: 'api.dicebear.com' },
       { protocol: 'https', hostname: 'cloudflare-ipfs.com' },
       { protocol: 'https', hostname: 'ipfs.io' },
       { protocol: 'https', hostname: 'gateway.pinata.cloud' },

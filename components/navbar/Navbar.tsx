@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
+import AvatarSelectorModal from '@/components/avatar-selector/AvatarSelectorModal';
 import styles from './Navbar.module.css';
 
 // Menu Icon Component - Chunky Y2K style
@@ -86,6 +87,7 @@ const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
+  const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const [shardCount, setShardCount] = useState<number | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -176,6 +178,15 @@ const Navbar: React.FC = () => {
   const handleYourAccountsClick = () => {
     setIsProfileDropdownOpen(false);
     setIsYourAccountsModalOpen(true);
+  };
+
+  const handleAvatarClick = () => {
+    setIsProfileDropdownOpen(false);
+    setIsAvatarSelectorOpen(true);
+  };
+
+  const handleAvatarSelected = (newAvatarUrl: string) => {
+    setAvatarUrl(newAvatarUrl);
   };
 
   const handleSignOut = async () => {
@@ -337,6 +348,17 @@ const Navbar: React.FC = () => {
                     <div className={styles.profileDropdownMenu}>
                       <button 
                         className={styles.dropdownItem}
+                        onClick={handleAvatarClick}
+                        type="button"
+                      >
+                        <div className={styles.dropdownItemInfo}>
+                          <span className={styles.dropdownItemTitle}>avatar</span>
+                          <span className={styles.dropdownItemLabel}>select your avatar</span>
+                        </div>
+                      </button>
+                      <div className={styles.dropdownDivider} />
+                      <button 
+                        className={styles.dropdownItem}
                         onClick={handleYourAccountsClick}
                         type="button"
                       >
@@ -424,6 +446,12 @@ const Navbar: React.FC = () => {
       </div>
       {isYourAccountsModalOpen && (
         <YourAccountsModal onClose={() => setIsYourAccountsModalOpen(false)} />
+      )}
+      {isAvatarSelectorOpen && (
+        <AvatarSelectorModal 
+          onClose={() => setIsAvatarSelectorOpen(false)}
+          onAvatarSelected={handleAvatarSelected}
+        />
       )}
     </nav>
   );

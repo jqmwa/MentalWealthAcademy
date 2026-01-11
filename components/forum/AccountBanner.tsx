@@ -4,6 +4,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './AccountBanner.module.css';
+import { getAssignedAvatars } from '@/lib/avatars';
 
 type MeResponse = {
   user:
@@ -18,32 +19,10 @@ type MeResponse = {
   dbConfigured: boolean;
 };
 
-const DICEBEAR_BASE = 'https://api.dicebear.com/9.x/adventurer/svg';
-
-function dicebearUrl(seed: string) {
-  return `${DICEBEAR_BASE}?seed=${encodeURIComponent(seed)}`;
-}
-
-function randomSeed(prefix = 'mwa') {
-  // Prefer crypto when available; fallback to Math.random.
-  const bytes =
-    typeof crypto !== 'undefined' && 'getRandomValues' in crypto
-      ? crypto.getRandomValues(new Uint8Array(8))
-      : null;
-
-  const token = bytes
-    ? Array.from(bytes)
-        .map((b) => b.toString(16).padStart(2, '0'))
-        .join('')
-    : Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
-
-  return `${prefix}-${token.slice(0, 16)}`;
-}
-
-function generateAvatarSeeds(count: number) {
-  const set = new Set<string>();
-  while (set.size < count) set.add(randomSeed('avatar'));
-  return Array.from(set);
+interface Avatar {
+  id: string;
+  image_url: string;
+  metadata_url: string;
 }
 
 function EditIcon() {
@@ -78,9 +57,9 @@ export function AccountBanner() {
   const [dbConfigured, setDbConfigured] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [avatarSeeds, setAvatarSeeds] = useState<string[]>(() => generateAvatarSeeds(8));
+  const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [username, setUsername] = useState('');
-  const [selectedSeed, setSelectedSeed] = useState<string>(avatarSeeds[0] ?? randomSeed('avatar'));
+  const [selectedAvatarId, setSelectedAvatarId] = useState<string>('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -92,18 +71,24 @@ export function AccountBanner() {
 
     if (data?.user) {
       setUsername(data.user.username);
-      // If user's avatar is a dicebear url, try to preselect by seed.
-      const url = data.user.avatarUrl || '';
-      const seedFromUrl = (() => {
-        try {
-          const u = new URL(url);
-          if (u.hostname !== 'api.dicebear.com') return null;
-          return u.searchParams.get('seed');
-        } catch {
-          return null;
+      // Load user's assigned avatars
+      if (data.user.id) {
+        const assignedAvatars = getAssignedAvatars(data.user.id);
+        setAvatars(assignedAvatars);
+        // If user has an avatar, find its ID
+        if (data.user.avatarUrl) {
+          const currentAvatar = assignedAvatars.find(a => a.image_url === data.user.avatarUrl);
+          if (currentAvatar) {
+            setSelectedAvatarId(currentAvatar.id);
+          } else if (assignedAvatars.length > 0) {
+            // Default to first avatar if current one not found
+            setSelectedAvatarId(assignedAvatars[0].id);
+          }
+        } else if (assignedAvatars.length > 0) {
+          // Default to first avatar if none selected
+          setSelectedAvatarId(assignedAvatars[0].id);
         }
-      })();
-      if (seedFromUrl) setSelectedSeed(seedFromUrl);
+      }
     }
   }
 
@@ -135,9 +120,19 @@ export function AccountBanner() {
       return;
     }
 
+    if (!selectedAvatarId) {
+      setError('Please select an avatar');
+      return;
+    }
+
     setSaving(true);
     try {
-      const avatarUrl = dicebearUrl(selectedSeed);
+      const selectedAvatar = avatars.find(a => a.id === selectedAvatarId);
+      if (!selectedAvatar) {
+        throw new Error('Invalid avatar selection');
+      }
+
+      const avatarUrl = selectedAvatar.image_url;
 
       if (!me) {
         const res = await fetch('/api/auth/signup', {
@@ -148,13 +143,25 @@ export function AccountBanner() {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data?.error || 'Signup failed');
       } else {
-        const res = await fetch('/api/me', {
-          method: 'PUT',
+        // Use the avatar selection API
+        const res = await fetch('/api/avatars/select', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, avatarUrl }),
+          body: JSON.stringify({ avatar_id: selectedAvatarId }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data?.error || 'Update failed');
+
+        // Also update username if it changed
+        if (username !== me.username) {
+          const usernameRes = await fetch('/api/me', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+          });
+          const usernameData = await usernameRes.json().catch(() => ({}));
+          if (!usernameRes.ok) throw new Error(usernameData?.error || 'Username update failed');
+        }
       }
 
       await refreshMe();
@@ -170,13 +177,19 @@ export function AccountBanner() {
     await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
     setMe(null);
     setUsername('');
-    const seeds = generateAvatarSeeds(8);
-    setAvatarSeeds(seeds);
-    setSelectedSeed(seeds[0]);
+    setAvatars([]);
+    setSelectedAvatarId('');
     setOpen(false);
   }
 
-  const displayAvatar = me?.avatarUrl || dicebearUrl(selectedSeed);
+  const displayAvatar = useMemo(() => {
+    if (me?.avatarUrl) return me.avatarUrl;
+    if (selectedAvatarId) {
+      const avatar = avatars.find(a => a.id === selectedAvatarId);
+      return avatar?.image_url || null;
+    }
+    return null;
+  }, [me?.avatarUrl, selectedAvatarId, avatars]);
 
   return (
     <div className={styles.banner}>
@@ -184,8 +197,6 @@ export function AccountBanner() {
         <div className={styles.avatarOuter}>
           <div className={styles.avatarWrap}>
             {displayAvatar ? (
-              // Dicebear serves SVGs; Next/Image blocks remote SVG by default.
-              // Use <img> to ensure avatars always render.
               <img
                 src={displayAvatar}
                 alt={me?.username || 'Avatar'}
@@ -204,10 +215,14 @@ export function AccountBanner() {
             className={styles.changeButton}
             onClick={() => {
               setError(null);
-              // Always refresh choices when opening so it feels dynamic.
-              const seeds = generateAvatarSeeds(8);
-              setAvatarSeeds(seeds);
-              setSelectedSeed((prev) => prev || seeds[0]);
+              // Reload avatars when opening
+              if (me?.id) {
+                const assignedAvatars = getAssignedAvatars(me.id);
+                setAvatars(assignedAvatars);
+                if (!selectedAvatarId && assignedAvatars.length > 0) {
+                  setSelectedAvatarId(assignedAvatars[0].id);
+                }
+              }
               setOpen(true);
             }}
             aria-label="Change avatar"
@@ -262,22 +277,21 @@ export function AccountBanner() {
               </label>
 
               <div className={styles.label}>
-                Choose an avatar
+                Choose an avatar (5 unique avatars)
                 <div className={styles.pickerGrid}>
-                  {avatarSeeds.map((seed) => {
-                    const url = dicebearUrl(seed);
-                    const selected = seed === selectedSeed;
+                  {avatars.length > 0 ? avatars.map((avatar) => {
+                    const selected = avatar.id === selectedAvatarId;
                     return (
                       <button
-                        key={seed}
+                        key={avatar.id}
                         type="button"
                         className={`${styles.avatarOption} ${selected ? styles.avatarOptionSelected : ''}`}
-                        onClick={() => setSelectedSeed(seed)}
-                        aria-label={`Select avatar ${seed}`}
+                        onClick={() => setSelectedAvatarId(avatar.id)}
+                        aria-label={`Select avatar ${avatar.id}`}
                       >
                         <img
-                          src={url}
-                          alt={seed}
+                          src={avatar.image_url}
+                          alt={avatar.id}
                           width={120}
                           height={120}
                           className={styles.avatarOptionImg}
@@ -285,7 +299,9 @@ export function AccountBanner() {
                         />
                       </button>
                     );
-                  })}
+                  }) : (
+                    <div className={styles.note}>Loading avatars...</div>
+                  )}
                 </div>
               </div>
 
