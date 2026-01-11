@@ -127,8 +127,8 @@ export default function CreateProposalPage() {
     }
 
     if (!isConnected || !address) {
-      // Open ConnectKit modal to connect wallet
-      setConnectKitOpen(true);
+      // Show alert to guide user to Connect Wallet button
+      alert('Please connect your wallet using the "Connect Wallet" button below to submit your proposal.');
       return;
     }
 

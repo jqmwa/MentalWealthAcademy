@@ -546,14 +546,14 @@
 
 .connectWalletButton {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-dark);
-  background: rgba(81, 104, 255, 0.1);
-  border: 2px solid rgba(81, 104, 255, 0.3);
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: #5168FF;
+  border: 2px solid #FFFFFF;
   border-radius: 12px;
-  padding: 16px 24px;
-  margin-top: 12px;
+  padding: 18px 24px;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -561,19 +561,25 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   width: 100%;
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.4);
+}
+
+.connectWalletButton svg {
+  color: #FFFFFF;
 }
 
 .connectWalletButton:hover {
-  background: rgba(81, 104, 255, 0.2);
-  border-color: rgba(81, 104, 255, 0.5);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
+  background: #3d52e6;
+  border-color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(81, 104, 255, 0.6);
 }
 
 .connectWalletButton:active {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.4);
 }
 
 .actionFooter {
