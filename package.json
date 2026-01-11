@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "test-db": "tsx scripts/test-db-connection.ts",
-    "check-treasury": "tsx scripts/check-treasury-balance.ts"
+    "check-treasury": "tsx scripts/check-treasury-balance.ts",
+    "check-azura-wallet": "tsx scripts/check-azura-wallet.ts"
   },
   "dependencies": {
     "@coinbase/coinbase-sdk": "^0.25.0",
