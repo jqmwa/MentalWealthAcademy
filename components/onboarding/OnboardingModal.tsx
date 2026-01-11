@@ -3,8 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useAccount, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount } from 'wagmi';
 import styles from './OnboardingModal.module.css';
 
 interface OnboardingModalProps {
@@ -18,7 +17,6 @@ type Step = 'account';
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWalletSignup = false }) => {
   const router = useRouter();
   const { address } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const [currentStep, setCurrentStep] = useState<Step>('account');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -311,13 +309,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
     try {
       // Account was already created in the account step, just create/update the profile
       // Note: avatar_id is not included - user will select avatar on homepage
-      const headers: HeadersInit = { 'Content-Type': 'application/json' };
-      
-      // Add wallet auth headers if this is a wallet signup
-      if (isWalletSignup && address) {
-        const authHeaders = await getWalletAuthHeaders(address, signMessageAsync);
-        Object.assign(headers, authHeaders);
-      }
+      // Use session-based auth (no wallet signing required) - session was established during account creation
+      const headers: HeadersInit = { 
+        'Content-Type': 'application/json'
+      };
 
       const requestBody: any = {
         username,
@@ -333,6 +328,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
       const profileResponse = await fetch('/api/profile/create', {
         method: 'POST',
         headers,
+        credentials: 'include', // Use session cookie for authentication
         body: JSON.stringify(requestBody),
       });
 

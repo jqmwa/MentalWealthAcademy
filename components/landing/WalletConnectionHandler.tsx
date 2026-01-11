@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useAccount, useDisconnect, useConnect } from 'wagmi';
-import styles from './WalletAdvancedDemo.module.css';
+import styles from './WalletConnectionHandler.module.css';
 
 interface WalletConnectionHandlerProps {
   onWalletConnected?: (address: string) => void;
@@ -36,7 +36,6 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
     }
     
     if (!address) {
-      console.log('Wallet connected but address not available yet - waiting for connection to complete...');
       return;
     }
     
@@ -45,7 +44,6 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
     }
     
     if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
-      console.log('Invalid address format, waiting for valid address...');
       return;
     }
     
@@ -57,25 +55,20 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
     (async () => {
       // Double-check we're not already processing (race condition protection)
       if (isProcessing || processedAddress === address || processingRef.current === address) {
-        console.log('Already processing or processed, skipping');
         return;
       }
       
       // Wait for wallet to fully initialize after connection
       const delay = 500;
-      console.log(`Wallet connected! Waiting ${delay}ms for wallet to fully initialize before processing connection...`);
-      console.log('Wallet address:', address);
       await new Promise(resolve => setTimeout(resolve, delay));
       
       // Verify wallet is still connected and address is still available after wait
       if (!isConnected || !address || processedAddress === address) {
-        console.log('Wallet disconnected or address already processed during wait');
         return;
       }
       
       // Final validation before processing
       if (address && /^0x[a-fA-F0-9]{40}$/.test(address) && processedAddress !== address && !isProcessing) {
-        console.log('Wallet connection fully established, processing connection and checking/creating account for:', address);
         handleWalletConnection(address);
       }
     })();
@@ -141,7 +134,6 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
   const handleWalletConnection = async (walletAddress: string) => {
     // Prevent duplicate processing
     if (processingRef.current === walletAddress || isProcessing) {
-      console.log('Already processing this address, skipping duplicate call');
       return;
     }
     
@@ -151,17 +143,15 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
     
     // Validate wallet address format before proceeding
     if (!walletAddress || !/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
-      console.error('Invalid wallet address format:', walletAddress);
       processingRef.current = null;
       setIsProcessing(false);
       if (isConnected) {
-        console.log('Address not available yet, will retry in 1 second...');
+        // Retry once if address not available yet
         const currentAddress = address;
         setTimeout(() => {
           if (currentAddress && /^0x[a-fA-F0-9]{40}$/.test(currentAddress) && currentAddress !== processedAddress) {
             handleWalletConnection(currentAddress);
           } else {
-            console.warn('Address still not available after retry');
             alert('Wallet address not available. Please disconnect and reconnect your wallet.');
           }
         }, 1000);
@@ -171,48 +161,27 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
       return;
     }
     
-    console.log('handleWalletConnection - Processing wallet connection for:', walletAddress);
     setProcessedAddress(walletAddress);
     
     try {
       // Check if user exists with this wallet address (no signature required)
-      console.log('Checking if user exists...');
       const meResponse = await fetch('/api/me', {
         credentials: 'include',
       });
       
       // Handle server errors (5xx) - don't proceed with signup, show error
       if (meResponse.status >= 500) {
-        console.error('Server error checking user existence:', meResponse.status, meResponse.statusText);
-        const errorText = await meResponse.text().catch(() => '');
-        console.error('Error response:', errorText);
         alert('Server error. Please try again later. If this persists, the database may not be configured.');
-        // DON'T reset processedAddress - keep it set to prevent useEffect loop
         processingRef.current = null;
         setIsProcessing(false);
         return;
       }
       
-      if (!meResponse.ok && meResponse.status !== 404) {
-        console.error('Failed to check user existence:', meResponse.status, meResponse.statusText);
-        const errorText = await meResponse.text().catch(() => '');
-        console.error('Error response:', errorText);
-      }
-      
-      const meData = await meResponse.json().catch(async (parseError) => {
-        console.error('Failed to parse /api/me response:', parseError);
-        const text = await meResponse.text().catch(() => '');
-        console.error('Response text:', text);
-        return { user: null };
-      });
-      
-      console.log('User check result:', { hasUser: !!meData.user, userId: meData.user?.id });
+      const meData = await meResponse.json().catch(() => ({ user: null }));
       
       if (meData.user) {
         // User exists - check profile completeness
         const hasUsername = meData.user.username && !meData.user.username.startsWith('user_');
-        
-        console.log('User exists, checking profile completeness...');
         const profileResponse = await fetch('/api/profile', {
           credentials: 'include',
         });
@@ -236,11 +205,9 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
         }
         
         // User exists - redirect to home page
-        console.log('User exists, redirecting to home');
         window.location.replace('/home');
       } else {
         // User doesn't exist - create account with wallet address
-        console.log('User does not exist, attempting to create account for:', walletAddress);
         
         const signupResponse = await fetch('/api/auth/wallet-signup', {
           method: 'POST',
@@ -253,13 +220,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           }),
         });
         
-        console.log('Wallet signup - Response status:', signupResponse.status, signupResponse.statusText);
-
         if (signupResponse.ok) {
-          console.log('Account created successfully, triggering onboarding');
-          const responseData = await signupResponse.json().catch(() => ({}));
-          console.log('Signup response data:', responseData);
-          
           // Verify account was actually created
           const verifyResponse = await fetch('/api/me', {
             credentials: 'include',
@@ -267,10 +228,8 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           const verifyData = await verifyResponse.json().catch(() => ({ user: null }));
           
           if (verifyData.user) {
-            console.log('Account verified in database, redirecting to home');
             window.location.replace('/home');
           } else {
-            console.error('Account creation reported success but user not found in database');
             processingRef.current = null;
             alert('Account creation may have failed. Please disconnect and reconnect your wallet to try again.');
           }
@@ -280,26 +239,20 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           try {
             const errorData = await signupResponse.json();
             errorMessage = errorData.error || errorMessage;
-            console.error('Wallet signup failed:', errorData);
           } catch (parseError) {
-            console.error('Failed to parse error response:', parseError);
             try {
               const text = await signupResponse.text();
-              console.error('Response text:', text);
               errorMessage = `Failed to create account (${signupResponse.status}): ${text.substring(0, 200)}`;
             } catch (e) {
               errorMessage = `Failed to create account (${signupResponse.status} ${signupResponse.statusText})`;
             }
           }
           
-          console.error('Showing error alert to user:', errorMessage);
           alert(errorMessage);
         }
       }
     } catch (error) {
-      // DON'T reset processedAddress - keep it set to prevent useEffect loop
       processingRef.current = null;
-      console.error('Error handling wallet connection:', error);
       const errorMessage = `An error occurred. Please disconnect your wallet and try again.\n\nError: ${error instanceof Error ? error.message : String(error)}`;
       alert(errorMessage);
     } finally {

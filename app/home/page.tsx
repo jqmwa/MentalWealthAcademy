@@ -307,7 +307,9 @@ export default function Home() {
             .catch(err => console.error('Failed to fetch user data:', err));
         }}
       />
-      <OnboardingTour />
+      <OnboardingTour 
+        isBlocked={showOnboarding || showAvatarModal || !me?.username || me?.username?.startsWith('user_')} 
+      />
       <Navbar />
       <Banner />
       <div className={styles.content}>

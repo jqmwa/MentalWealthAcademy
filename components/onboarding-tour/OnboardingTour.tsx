@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import AzuraDialogue, { AzuraEmotion } from '../azura-dialogue/AzuraDialogue';
 import styles from './OnboardingTour.module.css';
 
-const OnboardingTour: React.FC = () => {
+interface OnboardingTourProps {
+  isBlocked?: boolean;
+}
+
+const OnboardingTour: React.FC<OnboardingTourProps> = ({ isBlocked = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
@@ -27,6 +31,12 @@ const OnboardingTour: React.FC = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
+    // Don't show if blocked (profile incomplete, other modals open, etc.)
+    if (isBlocked) {
+      setIsOpen(false);
+      return;
+    }
+    
     const hasSeenTour = localStorage.getItem('hasSeenOnboardingTour');
     
     if (!hasSeenTour) {
@@ -37,7 +47,14 @@ const OnboardingTour: React.FC = () => {
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isBlocked]);
+
+  // Close tour if it becomes blocked while showing
+  useEffect(() => {
+    if (isBlocked && isOpen) {
+      setIsOpen(false);
+    }
+  }, [isBlocked, isOpen]);
 
   const handleMessageComplete = () => {
     setIsTyping(false);

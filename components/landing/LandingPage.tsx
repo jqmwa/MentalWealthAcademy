@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import SignInButton from '@/components/nav-buttons/SignInButton';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
-import { WalletConnectionHandler } from './WalletAdvancedDemo';
+import { WalletConnectionHandler } from './WalletConnectionHandler';
 import { PatternTextSection } from './PatternTextSection';
 import { LandingFooter } from './LandingFooter';
 import styles from './LandingPage.module.css';
