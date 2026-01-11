@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAccount } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useConnect } from 'wagmi';
 import { providers } from 'ethers';
 import { voteOnProposal, getUserVotingPower, formatTokenAmount } from '@/lib/azura-contract';
 import { SoulGemDisplay } from '@/components/soul-gems/SoulGemDisplay';
@@ -24,7 +23,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
   userVote = null,
 }) => {
   const { address, isConnected } = useAccount();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [voting, setVoting] = useState(false);
   const [votingPower, setVotingPower] = useState<string>('0');
   const [userHasVoted, setUserHasVoted] = useState(hasVoted);
@@ -49,10 +48,15 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
     }
   }, [isConnected, address, loadVotingPower]);
 
+  const handleConnectWallet = () => {
+    const connector = connectors[0];
+    if (connector) connect({ connector });
+  };
+
   const handleVote = async (support: boolean) => {
     if (!isConnected || !address) {
-      // Open ConnectKit modal to connect wallet
-      setConnectKitOpen(true);
+      // Connect wallet
+      handleConnectWallet();
       return;
     }
 

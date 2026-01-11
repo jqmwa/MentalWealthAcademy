@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useSignMessage, useConnect } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './BlockchainAccountModal.module.css';
 
@@ -19,7 +18,7 @@ export function BlockchainAccountModal({
 }: BlockchainAccountModalProps) {
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shouldRender, setShouldRender] = useState(false);
@@ -62,14 +61,16 @@ export function BlockchainAccountModal({
   // The user will explicitly click "Sync Account" after connecting
 
   const handleCreateWallet = () => {
-    // Use ConnectKit to create/connect wallet
-    setConnectKitOpen(true);
+    // Connect wallet using wagmi
+    const connector = connectors[0];
+    if (connector) connect({ connector });
   };
 
   const handleConnectWallet = () => {
     setError(null);
-    // Use ConnectKit for existing wallet connections
-    setConnectKitOpen(true);
+    // Connect wallet using wagmi
+    const connector = connectors[0];
+    if (connector) connect({ connector });
     // Modal will update automatically when wagmi detects the connection
     // User will then see "Sync Account" button
   };

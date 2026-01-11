@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAccount } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useConnect } from 'wagmi';
 import styles from './FinalizeButton.module.css';
 
 interface FinalizeButtonProps {
@@ -17,7 +16,7 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
   onFinalized,
 }) => {
   const { address, isConnected } = useAccount();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [finalizing, setFinalizing] = useState(false);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -44,10 +43,15 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
     checkFinalizationStatus();
   }, [checkFinalizationStatus]);
 
+  const handleConnectWallet = () => {
+    const connector = connectors[0];
+    if (connector) connect({ connector });
+  };
+
   const handleFinalize = async () => {
     if (!isConnected || !address) {
-      // Open ConnectKit modal to connect wallet
-      setConnectKitOpen(true);
+      // Connect wallet
+      handleConnectWallet();
       return;
     }
 

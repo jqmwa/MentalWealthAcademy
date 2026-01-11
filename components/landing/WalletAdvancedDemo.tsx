@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useAccount, useDisconnect, useSignMessage, useConnect } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount, useDisconnect, useConnect } from 'wagmi';
 import styles from './WalletAdvancedDemo.module.css';
 
 interface WalletConnectionHandlerProps {
@@ -18,7 +17,6 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const { connect, connectors } = useConnect();
-  const { signMessageAsync } = useSignMessage();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedAddress, setProcessedAddress] = useState<string | null>(null);
@@ -177,23 +175,10 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
     setProcessedAddress(walletAddress);
     
     try {
-      // Sign ONCE and cache the auth headers for all API calls
-      console.log('Signing authentication message...');
-      let cachedAuthHeaders: HeadersInit;
-      try {
-        cachedAuthHeaders = await getWalletAuthHeaders(walletAddress, signMessageAsync);
-      } catch (signError) {
-        console.error('Failed to sign message:', signError);
-        // DON'T reset processedAddress - keep it set to prevent useEffect re-triggering
-        processingRef.current = null;
-        setIsProcessing(false);
-        return;
-      }
-
-      // Check if user exists with this wallet address
+      // Check if user exists with this wallet address (no signature required)
       console.log('Checking if user exists...');
       const meResponse = await fetch('/api/me', {
-        headers: cachedAuthHeaders,
+        credentials: 'include',
       });
       
       // Handle server errors (5xx) - don't proceed with signup, show error
@@ -229,7 +214,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
         
         console.log('User exists, checking profile completeness...');
         const profileResponse = await fetch('/api/profile', {
-          headers: cachedAuthHeaders,
+          credentials: 'include',
         });
         
         let hasCompleteProfile = hasUsername;
@@ -261,8 +246,8 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...cachedAuthHeaders,
           },
+          credentials: 'include',
           body: JSON.stringify({
             walletAddress: walletAddress,
           }),
@@ -277,7 +262,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           
           // Verify account was actually created
           const verifyResponse = await fetch('/api/me', {
-            headers: cachedAuthHeaders,
+            credentials: 'include',
           });
           const verifyData = await verifyResponse.json().catch(() => ({ user: null }));
           

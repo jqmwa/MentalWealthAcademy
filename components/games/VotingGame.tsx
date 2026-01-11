@@ -4,8 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './VotingGame.module.css';
 import AzuraDialogue from '@/components/azura-dialogue/AzuraDialogue';
-import { useAccount } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useConnect } from 'wagmi';
 
 interface Submission {
   id: string;
@@ -44,7 +43,7 @@ async function uploadIfPresent(file: File | null) {
 
 const VotingGame: React.FC = () => {
   const { address, isConnected } = useAccount();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [gameData, setGameData] = useState<GameData | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState<number | null>(null); // Track which slot is submitting
@@ -63,6 +62,11 @@ const VotingGame: React.FC = () => {
   const [demoState, setDemoState] = useState<'voting' | 'revealed' | 'daemon' | 'finished'>('voting');
   const [demoSubmissions, setDemoSubmissions] = useState<Submission[]>([]);
   const [demoAzuraVote, setDemoAzuraVote] = useState<string | null>(null);
+
+  const handleConnectWallet = () => {
+    const connector = connectors[0];
+    if (connector) connect({ connector });
+  };
 
   // Test data - 5 users with uploaded pictures
   const createTestData = (state: 'submission' | 'voting' | 'revealed' | 'daemon' | 'finished', submissions?: Submission[], azuraVote?: string | null): GameData => {
@@ -338,7 +342,7 @@ const VotingGame: React.FC = () => {
 
   const handleRevealResults = async () => {
     if (!isConnected || !address) {
-      setConnectKitOpen(true);
+      handleConnectWallet();
       return;
     }
 
@@ -360,7 +364,7 @@ const VotingGame: React.FC = () => {
 
   const handleEndGame = async () => {
     if (!isConnected || !address) {
-      setConnectKitOpen(true);
+      handleConnectWallet();
       return;
     }
 

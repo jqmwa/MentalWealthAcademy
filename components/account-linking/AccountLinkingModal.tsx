@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useSignMessage, useConnect } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './AccountLinkingModal.module.css';
 
@@ -23,7 +22,7 @@ export function AccountLinkingModal({
 }: AccountLinkingModalProps) {
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [isLinking, setIsLinking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -64,10 +63,15 @@ export function AccountLinkingModal({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, isLinking, onClose]);
 
+  const handleConnectWallet = () => {
+    const connector = connectors[0];
+    if (connector) connect({ connector });
+  };
+
   const handleLinkAccount = async () => {
     if (!isConnected || !address) {
-      // Open ConnectKit to connect wallet
-      setConnectKitOpen(true);
+      // Connect wallet
+      handleConnectWallet();
       return;
     }
 

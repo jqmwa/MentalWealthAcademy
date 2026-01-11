@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useDisconnect, useSignMessage, useConnect } from 'wagmi';
 import { getWalletAuthHeaders } from '@/lib/wallet-api';
 import styles from './CreateAccountButton.module.css';
 
@@ -25,7 +24,7 @@ const CreateAccountButton: React.FC = () => {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [me, setMe] = useState<MeResponse['user']>(null);
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState('');
@@ -51,10 +50,15 @@ const CreateAccountButton: React.FC = () => {
     }
   }, [isConnected]);
 
+  const handleConnectWallet = () => {
+    const connector = connectors[0];
+    if (connector) connect({ connector });
+  };
+
   async function handleSave() {
     if (!isConnected || !address) {
-      // Open ConnectKit to connect wallet
-      setConnectKitOpen(true);
+      // Connect wallet
+      handleConnectWallet();
       return;
     }
 
@@ -118,8 +122,8 @@ const CreateAccountButton: React.FC = () => {
 
   const handleOpen = () => {
     if (!isConnected) {
-      // Open ConnectKit modal to connect wallet
-      setConnectKitOpen(true);
+      // Connect wallet
+      handleConnectWallet();
       return;
     }
     setOpen(true);

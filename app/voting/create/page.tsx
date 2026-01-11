@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
-import { useModal } from 'connectkit';
+import { useAccount, useConnect } from 'wagmi';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/navbar/Navbar';
@@ -88,7 +87,7 @@ const RESEARCH_TEMPLATE = `## Research Funding Proposal
 export default function CreateProposalPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
-  const { setOpen: setConnectKitOpen } = useModal();
+  const { connect, connectors } = useConnect();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
   const [username, setUsername] = useState<string | null>(null);
@@ -372,7 +371,10 @@ Break down your needs..."
                 {(!isConnected || !address) && (
                   <button
                     className={styles.connectWalletButton}
-                    onClick={() => setConnectKitOpen(true)}
+                    onClick={() => {
+                      const connector = connectors[0];
+                      if (connector) connect({ connector });
+                    }}
                     type="button"
                   >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
