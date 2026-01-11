@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
+import { useModal } from 'connectkit';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/navbar/Navbar';
@@ -86,7 +87,8 @@ const RESEARCH_TEMPLATE = `## Research Funding Proposal
 
 export default function CreateProposalPage() {
   const router = useRouter();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { setOpen: setConnectKitOpen } = useModal();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
   const [username, setUsername] = useState<string | null>(null);
@@ -124,8 +126,9 @@ export default function CreateProposalPage() {
       return;
     }
 
-    if (!address) {
-      alert('Please connect your wallet to submit a proposal');
+    if (!isConnected || !address) {
+      // Open ConnectKit modal to connect wallet
+      setConnectKitOpen(true);
       return;
     }
 
@@ -365,6 +368,21 @@ Break down your needs..."
                     </>
                   )}
                 </button>
+
+                {(!isConnected || !address) && (
+                  <button
+                    className={styles.connectWalletButton}
+                    onClick={() => setConnectKitOpen(true)}
+                    type="button"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="16" cy="14" r="2" fill="currentColor"/>
+                    </svg>
+                    <span>Connect Wallet</span>
+                  </button>
+                )}
 
                 <div className={styles.actionFooter}>
                   <div className={styles.footerIcon}>

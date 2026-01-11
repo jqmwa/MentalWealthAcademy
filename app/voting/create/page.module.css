@@ -544,10 +544,43 @@
   to { transform: rotate(360deg); }
 }
 
+.connectWalletButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  background: rgba(81, 104, 255, 0.1);
+  border: 2px solid rgba(81, 104, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+.connectWalletButton:hover {
+  background: rgba(81, 104, 255, 0.2);
+  border-color: rgba(81, 104, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
+}
+
+.connectWalletButton:active {
+  transform: translateY(0);
+}
+
 .actionFooter {
   display: flex;
   gap: 12px;
   padding-top: 16px;
+  margin-top: 16px;
   border-top: 1px solid rgba(244, 245, 254, 0.2);
 }
 
