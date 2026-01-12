@@ -166,7 +166,7 @@ const MockRescueCard: React.FC<MockRescueCardProps> = ({
               <p className={styles.instructionsTitle}>📋 Instructions:</p>
               <ol className={styles.instructionsList}>
                 <li>Connect the <strong>deployer wallet</strong> (has 60% tokens)</li>
-                <li>Click <strong>"Approve"</strong> to vote</li>
+                <li>Click <strong>&quot;Approve&quot;</strong> to vote</li>
                 <li>Proposal will auto-execute when 50% threshold is reached</li>
                 <li>$5 USDC will be transferred to your wallet</li>
               </ol>
