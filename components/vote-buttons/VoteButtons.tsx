@@ -93,11 +93,9 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
 
     try {
       // Request account access - works with MetaMask, Coinbase Wallet, etc.
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new providers.Web3Provider(window.ethereum);
-      const accounts = await provider.listAccounts();
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) as string[];
       if (accounts.length > 0) {
-        setWalletAddress(accounts[0].address);
+        setWalletAddress(accounts[0]);
       }
     } catch (error: any) {
       if (error.code === 4001) {
