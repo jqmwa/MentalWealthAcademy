@@ -132,7 +132,7 @@ const ProposalVoicePlayer: React.FC<ProposalVoicePlayerProps> = ({
             <div className={styles.playerInfo}>
               <div className={styles.playerLabel}>
                 <span className={styles.labelIcon}>🎙️</span>
-                <span className={styles.labelText}>Azura's Voice</span>
+                <span className={styles.labelText}>Azura&apos;s Voice</span>
               </div>
               {error && (
                 <div className={styles.errorMessage}>{error}</div>
