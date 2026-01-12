@@ -4,7 +4,8 @@
 
 .connectWallet {
   width: 100%;
-  background-color: var(--color-secondary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+  background-size: 200% 200%;
   color: var(--color-text-light);
   border: none;
   padding: 12px 20px;
@@ -20,12 +21,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.connectWallet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shine 2s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 .connectWallet:hover:not(:disabled) {
-  background-color: #4fa87a;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  animation: shimmer 2s ease-in-out infinite;
 }
 
 .connectWallet:active:not(:disabled) {

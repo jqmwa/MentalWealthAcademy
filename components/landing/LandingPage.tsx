@@ -550,7 +550,7 @@ const LandingPage: React.FC = () => {
                       setIsWalletSignup(true);
                       setShowOnboarding(true);
                     }}
-                    buttonText="Connect with Base"
+                    buttonText="Connect Ethereum"
                   />
                 </div>
                 
