@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
-import { getWalletAuthHeaders } from '@/lib/wallet-api';
+import { useAccount } from 'wagmi';
 import styles from './YourAccountsModal.module.css';
 import { XConnectingModal } from '../x-connecting/XConnectingModal';
 import { BlockchainAccountModal } from '../blockchain-account/BlockchainAccountModal';
@@ -19,7 +18,6 @@ interface XAccount {
 
 const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   const { address, isConnected } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const [xAccount, setXAccount] = useState<XAccount | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -42,31 +40,15 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
 
   const [syncedWalletAddress, setSyncedWalletAddress] = useState<string | null>(null);
 
-  // Helper to safely get wallet auth headers (falls back to empty if wallet signing fails)
-  const getAuthHeaders = async (): Promise<HeadersInit> => {
-    if (!address) return {};
-    try {
-      return await getWalletAuthHeaders(address, signMessageAsync);
-    } catch (error) {
-      // Wallet signing failed - fall back to session-only auth
-      console.warn('Wallet auth failed, using session auth:', error);
-      return {};
-    }
-  };
-
   // Fetch account status (synced wallet and X account)
-  // Note: Fetch regardless of wallet connection since user might be authenticated via session
+  // Uses session-based auth - no wallet signature needed
   useEffect(() => {
     const fetchAccountData = async () => {
       try {
-        // Get auth headers (safely - falls back to session auth if wallet fails)
-        const headers = await getAuthHeaders();
-        
-        // Fetch account status to get synced wallet (works with session or wallet auth)
+        // Fetch account status to get synced wallet (uses session cookie)
         const accountStatusResponse = await fetch('/api/account/status', {
           cache: 'no-store',
           credentials: 'include',
-          headers
         });
         
         if (accountStatusResponse.ok) {
@@ -84,11 +66,10 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
           return;
         }
         
-        // Fetch X account status (works with session or wallet auth)
+        // Fetch X account status (uses session cookie)
         const response = await fetch('/api/x-auth/status', { 
           cache: 'no-store',
           credentials: 'include',
-          headers
         });
         
         // Handle 503 (database not configured) gracefully
@@ -149,7 +130,7 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('xAccountUpdated', handleXAccountUpdate);
     };
-  }, [address, signMessageAsync]); // Fetch when address changes, but also fetch on mount even without address (session auth)
+  }, []); // Fetch on mount - session cookie handles auth
 
   // Format wallet address for display
   const formatAddress = (address: string) => {
@@ -171,14 +152,12 @@ const YourAccountsModal: React.FC<YourAccountsModalProps> = ({ onClose }) => {
   };
 
   const handleAccountSynced = () => {
-    // Refresh account data (works with session or wallet auth)
+    // Refresh account data (uses session cookie)
     const refreshAccountData = async () => {
       try {
-        const headers = await getAuthHeaders();
         const accountStatusResponse = await fetch('/api/account/status', {
           cache: 'no-store',
           credentials: 'include',
-          headers
         });
         
         if (accountStatusResponse.ok) {
