@@ -2,7 +2,7 @@
 async function loadHero() {
     try {
         // Load the hero HTML
-        const response = await fetch('components/hero.html');
+        const response = await fetch('hero.html');
         const html = await response.text();
         
         // Find the hero container or create it
