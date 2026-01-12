@@ -10,16 +10,32 @@ import { AzuraPowerIndicator } from '@/components/soul-gems/SoulGemDisplay';
 import TreasuryDisplay from '@/components/treasury-display/TreasuryDisplay';
 import VoteProgressBar from '@/components/vote-progress/VoteProgressBar';
 import VoteButtons from '@/components/vote-buttons/VoteButtons';
+import ProposalCard from '@/components/proposal-card/ProposalCard';
+import ProposalDetailsModal from '@/components/proposal-card/ProposalDetailsModal';
 import { 
-  fetchAllProposals, 
-  getVotingProgress,
-  OnChainProposal,
+  fetchProposal,
   formatTokenAmount,
   ProposalStatus
 } from '@/lib/azura-contract';
 import styles from './page.module.css';
 
-interface Proposal {
+interface ProposalReview {
+  decision: 'approved' | 'rejected';
+  reasoning: string;
+  tokenAllocation: number | null;
+  scores: {
+    clarity: number;
+    impact: number;
+    feasibility: number;
+    budget: number;
+    ingenuity: number;
+    chaos: number;
+  } | null;
+  reviewedAt: string;
+  onChainProposalId: string | null;
+}
+
+interface DatabaseProposal {
   id: string;
   title: string;
   proposalMarkdown: string;
@@ -30,13 +46,17 @@ interface Proposal {
     username: string | null;
     avatarUrl: string | null;
   };
-  review: {
-    decision: 'approved' | 'rejected';
-    reasoning: string;
-    tokenAllocation: number | null;
-    scores: any;
-    reviewedAt: string;
-  } | null;
+  review: ProposalReview | null;
+}
+
+interface MergedProposal extends DatabaseProposal {
+  onChainData?: {
+    forVotes: string;
+    againstVotes: string;
+    votingDeadline: number;
+    azuraLevel: number;
+    executed: boolean;
+  };
 }
 
 const getTutorialSteps = (): TutorialStep[] => [
@@ -73,9 +93,11 @@ const TOTAL_SUPPLY = '100000'; // 100k tokens
 
 export default function VotingPage() {
   const [showTutorial, setShowTutorial] = useState(false);
-  const [proposals, setProposals] = useState<OnChainProposal[]>([]);
+  const [proposals, setProposals] = useState<MergedProposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedProposal, setSelectedProposal] = useState<MergedProposal | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Check if user has seen the admin tutorial
@@ -95,17 +117,61 @@ export default function VotingPage() {
 
   const fetchProposals = async () => {
     try {
-      // Connect to blockchain to read proposals
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new providers.Web3Provider(window.ethereum);
-        const onChainProposals = await fetchAllProposals(CONTRACT_ADDRESS, provider);
-        setProposals(onChainProposals);
-      } else {
-        setError('Please install MetaMask or another Web3 wallet');
+      setLoading(true);
+      setError(null);
+
+      // Fetch reviewed proposals from database
+      const dbResponse = await fetch('/api/voting/proposals');
+      if (!dbResponse.ok) {
+        throw new Error('Failed to fetch proposals from database');
       }
+
+      const dbData = await dbResponse.json();
+      const dbProposals: DatabaseProposal[] = dbData.proposals || [];
+
+      // For proposals with on_chain_proposal_id, fetch on-chain data
+      const mergedProposals: MergedProposal[] = await Promise.all(
+        dbProposals.map(async (proposal) => {
+          // If proposal has on-chain ID and is active, fetch on-chain data
+          if (
+            proposal.review?.onChainProposalId &&
+            (proposal.status === 'active' || proposal.status === 'completed')
+          ) {
+            try {
+              // Try to fetch on-chain data if wallet is available
+              if (typeof window.ethereum !== 'undefined') {
+                const provider = new providers.Web3Provider(window.ethereum);
+                const onChainProposal = await fetchProposal(
+                  CONTRACT_ADDRESS,
+                  parseInt(proposal.review.onChainProposalId),
+                  provider
+                );
+
+                return {
+                  ...proposal,
+                  onChainData: {
+                    forVotes: onChainProposal.forVotes,
+                    againstVotes: onChainProposal.againstVotes,
+                    votingDeadline: onChainProposal.votingDeadline,
+                    azuraLevel: onChainProposal.azuraLevel,
+                    executed: onChainProposal.executed,
+                  },
+                };
+              }
+            } catch (error) {
+              console.error(`Error fetching on-chain data for proposal ${proposal.id}:`, error);
+              // Continue without on-chain data
+            }
+          }
+
+          return proposal as MergedProposal;
+        })
+      );
+
+      setProposals(mergedProposals);
     } catch (error) {
       console.error('Error fetching proposals:', error);
-      setError('Failed to load proposals from blockchain');
+      setError('Failed to load proposals');
     } finally {
       setLoading(false);
     }
@@ -117,9 +183,11 @@ export default function VotingPage() {
   };
 
   const handleViewDetails = (proposalId: string) => {
-    // TODO: Navigate to proposal details page or open modal
-    console.log('View proposal:', proposalId);
-    alert('Proposal details view coming soon!');
+    const proposal = proposals.find((p) => p.id === proposalId);
+    if (proposal) {
+      setSelectedProposal(proposal);
+      setIsModalOpen(true);
+    }
   };
 
   return (
@@ -201,53 +269,60 @@ export default function VotingPage() {
               </div>
             ) : (
               <div className={styles.proposalsGrid} data-tutorial-target="submission">
-                {proposals.map((proposal) => {
-                  const onChainProposal = proposal as OnChainProposal;
-                  return (
-                    <div key={onChainProposal.id} className={styles.proposalCardWrapper}>
-                      <div className={styles.proposalHeader}>
-                        <h3 className={styles.proposalTitle}>{onChainProposal.title}</h3>
-                        <span className={styles.proposalId}>#{onChainProposal.id}</span>
-                      </div>
-                      
-                      <VoteProgressBar
-                        forVotes={formatTokenAmount(onChainProposal.forVotes)}
-                        againstVotes={formatTokenAmount(onChainProposal.againstVotes)}
-                        totalSupply={TOTAL_SUPPLY}
-                        threshold={50}
-                      />
-                      
-                      <div className={styles.proposalMeta}>
-                        <span>Azura Level: ⭐ x {onChainProposal.azuraLevel}</span>
-                        <a 
-                          href={`https://basescan.org/address/${CONTRACT_ADDRESS}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.viewOnChain}
-                        >
-                          View on BaseScan
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                          </svg>
-                        </a>
-                      </div>
-                      
-                      {onChainProposal.status === ProposalStatus.Active && !onChainProposal.executed && (
-                        <VoteButtons
-                          proposalId={onChainProposal.id}
-                          contractAddress={CONTRACT_ADDRESS}
-                          onVoted={fetchProposals}
+                {proposals.map((proposal) => (
+                  <div key={proposal.id} className={styles.proposalCardContainer}>
+                    <ProposalCard
+                      id={proposal.id}
+                      title={proposal.title}
+                      proposalMarkdown={proposal.proposalMarkdown}
+                      status={proposal.status}
+                      walletAddress={proposal.walletAddress}
+                      createdAt={proposal.createdAt}
+                      user={proposal.user}
+                      review={proposal.review}
+                      onViewDetails={handleViewDetails}
+                      showAvatar={false}
+                    />
+                    
+                    {/* Show voting UI for active proposals with on-chain data */}
+                    {proposal.status === 'active' && 
+                     proposal.onChainData && 
+                     !proposal.onChainData.executed && (
+                      <div className={styles.votingSection}>
+                        <VoteProgressBar
+                          forVotes={formatTokenAmount(proposal.onChainData.forVotes)}
+                          againstVotes={formatTokenAmount(proposal.onChainData.againstVotes)}
+                          totalSupply={TOTAL_SUPPLY}
+                          threshold={50}
                         />
-                      )}
-                    </div>
-                  );
-                })}
+                        {proposal.review?.onChainProposalId && (
+                          <VoteButtons
+                            proposalId={parseInt(proposal.review.onChainProposalId)}
+                            contractAddress={CONTRACT_ADDRESS}
+                            onVoted={fetchProposals}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </section>
         </div>
       </main>
       <Footer />
+      
+      {selectedProposal && (
+        <ProposalDetailsModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedProposal(null);
+          }}
+          proposal={selectedProposal}
+        />
+      )}
     </>
   );
 }

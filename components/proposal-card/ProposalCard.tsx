@@ -35,6 +35,7 @@ interface ProposalCardProps {
   };
   review: ProposalReview | null;
   onViewDetails?: (id: string) => void;
+  showAvatar?: boolean;
 }
 
 const ProposalCard: React.FC<ProposalCardProps> = ({
@@ -47,6 +48,7 @@ const ProposalCard: React.FC<ProposalCardProps> = ({
   user,
   review,
   onViewDetails,
+  showAvatar = false,
 }) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -170,23 +172,25 @@ const ProposalCard: React.FC<ProposalCardProps> = ({
           </div>
         </div>
         <div className={styles.meta}>
-          <div className={styles.metaItem}>
-            {user.avatarUrl ? (
-              <Image
-                src={user.avatarUrl}
-                alt={user.username || 'User'}
-                width={24}
-                height={24}
-                className={styles.avatarImage}
-                unoptimized
-              />
-            ) : (
-              <div className={styles.avatar}>
-                {user.username?.[0]?.toUpperCase() || '?'}
-              </div>
-            )}
-            <strong>@{user.username || 'anonymous'}</strong>
-          </div>
+          {showAvatar && (
+            <div className={styles.metaItem}>
+              {user.avatarUrl ? (
+                <Image
+                  src={user.avatarUrl}
+                  alt={user.username || 'User'}
+                  width={24}
+                  height={24}
+                  className={styles.avatarImage}
+                  unoptimized
+                />
+              ) : (
+                <div className={styles.avatar}>
+                  {user.username?.[0]?.toUpperCase() || '?'}
+                </div>
+              )}
+              <strong>@{user.username || 'anonymous'}</strong>
+            </div>
+          )}
           <div className={styles.metaItem}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>

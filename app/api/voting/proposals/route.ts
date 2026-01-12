@@ -18,6 +18,7 @@ interface ProposalWithReview {
   review_token_allocation: number | null;
   review_scores: string | null;
   review_reviewed_at: string | null;
+  on_chain_proposal_id: string | null;
 }
 
 export async function GET() {
@@ -31,7 +32,8 @@ export async function GET() {
   await ensureProposalSchema();
 
   try {
-    // Fetch all proposals with their reviews and user info
+    // Fetch only proposals that have been reviewed (rejected or created on-chain)
+    // This means they have a review decision (rejected) or on_chain_proposal_id (created)
     const proposals = await sqlQuery<ProposalWithReview[]>(
       `SELECT 
         p.id,
@@ -48,10 +50,12 @@ export async function GET() {
         pr.reasoning as review_reasoning,
         pr.token_allocation_percentage as review_token_allocation,
         pr.scores as review_scores,
-        pr.reviewed_at as review_reviewed_at
+        pr.reviewed_at as review_reviewed_at,
+        pr.on_chain_proposal_id
        FROM proposals p
        LEFT JOIN users u ON p.user_id = u.id
        LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
+       WHERE pr.decision IS NOT NULL
        ORDER BY p.created_at DESC`
     );
 
@@ -75,6 +79,7 @@ export async function GET() {
         tokenAllocation: p.review_token_allocation,
         scores: p.review_scores ? JSON.parse(p.review_scores) : null,
         reviewedAt: p.review_reviewed_at,
+        onChainProposalId: p.on_chain_proposal_id,
       } : null,
     }));
 

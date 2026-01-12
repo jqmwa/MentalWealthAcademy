@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
 import { ensureProposalSchema } from '@/lib/ensureProposalSchema';
 import { providers, Wallet as EthersWallet } from 'ethers';
-import { createProposalOnChain } from '@/lib/azura-contract';
+import { createProposalOnChain, azuraReviewProposal } from '@/lib/azura-contract';
 
 interface ProposalData {
   id: string;
@@ -150,6 +150,20 @@ export async function POST(
 
     console.log(`✅ On-chain proposal created! ID: ${onChainProposalId}, TX: ${txHash}`);
 
+    // Convert tokenAllocation percentage to Azura level (1-40% → 1-4)
+    const azuraLevel = Math.ceil(tokenAllocation / 10);
+    console.log(`Azura reviewing proposal with level ${azuraLevel} (${tokenAllocation}% allocation)`);
+
+    // Azura reviews the proposal on-chain (sets level and casts vote)
+    const reviewTxHash = await azuraReviewProposal(
+      contractAddress,
+      onChainProposalId,
+      azuraLevel,
+      web3Provider
+    );
+
+    console.log(`✅ Azura reviewed proposal! Level: ${azuraLevel}, TX: ${reviewTxHash}`);
+
     // Update proposal status to active
     await sqlQuery(
       `UPDATE proposals SET status = 'active' WHERE id = :proposalId`,
@@ -173,7 +187,10 @@ export async function POST(
       message: 'Proposal created on-chain successfully',
       onChainProposalId,
       txHash,
+      reviewTxHash,
+      azuraLevel,
       viewOnBasescan: `https://basescan.org/tx/${txHash}`,
+      reviewOnBasescan: `https://basescan.org/tx/${reviewTxHash}`,
       azuraWalletAddress: azuraWallet.address,
       gasUsed: 'Check transaction for details',
     });

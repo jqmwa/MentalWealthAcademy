@@ -195,12 +195,28 @@ ${proposal.proposal_markdown}
       { status: newStatus, proposalId: proposal.id }
     );
 
+    // If approved, automatically create on-chain proposal
+    if (decision === 'approved' && tokenAllocation) {
+      // Convert tokenAllocation percentage to Azura level (1-40% → 1-4)
+      const azuraLevel = Math.ceil(tokenAllocation / 10);
+      
+      // Trigger on-chain creation asynchronously (don't wait for it)
+      const baseUrl = request.url.split('/api')[0];
+      fetch(`${baseUrl}/api/voting/proposal/${proposal.id}/create-onchain`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).catch(error => {
+        console.error('Failed to trigger on-chain proposal creation:', error);
+      });
+    }
+
     return NextResponse.json({
       ok: true,
       decision,
       reasoning,
       tokenAllocation: decision === 'approved' ? tokenAllocation : null,
       scores,
+      azuraLevel: decision === 'approved' && tokenAllocation ? Math.ceil(tokenAllocation / 10) : null,
     });
   } catch (error: any) {
     console.error('Error in Azura review:', error);

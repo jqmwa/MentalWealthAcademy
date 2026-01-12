@@ -17,6 +17,7 @@ export const AZURA_KILLSTREAK_ABI = [
   
   // Write functions
   'function createProposal(address _recipient, uint256 _usdcAmount, string _title, string _description, uint256 _votingPeriod) external returns (uint256)',
+  'function azuraReview(uint256 _proposalId, uint256 _level) external',
   'function vote(uint256 _proposalId, bool _support) external',
   'function executeProposal(uint256 _proposalId) external',
   
@@ -221,6 +222,23 @@ export async function voteOnProposal(
   const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
   
   const tx = await contract.vote(proposalId, support);
+  const receipt = await tx.wait();
+  
+  return receipt.hash;
+}
+
+/**
+ * Azura reviews a proposal and assigns a level (0-4)
+ */
+export async function azuraReviewProposal(
+  contractAddress: string,
+  proposalId: number,
+  level: number,
+  provider: providers.Web3Provider
+): Promise<string> {
+  const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
+  
+  const tx = await contract.azuraReview(proposalId, level);
   const receipt = await tx.wait();
   
   return receipt.hash;

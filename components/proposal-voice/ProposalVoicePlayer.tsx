@@ -113,7 +113,7 @@ const ProposalVoicePlayer: React.FC<ProposalVoicePlayerProps> = ({
               className={styles.playButton}
               onClick={handlePlayPause}
               disabled={isLoading}
-              aria-label={isPlaying ? 'Pause' : 'Play Azura&apos;s voice'}
+              aria-label={isPlaying ? 'Pause' : 'Play Azura\'s voice'}
             >
               {isLoading ? (
                 <div className={styles.spinner} />
@@ -132,7 +132,7 @@ const ProposalVoicePlayer: React.FC<ProposalVoicePlayerProps> = ({
             <div className={styles.playerInfo}>
               <div className={styles.playerLabel}>
                 <span className={styles.labelIcon}>🎙️</span>
-                <span className={styles.labelText}>Azura&apos;s Voice</span>
+                <span className={styles.labelText}>Azura's Voice</span>
               </div>
               {error && (
                 <div className={styles.errorMessage}>{error}</div>
