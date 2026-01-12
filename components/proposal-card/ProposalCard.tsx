@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import ProposalStages from '@/components/proposal-stages/ProposalStages';
 import FinalizeButton from './FinalizeButton';
+import ProposalVoicePlayer from '@/components/proposal-voice/ProposalVoicePlayer';
 import styles from './ProposalCard.module.css';
 
 interface ProposalReview {
@@ -225,6 +226,15 @@ const ProposalCard: React.FC<ProposalCardProps> = ({
           />
         </div>
       )}
+
+      {/* Azura's Voice Component - Full width at bottom */}
+      <div className={styles.voiceSection}>
+        <ProposalVoicePlayer
+          proposalId={id}
+          proposalTitle={title}
+          proposalContent={proposalMarkdown}
+        />
+      </div>
 
       <div className={styles.footer}>
         <span className={styles.timestamp}>{formatTimestamp(createdAt)}</span>

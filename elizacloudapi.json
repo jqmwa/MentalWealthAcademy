@@ -1,0 +1,1199 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Eliza Cloud API",
+      "description": "AI agent development platform with multi-model text generation, image creation, and enterprise features",
+      "version": "1.0.0",
+      "contact": {
+        "name": "Eliza Cloud",
+        "url": "https://github.com/elizaOS/eliza-cloud-v2"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Production server"
+      }
+    ],
+    "security": [
+      {
+        "bearerAuth": []
+      },
+      {
+        "apiKeyAuth": []
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Privy session authentication"
+        },
+        "apiKeyAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization",
+          "description": "API Key authentication (Bearer <key>)"
+        }
+      }
+    },
+    "paths": {
+      "/api/v1/generate-image": {
+        "post": {
+          "operationId": "generate-image",
+          "summary": "Generate Image",
+          "description": "Generate images from text prompts using AI models (supports API key auth)",
+          "tags": [
+            "Image Generation"
+          ],
+          "responses": {
+            "200": {
+              "description": "Image generated successfully"
+            },
+            "400": {
+              "description": "Invalid request parameters"
+            },
+            "401": {
+              "description": "Authentication required"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prompt": {
+                      "type": "string",
+                      "description": "Text description of the desired image",
+                      "example": "A futuristic city with flying cars and neon lights",
+                      "default": "A beautiful mountain landscape at sunset"
+                    }
+                  },
+                  "required": [
+                    "prompt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/generate-video": {
+        "post": {
+          "operationId": "generate-video",
+          "summary": "Generate Video",
+          "description": "Generate videos from text prompts (supports API key auth)",
+          "tags": [
+            "Video Generation"
+          ],
+          "responses": {
+            "200": {
+              "description": "Video generated successfully"
+            },
+            "400": {
+              "description": "Invalid request parameters"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prompt": {
+                      "type": "string",
+                      "description": "Text description of the desired video",
+                      "example": "A futuristic city with flying cars at night",
+                      "default": "A serene mountain landscape with clouds moving slowly"
+                    }
+                  },
+                  "required": [
+                    "prompt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/chat": {
+        "post": {
+          "operationId": "chat-completions",
+          "summary": "Chat Completion",
+          "description": "Generate text completions using Vercel AI SDK format (supports API key auth)",
+          "tags": [
+            "AI Completions"
+          ],
+          "responses": {
+            "200": {
+              "description": "Text generated successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "description": "Array of UIMessage objects (Vercel AI SDK format with role and parts)",
+                      "example": "[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Explain quantum computing\"}]}]",
+                      "default": "[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Hello, how are you?\"}]}]",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Model to use for completion",
+                      "example": "gpt-4o-mini",
+                      "default": "gpt-4o"
+                    }
+                  },
+                  "required": [
+                    "messages"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/character-assistant": {
+        "post": {
+          "operationId": "character-assistant",
+          "summary": "Character Assistant",
+          "description": "AI assistant for creating character definitions (session auth only)",
+          "tags": [
+            "AI Completions"
+          ],
+          "responses": {
+            "200": {
+              "description": "Character assistant response generated"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "description": "Conversation messages (Vercel AI SDK UIMessage format)",
+                      "example": "[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Create a sci-fi character\"}]}]",
+                      "default": "[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Help me create a character\"}]}]",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "characterData": {
+                      "type": "object",
+                      "description": "Existing character data to refine",
+                      "example": "{\"name\": \"Agent X\"}",
+                      "default": "{}"
+                    }
+                  },
+                  "required": [
+                    "messages"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/generate-prompts": {
+        "post": {
+          "operationId": "generate-prompts",
+          "summary": "Generate Prompts",
+          "description": "Generate creative prompts for image/video generation (session auth only)",
+          "tags": [
+            "AI Completions"
+          ],
+          "responses": {
+            "200": {
+              "description": "Prompts generated successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": false,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "seed": {
+                      "type": "number",
+                      "description": "Seed for prompt generation (optional, auto-generated if not provided)",
+                      "example": 1234567890
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/models": {
+        "get": {
+          "operationId": "models-list",
+          "summary": "List Models",
+          "description": "List all available AI models (supports API key auth)",
+          "tags": [
+            "Models"
+          ],
+          "responses": {
+            "200": {
+              "description": "Models retrieved successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ]
+        }
+      },
+      "/api/v1/gallery": {
+        "get": {
+          "operationId": "gallery-list",
+          "summary": "List Generations",
+          "description": "List all media generations (images and videos) (supports API key auth)",
+          "tags": [
+            "Gallery"
+          ],
+          "responses": {
+            "200": {
+              "description": "Generations retrieved successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "type",
+              "in": "query",
+              "required": false,
+              "description": "Filter by media type",
+              "schema": {
+                "type": "string",
+                "description": "Filter by media type",
+                "enum": [
+                  "image",
+                  "video"
+                ],
+                "example": "image"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "description": "Maximum number of results",
+              "schema": {
+                "type": "number",
+                "description": "Maximum number of results",
+                "example": 50,
+                "default": 100
+              }
+            },
+            {
+              "name": "offset",
+              "in": "query",
+              "required": false,
+              "description": "Pagination offset",
+              "schema": {
+                "type": "number",
+                "description": "Pagination offset",
+                "example": 0,
+                "default": 0
+              }
+            }
+          ]
+        }
+      },
+      "/api/v1/user": {
+        "get": {
+          "operationId": "user-get",
+          "summary": "Get User Profile",
+          "description": "Get current user profile and organization details (session auth only - won't work with API key)",
+          "tags": [
+            "User Management"
+          ],
+          "responses": {
+            "200": {
+              "description": "User profile retrieved successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ]
+        },
+        "patch": {
+          "operationId": "user-update",
+          "summary": "Update User Profile",
+          "description": "Update user profile information (session auth only - won't work with API key)",
+          "tags": [
+            "User Management"
+          ],
+          "responses": {
+            "200": {
+              "description": "Profile updated successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": false,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "User's display name",
+                      "example": "John Doe"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "Avatar URL",
+                      "example": "https://example.com/avatar.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/api-keys": {
+        "get": {
+          "operationId": "api-keys-list",
+          "summary": "List API Keys",
+          "description": "List all API keys for your organization (session auth only - won't work with API key)",
+          "tags": [
+            "API Keys"
+          ],
+          "responses": {
+            "200": {
+              "description": "API keys retrieved successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ]
+        },
+        "post": {
+          "operationId": "api-keys-create",
+          "summary": "Create API Key",
+          "description": "Create a new API key (session auth only - won't work with API key)",
+          "tags": [
+            "API Keys"
+          ],
+          "responses": {
+            "201": {
+              "description": "API key created successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name for the API key",
+                      "example": "Production API Key",
+                      "default": "Test Key"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Optional description",
+                      "example": "Used for production services"
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "description": "Array of permissions",
+                      "example": "[\"read\", \"write\"]",
+                      "default": "[]",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "rate_limit": {
+                      "type": "number",
+                      "description": "Rate limit per minute",
+                      "example": 1000,
+                      "default": 1000
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/api-keys/{id}": {
+        "delete": {
+          "operationId": "api-keys-delete",
+          "summary": "Delete API Key",
+          "description": "Delete an API key (session auth only - won't work with API key)",
+          "tags": [
+            "API Keys"
+          ],
+          "responses": {
+            "200": {
+              "description": "API key deleted successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "API key ID",
+              "schema": {
+                "type": "string",
+                "description": "API key ID",
+                "example": "key_123abc"
+              }
+            }
+          ]
+        },
+        "patch": {
+          "operationId": "api-keys-update",
+          "summary": "Update API Key",
+          "description": "Update API key properties (session auth only - won't work with API key)",
+          "tags": [
+            "API Keys"
+          ],
+          "responses": {
+            "200": {
+              "description": "API key updated successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "API key ID",
+              "schema": {
+                "type": "string",
+                "description": "API key ID",
+                "example": "key_123abc"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": false,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "New name for the API key",
+                      "example": "Updated Key Name"
+                    },
+                    "is_active": {
+                      "type": "boolean",
+                      "description": "Enable or disable the key",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/api-keys/{id}/regenerate": {
+        "post": {
+          "operationId": "api-keys-regenerate",
+          "summary": "Regenerate API Key",
+          "description": "Regenerate API key secret (old key becomes invalid) (session auth only - won't work with API key)",
+          "tags": [
+            "API Keys"
+          ],
+          "responses": {
+            "200": {
+              "description": "API key regenerated successfully"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "API key ID",
+              "schema": {
+                "type": "string",
+                "description": "API key ID",
+                "example": "key_123abc"
+              }
+            }
+          ]
+        }
+      },
+      "/api/elevenlabs/tts": {
+        "post": {
+          "operationId": "voice-text-to-speech",
+          "summary": "Text-to-Speech",
+          "description": "Convert text to realistic speech audio using ElevenLabs. Supports custom cloned voices and multiple voice models. Returns streaming audio response.",
+          "tags": [
+            "Voice Generation"
+          ],
+          "responses": {
+            "200": {
+              "description": "Audio stream generated successfully (Content-Type: audio/mpeg)"
+            },
+            "400": {
+              "description": "Invalid request (missing text, text too long, etc.)"
+            },
+            "429": {
+              "description": "Rate limit exceeded"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "Text to convert to speech (max 5000 characters)",
+                      "example": "Welcome to Eliza Cloud. Our voice generation API provides high-quality, natural-sounding speech synthesis.",
+                      "default": "Hello! This is a sample text-to-speech conversion."
+                    },
+                    "voiceId": {
+                      "type": "string",
+                      "description": "ElevenLabs voice ID (use your custom cloned voice ID or default voice)",
+                      "example": "21m00Tcm4TlvDq8ikWAM"
+                    },
+                    "modelId": {
+                      "type": "string",
+                      "description": "Voice model to use",
+                      "enum": [
+                        "eleven_flash_v2_5",
+                        "eleven_turbo_v2_5",
+                        "eleven_multilingual_v2",
+                        "eleven_monolingual_v1"
+                      ],
+                      "example": "eleven_flash_v2_5",
+                      "default": "eleven_flash_v2_5"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/elevenlabs/stt": {
+        "post": {
+          "operationId": "voice-speech-to-text",
+          "summary": "Speech-to-Text",
+          "description": "Transcribe audio to text using ElevenLabs. Supports multiple audio formats including MP3, WAV, M4A, WebM, and OGG. Max file size: 25MB. The API Explorer provides a built-in voice recorder for easy testing.",
+          "tags": [
+            "Voice Generation"
+          ],
+          "responses": {
+            "200": {
+              "description": "Audio transcribed successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "transcript": "This is the transcribed text from the audio file.",
+                    "duration_ms": 1234
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid audio file or format"
+            },
+            "402": {
+              "description": "Paid ElevenLabs plan required"
+            },
+            "429": {
+              "description": "Rate limit exceeded"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "audio": {
+                      "type": "string",
+                      "description": "Audio file (multipart/form-data). Use the built-in recorder in API Explorer or upload via cURL. Supported formats: mp3, wav, m4a, webm, ogg. Max 25MB.",
+                      "format": "binary",
+                      "example": "Record using the microphone button in API Explorer"
+                    },
+                    "languageCode": {
+                      "type": "string",
+                      "description": "ISO 639-1 language code for transcription (auto-detect if not provided)",
+                      "example": "en"
+                    }
+                  },
+                  "required": [
+                    "audio"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/elevenlabs/voices": {
+        "get": {
+          "operationId": "voice-list-available",
+          "summary": "List Available Voices",
+          "description": "Get all available ElevenLabs pre-built public voices (Rachel, Adam, etc.). This endpoint only returns premade voices that all users can use. Custom cloned voices are NOT included here - use 'List User Cloned Voices' endpoint to see your personal voices.",
+          "tags": [
+            "Voice Generation"
+          ],
+          "responses": {
+            "200": {
+              "description": "Public voices retrieved successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "voices": [
+                      {
+                        "voice_id": "21m00Tcm4TlvDq8ikWAM",
+                        "name": "Rachel",
+                        "category": "premade",
+                        "description": "Young American female voice"
+                      },
+                      {
+                        "voice_id": "pNInz6obpgDQGcFmaJgB",
+                        "name": "Adam",
+                        "category": "premade",
+                        "description": "Deep American male voice"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Service not configured or unavailable"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ]
+        }
+      },
+      "/api/elevenlabs/voices/clone": {
+        "post": {
+          "operationId": "voice-clone-create",
+          "summary": "Clone Voice",
+          "description": "Create a custom voice clone using audio samples. Supports instant cloning (30s, 50 credits) and professional cloning (1-3hrs, 200 credits). Upload 1-10 audio files (max 100MB total). The API Explorer provides a built-in file uploader for easy testing.",
+          "tags": [
+            "Voice Cloning"
+          ],
+          "responses": {
+            "201": {
+              "description": "Voice clone created successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "voice": {
+                      "id": "voice_abc123",
+                      "elevenlabsVoiceId": "elab_xyz789",
+                      "name": "My Custom Voice",
+                      "cloneType": "instant",
+                      "status": "processing",
+                      "sampleCount": 3
+                    },
+                    "job": {
+                      "id": "job_123",
+                      "status": "processing",
+                      "progress": 0
+                    },
+                    "creditsDeducted": 50,
+                    "newBalance": 950,
+                    "estimatedCompletionTime": "30 seconds"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request (missing fields, too many files, file too large)"
+            },
+            "402": {
+              "description": "Insufficient credits"
+            },
+            "429": {
+              "description": "Rate limit exceeded"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "description": "Request body",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name for the cloned voice",
+                      "example": "My Custom Voice"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Optional description of the voice",
+                      "example": "Professional narrator voice for audiobooks"
+                    },
+                    "cloneType": {
+                      "type": "string",
+                      "description": "Cloning type: instant (50 credits, 30s) or professional (200 credits, 30-60min)",
+                      "enum": [
+                        "instant",
+                        "professional"
+                      ],
+                      "example": "instant"
+                    },
+                    "file0": {
+                      "type": "string",
+                      "description": "Audio sample file (multipart/form-data). At least 1 required, max 10 files. Use the file uploader in API Explorer to upload audio samples.",
+                      "format": "binary",
+                      "example": "Upload audio file using the file uploader above"
+                    },
+                    "file1": {
+                      "type": "string",
+                      "description": "Additional audio sample (optional, multipart/form-data)",
+                      "format": "binary",
+                      "example": "sample2.mp3"
+                    },
+                    "settings": {
+                      "type": "string",
+                      "description": "JSON string of voice settings (optional)",
+                      "example": "{\"stability\": 0.5, \"similarity_boost\": 0.75}"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "cloneType",
+                    "file0"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/elevenlabs/voices/user": {
+        "get": {
+          "operationId": "voice-list-user",
+          "summary": "List User Cloned Voices",
+          "description": "Get all custom voices cloned by your organization. Includes usage statistics, quality scores, and status information. Supports filtering and pagination.",
+          "tags": [
+            "Voice Cloning"
+          ],
+          "responses": {
+            "200": {
+              "description": "User voices retrieved successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "voices": [
+                      {
+                        "id": "voice_abc123",
+                        "elevenlabsVoiceId": "elab_xyz789",
+                        "name": "My Custom Voice",
+                        "cloneType": "instant",
+                        "usageCount": 42,
+                        "lastUsedAt": "2025-10-27T10:30:00Z",
+                        "isActive": true
+                      }
+                    ],
+                    "total": 5,
+                    "limit": 50,
+                    "offset": 0,
+                    "hasMore": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "includeInactive",
+              "in": "query",
+              "required": false,
+              "description": "Include inactive/disabled voices",
+              "schema": {
+                "type": "boolean",
+                "description": "Include inactive/disabled voices",
+                "example": false,
+                "default": false
+              }
+            },
+            {
+              "name": "cloneType",
+              "in": "query",
+              "required": false,
+              "description": "Filter by clone type",
+              "schema": {
+                "type": "string",
+                "description": "Filter by clone type",
+                "enum": [
+                  "instant",
+                  "professional"
+                ],
+                "example": "instant"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "description": "Maximum number of results",
+              "schema": {
+                "type": "number",
+                "description": "Maximum number of results",
+                "example": 20,
+                "default": 50,
+                "minimum": 1,
+                "maximum": 100
+              }
+            },
+            {
+              "name": "offset",
+              "in": "query",
+              "required": false,
+              "description": "Pagination offset",
+              "schema": {
+                "type": "number",
+                "description": "Pagination offset",
+                "example": 0,
+                "default": 0,
+                "minimum": 0
+              }
+            }
+          ]
+        }
+      },
+      "/api/elevenlabs/voices/{id}": {
+        "get": {
+          "operationId": "voice-get-by-id",
+          "summary": "Get Voice Details",
+          "description": "Retrieve detailed information about a specific cloned voice including usage statistics, quality metrics, and configuration settings. Note: Use your internal voice ID (starts with 'voice_'), not the ElevenLabs voice ID.",
+          "tags": [
+            "Voice Cloning"
+          ],
+          "responses": {
+            "200": {
+              "description": "Voice details retrieved successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "voice": {
+                      "id": "voice_abc123-uuid-here",
+                      "elevenlabsVoiceId": "elab_xyz789",
+                      "name": "My Custom Voice",
+                      "description": "Professional narrator voice",
+                      "cloneType": "instant",
+                      "sampleCount": 3,
+                      "usageCount": 42,
+                      "audioQualityScore": 0.95,
+                      "isActive": true,
+                      "createdAt": "2025-10-20T10:00:00Z"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Voice not found"
+            },
+            "500": {
+              "description": "Invalid voice ID format (must be UUID)"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Voice ID (internal UUID, NOT ElevenLabs voice ID). Get this from 'List User Voices' endpoint.",
+              "schema": {
+                "type": "string",
+                "description": "Voice ID (internal UUID, NOT ElevenLabs voice ID). Get this from 'List User Voices' endpoint.",
+                "example": "voice_abc123-..."
+              }
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "voice-delete",
+          "summary": "Delete Voice",
+          "description": "Permanently delete a cloned voice. This action cannot be undone. The voice will be removed from both Eliza Cloud and ElevenLabs.",
+          "tags": [
+            "Voice Cloning"
+          ],
+          "responses": {
+            "200": {
+              "description": "Voice deleted successfully",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "message": "Voice deleted successfully"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Voice not found"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            },
+            {
+              "apiKeyAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Voice ID to delete",
+              "schema": {
+                "type": "string",
+                "description": "Voice ID to delete",
+                "example": "voice_abc123"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "tags": [
+      {
+        "name": "Image Generation",
+        "description": "Image Generation operations"
+      },
+      {
+        "name": "Video Generation",
+        "description": "Video Generation operations"
+      },
+      {
+        "name": "AI Completions",
+        "description": "AI Completions operations"
+      },
+      {
+        "name": "Models",
+        "description": "Models operations"
+      },
+      {
+        "name": "Gallery",
+        "description": "Gallery operations"
+      },
+      {
+        "name": "User Management",
+        "description": "User Management operations"
+      },
+      {
+        "name": "API Keys",
+        "description": "API Keys operations"
+      },
+      {
+        "name": "Voice Generation",
+        "description": "Voice Generation operations"
+      },
+      {
+        "name": "Voice Cloning",
+        "description": "Voice Cloning operations"
+      }
+    ]
+  }

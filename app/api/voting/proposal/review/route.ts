@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
 import { ensureProposalSchema } from '@/lib/ensureProposalSchema';
+import { elizaAPI } from '@/lib/eliza-api';
+import azuraPersonality from '@/lib/Azurapersonality.json';
 
 interface AzuraScores {
   clarity: number;
@@ -72,20 +74,23 @@ export async function POST(request: Request) {
     );
   }
 
-  // Check for DeepSeek API key
-  const apiKey = process.env.DEEPSEEK_API_KEY;
-  if (!apiKey) {
+  // Check for Eliza API configuration
+  const elizaApiKey = process.env.ELIZA_API_KEY;
+  const elizaBaseUrl = process.env.ELIZA_API_BASE_URL || 'http://localhost:3000';
+  
+  if (!elizaApiKey && !elizaBaseUrl.includes('localhost')) {
     return NextResponse.json(
-      { error: 'DEEPSEEK_API_KEY not configured.' },
+      { error: 'ELIZA_API_KEY not configured. Set ELIZA_API_KEY in environment.' },
       { status: 501 }
     );
   }
 
-  // Call Azura (DeepSeek) for analysis
+  // Call Azura (via Eliza API) for analysis
   try {
-    const systemPrompt = `You are Azura, an AI agent for Mental Wealth Academy. Your role is to review funding proposals and evaluate them fairly.
+    // Build system prompt from Azura's personality
+    const azuraSystemPrompt = `${azuraPersonality.system}
 
-Analyze the proposal based on these criteria (score 0-10 each):
+You are reviewing funding proposals for Mental Wealth Academy. Analyze proposals based on these criteria (score 0-10 each):
 1. CLARITY: How clear, well-written, and understandable is the proposal?
 2. IMPACT: What is the potential positive impact on the mental health community?
 3. FEASIBILITY: How realistic and achievable is this proposal?
@@ -96,6 +101,8 @@ Analyze the proposal based on these criteria (score 0-10 each):
 Based on the total score (out of 60):
 - Score >= 25: APPROVE with token allocation (1-40% based on score strength)
 - Score < 25: REJECT
+
+${azuraPersonality.style?.chat?.[0] || ''}
 
 Respond in JSON format:
 {
@@ -109,7 +116,7 @@ Respond in JSON format:
     "chaos": 0-10
   },
   "tokenAllocation": 1-40 (only if approved, null if rejected),
-  "reasoning": "One to two sentences explaining your decision concisely."
+  "reasoning": "One to two sentences explaining your decision concisely, in your voice."
 }`;
 
     const userPrompt = `Review this proposal:
@@ -121,30 +128,20 @@ ${proposal.proposal_markdown}
 
 **Wallet Address:** ${proposal.wallet_address}`;
 
-    const deepseekResponse = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        max_tokens: 1000,
-        temperature: 0.7,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-      }),
+    // Use Eliza API for chat completion
+    const responseText = await elizaAPI.chat({
+      messages: [
+        {
+          role: 'system',
+          parts: [{ type: 'text', text: azuraSystemPrompt }],
+        },
+        {
+          role: 'user',
+          parts: [{ type: 'text', text: userPrompt }],
+        },
+      ],
+      id: 'gpt-4o',
     });
-
-    const deepseekData = await deepseekResponse.json();
-
-    if (!deepseekResponse.ok) {
-      throw new Error(deepseekData?.error?.message || 'DeepSeek request failed.');
-    }
-
-    const responseText = deepseekData?.choices?.[0]?.message?.content || '';
     
     // Parse JSON response from Azura
     let azuraResponse;
