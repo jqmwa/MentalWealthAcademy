@@ -116,7 +116,7 @@ export default function ProposalDetailsModal({
 
           {proposal.review && (
             <div className={styles.section}>
-              <h3 className={styles.sectionTitle}>Azura's Review</h3>
+              <h3 className={styles.sectionTitle}>Azura&apos;s Review</h3>
               <div className={styles.reviewContent}>
                 <div className={styles.reasoning}>
                   <p>{proposal.review.reasoning}</p>
