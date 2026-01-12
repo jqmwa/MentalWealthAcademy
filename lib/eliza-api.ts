@@ -65,7 +65,10 @@ class ElizaAPIClient {
    */
   async chat(request: ElizaChatRequest): Promise<string> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/v1/chat`, {
+      const url = `${this.baseUrl}/api/v1/chat`;
+      console.log('Calling Eliza API:', { url, hasApiKey: !!this.apiKey, modelId: request.id || 'gpt-4o' });
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({
@@ -75,26 +78,72 @@ class ElizaAPIClient {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `Eliza API error: ${response.statusText}`);
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: errorText || response.statusText };
+        }
+        console.error('Eliza API error response:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData,
+          url,
+          hasApiKey: !!this.apiKey,
+        });
+        
+        // Provide specific error messages for common issues
+        if (response.status === 401) {
+          if (!this.apiKey) {
+            throw new Error('Eliza API key is missing. Please set ELIZA_API_KEY in your environment variables.');
+          } else {
+            throw new Error('Eliza API key is invalid or expired. Please check your ELIZA_API_KEY configuration.');
+          }
+        }
+        
+        throw new Error(errorData.error?.message || errorData.message || `Eliza API error: ${response.status} ${response.statusText}`);
       }
 
       const data: ElizaChatResponse = await response.json();
+      console.log('Eliza API response received:', { hasChoices: !!data.choices, choicesLength: data.choices?.length });
       
       // Handle different response formats
       if (data.choices && data.choices.length > 0) {
-        return data.choices[0].message.content || '';
+        const content = data.choices[0].message.content || '';
+        console.log('Extracted content length:', content.length);
+        return content;
       }
 
       // Fallback: try to extract text from response
       const text = (data as any).text || (data as any).content || '';
       if (text) {
+        console.log('Using fallback text, length:', text.length);
         return text;
       }
 
+      console.error('No content found in Eliza API response:', data);
       throw new Error('No response content from Eliza API');
-    } catch (error) {
-      console.error('Eliza API chat error:', error);
+    } catch (error: any) {
+      // Handle fetch errors specifically
+      if (error.message?.includes('fetch') || error.code === 'ECONNREFUSED' || error.message?.includes('ECONNREFUSED')) {
+        const connectionError = new Error(`Unable to connect to Eliza API at ${this.baseUrl}. Please ensure Eliza Cloud API is running or check your ELIZA_API_BASE_URL configuration.`);
+        console.error('Eliza API connection error:', {
+          message: connectionError.message,
+          baseUrl: this.baseUrl,
+          hasApiKey: !!this.apiKey,
+          originalError: error.message,
+        });
+        throw connectionError;
+      }
+      
+      console.error('Eliza API chat error:', {
+        message: error.message,
+        stack: error.stack,
+        baseUrl: this.baseUrl,
+        hasApiKey: !!this.apiKey,
+        errorCode: error.code,
+      });
       throw error;
     }
   }

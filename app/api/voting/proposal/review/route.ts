@@ -78,12 +78,19 @@ export async function POST(request: Request) {
   const elizaApiKey = process.env.ELIZA_API_KEY;
   const elizaBaseUrl = process.env.ELIZA_API_BASE_URL || 'http://localhost:3000';
   
-  if (!elizaApiKey && !elizaBaseUrl.includes('localhost')) {
+  if (!elizaApiKey) {
+    console.error('ELIZA_API_KEY is missing from environment variables');
     return NextResponse.json(
-      { error: 'ELIZA_API_KEY not configured. Set ELIZA_API_KEY in environment.' },
+      { error: 'ELIZA_API_KEY not configured. Please set ELIZA_API_KEY in your environment variables.' },
       { status: 501 }
     );
   }
+  
+  console.log('Eliza API configuration:', {
+    baseUrl: elizaBaseUrl,
+    hasApiKey: !!elizaApiKey,
+    apiKeyLength: elizaApiKey?.length || 0,
+  });
 
   // Call Azura (via Eliza API) for analysis
   try {
@@ -220,6 +227,13 @@ ${proposal.proposal_markdown}
     });
   } catch (error: any) {
     console.error('Error in Azura review:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      proposalId: proposal.id,
+      elizaApiKey: elizaApiKey ? 'Set' : 'Missing',
+      elizaBaseUrl,
+    });
     
     // If review fails, don't leave proposal in limbo
     try {
@@ -228,15 +242,28 @@ ${proposal.proposal_markdown}
         { proposalId: proposal.id }
       );
       
-      // Create a failed review record
+      // Create a failed review record with more detailed error message
       const reviewId = uuidv4();
+      let errorReason = 'Review failed due to system error. Please resubmit.';
+      
+      // Provide more specific error messages
+      if (error.message?.includes('ELIZA_API_KEY') || !elizaApiKey) {
+        errorReason = 'Review failed: Eliza API key not configured. Please contact support.';
+      } else if (error.message?.includes('fetch') || error.message?.includes('network')) {
+        errorReason = 'Review failed: Unable to connect to Eliza API. Please try again later.';
+      } else if (error.message?.includes('parse') || error.message?.includes('JSON')) {
+        errorReason = 'Review failed: Invalid response from Azura. Please resubmit.';
+      } else if (error.message) {
+        errorReason = `Review failed: ${error.message}. Please resubmit.`;
+      }
+      
       await sqlQuery(
         `INSERT INTO proposal_reviews (id, proposal_id, decision, reasoning, token_allocation_percentage, scores)
          VALUES (:id, :proposalId, 'rejected', :reasoning, NULL, :scores)`,
         {
           id: reviewId,
           proposalId: proposal.id,
-          reasoning: 'Review failed due to system error. Please resubmit.',
+          reasoning: errorReason,
           scores: JSON.stringify({ clarity: 0, impact: 0, feasibility: 0, budget: 0, ingenuity: 0, chaos: 0 }),
         }
       );
@@ -245,7 +272,10 @@ ${proposal.proposal_markdown}
     }
 
     return NextResponse.json(
-      { error: error.message || 'Failed to review proposal.' },
+      { 
+        error: error.message || 'Failed to review proposal.',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      },
       { status: 500 }
     );
   }
