@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { providers } from 'ethers';
 import { voteOnProposal, getUserVotingPower, formatTokenAmount } from '@/lib/azura-contract';
 import { SoulGemDisplay } from '@/components/soul-gems/SoulGemDisplay';
@@ -23,40 +23,98 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
   userVote = null,
 }) => {
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
   const [voting, setVoting] = useState(false);
   const [votingPower, setVotingPower] = useState<string>('0');
   const [userHasVoted, setUserHasVoted] = useState(hasVoted);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+
+  // Check for connected wallet via window.ethereum
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const provider = new providers.Web3Provider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          if (accounts.length > 0) {
+            setWalletAddress(accounts[0].address);
+          }
+        } catch (error) {
+          console.error('Error checking wallet connection:', error);
+        }
+      }
+    };
+
+    checkWalletConnection();
+
+    // Listen for account changes
+    if (typeof window.ethereum !== 'undefined') {
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+        } else {
+          setWalletAddress(null);
+        }
+      };
+
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      return () => {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      };
+    }
+  }, []);
 
   const loadVotingPower = useCallback(async () => {
-    if (!address) return;
+    const addr = address || walletAddress;
+    if (!addr) return;
     
     try {
       if (typeof window.ethereum !== 'undefined') {
         const provider = new providers.Web3Provider(window.ethereum);
-        const power = await getUserVotingPower(contractAddress, address, provider);
+        const power = await getUserVotingPower(contractAddress, addr, provider);
         setVotingPower(power);
       }
     } catch (error) {
       console.error('Error loading voting power:', error);
     }
-  }, [address, contractAddress]);
+  }, [address, walletAddress, contractAddress]);
 
   useEffect(() => {
-    if (isConnected && address) {
+    const addr = address || walletAddress;
+    if (addr) {
       loadVotingPower();
     }
-  }, [isConnected, address, loadVotingPower]);
+  }, [address, walletAddress, loadVotingPower]);
 
-  const handleConnectWallet = () => {
-    const connector = connectors[0];
-    if (connector) connect({ connector });
+  const handleConnectWallet = async () => {
+    if (typeof window.ethereum === 'undefined') {
+      alert('Please install MetaMask or another Web3 wallet to vote.');
+      return;
+    }
+
+    try {
+      // Request account access - works with MetaMask, Coinbase Wallet, etc.
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new providers.Web3Provider(window.ethereum);
+      const accounts = await provider.listAccounts();
+      if (accounts.length > 0) {
+        setWalletAddress(accounts[0].address);
+      }
+    } catch (error: any) {
+      if (error.code === 4001) {
+        alert('Please connect your wallet to vote.');
+      } else {
+        console.error('Error connecting wallet:', error);
+        alert('Failed to connect wallet. Please try again.');
+      }
+    }
   };
 
   const handleVote = async (support: boolean) => {
-    if (!isConnected || !address) {
+    const addr = address || walletAddress;
+    
+    if (!addr) {
       // Connect wallet
-      handleConnectWallet();
+      await handleConnectWallet();
       return;
     }
 
@@ -151,7 +209,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
         </button>
       </div>
 
-      {isConnected && parseFloat(votingPower) > 0 && (
+      {(isConnected || walletAddress) && parseFloat(votingPower) > 0 && (
         <div className={styles.votingPower}>
           <span className={styles.votingPowerLabel}>Your Voting Power:</span>
           <SoulGemDisplay 
@@ -161,7 +219,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
         </div>
       )}
 
-      {isConnected && parseFloat(votingPower) === 0 && (
+      {(isConnected || walletAddress) && parseFloat(votingPower) === 0 && (
         <div className={styles.votingPower}>
           <span className={styles.votingPowerLabel}>⚠️ You need Soul Gems to vote</span>
         </div>

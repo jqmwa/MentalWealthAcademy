@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/navbar/Navbar';
@@ -87,13 +87,14 @@ const RESEARCH_TEMPLATE = `## Research Funding Proposal
 export default function CreateProposalPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [charCount, setCharCount] = useState(0);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -115,6 +116,65 @@ export default function CreateProposalPage() {
     setCharCount(proposal.length);
   }, [proposal]);
 
+  // Check for connected wallet via window.ethereum
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
+            setWalletAddress(accounts[0]);
+          }
+        } catch (error) {
+          console.error('Error checking wallet connection:', error);
+        }
+      }
+    };
+
+    checkWalletConnection();
+
+    // Listen for account changes
+    if (typeof window.ethereum !== 'undefined') {
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+        } else {
+          setWalletAddress(null);
+        }
+      };
+
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      return () => {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      };
+    }
+  }, []);
+
+  const handleConnectWallet = async () => {
+    if (typeof window.ethereum === 'undefined') {
+      alert('Please install MetaMask or another Web3 wallet to submit proposals.');
+      return;
+    }
+
+    setIsConnecting(true);
+    try {
+      // Request account access - works with MetaMask, Coinbase Wallet, etc.
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts.length > 0) {
+        setWalletAddress(accounts[0]);
+      }
+    } catch (error: any) {
+      if (error.code === 4001) {
+        alert('Please connect your wallet to submit a proposal.');
+      } else {
+        console.error('Error connecting wallet:', error);
+        alert('Failed to connect wallet. Please try again.');
+      }
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
   const handleTemplateClick = (template: string) => {
     setProposal(template);
   };
@@ -125,7 +185,8 @@ export default function CreateProposalPage() {
       return;
     }
 
-    if (!isConnected || !address) {
+    const connectedAddress = address || walletAddress;
+    if (!connectedAddress) {
       // Show alert to guide user to Connect Wallet button
       alert('Please connect your wallet using the "Connect Wallet" button below to submit your proposal.');
       return;
@@ -140,7 +201,7 @@ export default function CreateProposalPage() {
         body: JSON.stringify({
           title: title.trim(),
           proposalMarkdown: proposal.trim(),
-          walletAddress: address,
+          walletAddress: connectedAddress,
         }),
       });
 
@@ -215,11 +276,11 @@ export default function CreateProposalPage() {
                     </span>
                   </div>
                 </div>
-                {address && (
+                {(address || walletAddress) && (
                   <div className={styles.addressBadge}>
                     <span className={styles.addressLabel}>Wallet</span>
                     <span className={styles.addressValue}>
-                      {address.slice(0, 6)}...{address.slice(-4)}
+                      {(address || walletAddress)?.slice(0, 6)}...{(address || walletAddress)?.slice(-4)}
                     </span>
                   </div>
                 )}
@@ -368,21 +429,28 @@ Break down your needs..."
                   )}
                 </button>
 
-                {(!isConnected || !address) && (
+                {(!isConnected && !walletAddress) && (
                   <button
                     className={styles.connectWalletButton}
-                    onClick={() => {
-                      const connector = connectors[0];
-                      if (connector) connect({ connector });
-                    }}
+                    onClick={handleConnectWallet}
+                    disabled={isConnecting}
                     type="button"
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
-                      <circle cx="16" cy="14" r="2" fill="currentColor"/>
-                    </svg>
-                    <span>Connect Wallet</span>
+                    {isConnecting ? (
+                      <>
+                        <div className={styles.spinner}></div>
+                        <span>Connecting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                          <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="16" cy="14" r="2" fill="currentColor"/>
+                        </svg>
+                        <span>Connect Wallet</span>
+                      </>
+                    )}
                   </button>
                 )}
 
