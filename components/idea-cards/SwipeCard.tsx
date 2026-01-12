@@ -6,10 +6,38 @@ import type { IdeaCard, IdeaCategory, SwipeDirection } from './types';
 import styles from './SwipeCard.module.css';
 
 // Category configuration - aligned with design system
-const categoryConfig: Record<IdeaCategory, { color: string; icon: string; label: string }> = {
-  'mental-health': { color: '#9B7ED9', icon: '🧠', label: 'Mental Health' },
-  'productivity': { color: '#5168FF', icon: '🚀', label: 'Productivity' },
-  'wealth': { color: '#62BE8F', icon: '💰', label: 'Wealth' },
+const categoryConfig: Record<IdeaCategory, { color: string; label: string; highlightColor: string }> = {
+  'mental-health': { color: '#E8DFF5', label: 'Mental Health', highlightColor: '#9B7ED9' },
+  'productivity': { color: '#E3E7FF', label: 'Productivity', highlightColor: '#5168FF' },
+  'wealth': { color: '#E0F4EA', label: 'Wealth', highlightColor: '#62BE8F' },
+};
+
+// Helper function to highlight important words in text
+const highlightImportantWords = (text: string, highlightColor: string): React.ReactNode => {
+  const commonWords = new Set(['the', 'this', 'when', 'what', 'that', 'these', 'there', 'their', 'with', 'from', 'have', 'been', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'may', 'new', 'now', 'old', 'see', 'two', 'way', 'who']);
+  
+  // Use regex to find words starting with capital letters
+  const words = text.split(/(\s+|[.,!?;:()])/);
+  const result: React.ReactNode[] = [];
+  
+  words.forEach((word, index) => {
+    // Check if word starts with capital and is longer than 3 chars
+    const trimmed = word.trim();
+    if (trimmed && /^[A-Z]/.test(trimmed) && trimmed.length > 3) {
+      const lowerWord = trimmed.toLowerCase().replace(/[.,!?;:()]/g, '');
+      if (!commonWords.has(lowerWord)) {
+        result.push(
+          <span key={index} style={{ color: highlightColor, fontWeight: 600 }}>
+            {word}
+          </span>
+        );
+        return;
+      }
+    }
+    result.push(<React.Fragment key={index}>{word}</React.Fragment>);
+  });
+  
+  return <>{result}</>;
 };
 
 // Difficulty badge colors
@@ -92,19 +120,19 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             className={`${styles.swipeIndicator} ${styles.likeIndicator}`}
             style={{ opacity: likeOpacity }}
           >
-            <span>✓ LEARN</span>
+            <span>LEARN</span>
           </motion.div>
           <motion.div 
             className={`${styles.swipeIndicator} ${styles.skipIndicator}`}
             style={{ opacity: skipOpacity }}
           >
-            <span>✕ SKIP</span>
+            <span>SKIP</span>
           </motion.div>
           <motion.div 
             className={`${styles.swipeIndicator} ${styles.saveIndicator}`}
             style={{ opacity: saveOpacity }}
           >
-            <span>★ SAVE</span>
+            <span>SAVE</span>
           </motion.div>
         </>
       )}
@@ -112,30 +140,45 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       {/* Card Content */}
       <div 
         className={styles.card}
-        style={{ borderTop: `4px solid ${category.color}` }}
+        style={{ 
+          backgroundColor: category.color,
+          borderTop: `4px solid ${category.highlightColor}` 
+        }}
       >
         {/* Header */}
         <div className={styles.cardHeader}>
           <div 
             className={styles.categoryBadge}
-            style={{ backgroundColor: `${category.color}20`, color: category.color }}
+            style={{ 
+              backgroundColor: category.highlightColor,
+              color: 'white'
+            }}
           >
-            <span className={styles.categoryIcon}>{category.icon}</span>
             <span>{category.label}</span>
           </div>
           <div 
             className={styles.difficultyBadge}
-            style={{ backgroundColor: `${difficulty.color}20`, color: difficulty.color }}
+            style={{ 
+              backgroundColor: category.highlightColor,
+              color: 'white'
+            }}
           >
             {difficulty.label}
           </div>
         </div>
 
         {/* Title */}
-        <h2 className={styles.cardTitle}>{card.title}</h2>
+        <h2 
+          className={styles.cardTitle}
+          style={{ color: category.highlightColor }}
+        >
+          {card.title}
+        </h2>
 
         {/* Content */}
-        <p className={styles.cardContent}>{card.microContent}</p>
+        <p className={styles.cardContent}>
+          {highlightImportantWords(card.microContent, category.highlightColor)}
+        </p>
 
         {/* Expert Commentary Section */}
         {card.expertCommentary && (
@@ -143,20 +186,29 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             {hasExpertAccess ? (
               <div className={styles.expertContent}>
                 <div className={styles.expertHeader}>
-                  <span className={styles.expertIcon}>🎓</span>
                   <span className={styles.expertLabel}>Expert Insight</span>
                 </div>
-                <p className={styles.expertText}>{card.expertCommentary}</p>
+                <p className={styles.expertText}>
+                  {highlightImportantWords(card.expertCommentary, category.highlightColor)}
+                </p>
               </div>
             ) : (
               <button 
                 className={styles.expertLocked}
                 onClick={onExpertClick}
                 type="button"
+                style={{ 
+                  borderColor: category.highlightColor,
+                  color: category.highlightColor
+                }}
               >
-                <span className={styles.lockIcon}>🔒</span>
                 <span className={styles.unlockText}>Unlock Expert Commentary</span>
-                <span className={styles.priceTag}>$4.99/mo</span>
+                <span className={styles.priceTag} style={{ 
+                  backgroundColor: category.highlightColor,
+                  color: 'white'
+                }}>
+                  $4.99/mo
+                </span>
               </button>
             )}
           </div>
@@ -164,8 +216,13 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
 
         {/* Related Quest */}
         {card.relatedQuestId && (
-          <div className={styles.questLink}>
-            <span className={styles.questIcon}>⚔️</span>
+          <div 
+            className={styles.questLink}
+            style={{ 
+              backgroundColor: category.highlightColor,
+              color: 'white'
+            }}
+          >
             <span>Related Quest Available</span>
           </div>
         )}

@@ -3,9 +3,8 @@
 import React, { useMemo } from 'react';
 import { WagmiProvider, createConfig, http, createStorage } from "wagmi";
 import { base } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { walletConnect } from "@wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { OnchainKitProvider } from '@coinbase/onchainkit';
 
 // Lazy-create config only when Web3Provider is actually rendered
 let wagmiConfig: ReturnType<typeof createConfig> | null = null;
@@ -20,13 +19,24 @@ const noopStorage = {
 
 function getWagmiConfig() {
   if (!wagmiConfig) {
+    const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+    
+    if (!projectId) {
+      throw new Error('WalletConnect Project ID is required. Set NEXT_PUBLIC_WC_PROJECT_ID or NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID environment variable.');
+    }
+
     wagmiConfig = createConfig({
       chains: [base],
       connectors: [
-        coinbaseWallet({
-          appName: "Mental Wealth Academy",
-          // Enable Smart Wallet (no browser extension required)
-          preference: 'smartWalletOnly',
+        walletConnect({
+          projectId,
+          showQrModal: true,
+          metadata: {
+            name: "Mental Wealth Academy",
+            description: "Mental Wealth Academy - A platform for mental health and wellness",
+            url: typeof window !== 'undefined' ? window.location.origin : '',
+            icons: [],
+          },
         }),
       ],
       transports: {
@@ -58,18 +68,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider
-          chain={base}
-          apiKey={process.env.NEXT_PUBLIC_CDP_API_KEY || process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || ''}
-          config={{
-            wallet: {
-              preference: 'smartWalletOnly', // Only Coinbase Smart Wallet
-              display: 'modal',
-            },
-          }}
-        >
-          {children}
-        </OnchainKitProvider>
+        {children}
       </QueryClientProvider>
     </WagmiProvider>
   );

@@ -15,7 +15,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--space-3, 12px);
 }
 
 .progressBar {
@@ -33,14 +32,6 @@
   transition: width var(--duration-normal, 300ms) var(--ease-default);
 }
 
-.progressText {
-  font-family: var(--font-button, 'IBM Plex Mono', monospace);
-  font-size: var(--font-size-sm, 14px);
-  font-weight: var(--font-weight-medium, 500);
-  color: var(--color-text-muted, rgba(0, 0, 0, 0.5));
-  min-width: 60px;
-  text-align: right;
-}
 
 /* Card Stack */
 .cardStack {

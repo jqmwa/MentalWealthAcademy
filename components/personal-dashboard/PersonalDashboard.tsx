@@ -18,13 +18,44 @@ interface PersonalDashboardProps {
   dailyQuestReward?: number;
 }
 
-// Streak badge configuration
-const getStreakBadge = (streak: number) => {
-  if (streak >= 30) return { emoji: '🔥', label: 'On Fire!', color: '#FF6B35' };
-  if (streak >= 14) return { emoji: '⚡', label: 'Momentum', color: '#5168FF' };
-  if (streak >= 7) return { emoji: '✨', label: 'Building', color: '#62BE8F' };
-  if (streak >= 3) return { emoji: '🌱', label: 'Growing', color: '#9B7ED9' };
-  return { emoji: '🎯', label: 'Start', color: '#CCCCCC' };
+// Vote Icon Component
+const VoteIcon: React.FC<{ size?: number; className?: string }> = ({ size = 24, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="m163.508 372.218h77.492v-113h-89.637c.073 38.712 4.33 77.506 12.145 113z" fill="currentColor"/>
+      <path d="m340.798 402.218h-69.798v109.782c19.936-8.42 39.669-33.147 55.821-70.691 5.216-12.122 9.886-25.238 13.977-39.091z" fill="currentColor"/>
+      <path d="m185.179 441.31c16.152 37.543 35.886 62.271 55.821 70.69v-109.782h-69.797c4.091 13.853 8.761 26.969 13.976 39.092z" fill="currentColor"/>
+      <path d="m271 372.218h77.492c7.816-35.493 12.073-74.288 12.145-113h-89.637z" fill="currentColor"/>
+      <path d="m140.041 402.218h-96.407c33.778 50.064 84.798 87.524 144.538 103.899-11.179-14.098-21.463-31.826-30.551-52.951-6.728-15.641-12.612-32.78-17.58-50.948z" fill="currentColor"/>
+      <path d="m354.379 453.165c-9.088 21.125-19.372 38.853-30.551 52.951 59.74-16.375 110.76-53.834 144.538-103.899h-96.406c-4.968 18.169-10.852 35.308-17.581 50.948z" fill="currentColor"/>
+      <path d="m121.364 259.217h-121.364c0 40.565 9.45 78.917 26.245 113h106.622c-7.414-35.874-11.435-74.53-11.503-113z" fill="currentColor"/>
+      <path d="m390.637 259.217c-.068 38.469-4.089 77.126-11.503 113h106.622c16.795-34.083 26.245-72.436 26.245-113z" fill="currentColor"/>
+      <path d="m266.829 95.298c21.458-4.913 37.475-24.093 37.51-47.032-.041-26.663-21.666-48.266-48.339-48.266s-48.298 21.603-48.338 48.266c.036 22.939 16.052 42.118 37.51 47.031-5.357.619-10.549 1.773-15.536 3.383l26.364 56.967 26.365-56.966c-4.987-1.61-10.179-2.764-15.536-3.383z" fill="currentColor"/>
+      <path d="m462.345 191.36v-4.68c0-31.073-22.899-56.791-52.74-61.216 15.617-4.054 27.152-18.233 27.177-35.112-.031-20.041-16.284-36.278-36.332-36.278s-36.302 16.237-36.332 36.278c.026 16.879 11.56 31.058 27.177 35.112-29.842 4.425-52.74 30.144-52.74 61.216v-10.814c0-25.323-11.617-47.914-29.798-62.785l-36.229 78.28h189.817z" fill="currentColor"/>
+      <path d="m203.244 113.081c-18.181 14.872-29.798 37.462-29.798 62.785v10.814c0-31.073-22.899-56.791-52.74-61.216 15.617-4.054 27.152-18.234 27.177-35.114-.031-20.04-16.285-36.276-36.332-36.276-20.048 0-36.302 16.237-36.332 36.278.026 16.879 11.56 31.058 27.177 35.112-29.842 4.425-52.74 30.144-52.74 61.216v4.68h189.817z" fill="currentColor"/>
+    </svg>
+  );
+};
+
+// Quest Icon Component
+const QuestIcon: React.FC<{ size?: number; className?: string }> = ({ size = 24, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
+
+// Token Icon Component
+const TokenIcon: React.FC<{ size?: number; className?: string }> = ({ size = 24, className }) => {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none"/>
+      <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="12" cy="12" r="3" fill="currentColor"/>
+    </svg>
+  );
 };
 
 export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
@@ -38,7 +69,6 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
   dailyQuestTitle = 'Complete Your Daily Ideas',
   dailyQuestReward = 10,
 }) => {
-  const streakBadge = getStreakBadge(streak);
   const today = new Date().toLocaleDateString();
   const isActiveToday = lastActiveDate === today;
 
@@ -88,7 +118,7 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
               alt="Shards"
               width={24}
               height={24}
-              className={styles.statIcon}
+              className={styles.statIconNoFilter}
             />
           </div>
           <div className={styles.statContent}>
@@ -97,51 +127,48 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
           </div>
         </motion.div>
 
-        {/* Ideas Learned */}
+        {/* Votes Casted */}
         <motion.div 
           className={styles.statCard}
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <div className={styles.statIconWrapper} style={{ background: 'linear-gradient(135deg, #62BE8F, #8EDBB1)' }}>
-            <span className={styles.statEmoji}>💡</span>
+          <div className={styles.statIconWrapper} style={{ background: 'var(--color-primary, #5168FF)' }}>
+            <VoteIcon size={24} className={styles.statIcon} />
           </div>
           <div className={styles.statContent}>
             <span className={styles.statValue}>{ideasLearned}</span>
-            <span className={styles.statLabel}>Ideas Learned</span>
+            <span className={styles.statLabel}>Votes Casted</span>
           </div>
         </motion.div>
 
-        {/* Streak */}
+        {/* Quests Completed */}
         <motion.div 
           className={styles.statCard}
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <div 
-            className={styles.statIconWrapper} 
-            style={{ background: `linear-gradient(135deg, ${streakBadge.color}, ${streakBadge.color}99)` }}
-          >
-            <span className={styles.statEmoji}>{streakBadge.emoji}</span>
+          <div className={styles.statIconWrapper} style={{ background: 'var(--color-primary, #5168FF)' }}>
+            <QuestIcon size={24} className={styles.statIcon} />
           </div>
           <div className={styles.statContent}>
-            <span className={styles.statValue}>{streak} days</span>
-            <span className={styles.statLabel}>{streakBadge.label}</span>
+            <span className={styles.statValue}>{streak}</span>
+            <span className={styles.statLabel}>Quests Completed</span>
           </div>
         </motion.div>
 
-        {/* Saved Ideas */}
+        {/* AI Tokens */}
         <motion.div 
           className={styles.statCard}
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <div className={styles.statIconWrapper} style={{ background: 'linear-gradient(135deg, #9B7ED9, #B99DF0)' }}>
-            <span className={styles.statEmoji}>⭐</span>
+          <div className={styles.statIconWrapper} style={{ background: 'var(--color-primary, #5168FF)' }}>
+            <TokenIcon size={24} className={styles.statIcon} />
           </div>
           <div className={styles.statContent}>
             <span className={styles.statValue}>{ideasSaved}</span>
-            <span className={styles.statLabel}>Saved</span>
+            <span className={styles.statLabel}>AI Tokens</span>
           </div>
         </motion.div>
       </div>

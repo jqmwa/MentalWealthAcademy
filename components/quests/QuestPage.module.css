@@ -687,20 +687,29 @@
 }
 
 .questCard {
-  background: rgb(240, 240, 255);
-  border: 1.046px solid rgb(81, 104, 255);
-  border-radius: 12.55px;
+  background: #ECECEC;
+  border: 1.17px solid #A4A4A4;
+  border-radius: 14.26px;
   width: 100%;
   min-height: 120px;
-  padding: 36.17px 33px;
+  padding: 27px 23px;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 
+    0 25.36px 39.62px rgba(0, 0, 0, 0.1),
+    0 28.53px 72.91px rgba(0, 0, 0, 0.17),
+    0 114.11px 96.20px rgba(0, 0, 0, 0.05),
+    0 293.21px 117.28px rgba(0, 0, 0, 0.01);
 }
 
 .questCard:hover {
-  background: rgb(230, 230, 255);
+  background: #E5E5E5;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.2);
+  box-shadow: 
+    0 30px 45px rgba(0, 0, 0, 0.12),
+    0 35px 80px rgba(0, 0, 0, 0.2),
+    0 120px 100px rgba(0, 0, 0, 0.06),
+    0 300px 120px rgba(0, 0, 0, 0.02);
 }
 
 .questCardContent {
@@ -708,6 +717,7 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
+  gap: 20px;
 }
 
 .questImageWrapper {
@@ -725,30 +735,42 @@
 .questDetailsSection {
   display: flex;
   flex-direction: column;
-  gap: 10.46px;
-  flex: 0 0 auto;
-  min-width: 363px;
-  margin-right: 106.7px;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
 }
 
 .questCardTitle {
-  font-family: var(--font-secondary);
+  font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-size: 28px;
+  color: #000000;
   line-height: 1.2;
   margin: 0;
   display: flex;
   align-items: center;
 }
 
+.questDescription {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  color: #000000;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .descriptionWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8.37px;
-  flex-wrap: wrap;
-  height: 19px;
+  gap: 8px;
+  flex-wrap: nowrap;
+  height: auto;
 }
 
 .academyName,
@@ -756,11 +778,10 @@
 .time {
   font-family: var(--font-button);
   font-weight: var(--font-weight-medium);
-  font-size: 13px;
-  color: rgb(0, 0, 0);
+  font-size: 11px;
+  color: #000000;
   line-height: 1.2;
   white-space: nowrap;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -768,17 +789,16 @@
 .separator {
   font-family: var(--font-button);
   font-weight: var(--font-weight-medium);
-  font-size: 13px;
-  color: rgb(0, 0, 0);
+  font-size: 11px;
+  color: #000000;
   line-height: 1.2;
-  height: 19px;
   display: flex;
   align-items: center;
 }
 
 .usdcIcon {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -787,30 +807,27 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;
-  flex: 1;
-  min-width: 0;
+  gap: 16px;
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .questInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 87.87px;
-  flex: 1;
-  min-width: 0;
+  gap: 20px;
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .questName {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-bold);
-  font-size: 13px;
-  color: rgb(0, 0, 0);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: 11px;
+  color: #000000;
   line-height: 1.2;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -820,20 +837,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10.46px;
+  gap: 6px;
   flex-shrink: 0;
-  height: 19px;
+  height: auto;
 }
 
 .usdcBonded span,
 .usdcReward span {
   font-family: var(--font-button);
   font-weight: var(--font-weight-medium);
-  font-size: 13px;
-  color: rgb(0, 0, 0);
+  font-size: 11px;
+  color: #000000;
   line-height: 1.2;
   white-space: nowrap;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -843,6 +859,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .arrowIcon {
@@ -1061,7 +1078,7 @@
 
   .questCardContent {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     align-items: flex-start;
   }
 
@@ -1071,11 +1088,86 @@
     margin-right: 0;
   }
 
-  .questInfo {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .questCardTitle {
+    font-size: 22px;
+  }
+
+  .questDescription {
+    font-size: 12px;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+  }
+
+  .descriptionWrapper {
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .descriptionWrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .academyName,
+  .date,
+  .time,
+  .separator {
+    font-size: 10px;
+  }
+
+  .questInfoGroup {
     width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .questInfo {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .questName {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+  }
+
+  .usdcBonded,
+  .usdcReward {
+    gap: 4px;
+  }
+
+  .usdcBonded span,
+  .usdcReward span {
+    font-size: 9px;
+    white-space: nowrap;
+  }
+
+  .usdcIcon {
+    width: 11px;
+    height: 11px;
+  }
+
+  .arrowIconWrapper {
+    margin-left: auto;
+    flex-shrink: 0;
+    order: 999;
+  }
+
+  .arrowIcon {
+    width: 20px;
+    height: 20px;
   }
 
   .rightRectangle {

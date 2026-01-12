@@ -154,9 +154,6 @@ export const SwipeCardStack: React.FC<SwipeCardStackProps> = ({
             style={{ width: `${(currentIndex / cards.length) * 100}%` }}
           />
         </div>
-        <span className={styles.progressText}>
-          {currentIndex + 1} / {cards.length}
-        </span>
       </div>
 
       {/* Card Stack */}

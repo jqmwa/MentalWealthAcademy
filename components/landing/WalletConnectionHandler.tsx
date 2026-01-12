@@ -266,10 +266,10 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
       return;
     }
 
-    // Connect with Coinbase Wallet (first connector)
-    const coinbaseConnector = connectors[0];
-    if (coinbaseConnector) {
-      connect({ connector: coinbaseConnector });
+    // Connect with WalletConnect (Family/Reown)
+    const walletConnector = connectors[0];
+    if (walletConnector) {
+      connect({ connector: walletConnector });
     }
   };
 

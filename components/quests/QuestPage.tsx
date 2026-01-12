@@ -48,6 +48,7 @@ interface QuestCardProps {
   questName: string;
   usdcBonded: string;
   usdcReward: string;
+  description?: string;
   onClick?: () => void;
 }
 
@@ -59,6 +60,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
   questName,
   usdcBonded,
   usdcReward,
+  description,
   onClick,
 }) => {
   return (
@@ -66,6 +68,9 @@ const QuestCard: React.FC<QuestCardProps> = ({
       <div className={styles.questCardContent}>
         <div className={styles.questDetailsSection}>
           <div className={styles.questCardTitle}>{title}</div>
+          {description && (
+            <div className={styles.questDescription}>{description}</div>
+          )}
           <div className={styles.descriptionWrapper}>
             <span className={styles.academyName}>{academy}</span>
             <span className={styles.separator}>|</span>
@@ -231,6 +236,7 @@ const QuestPage: React.FC = () => {
                 questName={quest.questName}
                 usdcBonded={quest.usdcBonded}
                 usdcReward={quest.usdcReward}
+                description={quest.description}
                 onClick={() => {
                   setSelectedQuest(quest);
                   setIsSidebarOpen(true);

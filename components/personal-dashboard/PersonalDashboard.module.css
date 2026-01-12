@@ -111,6 +111,11 @@
   filter: brightness(0) invert(1);
 }
 
+.statIconNoFilter {
+  width: 24px;
+  height: 24px;
+}
+
 .statEmoji {
   font-size: 22px;
 }
@@ -402,6 +407,11 @@
   }
 
   .statIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .statIconNoFilter {
     width: 18px;
     height: 18px;
   }
