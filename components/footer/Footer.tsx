@@ -70,9 +70,6 @@ export function Footer() {
               <Link href="/home" className={styles.link}>
                 Home
               </Link>
-              <Link href="/forum" className={styles.link}>
-                Forum
-              </Link>
               <Link href="/quests" className={styles.link}>
                 Quests
               </Link>

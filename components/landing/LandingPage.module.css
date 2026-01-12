@@ -321,6 +321,40 @@
   text-align: left;
 }
 
+.tabSwitcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid rgba(81, 104, 255, 0.1);
+}
+
+.tabButton {
+  flex: 1;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-dark);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: -2px;
+  opacity: 0.6;
+}
+
+.tabButton:hover {
+  opacity: 0.8;
+}
+
+.tabButtonActive {
+  color: var(--color-primary);
+  opacity: 1;
+  border-bottom-color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
 .logoContainer {
   display: flex;
   align-items: center;

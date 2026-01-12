@@ -7,10 +7,33 @@
 
 /* Welcome Section */
 .welcomeSection {
-  background: white;
+  position: relative;
+  background-image: url('https://i.imgur.com/bQCRyvk.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: var(--radius-xl, 16px);
   padding: var(--space-5, 24px);
   box-shadow: var(--shadow-card, 0 4px 16px rgba(81, 104, 255, 0.1));
+  overflow: hidden;
+}
+
+.welcomeSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-primary, #5168FF);
+  mix-blend-mode: color;
+  opacity: 1;
+  z-index: 0;
+}
+
+.welcomeSection > * {
+  position: relative;
+  z-index: 1;
 }
 
 .welcomeContent {
@@ -29,7 +52,7 @@
 .greetingTime {
   font-family: var(--font-secondary, 'Space Grotesk', sans-serif);
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.898);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -38,7 +61,7 @@
   font-family: var(--font-primary, 'Poppins', sans-serif);
   font-size: 28px;
   font-weight: var(--font-weight-bold, 700);
-  color: var(--color-text-dark, #000);
+  color: var(--color-text-dark, #000000);
   margin: 0;
   line-height: 1.2;
 }
@@ -53,7 +76,7 @@
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--color-primary, #5168FF);
+  border: 3px solid var(--color-background, #0c1550);
 }
 
 .activeDot {
@@ -63,21 +86,13 @@
   width: 14px;
   height: 14px;
   background: var(--color-secondary, #62BE8F);
-  border: 2px solid white;
+  border: 2px solid rgb(0, 0, 0);
   border-radius: 50%;
 }
 
-/* Stats Grid */
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3, 12px);
-}
-
-@media (min-width: 768px) {
-  .statsGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* Daemon Terminal Wrapper */
+.daemonTerminalWrapper {
+  width: 100%;
 }
 
 .statCard {
@@ -268,111 +283,6 @@
   transform: translateX(4px);
 }
 
-/* Daily Quest Section */
-.dailyQuestSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.questBadge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: var(--font-button);
-  font-size: 12px;
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-secondary, #62BE8F);
-  background: rgba(98, 190, 143, 0.1);
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
-}
-
-.dailyQuestCard {
-  background: white;
-  border: 2px solid var(--color-background, #F4F5FE);
-  border-radius: var(--radius-xl, 16px);
-  padding: var(--space-4, 16px) var(--space-5, 24px);
-  text-decoration: none;
-  transition: border-color var(--duration-fast, 150ms) var(--ease-out),
-              box-shadow var(--duration-fast, 150ms) var(--ease-out);
-}
-
-.dailyQuestCard:hover {
-  border-color: var(--color-secondary, #62BE8F);
-  box-shadow: 0 4px 16px rgba(98, 190, 143, 0.15);
-}
-
-.questCardContent {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4, 16px);
-}
-
-.questIconWrapper {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, var(--color-secondary, #62BE8F), #8EDBB1);
-  border-radius: var(--radius-lg, 12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.questIcon {
-  font-size: 24px;
-}
-
-.questInfo {
-  flex: 1;
-  min-width: 0;
-}
-
-.questTitle {
-  font-family: var(--font-primary);
-  font-size: 16px;
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-text-dark, #000);
-  margin: 0 0 var(--space-1, 4px);
-}
-
-.questReward {
-  font-family: var(--font-secondary);
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.5);
-  margin: 0;
-}
-
-.questStatus {
-  flex-shrink: 0;
-}
-
-.questComplete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--color-secondary, #62BE8F);
-  color: white;
-  border-radius: 50%;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.questPending {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--color-primary, #5168FF);
-  color: white;
-  border-radius: var(--radius-md, 8px);
-  font-family: var(--font-button);
-  font-size: 12px;
-  font-weight: var(--font-weight-semibold, 600);
-}
 
 /* Mobile Styles */
 @media (max-width: 480px) {
@@ -436,18 +346,5 @@
 
   .continueTitle {
     font-size: 16px;
-  }
-
-  .dailyQuestCard {
-    padding: var(--space-3, 12px) var(--space-4, 16px);
-  }
-
-  .questIconWrapper {
-    width: 40px;
-    height: 40px;
-  }
-
-  .questIcon {
-    font-size: 20px;
   }
 }

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAccount, useDisconnect } from 'wagmi';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import AvatarSelectorModal from '@/components/avatar-selector/AvatarSelectorModal';
+import UsernameChangeModal from '@/components/username-change/UsernameChangeModal';
 import styles from './Navbar.module.css';
 
 // Menu Icon Component - Chunky Y2K style
@@ -77,15 +78,6 @@ const LibraryIcon: React.FC<{ size?: number; className?: string }> = ({ size = 2
   );
 };
 
-// Ideas Icon - Lightbulb for micro-learning
-const IdeasIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <path d="M9 21h6M12 3a6 6 0 0 0-6 6c0 2.22 1.21 4.16 3 5.19V17a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-2.81c1.79-1.03 3-2.97 3-5.19a6 6 0 0 0-6-6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9 14h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-};
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -96,6 +88,7 @@ const Navbar: React.FC = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
+  const [isUsernameChangeModalOpen, setIsUsernameChangeModalOpen] = useState(false);
   const [shardCount, setShardCount] = useState<number | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -192,6 +185,15 @@ const Navbar: React.FC = () => {
     setAvatarUrl(newAvatarUrl);
   };
 
+  const handleUsernameClick = () => {
+    setIsProfileDropdownOpen(false);
+    setIsUsernameChangeModalOpen(true);
+  };
+
+  const handleUsernameChanged = (newUsername: string) => {
+    setUsername(newUsername);
+  };
+
   const handleSignOut = async () => {
     setIsProfileDropdownOpen(false);
     
@@ -252,12 +254,6 @@ const Navbar: React.FC = () => {
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
-            {/* Ideas Button */}
-            <Link href="/ideas" className={`${styles.navButton} ${isActive('/ideas') ? styles.navButtonActive : ''}`}>
-              <IdeasIcon size={20} className={styles.questIcon} />
-              <span className={isActive('/ideas') ? styles.buttonLabelActive : styles.buttonLabel}>Ideas</span>
-            </Link>
-
             {/* Voting Button */}
             <Link href="/voting" className={`${styles.navButton} ${isActive('/voting') ? styles.navButtonActive : ''}`}>
               <VotingIcon size={20} className={styles.questIcon} />
@@ -274,11 +270,11 @@ const Navbar: React.FC = () => {
           {/* Right Icons */}
           <div className={styles.rightIcons}>
             {/* Message Button */}
-            <Link href="/forum" className={styles.messageButton} aria-label="Messages">
+            <div className={styles.messageButton} aria-label="Messages">
               <div className={styles.messageIcon}>
                 <span className={styles.notificationDot}></span>
               </div>
-            </Link>
+            </div>
             <div className={styles.shardsCounter}>
               <Image
                 src="/icons/shard.svg"
@@ -355,6 +351,17 @@ const Navbar: React.FC = () => {
                       </Link>
                     </div>
                     <div className={styles.profileDropdownMenu}>
+                      <button 
+                        className={styles.dropdownItem}
+                        onClick={handleUsernameClick}
+                        type="button"
+                      >
+                        <div className={styles.dropdownItemInfo}>
+                          <span className={styles.dropdownItemTitle}>username</span>
+                          <span className={styles.dropdownItemLabel}>change your username</span>
+                        </div>
+                      </button>
+                      <div className={styles.dropdownDivider} />
                       <button 
                         className={styles.dropdownItem}
                         onClick={handleAvatarClick}
@@ -436,14 +443,6 @@ const Navbar: React.FC = () => {
             <span>Quests</span>
           </Link>
           <Link 
-            href="/ideas" 
-            className={`${styles.mobileNavButton} ${isActive('/ideas') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <IdeasIcon size={20} className={styles.questIcon} />
-            <span>Ideas</span>
-          </Link>
-          <Link 
             href="/voting" 
             className={`${styles.mobileNavButton} ${isActive('/voting') ? styles.mobileNavButtonActive : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
@@ -468,6 +467,13 @@ const Navbar: React.FC = () => {
         <AvatarSelectorModal 
           onClose={() => setIsAvatarSelectorOpen(false)}
           onAvatarSelected={handleAvatarSelected}
+        />
+      )}
+      {isUsernameChangeModalOpen && username && (
+        <UsernameChangeModal 
+          onClose={() => setIsUsernameChangeModalOpen(false)}
+          currentUsername={username}
+          onUsernameChanged={handleUsernameChanged}
         />
       )}
     </nav>

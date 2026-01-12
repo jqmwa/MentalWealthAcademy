@@ -16,9 +16,6 @@ const MessageboardCard: React.FC = () => {
           </div>
         </div>
       </div>
-      <Link href="/forum" className={styles.footer}>
-        <span className={styles.footerText}>Messageboard</span>
-      </Link>
     </div>
   );
 };

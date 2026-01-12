@@ -11,8 +11,11 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 14px 16px;
-  border-bottom: 2px solid rgba(81, 104, 255, 0.15);
-  background: var(--gradient-futuristic-floss);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgb(34, 34, 34);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 4px 24px rgba(81, 104, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .headerLeft {
@@ -86,7 +89,7 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .centerPanel {
@@ -128,6 +131,8 @@
   min-height: 210px;
   text-align: left;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .toolCard:not(.toolCardDisabled):hover {
@@ -140,6 +145,18 @@
 .toolCardDisabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.toolCardDisabled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1.5;
+  pointer-events: none;
 }
 
 .toolCardDisabled:hover {
@@ -156,14 +173,16 @@
   justify-content: center;
   align-items: flex-start;
   gap: 10px;
+  position: relative;
+  z-index: 2;
 }
 
 .toolIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 16px;
   border: 1px solid rgba(81, 104, 255, 0.2);
   background: rgba(244, 245, 254, 0.9);
@@ -184,22 +203,154 @@
   font-weight: var(--font-weight-bold);
   margin: 0;
   line-height: 1.1;
-  color: var(--color-text-dark);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .toolDesc {
   font-family: var(--font-primary);
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(26, 29, 51, 0.78);
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .toolCard:not(.toolCardDisabled):hover .toolTitle {
-  color: var(--color-primary);
+  color: white;
 }
 
 .toolCard:not(.toolCardDisabled):hover .toolDesc {
-  color: rgba(26, 29, 51, 0.85);
+  color: white;
+}
+
+.toolCardReviser {
+  background: linear-gradient(135deg, rgba(92, 92, 92, 0.736) 0%, rgba(118, 99, 197, 0.95) 100%);
+  border: 2px solid white;
+  color: white;
+}
+
+.toolCardReviser::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://i.imgur.com/dV92Xwh.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(0%) brightness(0.9);
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.toolCardReviser .toolInner {
+  position: relative;
+  z-index: 2;
+}
+
+.toolCardReviser .toolTitle {
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.toolCardReviser .toolDesc {
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.toolCardReviser:hover {
+  background: linear-gradient(135deg, rgba(92, 92, 92, 0.8) 0%, rgb(250, 250, 250) 100%);
+  border-color: white;
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.toolCardReviser:hover .toolTitle,
+.toolCardReviser:hover .toolDesc {
+  color: white;
+}
+
+.toolCardReviser .toolIcon {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(254, 254, 254, 0.891);
+}
+
+.toolCardReviser:hover .toolIcon {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.toolCardWeeklyReflection {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolCardWeeklyReflection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://i.imgur.com/o2pX2GR.jpeg');
+  background-size: cover;
+  background-position: center calc(20% - 10px);
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.toolCardWeeklyReflection .toolInner {
+  position: relative;
+  z-index: 2;
+}
+
+.toolCardShareSheets {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolCardShareSheets::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://i.imgur.com/udHAaqU.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.toolCardShareSheets .toolInner {
+  position: relative;
+  z-index: 2;
+}
+
+.toolCardDreamReader {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolCardDreamReader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://i.imgur.com/KKdpSGa.jpeg');
+  background-size: cover;
+  background-position: center calc(20% - 5px);
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.toolCardDreamReader .toolInner {
+  position: relative;
+  z-index: 2;
 }
 
 .actionGrid {

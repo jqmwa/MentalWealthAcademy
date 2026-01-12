@@ -1,7 +1,6 @@
 'use client';
 
 import Navbar from '@/components/navbar/Navbar';
-import { AccountBanner } from '@/components/forum/AccountBanner';
 import { DaemonTerminal } from '@/components/daemon/DaemonTerminal';
 import { Footer } from '@/components/footer/Footer';
 import styles from './page.module.css';
@@ -19,10 +18,6 @@ export default function DaemonPage() {
                 Integrate the agentic daemon model in your research and workflow
               </p>
             </div>
-          </div>
-
-          <div className={styles.bannerWrapper}>
-            <AccountBanner />
           </div>
 
           <DaemonTerminal />

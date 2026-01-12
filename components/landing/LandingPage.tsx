@@ -3,7 +3,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import SignInButton from '@/components/nav-buttons/SignInButton';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { WalletConnectionHandler } from './WalletConnectionHandler';
 import { PatternTextSection } from './PatternTextSection';
@@ -244,6 +243,7 @@ export const RotatingTextSection: React.FC = () => {
 };
 
 const LandingPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
@@ -296,7 +296,6 @@ const LandingPage: React.FC = () => {
     setMessage(null);
     
     try {
-      // Try login first
       const loginResponse = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -318,15 +317,43 @@ const LandingPage: React.FC = () => {
 
       if (loginResponse.ok) {
         // Login successful - redirect to home
-        // Use replace instead of href to avoid back button issues
-        // Small delay to ensure cookie is set in Chrome
         setTimeout(() => {
           window.location.replace('/home');
         }, 100);
         return;
       }
 
-      // If login fails, try signup
+      // Handle specific error cases with helpful messages
+      if (loginResponse.status === 401) {
+        const errorMsg = loginData.error || 'Invalid email or password.';
+        setMessage({ 
+          type: 'error', 
+          text: `${errorMsg} Don't have an account? Switch to the Sign Up tab.` 
+        });
+      } else {
+        setMessage({ 
+          type: 'error', 
+          text: loginData.error || 'Login failed. Please try again.' 
+        });
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        setMessage({ type: 'error', text: 'Network error. Please check your connection and try again.' });
+      } else {
+        setMessage({ type: 'error', text: 'An error occurred. Please try again later.' });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage(null);
+    
+    try {
       const signupResponse = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -354,11 +381,21 @@ const LandingPage: React.FC = () => {
         // Dispatch event to notify wallet component that user now has an account
         window.dispatchEvent(new CustomEvent('userLoggedIn'));
       } else {
-        setMessage({ type: 'error', text: signupData.error || loginData.error || 'Failed to sign up. Please try again.' });
+        // Handle specific error cases with helpful messages
+        if (signupResponse.status === 409) {
+          setMessage({ 
+            type: 'error', 
+            text: 'An account with this email already exists. Switch to the Sign In tab to log in.' 
+          });
+        } else {
+          setMessage({ 
+            type: 'error', 
+            text: signupData.error || 'Failed to create account. Please try again.' 
+          });
+        }
       }
     } catch (error: any) {
-      console.error('Auth error:', error);
-      // Check if it's a network error
+      console.error('Signup error:', error);
       if (error instanceof TypeError && error.message.includes('fetch')) {
         setMessage({ type: 'error', text: 'Network error. Please check your connection and try again.' });
       } else {
@@ -444,7 +481,37 @@ const LandingPage: React.FC = () => {
                   priority
                 />
               </div>
-              <h1 className={styles.loginTitle}>Create account</h1>
+              <h1 className={styles.loginTitle}>
+                {activeTab === 'signin' ? 'Sign In' : 'Create Account'}
+              </h1>
+            </div>
+
+            {/* Tab Switcher */}
+            <div className={styles.tabSwitcher}>
+              <button
+                type="button"
+                className={`${styles.tabButton} ${activeTab === 'signin' ? styles.tabButtonActive : ''}`}
+                onClick={() => {
+                  setActiveTab('signin');
+                  setMessage(null);
+                  setEmail('');
+                  setPassword('');
+                }}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                className={`${styles.tabButton} ${activeTab === 'signup' ? styles.tabButtonActive : ''}`}
+                onClick={() => {
+                  setActiveTab('signup');
+                  setMessage(null);
+                  setEmail('');
+                  setPassword('');
+                }}
+              >
+                Sign Up
+              </button>
             </div>
             
             {/* Google Sign Up Button - Hidden for now */}
@@ -472,7 +539,7 @@ const LandingPage: React.FC = () => {
             )}
 
             {/* Form */}
-            <form className={styles.loginForm} onSubmit={handleLogin}>
+            <form className={styles.loginForm} onSubmit={activeTab === 'signin' ? handleLogin : handleSignup}>
               {message && (
                 <div className={message.type === 'success' ? styles.successMessage : styles.errorMessage}>
                   {message.text}
@@ -563,10 +630,11 @@ const LandingPage: React.FC = () => {
                   className={styles.loginButton}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Signing in...' : 'Sign in with password'}
+                  {isLoading 
+                    ? (activeTab === 'signin' ? 'Signing in...' : 'Creating account...')
+                    : (activeTab === 'signin' ? 'Sign In' : 'Create Account')
+                  }
                 </button>
-                
-                <SignInButton onClick={() => setShowOnboarding(true)} />
                 
                 <div className={styles.termsText}>
                   By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}
@@ -728,7 +796,7 @@ const LandingPage: React.FC = () => {
                 </div>
               </div>
               <div className={styles.opportunityTextBottom}>
-                <p>We need providers that aren&apos;t overworked through exploitative contracts, and capable of helping low-income families who desire change. This isn&apos;t a labor problem, it&apos;s a systemic one. Mental Health solutions can&apos;t flourish under hyper-financialized systems. reshaping how we govern these funds, essentially gives humans more control.</p>
+                <p>✨ An AI companion that holds space for your inner rhythm—gently structures your day, offers real‑time reflection prompts, and flows with you across every device. 🌸 Agent‑driven care architecture, weightless cloud presence, always attuned to where you are and what you need to feel whole.</p>
               </div>
             </div>
             <div className={styles.opportunityRight}>

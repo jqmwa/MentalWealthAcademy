@@ -1,0 +1,335 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal */
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(180deg, #f8f9ff 0%, #f4f5fe 100%);
+  border: 2px solid #ffffff;
+  border-radius: 24px;
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(81, 104, 255, 0.1);
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Close button */
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--color-text-dark);
+  transition: all 0.2s ease;
+  z-index: 10;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
+}
+
+.closeButton:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Content */
+.content {
+  padding: 48px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Title */
+.title {
+  font-family: var(--font-secondary);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  letter-spacing: 0.03em;
+  margin: 0;
+  text-align: center;
+}
+
+/* Description */
+.description {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(26, 29, 51, 0.7);
+  text-align: center;
+  margin: 0;
+}
+
+/* Input container */
+.inputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-dark);
+  text-align: left;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.atSymbol {
+  position: absolute;
+  left: 16px;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: rgba(26, 29, 51, 0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.usernameInput {
+  width: 100%;
+  padding: 14px 16px;
+  padding-left: 32px;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  color: var(--color-text-dark);
+  background: #ffffff;
+  border: 2px solid rgba(81, 104, 255, 0.2);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.usernameInput::placeholder {
+  color: rgba(26, 29, 51, 0.3);
+}
+
+.usernameInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(81, 104, 255, 0.1);
+}
+
+.usernameInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.usernameInput.inputAvailable {
+  border-color: #00C853;
+}
+
+.usernameInput.inputAvailable:focus {
+  border-color: #00C853;
+  box-shadow: 0 0 0 4px rgba(0, 200, 83, 0.1);
+}
+
+.usernameInput.inputUnavailable,
+.usernameInput.inputError {
+  border-color: #FF5252;
+}
+
+.usernameInput.inputUnavailable:focus,
+.usernameInput.inputError:focus {
+  border-color: #FF5252;
+  box-shadow: 0 0 0 4px rgba(255, 82, 82, 0.1);
+}
+
+/* Status message */
+.statusMessage {
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.checking {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: rgba(26, 29, 51, 0.6);
+  font-style: italic;
+}
+
+.successText {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: #00C853;
+}
+
+.errorText {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: #FF5252;
+}
+
+.neutralText {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: rgba(26, 29, 51, 0.6);
+}
+
+/* Error message */
+.errorMessage {
+  background: rgba(255, 87, 87, 0.1);
+  border: 1px solid rgba(255, 87, 87, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: #d32f2f;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  gap: 12px;
+  padding: 24px 40px 40px;
+  border-top: 1px solid rgba(81, 104, 255, 0.1);
+}
+
+.cancelButton,
+.saveButton {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-button);
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 2px solid rgba(81, 104, 255, 0.2);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: rgba(81, 104, 255, 0.05);
+  border-color: rgba(81, 104, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.2);
+}
+
+.cancelButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.saveButton {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #3d52e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.saveButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .overlay {
+    padding: 16px;
+  }
+
+  .content {
+    padding: 40px 24px 32px;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .footer {
+    padding: 24px 24px 32px;
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+}

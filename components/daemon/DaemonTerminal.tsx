@@ -10,8 +10,8 @@ type Tone = 'concise' | 'warm' | 'formal' | 'friendly' | 'direct';
 
 type View = 'toolGrid' | 'terminal';
 
-const ICON_REVISER = '/icons/icon.svg%20(20).svg';
-const ICON_SOON_1 = '/icons/icon.svg%20(17).svg';
+const ICON_REVISER = '/icons/bookicon.svg';
+const ICON_SOON_1 = '/icons/Survey.svg';
 const ICON_SOON_2 = '/icons/Eye.svg';
 const ICON_SOON_3 = '/icons/ethlogo.svg';
 const ICON_ARROW = '/icons/Arrow.svg';
@@ -77,7 +77,7 @@ export function DaemonTerminal() {
             <div className={`${styles.dot} ${styles.dotGreen}`} />
           </div>
         </div>
-        <div className={styles.headerTitle}>Academy AI — V1</div>
+        <div className={styles.headerTitle}>Mental Wealth AI</div>
         <div className={styles.headerRight}>
           {view === 'terminal' ? (
             <button
@@ -106,45 +106,45 @@ export function DaemonTerminal() {
           <div className={styles.toolGrid}>
             <button
               type="button"
-              className={styles.toolCard}
+              className={`${styles.toolCard} ${styles.toolCardReviser}`}
               onClick={() => setView('terminal')}
             >
               <div className={styles.toolInner}>
                 <div className={styles.toolIcon}>
-                  <Image src={ICON_REVISER} alt="" width={44} height={44} />
+                  <Image src={ICON_REVISER} alt="" width={32} height={32} />
                 </div>
                 <h1 className={styles.toolTitle}>Reviser</h1>
                 <div className={styles.toolDesc}>Rewrite drafts with clarity and tone.</div>
               </div>
             </button>
 
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled}`} disabled>
+            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardWeeklyReflection}`} disabled>
               <div className={styles.toolInner}>
                 <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_1} alt="" width={44} height={44} />
+                  <Image src={ICON_SOON_1} alt="" width={32} height={32} />
                 </div>
-                <h1 className={styles.toolTitle}>Coming soon</h1>
-                <div className={styles.toolDesc}>More tools are on the way.</div>
+                <h1 className={styles.toolTitle}>Weekly Reflection</h1>
+                <div className={styles.toolDesc}>Structure your contributions to the community.</div>
               </div>
             </button>
 
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled}`} disabled>
+            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardShareSheets}`} disabled>
               <div className={styles.toolInner}>
                 <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_2} alt="" width={44} height={44} />
+                  <Image src={ICON_SOON_2} alt="" width={32} height={32} />
                 </div>
-                <h1 className={styles.toolTitle}>Coming soon</h1>
-                <div className={styles.toolDesc}>More tools are on the way.</div>
+                <h1 className={styles.toolTitle}>Share sheets</h1>
+                <div className={styles.toolDesc}>Shared spreadsheets for MWA researchers.</div>
               </div>
             </button>
 
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled}`} disabled>
+            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardDreamReader}`} disabled>
               <div className={styles.toolInner}>
                 <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_3} alt="" width={44} height={44} />
+                  <Image src={ICON_SOON_3} alt="" width={32} height={32} />
                 </div>
-                <h1 className={styles.toolTitle}>Coming soon</h1>
-                <div className={styles.toolDesc}>More tools are on the way.</div>
+                <h1 className={styles.toolTitle}>Dream Reader</h1>
+                <div className={styles.toolDesc}>Study your unique Daemon.</div>
               </div>
             </button>
           </div>

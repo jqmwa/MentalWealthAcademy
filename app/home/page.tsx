@@ -6,7 +6,6 @@ import { useAccount } from 'wagmi';
 import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
-import Quests from '@/components/quests/Quests';
 import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
@@ -320,18 +319,11 @@ export default function Home() {
               username={me?.username}
               avatarUrl={me?.avatarUrl}
               shardCount={me?.shardCount}
-              ideasLearned={0}
-              ideasSaved={0}
               streak={0}
-              dailyQuestTitle="Learn 5 Ideas Today"
-              dailyQuestReward={15}
             />
           </div>
           <div data-intro="impact-snapshot">
             <ImpactSnapshot />
-          </div>
-          <div data-intro="quests">
-            <Quests />
           </div>
         </div>
         <div data-intro="side-navigation">
