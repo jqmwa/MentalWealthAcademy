@@ -36,7 +36,7 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
           const provider = new providers.Web3Provider(window.ethereum);
           const accounts = await provider.listAccounts();
           if (accounts.length > 0) {
-            setWalletAddress(accounts[0].address);
+            setWalletAddress(accounts[0]);
           }
         } catch (error) {
           console.error('Error checking wallet connection:', error);
