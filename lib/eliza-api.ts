@@ -40,7 +40,13 @@ class ElizaAPIClient {
 
   constructor() {
     // Default to localhost for development, can be overridden with env var
-    this.baseUrl = process.env.ELIZA_API_BASE_URL || 'http://localhost:3000';
+    let baseUrl = process.env.ELIZA_API_BASE_URL || 'http://localhost:3000';
+    
+    // Remove trailing slashes and /api/v1 if present (the path is added in the methods)
+    baseUrl = baseUrl.replace(/\/+$/, ''); // Remove trailing slashes
+    baseUrl = baseUrl.replace(/\/api\/v1$/, ''); // Remove /api/v1 if present
+    
+    this.baseUrl = baseUrl;
     this.apiKey = process.env.ELIZA_API_KEY || null;
   }
 

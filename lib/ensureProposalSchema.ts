@@ -42,6 +42,46 @@ export async function ensureProposalSchema() {
       )
     `);
 
+    // Add on-chain tracking columns if they don't exist (PostgreSQL 9.5+ supports IF NOT EXISTS)
+    try {
+      await sqlQuery(`ALTER TABLE proposal_reviews ADD COLUMN IF NOT EXISTS on_chain_proposal_id VARCHAR(50) NULL`);
+    } catch (e: any) {
+      // Column might already exist, ignore
+      if (!e.message?.includes('already exists') && !e.message?.includes('duplicate')) {
+        console.warn('Warning: Could not add on_chain_proposal_id column:', e.message);
+      }
+    }
+    
+    try {
+      await sqlQuery(`ALTER TABLE proposal_reviews ADD COLUMN IF NOT EXISTS on_chain_tx_hash VARCHAR(255) NULL`);
+    } catch (e: any) {
+      if (!e.message?.includes('already exists') && !e.message?.includes('duplicate')) {
+        console.warn('Warning: Could not add on_chain_tx_hash column:', e.message);
+      }
+    }
+    
+    try {
+      await sqlQuery(`ALTER TABLE proposal_reviews ADD COLUMN IF NOT EXISTS on_chain_created_at TIMESTAMP NULL`);
+    } catch (e: any) {
+      if (!e.message?.includes('already exists') && !e.message?.includes('duplicate')) {
+        console.warn('Warning: Could not add on_chain_created_at column:', e.message);
+      }
+    }
+
+    // Add index for on-chain lookups if it doesn't exist
+    try {
+      await sqlQuery(`
+        CREATE INDEX IF NOT EXISTS idx_proposal_reviews_onchain_id 
+        ON proposal_reviews(on_chain_proposal_id) 
+        WHERE on_chain_proposal_id IS NOT NULL
+      `);
+    } catch (e: any) {
+      // Index might already exist, ignore
+      if (!e.message?.includes('already exists')) {
+        console.warn('Warning: Could not create on-chain index:', e.message);
+      }
+    }
+
     // Proposal transactions table
     await sqlQuery(`
       CREATE TABLE IF NOT EXISTS proposal_transactions (

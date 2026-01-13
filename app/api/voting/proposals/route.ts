@@ -87,10 +87,18 @@ export async function GET() {
       ok: true,
       proposals: formattedProposals,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching proposals:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+    });
     return NextResponse.json(
-      { error: 'Failed to fetch proposals.' },
+      { 
+        error: 'Failed to fetch proposals.',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      },
       { status: 500 }
     );
   }

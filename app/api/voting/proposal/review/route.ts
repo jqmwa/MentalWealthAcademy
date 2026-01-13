@@ -90,6 +90,7 @@ export async function POST(request: Request) {
     baseUrl: elizaBaseUrl,
     hasApiKey: !!elizaApiKey,
     apiKeyLength: elizaApiKey?.length || 0,
+    apiKeyPrefix: elizaApiKey ? elizaApiKey.substring(0, 8) + '...' : 'N/A',
   });
 
   // Call Azura (via Eliza API) for analysis
@@ -247,9 +248,11 @@ ${proposal.proposal_markdown}
       let errorReason = 'Review failed due to system error. Please resubmit.';
       
       // Provide more specific error messages
-      if (error.message?.includes('ELIZA_API_KEY') || !elizaApiKey) {
-        errorReason = 'Review failed: Eliza API key not configured. Please contact support.';
-      } else if (error.message?.includes('fetch') || error.message?.includes('network')) {
+      if (!elizaApiKey) {
+        errorReason = 'Review failed: Eliza API key not configured in deployment environment. Please set ELIZA_API_KEY in Vercel/your hosting platform.';
+      } else if (error.message?.includes('ELIZA_API_KEY')) {
+        errorReason = 'Review failed: Eliza API key configuration error. Please check your ELIZA_API_KEY setting.';
+      } else if (error.message?.includes('fetch') || error.message?.includes('network') || error.message?.includes('ECONNREFUSED')) {
         errorReason = 'Review failed: Unable to connect to Eliza API. Please try again later.';
       } else if (error.message?.includes('parse') || error.message?.includes('JSON')) {
         errorReason = 'Review failed: Invalid response from Azura. Please resubmit.';
