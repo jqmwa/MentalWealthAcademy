@@ -47,27 +47,38 @@
   }
 }
 
-/* Azura Power Indicator */
+/* Azura Power Indicator - Compact Bento Style */
 .azuraPower {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  background: #f4f5fe;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: var(--color-background);
   border: 2px solid #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
+  min-width: 180px;
+}
+
+.azuraPower > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.azuraPower > div:last-child {
+  margin-top: 2px;
 }
 
 .azuraAvatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
   flex-shrink: 0;
-  border: 2px solid rgba(139, 92, 246, 0.5);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(81, 104, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
 }
 
 .azuraInfo {
@@ -76,8 +87,9 @@
 }
 
 .azuraName {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
+  font-family: var(--font-primary);
   color: var(--color-text-dark);
   margin: 0 0 4px 0;
   display: flex;
@@ -86,35 +98,24 @@
 }
 
 .aiTag {
-  font-size: 10px;
+  font-size: 9px;
   padding: 2px 6px;
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(81, 104, 255, 0.15);
   border-radius: 4px;
-  color: rgba(139, 92, 246, 0.9);
+  color: var(--color-primary);
   font-weight: 600;
+  font-family: var(--font-button);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .azuraPower .container {
-  font-size: 13px;
+  font-size: 11px;
   margin: 0;
 }
 
 .viewWalletButton {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background: rgba(139, 92, 246, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(139, 92, 246, 0.9);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  display: none;
 }
 
 .viewWalletButton:hover {

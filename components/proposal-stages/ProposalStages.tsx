@@ -32,7 +32,7 @@ const ProposalStages: React.FC<ProposalStagesProps> = ({
       case 'approved':
         return 'Approved by Azura';
       case 'rejected':
-        return 'Not approved';
+        return 'Killed';
       default:
         return 'Unknown';
     }
@@ -105,7 +105,7 @@ const ProposalStages: React.FC<ProposalStagesProps> = ({
           )}
         </div>
         <div className={styles.stageContent}>
-          <h4 className={styles.stageName}>Azura Review</h4>
+          <h4 className={styles.stageName}>Azura</h4>
           <p className={styles.stageStatus}>{getStage1Status()}</p>
         </div>
       </div>
@@ -139,14 +139,14 @@ const ProposalStages: React.FC<ProposalStagesProps> = ({
           )}
         </div>
         <div className={styles.stageContent}>
-          <h4 className={styles.stageName}>Blockchain</h4>
+          <h4 className={styles.stageName}>Vote</h4>
           <p className={styles.stageStatus}>{getStage2Status()}</p>
         </div>
       </div>
 
       <div className={`${styles.divider} ${stage2 === 'success' ? styles.active : ''}`} />
 
-      {/* Stage 3: Community Voting */}
+      {/* Stage 3: Success */}
       <div className={`${styles.stage} ${styles.stage3} ${styles[stage3]}`}>
         <div className={styles.stageIcon}>
           {stage3 === 'completed' ? (
@@ -165,7 +165,7 @@ const ProposalStages: React.FC<ProposalStagesProps> = ({
           )}
         </div>
         <div className={styles.stageContent}>
-          <h4 className={styles.stageName}>Community Vote</h4>
+          <h4 className={styles.stageName}>Success</h4>
           <p className={styles.stageStatus}>{getStage3Status()}</p>
         </div>
       </div>

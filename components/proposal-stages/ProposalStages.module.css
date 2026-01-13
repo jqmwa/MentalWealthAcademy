@@ -3,17 +3,18 @@
   align-items: center;
   gap: 16px;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(81, 104, 255, 0.1);
 }
 
 .stage {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: 1;
+  flex: 0 0 auto;
   position: relative;
+  min-width: 0;
 }
 
 .stageIcon {
@@ -53,8 +54,8 @@
 /* Stage 2 & 3: Generic states */
 .stage2 .stageIcon,
 .stage3 .stageIcon {
-  background: rgba(255, 255, 255, 0.03);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(81, 104, 255, 0.05);
+  border: 2px solid rgba(81, 104, 255, 0.15);
 }
 
 .stage2.waiting .stageIcon,
@@ -83,7 +84,7 @@
 .stageIcon svg {
   width: 24px;
   height: 24px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-dark);
 }
 
 .azuraAvatar {
@@ -100,13 +101,15 @@
 .stageName {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-primary);
+  color: var(--color-text-dark);
   margin: 0 0 4px 0;
 }
 
 .stageStatus {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-primary);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -128,14 +131,16 @@
 }
 
 .divider {
-  width: 24px;
+  flex: 1;
+  min-width: 0;
   height: 2px;
-  background: rgba(255, 255, 255, 0.1);
-  flex-shrink: 0;
+  background: rgba(81, 104, 255, 0.2);
+  align-self: center;
+  margin: 0;
 }
 
 .divider.active {
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.5));
+  background: linear-gradient(90deg, rgba(81, 104, 255, 0.3), rgba(81, 104, 255, 0.5));
 }
 
 .tooltip {
@@ -200,9 +205,10 @@
 .tokenAllocation {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(81, 104, 255, 0.1);
   font-size: 12px;
-  color: rgba(34, 197, 94, 0.9);
+  font-family: var(--font-primary);
+  color: #22c55e;
   font-weight: 600;
 }
 
@@ -228,9 +234,10 @@
   }
 
   .divider {
-    width: 2px;
-    height: 24px;
-    transform: rotate(90deg);
+    width: 100%;
+    height: 2px;
+    flex: none;
+    transform: none;
   }
 
   .tooltipContent {

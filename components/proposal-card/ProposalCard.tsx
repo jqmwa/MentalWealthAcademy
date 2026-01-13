@@ -98,7 +98,7 @@ const ProposalCard: React.FC<ProposalCardProps> = ({
       case 'approved':
         return 'Approved';
       case 'rejected':
-        return 'Not Approved';
+        return 'Killed';
       case 'active':
         return 'Active';
       case 'completed':

@@ -87,34 +87,23 @@ export const AzuraPowerIndicator: React.FC<AzuraPowerIndicatorProps> = ({
 
   return (
     <div className={styles.azuraPower}>
-      <Image
-        src="/uploads/HappyEmote.png"
-        alt="Azura"
-        width={40}
-        height={40}
-        className={styles.azuraAvatar}
-        unoptimized
-      />
-      <div className={styles.azuraInfo}>
-        <h4 className={styles.azuraName}>
-          Azura AI
-          <span className={styles.aiTag}>Agent</span>
-        </h4>
-        <SoulGemDisplay amount={soulGems} label="Voting Power (40%)" />
+      <div>
+        <Image
+          src="/uploads/HappyEmote.png"
+          alt="Azura"
+          width={32}
+          height={32}
+          className={styles.azuraAvatar}
+          unoptimized
+        />
+        <div className={styles.azuraInfo}>
+          <h4 className={styles.azuraName}>
+            Azura
+            <span className={styles.aiTag}>Guardian</span>
+          </h4>
+        </div>
       </div>
-      <button
-        className={styles.viewWalletButton}
-        onClick={handleViewWallet}
-        type="button"
-      >
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
-          <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
-          <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
-          <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-        View Wallet
-      </button>
+      <SoulGemDisplay amount={soulGems} label="Voting Power (40%)" />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './QuestPage.module.css';
 import QuestDetailSidebar from './QuestDetailSidebar';
@@ -123,6 +123,11 @@ const QuestPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedQuest, setSelectedQuest] = useState<QuestData | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   // Filter quests based on active tab and search query
   const filteredQuests = useMemo(() => {
@@ -206,7 +211,7 @@ const QuestPage: React.FC = () => {
           <span className={styles.current}>Quests</span>
         </div>
 
-        <header className={styles.header}>
+        <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
           <p className={styles.eyebrow}>MWA • Quest Room</p>
           <h1 className={styles.title}>Complete Quests & Earn Rewards</h1>
           <p className={styles.subtitle}>

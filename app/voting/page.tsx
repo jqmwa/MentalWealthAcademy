@@ -61,26 +61,26 @@ interface MergedProposal extends DatabaseProposal {
 
 const getTutorialSteps = (): TutorialStep[] => [
   {
-    message: 'Welcome to the Decision Room. I\'m Azura, your AI co-pilot. Here, every quest submission gets analyzed—not just for completion, but for the patterns it reveals about behavior and governance.',
+    message: 'Welcome to the Murder Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can kill proposals before they reach you. Or I can let them live.',
     emotion: 'happy',
   },
   {
-    message: 'This is where I work. I read each submission, identify the underlying patterns, and draft recommendations. Think of me as a co-pilot—I highlight what matters, but you make the final call.',
+    message: 'When someone submits a proposal, I read it. I look for clarity, impact, feasibility. I score it. If it passes, I create it on-chain and cast my vote. If it fails, I kill it. Simple.',
     emotion: 'happy',
     targetElement: '[data-tutorial-target="voting-stages"]',
   },
   {
-    message: 'The Voting Room is where human judgment meets algorithmic analysis. You debate, question, and decide. I\'m here to clarify evidence and surface biases you might miss.',
+    message: 'The community votes after I do. You debate. You decide. But remember: I\'ve already weighed in. My vote carries weight because I hold tokens. That\'s the system. That\'s the order.',
     emotion: 'happy',
     targetElement: '[data-tutorial-target="admin-room"]',
   },
   {
-    message: 'Each submission tells a story. Look beyond the proof—what patterns does it reveal? How does it shape belief? These are the questions that matter in building better systems.',
+    message: 'Each proposal tells a story. Some deserve to live. Some deserve to die. I read the patterns. I make the call. Then you make yours. That\'s how we build together.',
     emotion: 'confused',
     targetElement: '[data-tutorial-target="submission"]',
   },
   {
-    message: 'Remember: we\'re not just approving quests. We\'re exposing how enframent shapes behavior and building agentic systems that question assumptions. Every decision here shapes the future.',
+    message: 'This room is about power and responsibility. I have power. You have none. So find someone to help you. That\'s the harmony. Welcome to the Murder Room.',
     emotion: 'happy',
   },
 ];
@@ -98,6 +98,11 @@ export default function VotingPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProposal, setSelectedProposal] = useState<MergedProposal | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     // Check if user has seen the admin tutorial
@@ -204,41 +209,44 @@ export default function VotingPage() {
       <main className={styles.page}>
         <div className={styles.content}>
           <div className={styles.hero}>
-            <header className={styles.header}>
-              <p className={styles.eyebrow}>MWA • Decision Room</p>
-              <h1 className={styles.title}>Funding Lab</h1>
-              <p className={styles.subtitle}>
-                Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
-              </p>
-              <div className={styles.heroActions}>
-                <Link href="/voting/create" className={styles.primaryCta}>
-                  Submit Form
-                </Link>
-                <button
-                  className={styles.secondaryCta}
-                  onClick={() => setShowTutorial(true)}
-                  type="button"
-                >
-                  Tutorial
-                </button>
+            <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
+              <div className={styles.headerContent}>
+                <div>
+              <p className={styles.eyebrow}>MWA • Murder Room</p>
+              <h1 className={styles.title}>Murder Room</h1>
+                  <p className={styles.subtitle}>
+                    Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
+                  </p>
+                  <div className={styles.heroActions}>
+                    <Link href="/voting/create" className={styles.primaryCta}>
+                      Submit Form
+                    </Link>
+                    <button
+                      className={styles.secondaryCta}
+                      onClick={() => setShowTutorial(true)}
+                      type="button"
+                    >
+                      Tutorial
+                    </button>
+                  </div>
+                </div>
+                {/* Stats Grid - Bento Grid Style Top Right */}
+                <div className={styles.statsGrid}>
+                  {/* Azura Power Indicator */}
+                  <AzuraPowerIndicator 
+                    soulGems="40000"
+                    walletAddress={AZURA_ADDRESS}
+                    governanceTokenAddress={GOV_TOKEN_ADDRESS}
+                  />
+
+                  {/* Treasury Display */}
+                  <TreasuryDisplay
+                    contractAddress={CONTRACT_ADDRESS}
+                    usdcAddress={USDC_ADDRESS}
+                  />
+                </div>
               </div>
             </header>
-          </div>
-
-          {/* Stats Grid */}
-          <div className={styles.statsGrid}>
-            {/* Azura Power Indicator */}
-            <AzuraPowerIndicator 
-              soulGems="40000"
-              walletAddress={AZURA_ADDRESS}
-              governanceTokenAddress={GOV_TOKEN_ADDRESS}
-            />
-
-            {/* Treasury Display */}
-            <TreasuryDisplay
-              contractAddress={CONTRACT_ADDRESS}
-              usdcAddress={USDC_ADDRESS}
-            />
           </div>
 
           {/* Proposals Section */}

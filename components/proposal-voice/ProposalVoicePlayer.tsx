@@ -106,52 +106,29 @@ const ProposalVoicePlayer: React.FC<ProposalVoicePlayerProps> = ({
   return (
     <div className={`${styles.voicePlayer} ${className || ''}`}>
       <div className={styles.playerContainer}>
-        {/* Skeuomorphic design with depth and shadows */}
         <div className={styles.playerSurface}>
-          <div className={styles.playerControls}>
-            <button
-              className={styles.playButton}
-              onClick={handlePlayPause}
-              disabled={isLoading}
-              aria-label={isPlaying ? 'Pause' : 'Play Azura\'s voice'}
-            >
-              {isLoading ? (
-                <div className={styles.spinner} />
-              ) : isPlaying ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
-
-            <div className={styles.playerInfo}>
-              <div className={styles.playerLabel}>
-                <span className={styles.labelIcon}>🎙️</span>
-                <span className={styles.labelText}>Azura&apos;s Voice</span>
-              </div>
-              {error && (
-                <div className={styles.errorMessage}>{error}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Waveform visualization (decorative) */}
-          <div className={styles.waveform}>
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={i}
-                className={`${styles.waveBar} ${isPlaying ? styles.playing : ''}`}
-                style={{
-                  animationDelay: `${i * 0.05}s`,
-                }}
-              />
-            ))}
-          </div>
+          <button
+            className={styles.playButton}
+            onClick={handlePlayPause}
+            disabled={isLoading}
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isLoading ? (
+              <div className={styles.spinner} />
+            ) : isPlaying ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </button>
+          {error && (
+            <div className={styles.errorMessage}>{error}</div>
+          )}
         </div>
       </div>
     </div>
