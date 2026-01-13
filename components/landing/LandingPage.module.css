@@ -415,7 +415,7 @@
 
 .walletSectionPrimary button {
   width: 100%;
-  background: linear-gradient(135deg, #627EEA 0%, #8A9FFF 100%);
+  background-color: var(--color-primary);
   border: none;
   padding: 14px 24px;
   border-radius: 8px;
@@ -429,7 +429,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 4px 16px rgba(98, 126, 234, 0.3);
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.3);
 }
 
 .walletSectionPrimary button:hover {

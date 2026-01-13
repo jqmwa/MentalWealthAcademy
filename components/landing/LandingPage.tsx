@@ -4,7 +4,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
-import { WalletConnectionHandler } from './WalletConnectionHandler';
 import { PatternTextSection } from './PatternTextSection';
 import { LandingFooter } from './LandingFooter';
 import styles from './LandingPage.module.css';
@@ -406,6 +405,10 @@ const LandingPage: React.FC = () => {
     }
   };
 
+  const handleEnterAcademy = () => {
+    window.location.replace('/home');
+  };
+
   // Load Scene after page is fully interactive - don't block initial render
   useEffect(() => {
     // Wait for page to be interactive, then load Scene in background
@@ -461,7 +464,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              The most complete citizen participation tool for an open, transparent and democratic digital academia and cyber-culture research fund.
+              The most complete digital participation tool for open, transparent and decentralized cyber-academia research fund.
               </p>
             </div>
           </div>
@@ -482,7 +485,7 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <h1 className={styles.loginTitle}>
-                {activeTab === 'signin' ? 'Sign In' : 'Create Account'}
+                {activeTab === 'signin' ? 'Enter' : 'Create Account'}
               </h1>
             </div>
 
@@ -498,7 +501,7 @@ const LandingPage: React.FC = () => {
                   setPassword('');
                 }}
               >
-                Sign In
+                Enter
               </button>
               <button
                 type="button"
@@ -545,96 +548,101 @@ const LandingPage: React.FC = () => {
                   {message.text}
                 </div>
               )}
-              <div className={styles.inputForm}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="email" className={styles.label}>
-                    Email
-                  </label>
-                  <div className={styles.inputWrapper}>
-                    <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M2.5 6.66667L9.0755 11.0504C9.63533 11.4236 10.3647 11.4236 10.9245 11.0504L17.5 6.66667M4.16667 15H15.8333C16.7538 15 17.5 14.2538 17.5 13.3333V6.66667C17.5 5.74619 16.7538 5 15.8333 5H4.16667C3.24619 5 2.5 5.74619 2.5 6.66667V13.3333C2.5 14.2538 3.24619 15 4.16667 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      className={styles.input}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      autoComplete="email"
-                      autoFocus
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="password" className={styles.label}>
-                    Password
-                  </label>
-                  <div className={styles.inputWrapper}>
-                    <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M5.83333 9.16667V6.66667C5.83333 4.36548 7.69881 2.5 10 2.5C12.3012 2.5 14.1667 4.36548 14.1667 6.66667V9.16667M10 12.0833V14.1667M6.66667 17.5H13.3333C14.2538 17.5 15 16.7538 15 15.8333V10.8333C15 9.91286 14.2538 9.16667 13.3333 9.16667H6.66667C5.74619 9.16667 5 9.91286 5 10.8333V15.8333C5 16.7538 5.74619 17.5 6.66667 17.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <input
-                      type="password"
-                      id="password"
-                      className={styles.input}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.checkboxGroup}>
-                  <div className={styles.checkboxWrapper}>
-                    <input
-                      type="checkbox"
-                      id="rememberMe"
-                      className={styles.checkbox}
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                    <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-                      Remember this device
+              {activeTab === 'signup' && (
+                <div className={styles.inputForm}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="email" className={styles.label}>
+                      Email
                     </label>
+                    <div className={styles.inputWrapper}>
+                      <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2.5 6.66667L9.0755 11.0504C9.63533 11.4236 10.3647 11.4236 10.9245 11.0504L17.5 6.66667M4.16667 15H15.8333C16.7538 15 17.5 14.2538 17.5 13.3333V6.66667C17.5 5.74619 16.7538 5 15.8333 5H4.16667C3.24619 5 2.5 5.74619 2.5 6.66667V13.3333C2.5 14.2538 3.24619 15 4.16667 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className={styles.input}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                        autoFocus
+                        required
+                      />
+                    </div>
                   </div>
-                  <a href="#" className={styles.forgotLink}>
-                    Forgot username or password?
-                  </a>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="password" className={styles.label}>
+                      Password
+                    </label>
+                    <div className={styles.inputWrapper}>
+                      <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5.83333 9.16667V6.66667C5.83333 4.36548 7.69881 2.5 10 2.5C12.3012 2.5 14.1667 4.36548 14.1667 6.66667V9.16667M10 12.0833V14.1667M6.66667 17.5H13.3333C14.2538 17.5 15 16.7538 15 15.8333V10.8333C15 9.91286 14.2538 9.16667 13.3333 9.16667H6.66667C5.74619 9.16667 5 9.91286 5 10.8333V15.8333C5 16.7538 5.74619 17.5 6.66667 17.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <input
+                        type="password"
+                        id="password"
+                        className={styles.input}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.checkboxGroup}>
+                    <div className={styles.checkboxWrapper}>
+                      <input
+                        type="checkbox"
+                        id="rememberMe"
+                        className={styles.checkbox}
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                      />
+                      <label htmlFor="rememberMe" className={styles.checkboxLabel}>
+                        Remember this device
+                      </label>
+                    </div>
+                    <a href="#" className={styles.forgotLink}>
+                      Forgot username or password?
+                    </a>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Actions */}
               <div className={styles.actions}>
-                {/* Primary CTA - Wallet Connection */}
+                {/* Primary CTA - Enter Academy */}
                 <div className={styles.walletSectionPrimary}>
-                  <WalletConnectionHandler 
-                    onWalletConnected={(address) => {
-                      setIsWalletSignup(true);
-                      setShowOnboarding(true);
-                    }}
-                    buttonText="Connect Ethereum"
-                  />
+                  <button
+                    type="button"
+                    onClick={handleEnterAcademy}
+                  >
+                    Enter Academy
+                  </button>
                 </div>
                 
-                <div className={styles.authDivider}>
-                  <span className={styles.authDividerText}>or continue with email</span>
-                </div>
+                {activeTab === 'signup' && (
+                  <>
+                    <div className={styles.authDivider}>
+                      <span className={styles.authDividerText}>or continue with email</span>
+                    </div>
 
-                <button
-                  type="submit"
-                  className={styles.loginButton}
-                  disabled={isLoading}
-                >
-                  {isLoading 
-                    ? (activeTab === 'signin' ? 'Signing in...' : 'Creating account...')
-                    : (activeTab === 'signin' ? 'Sign In' : 'Create Account')
-                  }
-                </button>
+                    <button
+                      type="submit"
+                      className={styles.loginButton}
+                      disabled={isLoading}
+                    >
+                      {isLoading 
+                        ? 'Creating account...'
+                        : 'Create Account'
+                      }
+                    </button>
+                  </>
+                )}
                 
                 <div className={styles.termsText}>
                   By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}

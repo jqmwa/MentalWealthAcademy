@@ -9,4 +9,3 @@ const SideNavigation: React.FC = () => {
 };
 
 export default SideNavigation;
-

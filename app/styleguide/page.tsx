@@ -6,10 +6,7 @@ import {
   colors,
   gradients,
   fontFamilies,
-  fontWeights,
   fontSizes,
-  lineHeights,
-  letterSpacing,
   typography,
   spacing,
   borderRadius,
@@ -19,6 +16,16 @@ import {
   easings,
   zIndex,
 } from '@/styles/design-tokens';
+
+// Import actual components from codebase
+import Banner from '@/components/banner/Banner';
+import BookCard from '@/components/book-card/BookCard';
+import EventCard from '@/components/event-card/EventCard';
+import { HelpTooltip } from '@/components/help-tooltip/HelpTooltip';
+import NewsletterCard from '@/components/newsletter-card/NewsletterCard';
+import LibraryCard from '@/components/library-card/LibraryCard';
+import { SoulGemDisplay } from '@/components/soul-gems/SoulGemDisplay';
+import ProposalStages from '@/components/proposal-stages/ProposalStages';
 
 /**
  * Mental Wealth Academy Style Guide
@@ -498,6 +505,506 @@ export default function StyleGuidePage() {
             </div>
           </div>
         </section>
+
+        {/* ============================================
+            LIVE COMPONENTS SECTION
+            ============================================ */}
+        
+        {/* Banner Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📢 Banner</h2>
+          <p className={styles.sectionDescription}>
+            Announcement banner for site-wide messages. Full-width with background image and centered text.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>Banner</div>
+            <div className={styles.componentPreview}>
+              <Banner />
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/banner/Banner.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Book Card Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📚 Book Card</h2>
+          <p className={styles.sectionDescription}>
+            Library book display card with cover image, title, author, description, and category badge.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>BookCard</div>
+            <div className={styles.componentPreview} style={{ maxWidth: '400px' }}>
+              <BookCard 
+                title="Web3 Education"
+                author="By: Jhinn Bay"
+                description="Explore the transformative power of blockchain technology and its revolutionary capabilities in reshaping the digital landscape."
+                category="Non-Fiction"
+              />
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/book-card/BookCard.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Event Card Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📅 Event Card</h2>
+          <p className={styles.sectionDescription}>
+            Event listing card with image, title, badges, description, and action buttons.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>EventCard</div>
+            <div className={styles.componentPreview} style={{ maxWidth: '400px' }}>
+              <EventCard 
+                heading="Community Workshop"
+                badge1Text="Workshop"
+                badge2Text="Jan 20, 2026"
+                description="Join us for an interactive session on blockchain governance and community building."
+                secondaryButtonText="Learn More"
+              />
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/event-card/EventCard.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Library Card Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📖 Library Card</h2>
+          <p className={styles.sectionDescription}>
+            IPFS Library navigation card with badges and transmission indicator.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>LibraryCard</div>
+            <div className={styles.componentPreview} style={{ maxWidth: '350px' }}>
+              <LibraryCard />
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/library-card/LibraryCard.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Newsletter Card Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📧 Newsletter Card</h2>
+          <p className={styles.sectionDescription}>
+            Daemon newsletter subscription card with button link.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>NewsletterCard</div>
+            <div className={styles.componentPreview} style={{ maxWidth: '300px' }}>
+              <NewsletterCard />
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/newsletter-card/NewsletterCard.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Soul Gem Display Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>💎 Soul Gem Display</h2>
+          <p className={styles.sectionDescription}>
+            Token/currency display with animated gem icon. Used for voting power and governance tokens.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>SoulGemDisplay</div>
+            <div className={styles.componentPreviewRow}>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Small Amount</span>
+                <SoulGemDisplay amount="150" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Medium Amount</span>
+                <SoulGemDisplay amount="2500" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Large Amount</span>
+                <SoulGemDisplay amount="1250000" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>No Label</span>
+                <SoulGemDisplay amount="500" showLabel={false} />
+              </div>
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/soul-gems/SoulGemDisplay.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Help Tooltip Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>❓ Help Tooltip</h2>
+          <p className={styles.sectionDescription}>
+            Interactive help tooltip with click-to-toggle behavior. Position can be customized.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>HelpTooltip</div>
+            <div className={styles.componentPreviewRow}>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Top Right (default)</span>
+                <div style={{ position: 'relative', width: '40px', height: '40px' }}>
+                  <HelpTooltip 
+                    content="This is helpful information that appears when you click the icon. It can contain detailed explanations." 
+                    position="top-right"
+                  />
+                </div>
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Bottom Right</span>
+                <div style={{ position: 'relative', width: '40px', height: '40px' }}>
+                  <HelpTooltip 
+                    content="Tooltips can be positioned in different corners for optimal visibility." 
+                    position="bottom-right"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/help-tooltip/HelpTooltip.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Proposal Stages Component */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📊 Proposal Stages</h2>
+          <p className={styles.sectionDescription}>
+            Visual progress indicator for governance proposals showing Azura review, blockchain transaction, and voting stages.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>ProposalStages</div>
+            <div className={styles.componentPreviewColumn}>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Waiting for Review</span>
+                <ProposalStages stage1="waiting" stage2="waiting" stage3="waiting" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Analyzing</span>
+                <ProposalStages stage1="analyzing" stage2="waiting" stage3="waiting" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Approved - Processing</span>
+                <ProposalStages 
+                  stage1="approved" 
+                  stage2="processing" 
+                  stage3="waiting" 
+                  azuraReasoning="This proposal aligns with community goals and has a clear implementation plan."
+                  tokenAllocation={25}
+                />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Active Voting</span>
+                <ProposalStages stage1="approved" stage2="success" stage3="active" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Completed</span>
+                <ProposalStages stage1="approved" stage2="success" stage3="completed" />
+              </div>
+              <div className={styles.componentVariant}>
+                <span className={styles.variantLabel}>Rejected</span>
+                <ProposalStages 
+                  stage1="rejected" 
+                  stage2="waiting" 
+                  stage3="waiting"
+                  azuraReasoning="This proposal does not meet the minimum requirements for community consideration."
+                />
+              </div>
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/proposal-stages/ProposalStages.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Vote Buttons Preview */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>🗳️ Vote Buttons</h2>
+          <p className={styles.sectionDescription}>
+            Approve/Reject voting buttons with loading states. Connects to blockchain for on-chain voting.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>VoteButtons (Preview)</div>
+            <div className={styles.componentPreviewRow}>
+              <button className={styles.voteApprove}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>Approve</span>
+              </button>
+              <button className={styles.voteReject}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <span>Reject</span>
+              </button>
+            </div>
+            <div className={styles.componentMeta}>
+              <code>components/vote-buttons/VoteButtons.tsx</code>
+            </div>
+          </div>
+        </section>
+
+        {/* Status Badges */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>🏷️ Status Badges</h2>
+          <p className={styles.sectionDescription}>
+            Status indicators used across proposals, quests, and transactions.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>Status Badges</div>
+            <div className={styles.componentPreviewRow}>
+              <span className={styles.badgePending}>
+                <span className={styles.badgeDot} />
+                Under Review
+              </span>
+              <span className={styles.badgeApproved}>
+                <span className={styles.badgeDot} />
+                Approved
+              </span>
+              <span className={styles.badgeRejected}>
+                <span className={styles.badgeDot} />
+                Rejected
+              </span>
+              <span className={styles.badgeActive}>
+                <span className={styles.badgeDot} />
+                Active
+              </span>
+              <span className={styles.badgeCompleted}>
+                <span className={styles.badgeDot} />
+                Completed
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Input Fields */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📝 Input Fields</h2>
+          <p className={styles.sectionDescription}>
+            Form inputs with consistent styling, focus states, and validation.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>Inputs</div>
+            <div className={styles.inputGrid}>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Text Input</label>
+                <input 
+                  type="text" 
+                  className={styles.textInput} 
+                  placeholder="Enter your username..."
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>With Value</label>
+                <input 
+                  type="text" 
+                  className={styles.textInput} 
+                  defaultValue="@mentalwealth"
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Disabled</label>
+                <input 
+                  type="text" 
+                  className={styles.textInput} 
+                  placeholder="Disabled input"
+                  disabled
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Textarea</label>
+                <textarea 
+                  className={styles.textArea} 
+                  placeholder="Write your proposal description..."
+                  rows={3}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Icons Reference */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>🎯 Icon System</h2>
+          <p className={styles.sectionDescription}>
+            We use inline SVGs for icons to maintain consistency and enable color theming. Icons should be 16-24px.
+          </p>
+          <div className={styles.componentShowcase}>
+            <div className={styles.componentLabel}>Common Icons</div>
+            <div className={styles.iconGrid}>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>Check</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <span>Close</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>Arrow Right</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                  <path d="M12 16V12M12 8H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <span>Info</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="currentColor"/>
+                </svg>
+                <span>Star</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                <span>Grid</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                <span>User</span>
+              </div>
+              <div className={styles.iconItem}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.8273 3 17.35 4.30367 19 6.34267M21 3V9M21 9H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>Refresh</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Component Index */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>📦 Component Index</h2>
+          <p className={styles.sectionDescription}>
+            Complete list of all components available in the codebase.
+          </p>
+          <div className={styles.componentIndex}>
+            <ComponentIndexItem 
+              name="Banner" 
+              path="components/banner" 
+              description="Site-wide announcement banner"
+            />
+            <ComponentIndexItem 
+              name="BookCard" 
+              path="components/book-card" 
+              description="Library book display card"
+            />
+            <ComponentIndexItem 
+              name="EventCard" 
+              path="components/event-card" 
+              description="Event listing with registration"
+            />
+            <ComponentIndexItem 
+              name="LibraryCard" 
+              path="components/library-card" 
+              description="IPFS library navigation card"
+            />
+            <ComponentIndexItem 
+              name="NewsletterCard" 
+              path="components/newsletter-card" 
+              description="Newsletter subscription card"
+            />
+            <ComponentIndexItem 
+              name="ProposalCard" 
+              path="components/proposal-card" 
+              description="Governance proposal display"
+            />
+            <ComponentIndexItem 
+              name="ProposalStages" 
+              path="components/proposal-stages" 
+              description="Proposal progress indicator"
+            />
+            <ComponentIndexItem 
+              name="VoteButtons" 
+              path="components/vote-buttons" 
+              description="Approve/Reject voting UI"
+            />
+            <ComponentIndexItem 
+              name="SoulGemDisplay" 
+              path="components/soul-gems" 
+              description="Token/voting power display"
+            />
+            <ComponentIndexItem 
+              name="TreasuryDisplay" 
+              path="components/treasury-display" 
+              description="Treasury balance widget"
+            />
+            <ComponentIndexItem 
+              name="HelpTooltip" 
+              path="components/help-tooltip" 
+              description="Contextual help tooltip"
+            />
+            <ComponentIndexItem 
+              name="ImpactSnapshot" 
+              path="components/impact-snapshot" 
+              description="User impact metrics display"
+            />
+            <ComponentIndexItem 
+              name="ShardAnimation" 
+              path="components/quests" 
+              description="Gamification shard reward animation"
+            />
+            <ComponentIndexItem 
+              name="Navbar" 
+              path="components/navbar" 
+              description="Main navigation bar"
+            />
+            <ComponentIndexItem 
+              name="Footer" 
+              path="components/footer" 
+              description="Site footer"
+            />
+            <ComponentIndexItem 
+              name="Hero" 
+              path="components/hero" 
+              description="Hero section for landing pages"
+            />
+            <ComponentIndexItem 
+              name="AzuraDialogue" 
+              path="components/azura-dialogue" 
+              description="AI assistant dialogue interface"
+            />
+            <ComponentIndexItem 
+              name="OnboardingTour" 
+              path="components/onboarding-tour" 
+              description="Interactive onboarding walkthrough"
+            />
+            <ComponentIndexItem 
+              name="SearchModal" 
+              path="components/search-modal" 
+              description="Global search modal"
+            />
+            <ComponentIndexItem 
+              name="AvatarSelectorModal" 
+              path="components/avatar-selector" 
+              description="Avatar selection modal"
+            />
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -558,6 +1065,16 @@ function TypographySample({
       <div className={styles.typographyLabel}>{label}</div>
       <div className={styles.typographyText} style={style}>{text}</div>
       <div className={styles.typographyMeta}>{meta}</div>
+    </div>
+  );
+}
+
+function ComponentIndexItem({ name, path, description }: { name: string; path: string; description: string }) {
+  return (
+    <div className={styles.indexItem}>
+      <div className={styles.indexItemName}>{name}</div>
+      <div className={styles.indexItemPath}><code>{path}</code></div>
+      <div className={styles.indexItemDescription}>{description}</div>
     </div>
   );
 }

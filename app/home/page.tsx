@@ -13,7 +13,6 @@ import AvatarSelectionModal from '@/components/avatar-selection/AvatarSelectionM
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { ShardAnimation } from '@/components/quests/ShardAnimation';
 import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
-import ImpactSnapshot from '@/components/impact-snapshot/ImpactSnapshot';
 import PersonalDashboard from '@/components/personal-dashboard/PersonalDashboard';
 import styles from './page.module.css';
 
@@ -35,6 +34,15 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search);
     const xAuth = params.get('x_auth');
     const autoCheck = params.get('auto_check');
+    const onboardingParam = params.get('onboarding');
+    
+    // Check for onboarding query parameter
+    if (onboardingParam === 'true') {
+      // Remove query param from URL
+      window.history.replaceState({}, '', '/home');
+      // Open onboarding modal
+      setShowOnboarding(true);
+    }
     
     if (xAuth) {
       // Remove query params from URL
@@ -245,6 +253,16 @@ export default function Home() {
     return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
   }, [showOnboarding]);
 
+  // Listen for openOnboarding event from navbar or other components
+  useEffect(() => {
+    const handleOpenOnboarding = () => {
+      setShowOnboarding(true);
+    };
+
+    window.addEventListener('openOnboarding', handleOpenOnboarding);
+    return () => window.removeEventListener('openOnboarding', handleOpenOnboarding);
+  }, []);
+
   useEffect(() => {
     // Redirect if we've finished checking auth and user has no valid session
     // This works for both Privy auth and session-based auth
@@ -321,9 +339,6 @@ export default function Home() {
               shardCount={me?.shardCount}
               streak={0}
             />
-          </div>
-          <div data-intro="impact-snapshot">
-            <ImpactSnapshot />
           </div>
         </div>
         <div data-intro="side-navigation">

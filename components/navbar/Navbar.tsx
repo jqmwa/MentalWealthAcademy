@@ -403,12 +403,29 @@ const Navbar: React.FC = () => {
               <button
                 className={styles.incompleteProfile}
                 onClick={() => {
-                  // Redirect to home page which will show avatar selection if needed
-                  window.location.href = '/home';
+                  // Dispatch event to open onboarding modal (works if already on home page)
+                  window.dispatchEvent(new Event('openOnboarding'));
+                  // Navigate to home with query param to trigger onboarding
+                  router.push('/home?onboarding=true');
                 }}
                 type="button"
               >
                 <span>Complete Profile</span>
+              </button>
+            )}
+            {/* Show unregistered button if no username (unregistered user) */}
+            {!username && (
+              <button
+                className={styles.incompleteProfile}
+                onClick={() => {
+                  // Dispatch event to open onboarding modal (works if already on home page)
+                  window.dispatchEvent(new Event('openOnboarding'));
+                  // Navigate to home with query param to trigger onboarding
+                  router.push('/home?onboarding=true');
+                }}
+                type="button"
+              >
+                <span>Get Started</span>
               </button>
             )}
             {/* Mobile Menu Toggle */}
