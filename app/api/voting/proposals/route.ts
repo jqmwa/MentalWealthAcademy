@@ -34,30 +34,65 @@ export async function GET() {
   try {
     // Fetch only proposals that have been reviewed (rejected or created on-chain)
     // This means they have a review decision (rejected) or on_chain_proposal_id (created)
-    const proposals = await sqlQuery<ProposalWithReview[]>(
-      `SELECT 
-        p.id,
-        p.user_id,
-        p.wallet_address,
-        p.title,
-        p.proposal_markdown,
-        p.status,
-        p.created_at,
-        p.updated_at,
-        u.username,
-        u.avatar_url,
-        pr.decision as review_decision,
-        pr.reasoning as review_reasoning,
-        pr.token_allocation_percentage as review_token_allocation,
-        pr.scores as review_scores,
-        pr.reviewed_at as review_reviewed_at,
-        pr.on_chain_proposal_id
-       FROM proposals p
-       LEFT JOIN users u ON p.user_id = u.id
-       LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
-       WHERE pr.decision IS NOT NULL
-       ORDER BY p.created_at DESC`
-    );
+    // Try to include on_chain_proposal_id, but fall back if column doesn't exist
+    let proposals: ProposalWithReview[];
+    try {
+      proposals = await sqlQuery<ProposalWithReview[]>(
+        `SELECT 
+          p.id,
+          p.user_id,
+          p.wallet_address,
+          p.title,
+          p.proposal_markdown,
+          p.status,
+          p.created_at,
+          p.updated_at,
+          u.username,
+          u.avatar_url,
+          pr.decision as review_decision,
+          pr.reasoning as review_reasoning,
+          pr.token_allocation_percentage as review_token_allocation,
+          pr.scores as review_scores,
+          pr.reviewed_at as review_reviewed_at,
+          pr.on_chain_proposal_id
+         FROM proposals p
+         LEFT JOIN users u ON p.user_id = u.id
+         LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
+         WHERE pr.decision IS NOT NULL
+         ORDER BY p.created_at DESC`
+      );
+    } catch (queryError: any) {
+      // If on_chain_proposal_id column doesn't exist, try without it
+      if (queryError.message?.includes('on_chain_proposal_id') || queryError.code === '42703') {
+        console.warn('on_chain_proposal_id column not found, querying without it');
+        proposals = await sqlQuery<ProposalWithReview[]>(
+          `SELECT 
+            p.id,
+            p.user_id,
+            p.wallet_address,
+            p.title,
+            p.proposal_markdown,
+            p.status,
+            p.created_at,
+            p.updated_at,
+            u.username,
+            u.avatar_url,
+            pr.decision as review_decision,
+            pr.reasoning as review_reasoning,
+            pr.token_allocation_percentage as review_token_allocation,
+            pr.scores as review_scores,
+            pr.reviewed_at as review_reviewed_at,
+            NULL as on_chain_proposal_id
+           FROM proposals p
+           LEFT JOIN users u ON p.user_id = u.id
+           LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
+           WHERE pr.decision IS NOT NULL
+           ORDER BY p.created_at DESC`
+        );
+      } else {
+        throw queryError;
+      }
+    }
 
     // Format the response
     const formattedProposals = proposals.map(p => ({
@@ -77,9 +112,16 @@ export async function GET() {
         decision: p.review_decision,
         reasoning: p.review_reasoning,
         tokenAllocation: p.review_token_allocation,
-        scores: p.review_scores ? JSON.parse(p.review_scores) : null,
+        scores: p.review_scores ? (() => {
+          try {
+            return typeof p.review_scores === 'string' ? JSON.parse(p.review_scores) : p.review_scores;
+          } catch (e) {
+            console.error('Error parsing review scores:', e);
+            return null;
+          }
+        })() : null,
         reviewedAt: p.review_reviewed_at,
-        onChainProposalId: p.on_chain_proposal_id,
+        onChainProposalId: p.on_chain_proposal_id || null,
       } : null,
     }));
 

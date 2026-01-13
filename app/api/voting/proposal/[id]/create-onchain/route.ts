@@ -9,6 +9,8 @@ interface ProposalData {
   title: string;
   proposal_markdown: string;
   wallet_address: string;
+  recipient_address: string | null;
+  token_amount: string | null;
   status: string;
 }
 
@@ -37,10 +39,10 @@ export async function POST(
 
   await ensureProposalSchema();
 
-  // Fetch proposal and review
+    // Fetch proposal and review
   try {
     const proposals = await sqlQuery<ProposalData[]>(
-      `SELECT id, title, proposal_markdown, wallet_address, status 
+      `SELECT id, title, proposal_markdown, wallet_address, recipient_address, token_amount, status 
        FROM proposals 
        WHERE id = :proposalId 
        LIMIT 1`,
@@ -83,6 +85,14 @@ export async function POST(
     const review = reviews[0];
     const tokenAllocation = review.token_allocation_percentage;
 
+    // Validate that proposal has required on-chain data
+    if (!proposal.recipient_address || !proposal.token_amount) {
+      return NextResponse.json(
+        { error: 'Proposal is missing recipient address or token amount. These fields are required for on-chain creation.' },
+        { status: 400 }
+      );
+    }
+
     // Check environment variables
     const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS;
     const azuraPrivateKey = process.env.AZURA_PRIVATE_KEY;
@@ -120,14 +130,21 @@ export async function POST(
       );
     }
 
-    // Calculate USDC amount (placeholder - you may want to calculate based on token allocation)
-    // For now, using a fixed amount, but this should be based on your tokenomics
-    const usdcAmount = (tokenAllocation * 1000 * 1e6).toString(); // Example: tokenAllocation% of 1000 USDC (6 decimals)
+    // Convert token amount to on-chain format (6 decimals)
+    // User enters amount like "1000" and we convert to "1000000000" (1000 * 10^6)
+    const tokenAmountNum = parseFloat(proposal.token_amount);
+    if (isNaN(tokenAmountNum) || tokenAmountNum <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid token amount in proposal.' },
+        { status: 400 }
+      );
+    }
+    const usdcAmount = Math.floor(tokenAmountNum * 1e6).toString(); // USDC has 6 decimals
 
     // Create the proposal on-chain
     console.log(`Creating on-chain proposal for: ${proposal.title}`);
-    console.log(`Recipient: ${proposal.wallet_address}`);
-    console.log(`USDC Amount: ${usdcAmount} (${tokenAllocation}% allocation)`);
+    console.log(`Recipient: ${proposal.recipient_address}`);
+    console.log(`Token Amount: ${usdcAmount} (${tokenAmountNum} USDC)`);
 
     // Use a Web3Provider wrapper
     const web3Provider = new providers.Web3Provider({
@@ -140,7 +157,7 @@ export async function POST(
 
     const { proposalId: onChainProposalId, txHash } = await createProposalOnChain(
       contractAddress,
-      proposal.wallet_address,
+      proposal.recipient_address,
       usdcAmount,
       proposal.title,
       proposal.proposal_markdown,

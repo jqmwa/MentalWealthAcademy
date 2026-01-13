@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { title, proposalMarkdown, walletAddress } = body;
+  const { title, proposalMarkdown, walletAddress, recipientAddress, tokenAmount } = body;
 
   // Validation
   if (!title || typeof title !== 'string' || title.trim().length === 0) {
@@ -58,6 +58,37 @@ export async function POST(request: Request) {
   if (!walletAddress || typeof walletAddress !== 'string') {
     return NextResponse.json(
       { error: 'Wallet address is required.' },
+      { status: 400 }
+    );
+  }
+
+  if (!recipientAddress || typeof recipientAddress !== 'string' || recipientAddress.trim().length === 0) {
+    return NextResponse.json(
+      { error: 'Recipient wallet address is required.' },
+      { status: 400 }
+    );
+  }
+
+  // Validate recipient address format
+  if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress.trim())) {
+    return NextResponse.json(
+      { error: 'Invalid recipient wallet address format. Must be a valid Ethereum address (0x followed by 40 hexadecimal characters).' },
+      { status: 400 }
+    );
+  }
+
+  if (!tokenAmount || typeof tokenAmount !== 'string' || tokenAmount.trim().length === 0) {
+    return NextResponse.json(
+      { error: 'Token amount is required.' },
+      { status: 400 }
+    );
+  }
+
+  // Validate token amount
+  const tokenAmountNum = parseFloat(tokenAmount.trim());
+  if (isNaN(tokenAmountNum) || tokenAmountNum <= 0) {
+    return NextResponse.json(
+      { error: 'Token amount must be a positive number.' },
       { status: 400 }
     );
   }
@@ -98,14 +129,16 @@ export async function POST(request: Request) {
   try {
     const proposalId = uuidv4();
     await sqlQuery(
-      `INSERT INTO proposals (id, user_id, wallet_address, title, proposal_markdown, status)
-       VALUES (:id, :userId, :walletAddress, :title, :proposalMarkdown, 'pending_review')`,
+      `INSERT INTO proposals (id, user_id, wallet_address, title, proposal_markdown, recipient_address, token_amount, status)
+       VALUES (:id, :userId, :walletAddress, :title, :proposalMarkdown, :recipientAddress, :tokenAmount, 'pending_review')`,
       {
         id: proposalId,
         userId: user.id,
         walletAddress: walletAddress.trim(),
         title: title.trim(),
         proposalMarkdown: proposalMarkdown.trim(),
+        recipientAddress: recipientAddress.trim().toLowerCase(),
+        tokenAmount: tokenAmount.trim(),
       }
     );
 

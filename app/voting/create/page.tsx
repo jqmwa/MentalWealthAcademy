@@ -89,6 +89,8 @@ export default function CreateProposalPage() {
   const { address, isConnected } = useAccount();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
+  const [recipientAddress, setRecipientAddress] = useState('');
+  const [tokenAmount, setTokenAmount] = useState('');
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -185,6 +187,27 @@ export default function CreateProposalPage() {
       return;
     }
 
+    if (!recipientAddress.trim()) {
+      alert('Please provide the recipient wallet address');
+      return;
+    }
+
+    if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress.trim())) {
+      alert('Please enter a valid Ethereum address (0x followed by 40 hexadecimal characters)');
+      return;
+    }
+
+    if (!tokenAmount.trim()) {
+      alert('Please provide the token amount');
+      return;
+    }
+
+    const tokenAmountNum = parseFloat(tokenAmount.trim());
+    if (isNaN(tokenAmountNum) || tokenAmountNum <= 0) {
+      alert('Please enter a valid token amount (must be greater than 0)');
+      return;
+    }
+
     const connectedAddress = address || walletAddress;
     if (!connectedAddress) {
       // Show alert to guide user to Connect Wallet button
@@ -202,6 +225,8 @@ export default function CreateProposalPage() {
           title: title.trim(),
           proposalMarkdown: proposal.trim(),
           walletAddress: connectedAddress,
+          recipientAddress: recipientAddress.trim(),
+          tokenAmount: tokenAmount.trim(),
         }),
       });
 
@@ -303,6 +328,38 @@ export default function CreateProposalPage() {
                 <div className={styles.inputFooter}>
                   <span className={styles.charCount}>{title.length}/120</span>
                 </div>
+              </div>
+
+              {/* Recipient Address Input */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  <span className={styles.labelText}>Recipient Wallet Address</span>
+                  <span className={styles.labelHint}>Address to receive USDC if approved</span>
+                </label>
+                <input
+                  type="text"
+                  className={styles.titleInput}
+                  placeholder="0x..."
+                  value={recipientAddress}
+                  onChange={(e) => setRecipientAddress(e.target.value)}
+                />
+              </div>
+
+              {/* Token Amount Input */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  <span className={styles.labelText}>Token Amount (USDC)</span>
+                  <span className={styles.labelHint}>Amount of USDC to request</span>
+                </label>
+                <input
+                  type="number"
+                  className={styles.titleInput}
+                  placeholder="e.g., 1000"
+                  value={tokenAmount}
+                  onChange={(e) => setTokenAmount(e.target.value)}
+                  step="0.01"
+                  min="0"
+                />
               </div>
 
               {/* Template Buttons */}

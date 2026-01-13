@@ -111,13 +111,53 @@ class ElizaAPIClient {
         throw new Error(errorData.error?.message || errorData.message || `Eliza API error: ${response.status} ${response.statusText}`);
       }
 
-      const data: ElizaChatResponse = await response.json();
-      console.log('Eliza API response received:', { hasChoices: !!data.choices, choicesLength: data.choices?.length });
+      let data: ElizaChatResponse;
+      try {
+        const responseText = await response.text();
+        console.log('Eliza API raw response:', { 
+          status: response.status, 
+          statusText: response.statusText,
+          responseLength: responseText.length,
+          responsePreview: responseText.substring(0, 200),
+        });
+        
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('Failed to parse Eliza API response as JSON:', {
+            error: parseError,
+            responseText: responseText.substring(0, 500),
+          });
+          throw new Error(`Eliza API returned invalid JSON: ${responseText.substring(0, 100)}`);
+        }
+      } catch (jsonError: any) {
+        if (jsonError.message?.includes('invalid JSON')) {
+          throw jsonError;
+        }
+        throw new Error(`Failed to read Eliza API response: ${jsonError.message}`);
+      }
+      
+      console.log('Eliza API parsed response:', { 
+        hasChoices: !!data.choices, 
+        choicesLength: data.choices?.length,
+        hasError: !!data.error,
+        errorMessage: data.error?.message,
+      });
+      
+      // Check for error in response
+      if (data.error) {
+        console.error('Eliza API returned error:', data.error);
+        throw new Error(data.error.message || 'Eliza API returned an error');
+      }
       
       // Handle different response formats
       if (data.choices && data.choices.length > 0) {
         const content = data.choices[0].message.content || '';
         console.log('Extracted content length:', content.length);
+        if (!content) {
+          console.error('Eliza API returned empty content in choices:', data.choices[0]);
+          throw new Error('Eliza API returned empty content');
+        }
         return content;
       }
 
@@ -128,7 +168,7 @@ class ElizaAPIClient {
         return text;
       }
 
-      console.error('No content found in Eliza API response:', data);
+      console.error('No content found in Eliza API response:', JSON.stringify(data, null, 2));
       throw new Error('No response content from Eliza API');
     } catch (error: any) {
       // Handle fetch errors specifically

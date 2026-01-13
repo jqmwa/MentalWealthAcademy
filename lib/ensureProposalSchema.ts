@@ -14,6 +14,8 @@ export async function ensureProposalSchema() {
         wallet_address VARCHAR(255) NOT NULL,
         title VARCHAR(255) NOT NULL,
         proposal_markdown TEXT NOT NULL,
+        recipient_address VARCHAR(255) NULL,
+        token_amount VARCHAR(255) NULL,
         status VARCHAR(50) NOT NULL DEFAULT 'pending_review',
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -21,6 +23,23 @@ export async function ensureProposalSchema() {
         CONSTRAINT valid_status CHECK (status IN ('pending_review', 'approved', 'rejected', 'active', 'completed'))
       )
     `);
+
+    // Add recipient_address and usdc_amount columns if they don't exist
+    try {
+      await sqlQuery(`ALTER TABLE proposals ADD COLUMN IF NOT EXISTS recipient_address VARCHAR(255) NULL`);
+    } catch (e: any) {
+      if (!e.message?.includes('already exists') && !e.message?.includes('duplicate')) {
+        console.warn('Warning: Could not add recipient_address column:', e.message);
+      }
+    }
+    
+    try {
+      await sqlQuery(`ALTER TABLE proposals ADD COLUMN IF NOT EXISTS token_amount VARCHAR(255) NULL`);
+    } catch (e: any) {
+      if (!e.message?.includes('already exists') && !e.message?.includes('duplicate')) {
+        console.warn('Warning: Could not add token_amount column:', e.message);
+      }
+    }
 
     // Proposal reviews table
     await sqlQuery(`
