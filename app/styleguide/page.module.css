@@ -1,0 +1,654 @@
+/**
+ * Mental Wealth Academy Style Guide
+ * Visual reference for all design tokens
+ */
+
+.container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--color-background);
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-family: var(--font-secondary);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-secondary);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sectionDescription {
+  font-family: var(--font-primary);
+  font-weight: 300;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+}
+
+.subsection {
+  margin-bottom: 2rem;
+}
+
+.subsectionTitle {
+  font-family: var(--font-secondary);
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  margin-bottom: 1rem;
+}
+
+/* Color Grid */
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.colorCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.colorSwatch {
+  height: 80px;
+  width: 100%;
+}
+
+.colorInfo {
+  padding: 0.75rem 1rem;
+}
+
+.colorName {
+  font-family: var(--font-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.colorValue {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Typography Samples */
+.typographyGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.typographySample {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.typographyLabel {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.typographyText {
+  color: var(--color-text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.typographyMeta {
+  font-family: var(--font-button);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Font Families */
+.fontFamilyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.fontFamilyCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.fontFamilyName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.fontFamilyUsage {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.fontFamilySample {
+  font-size: 1.5rem;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+}
+
+.fontWeightsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.fontWeightChip {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(81, 104, 255, 0.08);
+  border-radius: 9999px;
+  color: var(--color-text-dark);
+}
+
+/* Spacing Scale */
+.spacingGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.spacingRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spacingLabel {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-text-dark);
+  width: 60px;
+  text-align: right;
+}
+
+.spacingBar {
+  height: 24px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7B8CFF 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+.spacingValue {
+  font-family: var(--font-button);
+  font-size: 0.625rem;
+  color: white;
+}
+
+/* Border Radius */
+.radiusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.radiusCard {
+  background: white;
+  padding: 1rem;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.radiusSample {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7B8CFF 100%);
+}
+
+.radiusLabel {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-text-dark);
+}
+
+.radiusValue {
+  font-family: var(--font-button);
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+}
+
+/* Shadows */
+.shadowGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.shadowCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 140px;
+}
+
+.shadowLabel {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-text-dark);
+  margin-top: 0.5rem;
+}
+
+/* Breakpoints */
+.breakpointGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.breakpointRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.breakpointName {
+  font-family: var(--font-button);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  width: 60px;
+}
+
+.breakpointValue {
+  font-family: var(--font-button);
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+  width: 80px;
+}
+
+.breakpointBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(81, 104, 255, 0.15);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.breakpointFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-radius: 4px;
+}
+
+.breakpointDevice {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  width: 100px;
+}
+
+/* Gradients */
+.gradientGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.gradientCard {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.gradientSwatch {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradientInfo {
+  background: white;
+  padding: 1rem;
+}
+
+.gradientName {
+  font-family: var(--font-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.gradientValue {
+  font-family: var(--font-button);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  word-break: break-all;
+}
+
+/* Animation Preview */
+.animationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.animationCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.animationBox {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7B8CFF 100%);
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.animationCard:hover .animationBox {
+  transform: scale(1.2);
+}
+
+.animationLabel {
+  font-family: var(--font-button);
+  font-size: 0.75rem;
+  color: var(--color-text-dark);
+}
+
+.animationValue {
+  font-family: var(--font-button);
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+}
+
+/* Z-Index Scale */
+.zIndexGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.zIndexRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.zIndexLabel {
+  font-family: var(--font-button);
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+  width: 100px;
+}
+
+.zIndexValue {
+  font-family: var(--font-button);
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* Buttons Preview */
+.buttonGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.buttonPrimary {
+  font-family: var(--font-button);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.buttonPrimary:hover {
+  background-color: #3d52e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.buttonSecondary {
+  font-family: var(--font-button);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--color-secondary);
+  color: var(--color-text-light);
+}
+
+.buttonSecondary:hover {
+  background-color: #4fa87a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
+}
+
+.buttonOutline {
+  font-family: var(--font-button);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-text-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: var(--color-text-dark);
+}
+
+.buttonOutline:hover {
+  background-color: var(--color-text-dark);
+  color: var(--color-text-light);
+}
+
+.buttonDark {
+  font-family: var(--font-button);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--color-text-dark);
+  color: var(--color-text-light);
+}
+
+.buttonDark:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Examples */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.exampleCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  padding: 1.5rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  transition: box-shadow 250ms cubic-bezier(0.25, 1, 0.5, 1), transform 250ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.exampleCard:hover {
+  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.cardMentalHealth {
+  border-left: 4px solid #9B7ED9;
+}
+
+.cardProductivity {
+  border-left: 4px solid #5168FF;
+}
+
+.cardWealth {
+  border-left: 4px solid #62BE8F;
+}
+
+.cardCategory {
+  font-family: var(--font-button);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+  font-family: var(--font-secondary);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-family: var(--font-primary);
+  font-weight: 300;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .colorGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fontFamilyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .breakpointDevice {
+    display: none;
+  }
+}
