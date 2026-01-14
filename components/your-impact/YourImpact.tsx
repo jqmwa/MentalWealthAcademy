@@ -67,7 +67,7 @@ export default function YourImpact() {
           
           <div className={styles.statusContainer}>
             <div className={styles.statusBadge}>
-              <span className={styles.statusLabel}>This week's discussions: High signal</span>
+              <span className={styles.statusLabel}>This week&apos;s discussions: High signal</span>
               <div className={styles.statusTags}>
                 <span className={styles.statusIntensity}>Low-intensity</span>
                 <span className={styles.statusUrgency}>No urgency</span>
