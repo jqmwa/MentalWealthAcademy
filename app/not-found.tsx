@@ -11,8 +11,8 @@ export default function NotFound() {
         <div className={styles.content}>
           <h3 className={styles.heading}>Page Not Found</h3>
           <p className={styles.paragraph}>
-            The page you're looking for doesn't exist or has been moved. 
-            Let's get you back on track to your mental wealth journey.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved. 
+            Let&apos;s get you back on track to your mental wealth journey.
           </p>
           <Link href="/home" className={styles.cta}>
             Go to Home

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { DaemonTerminal } from '@/components/daemon/DaemonTerminal';
 import { PadletBulletinBoard } from '@/components/padlet-bulletin-board/PadletBulletinBoard';
+import { PadletMapBoard } from '@/components/padlet-map-board/PadletMapBoard';
 import styles from './PersonalDashboard.module.css';
 
 interface PersonalDashboardProps {
@@ -54,6 +55,9 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
 
         {/* Padlet Bulletin Board */}
         <PadletBulletinBoard />
+
+        {/* Padlet Map Board */}
+        <PadletMapBoard />
 
         {/* Bento Grid Layout */}
         <div className={styles.bentoGridContainer}>

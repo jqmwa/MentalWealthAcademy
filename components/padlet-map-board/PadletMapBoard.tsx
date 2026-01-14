@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import styles from './PadletMapBoard.module.css';
 
 interface PadletMapBoardProps {
@@ -29,11 +30,13 @@ export function PadletMapBoard({ embedId = 'x4138bt4k49fu20s' }: PadletMapBoardP
             <span className={styles.padletText} aria-hidden="true">
               Made with
             </span>
-            <img
+            <Image
               src="https://padlet.net/emails/padlet_email_logo_2026_text-dark-200.png"
-              height="12"
+              width={12}
+              height={12}
               className={styles.padletLogo}
               alt="Made with Padlet"
+              unoptimized
             />
           </a>
         </div>
