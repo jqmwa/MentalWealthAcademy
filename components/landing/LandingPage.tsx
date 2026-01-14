@@ -5,6 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { PatternTextSection } from './PatternTextSection';
+import { FeaturesSection } from './FeaturesSection';
 import { LandingFooter } from './LandingFooter';
 import PencilLoader from './PencilLoader';
 import styles from './LandingPage.module.css';
@@ -243,7 +244,7 @@ export const RotatingTextSection: React.FC = () => {
 };
 
 const LandingPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signup');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
@@ -494,7 +495,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.promoText}>
               <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
               <p className={styles.promoDescription}>
-              The most complete digital participation tool for open, transparent and decentralized cyber-academia research fund.
+              The most complete digital AI super-tool for fast-paced, transparent education, a transformative academic research.
               </p>
             </div>
           </div>
@@ -812,6 +813,12 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Features Section */}
+      <FeaturesSection />
+
+      {/* Pattern Background Section */}
+      <PatternTextSection />
+
       {/* The Opportunity Section */}
       <section id="opportunity" className={styles.opportunitySection}>
         <div className={styles.opportunityContainer}>
@@ -819,7 +826,7 @@ const LandingPage: React.FC = () => {
             <div className={styles.opportunityLeft}>
               <h1 className={styles.opportunityTitle}>The Opportunity</h1>
               <div className={styles.opportunityTextTop}>
-                <p>Over 1 in 5 U.S. adults experience mental illness. Access to care is the growing concern as wealth gap rises, making this one of the largest crises of our generation.</p>
+                <p>Over 60% of students report feeling disengaged from traditional education systems, while 85% of knowledge workers say they learned more from peer networks than formal institutions. The current model is failing.</p>
               </div>
               <div className={styles.opportunityImageWrapper}>
                 <div className={styles.opportunityImageContainer}>
@@ -832,9 +839,6 @@ const LandingPage: React.FC = () => {
                     sizes="(max-width: 767px) 100vw, (max-width: 1023px) 384px, 384px"
                   />
                 </div>
-              </div>
-              <div className={styles.opportunityTextBottom}>
-                <p>✨ An AI companion that holds space for your inner rhythm—gently structures your day, offers real‑time reflection prompts, and flows with you across every device. 🌸 Agent‑driven care architecture, weightless cloud presence, always attuned to where you are and what you need to feel whole.</p>
               </div>
             </div>
             <div className={styles.opportunityRight}>
@@ -851,9 +855,9 @@ const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>Clinical Care</h5>
+                    <h5 className={styles.opportunityListItemTitle}>Personalized Learning Paths</h5>
                     <div className={styles.opportunityListItemText}>
-                      <p>Traditional mental health services often rely on outdated models that prioritize profit over patient outcomes. We&apos;re working to transform clinical care through community-governed funding that ensures providers can focus on healing rather than billing cycles.</p>
+                      <p>Traditional education systems plant the same seeds in every garden, expecting uniform growth. We cultivate personalized learning ecosystems where each mind blooms at its own pace, nourished by adaptive curricula that respond to individual needs rather than standardized tests.</p>
                     </div>
                   </div>
                 </li>
@@ -869,9 +873,9 @@ const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>Community Support</h5>
+                    <h5 className={styles.opportunityListItemTitle}>Collaborative Learning Networks</h5>
                     <div className={styles.opportunityListItemText}>
-                      <p>Peer support networks and community-based care have shown remarkable effectiveness, yet they remain underfunded. We&apos;re building sustainable models that empower local communities to create and maintain their own mental wellness infrastructure.</p>
+                      <p>Knowledge grows stronger when shared. Like a forest where trees communicate through underground networks, we&apos;re building peer learning ecosystems where students teach students, ideas cross-pollinate, and wisdom flows through decentralized networks that strengthen the entire community.</p>
                     </div>
                   </div>
                 </li>
@@ -887,27 +891,9 @@ const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>Prevention & Early Intervention</h5>
+                    <h5 className={styles.opportunityListItemTitle}>Foundational Knowledge Building</h5>
                     <div className={styles.opportunityListItemText}>
-                      <p>Early intervention can prevent mental health crises before they escalate, but current systems prioritize reactive care. We&apos;re funding programs that identify and address mental health challenges early, reducing long-term suffering and costs.</p>
-                    </div>
-                  </div>
-                </li>
-                <li className={styles.opportunityListItem}>
-                  <div className={styles.opportunityListItemIcon}>
-                    <div className={styles.opportunityListItemIconContainer}>
-                      <Image
-                        src="/icons/Mental Health Icon (2).svg"
-                        alt="Crisis Response"
-                        fill
-                        className={styles.opportunityListItemIconImage}
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>Crisis Response</h5>
-                    <div className={styles.opportunityListItemText}>
-                      <p>Mental health crises require immediate, compassionate response, yet many communities lack adequate crisis intervention services. We&apos;re supporting alternatives to traditional emergency responses that prioritize de-escalation and connection over institutionalization.</p>
+                      <p>Strong foundations support towering structures. Rather than patching gaps after they appear, we plant seeds of understanding early—building cognitive frameworks that grow into robust knowledge trees, preventing learning gaps before they become chasms that block future growth.</p>
                     </div>
                   </div>
                 </li>
@@ -923,9 +909,9 @@ const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.opportunityListItemContent}>
-                    <h5 className={styles.opportunityListItemTitle}>AI-Governance</h5>
+                    <h5 className={styles.opportunityListItemTitle}>AI-Enhanced Learning</h5>
                     <div className={styles.opportunityListItemText}>
-                      <p>Community-governed funds represent a new paradigm where collective decision-making meets intelligent automation. By partnering with adaptive AI systems, we&apos;re creating a future where human wisdom guides resource allocation while machine intelligence optimizes outcomes, ensuring every dollar serves those who need it most.</p>
+                      <p>Imagine a learning companion that never sleeps, remembers every lesson, and adapts in real-time. Our AI systems act as intelligent tutors that amplify human wisdom—guiding curriculum decisions, personalizing pathways, and optimizing educational resources so every learner receives exactly what they need to flourish.</p>
                     </div>
                   </div>
                 </li>
@@ -934,9 +920,6 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Pattern Background Section */}
-      <PatternTextSection />
 
       {/* Footer */}
       <LandingFooter />

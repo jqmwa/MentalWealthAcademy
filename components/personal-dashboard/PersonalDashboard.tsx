@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { DaemonTerminal } from '@/components/daemon/DaemonTerminal';
-import Quests from '@/components/quests/Quests';
-import YourImpact from '@/components/your-impact/YourImpact';
 import styles from './PersonalDashboard.module.css';
 
 interface PersonalDashboardProps {
@@ -36,83 +34,73 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
 
   return (
     <div className={styles.dashboard}>
-      {/* Hero Section with Bento Grid */}
+      {/* Hero Section */}
       <div className={styles.heroContainer}>
-        {/* Hero Header */}
         <div className={styles.hero}>
           <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
-            <div className={styles.headerContent}>
-              <div className={styles.greeting}>
-                <p className={styles.eyebrow}>MWA • Personal Dashboard</p>
-                <span className={styles.greetingTime}>{greeting}</span>
-                {username && !username.startsWith('user_') && (
-                  <h1 className={styles.welcomeName}>{username}</h1>
-                )}
-              </div>
-              {avatarUrl && (
-                <div className={styles.avatarWrapper}>
-                  <Image
-                    src={avatarUrl}
-                    alt={username || 'User'}
-                    width={64}
-                    height={64}
-                    className={styles.avatar}
-                    unoptimized
-                  />
-                  {isActiveToday && (
-                    <div className={styles.activeDot} />
-                  )}
-                </div>
+            <p className={styles.eyebrow}>MWA • Personal Dashboard</p>
+            <h1 className={styles.title}>
+              {greeting}
+              {username && !username.startsWith('user_') && (
+                <span className={styles.username}> {username}</span>
               )}
-            </div>
+            </h1>
+            <p className={styles.subtitle}>
+              Track your progress, complete quests, and shape the future of mental health research.
+            </p>
           </header>
         </div>
 
         {/* Bento Grid Layout */}
-        <div className={styles.bentoGrid}>
+        <div className={styles.bentoGridContainer}>
+          <div className={styles.bentoGrid}>
           {/* Left Column - Main Content */}
           <div className={styles.leftColumn}>
-            {/* Your Impact Card */}
-            <div className={`${styles.bentoCard} ${styles.impactCard}`}>
-              <YourImpact />
-            </div>
           </div>
 
           {/* Right Column - Side Content */}
           <div className={styles.rightColumn}>
-            {/* Daemon Terminal Card */}
-            <div className={`${styles.bentoCard} ${styles.daemonCard}`}>
-              <DaemonTerminal />
-            </div>
+          </div>
+        </div>
+        
+        {/* Full Width Cards */}
+        {/* Daemon Terminal Card */}
+        <div className={`${styles.bentoCard} ${styles.daemonCard} ${styles.fullWidthCard}`}>
+          <DaemonTerminal />
+        </div>
 
-            {/* Stats Card */}
-            <div className={`${styles.bentoCard} ${styles.statsCard}`}>
-              <div className={styles.statsHeader}>
-                <h3 className={styles.statsTitle}>Your Stats</h3>
-              </div>
-              <div className={styles.statsContent}>
-                <div className={styles.statItem}>
-                  <span className={styles.statLabel}>Shards</span>
-                  <span className={styles.statValue}>{shardCount.toLocaleString()}</span>
-                </div>
-                <div className={styles.statItem}>
-                  <span className={styles.statLabel}>Streak</span>
-                  <span className={styles.statValue}>{streak} days</span>
-                </div>
-                {isActiveToday && (
-                  <div className={styles.statItem}>
-                    <span className={styles.statLabel}>Status</span>
-                    <span className={styles.statValueActive}>Active today</span>
-                  </div>
-                )}
-              </div>
+        {/* Proposals Card */}
+        <div className={`${styles.bentoCard} ${styles.statsCard} ${styles.fullWidthCard}`}>
+          {/* Proposals Moving Toward Funding */}
+          <div className={styles.proposalsContainer}>
+            <div className={styles.proposalsHeader}>
+              <span className={styles.proposalsTitle}>Proposals Moving Toward Funding</span>
             </div>
-
-            {/* Quests Card */}
-            <div className={`${styles.bentoCard} ${styles.questsCard}`}>
-              <Quests />
+            <div className={styles.proposalsList}>
+              <div className={styles.proposalItem}>
+                <div className={styles.proposalContent}>
+                  <span className={styles.proposalTitle}>Mental Health Access Initiative</span>
+                  <span className={styles.proposalStatus}>Moving toward funding</span>
+                </div>
+                <div className={styles.proposalArrow}>→</div>
+              </div>
+              <div className={styles.proposalItem}>
+                <div className={styles.proposalContent}>
+                  <span className={styles.proposalTitle}>Community Support Program</span>
+                  <span className={styles.proposalStatus}>In review</span>
+                </div>
+                <div className={styles.proposalArrow}>→</div>
+              </div>
+              <div className={styles.proposalItem}>
+                <div className={styles.proposalContent}>
+                  <span className={styles.proposalTitle}>Prevention Framework</span>
+                  <span className={styles.proposalStatus}>Gathering input</span>
+                </div>
+                <div className={styles.proposalArrow}>→</div>
+              </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

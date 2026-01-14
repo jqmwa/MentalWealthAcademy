@@ -157,20 +157,20 @@ export const fontWeights = {
 } as const;
 
 /**
- * Font Sizes - Following 4px grid, matching Tailwind conventions
- * Size in pixels and rem for reference
+ * Font Sizes - Golden Ratio Scale (φ = 1.618)
+ * Harmonious typographic proportions
  */
 export const fontSizes = {
-  xs: '0.6875rem',     // 11px - Micro labels, timestamps
-  sm: '0.75rem',       // 12px - Captions, metadata
-  base: '0.875rem',    // 14px - Body text baseline
+  xs: '0.618rem',      // ~10px: base ÷ φ
+  sm: '0.75rem',       // ~12px: base ÷ (φ × 0.85)
+  base: '0.875rem',    // 14px - Body text baseline (maintained)
   md: '1rem',          // 16px - Comfortable reading
-  lg: '1.125rem',      // 18px - Subheadings
-  xl: '1.5rem',        // 24px - Section headers
-  '2xl': '2rem',       // 32px - Page titles
-  '3xl': '3rem',       // 48px - Hero headlines
-  '4xl': '3.5rem',     // 56px - Large displays
-  '5xl': '4rem',       // 64px - Extra large displays
+  lg: '1.125rem',      // ~18px: base × 1.125
+  xl: '1.618rem',      // ~26px: base × φ
+  '2xl': '2.618rem',   // ~42px: base × φ²
+  '3xl': '4.236rem',   // ~68px: base × φ³
+  '4xl': '6.854rem',   // ~110px: base × φ⁴
+  '5xl': '11.09rem',   // ~177px: base × φ⁵
 } as const;
 
 /**
@@ -199,80 +199,81 @@ export const letterSpacing = {
 
 /**
  * Typography Presets - Ready-to-use text styles
+ * Updated to use golden ratio-based font sizes
  */
 export const typography = {
   h1: {
     fontFamily: fontFamilies.primary,
-    fontSize: fontSizes['3xl'],
+    fontSize: fontSizes['3xl'],     // ~68px (φ³)
     fontWeight: fontWeights.bold,
     lineHeight: lineHeights.tight,
     letterSpacing: letterSpacing.tight,
   },
   h2: {
     fontFamily: fontFamilies.secondary,
-    fontSize: fontSizes['2xl'],
+    fontSize: fontSizes['2xl'],     // ~42px (φ²)
     fontWeight: fontWeights.semibold,
     lineHeight: lineHeights.tight,
     letterSpacing: letterSpacing.tight,
   },
   h3: {
     fontFamily: fontFamilies.secondary,
-    fontSize: fontSizes.xl,
+    fontSize: fontSizes.xl,         // ~26px (φ)
     fontWeight: fontWeights.semibold,
     lineHeight: lineHeights.tight,
   },
   h4: {
     fontFamily: fontFamilies.secondary,
-    fontSize: fontSizes.lg,
+    fontSize: fontSizes.lg,         // ~18px
     fontWeight: fontWeights.semibold,
     lineHeight: lineHeights.snug,
   },
   h5: {
     fontFamily: fontFamilies.secondary,
-    fontSize: fontSizes.md,
+    fontSize: fontSizes.md,         // 16px
     fontWeight: fontWeights.medium,
     lineHeight: lineHeights.snug,
   },
   h6: {
     fontFamily: fontFamilies.secondary,
-    fontSize: fontSizes.base,
+    fontSize: fontSizes.base,       // 14px
     fontWeight: fontWeights.medium,
     lineHeight: lineHeights.snug,
   },
   body: {
     fontFamily: fontFamilies.primary,
-    fontSize: fontSizes.base,
+    fontSize: fontSizes.base,       // 14px
     fontWeight: fontWeights.light,
     lineHeight: lineHeights.relaxed,
   },
   bodyLarge: {
     fontFamily: fontFamilies.primary,
-    fontSize: fontSizes.md,
+    fontSize: fontSizes.md,         // 16px
     fontWeight: fontWeights.light,
     lineHeight: lineHeights.relaxed,
   },
   bodySmall: {
     fontFamily: fontFamilies.primary,
-    fontSize: fontSizes.sm,
+    fontSize: fontSizes.sm,         // ~12px
     fontWeight: fontWeights.light,
     lineHeight: lineHeights.relaxed,
   },
   caption: {
     fontFamily: fontFamilies.primary,
-    fontSize: fontSizes.xs,
+    fontSize: fontSizes.xs,         // ~10px (÷φ)
     fontWeight: fontWeights.regular,
     lineHeight: lineHeights.normal,
   },
   button: {
     fontFamily: fontFamilies.mono,
-    fontSize: fontSizes.base,
+    fontSize: fontSizes.base,       // 14px
     fontWeight: fontWeights.medium,
     letterSpacing: letterSpacing.wider,
     textTransform: 'uppercase' as const,
   },
   mono: {
     fontFamily: fontFamilies.mono,
-    fontSize: fontSizes.base,
+    fontSize: fontSizes.base,       // 14px
     fontWeight: fontWeights.regular,
     lineHeight: lineHeights.normal,
     fontVariantNumeric: 'tabular-nums',
@@ -280,26 +281,38 @@ export const typography = {
 } as const;
 
 // ============================================
-// Spacing Tokens (Tailwind Convention - 4px base)
+// Spacing Tokens (Golden Ratio Scale - φ = 1.618)
 // ============================================
 
 /**
- * Spacing Scale - Based on 4px unit
- * Compatible with Tailwind spacing utilities
+ * Spacing Scale - Based on Golden Ratio
+ * Provides harmonious proportions throughout the design
  */
 export const spacing = {
   px: '1px',
   0: '0',
+  
+  // Golden ratio progression
+  '3xs': '0.375rem',   // ~6px: φ⁻³
+  '2xs': '0.5rem',     // ~8px
+  xs: '0.625rem',      // ~10px: φ⁻²
+  sm: '1rem',          // 16px: φ⁻¹ (base)
+  md: '1.625rem',      // ~26px: φ⁰
+  lg: '2.625rem',      // ~42px: φ¹
+  xl: '4.25rem',       // ~68px: φ²
+  '2xl': '6.875rem',   // ~110px: φ³
+  
+  // Legacy numeric scale (maintained for compatibility)
   0.5: '0.125rem',   // 2px
-  1: '0.25rem',      // 4px - Micro spacing (icon gaps)
+  1: '0.25rem',      // 4px - Micro spacing
   1.5: '0.375rem',   // 6px
-  2: '0.5rem',       // 8px - Tight spacing (within components)
+  2: '0.5rem',       // 8px - Tight spacing
   2.5: '0.625rem',   // 10px
-  3: '0.75rem',      // 12px - Standard spacing (between related elements)
+  3: '0.75rem',      // 12px - Standard spacing
   3.5: '0.875rem',   // 14px
-  4: '1rem',         // 16px - Comfortable spacing (section padding)
+  4: '1rem',         // 16px - Comfortable spacing
   5: '1.25rem',      // 20px
-  6: '1.5rem',       // 24px - Generous spacing (between sections)
+  6: '1.5rem',       // 24px - Generous spacing
   7: '1.75rem',      // 28px
   8: '2rem',         // 32px - Major separation
   9: '2.25rem',      // 36px
@@ -326,21 +339,22 @@ export const spacing = {
 } as const;
 
 // ============================================
-// Border Radius Tokens
+// Border Radius Tokens (Golden Ratio Scale)
 // ============================================
 
 /**
- * Border Radius Scale - Following 4px grid
+ * Border Radius Scale - Golden Ratio Progression
+ * Harmonious rounding for visual consistency
  */
 export const borderRadius = {
   none: '0',
-  sm: '4px',         // Tags, badges, small chips
-  DEFAULT: '6px',
-  md: '8px',         // Buttons, inputs, small cards
-  lg: '12px',        // Standard cards, modals
-  xl: '16px',        // Hero cards, featured content
-  '2xl': '24px',     // Large containers
-  '3xl': '28px',     // Extra large elements
+  sm: '0.25rem',     // 4px - Tags, badges, small chips
+  DEFAULT: '0.375rem', // 6px
+  md: '0.5rem',      // 8px - Buttons, inputs, small cards (φ-based)
+  lg: '0.75rem',     // 12px - Standard cards, modals
+  xl: '1.25rem',     // 20px - Hero cards, featured content (φ-based)
+  '2xl': '2rem',     // 32px - Large containers (φ-based)
+  '3xl': '3.25rem',  // 52px - Extra large elements (φ-based)
   full: '9999px',    // Pills, avatars, status indicators
 } as const;
 

@@ -85,7 +85,7 @@ export default function AdminVotingPage() {
           <header className={styles.header}>
             <div>
               <p className={styles.eyebrow}>MWA • Decision Room</p>
-              <h1 className={styles.title}>Admin Voting</h1>
+              <h1 className={styles.title}>Decision Room</h1>
               <p className={styles.subtitle}>
                 Every quest submission lands here. Azura auto-votes with AgentKit while admins debate outcomes and settle the tally.
               </p>

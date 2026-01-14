@@ -205,12 +205,6 @@ const QuestPage: React.FC = () => {
   return (
     <div className={styles.questPageContainer}>
       <div className={styles.hero}>
-        <div className={styles.breadcrumbs}>
-          <a href="/home">Home</a>
-          <span className={styles.chevron}>/</span>
-          <span className={styles.current}>Quests</span>
-        </div>
-
         <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
           <p className={styles.eyebrow}>MWA • Quest Room</p>
           <h1 className={styles.title}>Complete Quests & Earn Rewards</h1>

@@ -1,0 +1,144 @@
+.featuresSection {
+  position: relative;
+  width: 100%;
+  padding: 80px 24px;
+  background: var(--color-background, #F4F5FE);
+  z-index: 1;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.supTitle {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 16px 0;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: 42px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  color: var(--color-text-dark);
+  margin: 0 0 24px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.highlight {
+  color: var(--color-primary);
+}
+
+.description {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.featureItem {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px;
+  background: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.featureItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.15);
+  border-color: rgba(81, 104, 255, 0.2);
+}
+
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(81, 104, 255, 0.08);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.featureTitle {
+  font-family: var(--font-secondary);
+  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.featureDescription {
+  font-family: var(--font-primary);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .featuresSection {
+    padding: 60px 20px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .featureItem {
+    padding: 24px;
+  }
+}

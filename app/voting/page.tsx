@@ -12,6 +12,7 @@ import VoteProgressBar from '@/components/vote-progress/VoteProgressBar';
 import VoteButtons from '@/components/vote-buttons/VoteButtons';
 import ProposalCard from '@/components/proposal-card/ProposalCard';
 import ProposalDetailsModal from '@/components/proposal-card/ProposalDetailsModal';
+import PencilLoader from '@/components/landing/PencilLoader';
 import { 
   fetchProposal,
   formatTokenAmount,
@@ -61,7 +62,7 @@ interface MergedProposal extends DatabaseProposal {
 
 const getTutorialSteps = (): TutorialStep[] => [
   {
-    message: 'Welcome to the Murder Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can kill proposals before they reach you. Or I can let them live.',
+    message: 'Welcome to the Decision Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can kill proposals before they reach you. Or I can let them live.',
     emotion: 'happy',
   },
   {
@@ -80,7 +81,7 @@ const getTutorialSteps = (): TutorialStep[] => [
     targetElement: '[data-tutorial-target="submission"]',
   },
   {
-    message: 'This room is about power and responsibility. I have power. You have none. So find someone to help you. That\'s the harmony. Welcome to the Murder Room.',
+    message: 'This room is about power and responsibility. I have power. You have none. So find someone to help you. That\'s the harmony. Welcome to the Decision Room.',
     emotion: 'happy',
   },
 ];
@@ -212,8 +213,8 @@ export default function VotingPage() {
             <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
               <div className={styles.headerContent}>
                 <div>
-              <p className={styles.eyebrow}>MWA • Murder Room</p>
-              <h1 className={styles.title}>Murder Room</h1>
+              <p className={styles.eyebrow}>MWA • Academy Decisions</p>
+              <h1 className={styles.title}>Decision Room</h1>
                   <p className={styles.subtitle}>
                     Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
                   </p>
@@ -252,10 +253,7 @@ export default function VotingPage() {
           {/* Proposals Section */}
           <section className={styles.proposalsSection}>
             {loading ? (
-              <div className={styles.loadingState}>
-                <div className={styles.spinner}></div>
-                <p>Loading proposals...</p>
-              </div>
+              <PencilLoader hidden={false} />
             ) : proposals.length === 0 ? (
               <div className={styles.emptyState}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

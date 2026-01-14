@@ -743,7 +743,7 @@
 .questCardTitle {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
-  font-size: 28px;
+  font-size: var(--font-size-xl); /* ~26px - golden ratio scale */
   color: #000000;
   line-height: 1.2;
   margin: 0;
@@ -1089,7 +1089,7 @@
   }
 
   .questCardTitle {
-    font-size: 22px;
+    font-size: var(--font-size-lg); /* ~18px - golden ratio scale */
   }
 
   .questDescription {

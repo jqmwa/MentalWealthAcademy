@@ -53,45 +53,63 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
   
-  /* Font Sizes - Mobile First (base) */
-  --font-size-xs: 0.75rem;    /* 12px */
-  --font-size-sm: 0.875rem;   /* 14px */
-  --font-size-base: 1rem;     /* 16px */
-  --font-size-lg: 1.125rem;   /* 18px */
-  --font-size-xl: 1.25rem;    /* 20px */
-  --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 1.875rem;  /* 30px */
-  --font-size-4xl: 2.25rem;   /* 36px */
-  --font-size-5xl: 3rem;      /* 48px */
+  /* Font Sizes - Golden Ratio Scale (φ = 1.618) */
+  --font-scale: 1.618;
+  --font-size-base: 1rem;     /* 16px - base size */
+  
+  /* Golden ratio typography scale for harmonious proportions */
+  --font-size-xs: 0.618rem;   /* ~10px: base ÷ φ */
+  --font-size-sm: 0.75rem;    /* ~12px: base ÷ (φ × 0.85) */
+  --font-size-md: 1rem;       /* 16px: base */
+  --font-size-lg: 1.125rem;   /* ~18px: base × 1.125 */
+  --font-size-xl: 1.618rem;   /* ~26px: base × φ */
+  --font-size-2xl: 2.618rem;  /* ~42px: base × φ² */
+  --font-size-3xl: 4.236rem;  /* ~68px: base × φ³ */
+  --font-size-4xl: 6.854rem;  /* ~110px: base × φ⁴ */
+  --font-size-5xl: 11.09rem;  /* ~177px: base × φ⁵ */
   
   /* ============================================
-     Spacing Scale (4px base unit)
+     Golden Ratio Spacing Scale (φ = 1.618)
      ============================================ */
+  --phi: 1.618;
+  --size-unit: 1rem;    /* 16px base */
+  
+  /* Golden ratio progression for harmonious spacing */
   --space-0: 0;
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
+  --space-3xs: 0.375rem;   /* ~6px: φ⁻³ */
+  --space-2xs: 0.5rem;     /* ~8px */
+  --space-xs: 0.625rem;    /* ~10px: φ⁻² */
+  --space-sm: 1rem;        /* 16px: φ⁻¹ (base) */
+  --space-md: 1.625rem;    /* ~26px: φ⁰ */
+  --space-lg: 2.625rem;    /* ~42px: φ¹ */
+  --space-xl: 4.25rem;     /* ~68px: φ² */
+  --space-2xl: 6.875rem;   /* ~110px: φ³ */
+  
+  /* Legacy spacing tokens (mapped to golden ratio scale) */
+  --space-1: 0.25rem;   /* 4px - micro spacing */
+  --space-2: 0.5rem;    /* 8px - maps to --space-2xs */
   --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
+  --space-4: 1rem;      /* 16px - maps to --space-sm */
   --space-5: 1.25rem;   /* 20px */
   --space-6: 1.5rem;    /* 24px */
   --space-8: 2rem;      /* 32px */
   --space-10: 2.5rem;   /* 40px */
   --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
+  --space-16: 4rem;     /* 64px - close to --space-xl */
   --space-20: 5rem;     /* 80px */
   --space-24: 6rem;     /* 96px */
   
   /* ============================================
      Component Tokens
      ============================================ */
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-3xl: 28px;
-  --radius-full: 9999px;
+  /* Border Radius - Golden Ratio Scale */
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.5rem;     /* 8px: φ-based progression */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1.25rem;    /* 20px: φ-based progression */
+  --radius-2xl: 2rem;      /* 32px: φ-based progression */
+  --radius-3xl: 3.25rem;   /* 52px: φ-based progression */
+  --radius-full: 9999px;   /* Circular elements */
   
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -485,6 +503,42 @@ h6 { font-size: var(--font-size-xs); }
 
 .swipe-card-save {
   background: linear-gradient(135deg, var(--color-primary) 0%, #7B8CFF 100%);
+}
+
+/* ============================================
+   Optical Spacing Utilities (Golden Ratio)
+   ============================================ */
+
+/* Optical margin adjustments for text elements */
+/* Text needs different visual spacing than boxes due to letterforms */
+.m-top-optical {
+  margin-top: calc(var(--space-md) * 0.85);
+}
+
+.m-bottom-optical {
+  margin-bottom: calc(var(--space-md) * 1.15);
+}
+
+.m-top-optical-sm {
+  margin-top: calc(var(--space-sm) * 0.85);
+}
+
+.m-bottom-optical-sm {
+  margin-bottom: calc(var(--space-sm) * 1.15);
+}
+
+.m-top-optical-lg {
+  margin-top: calc(var(--space-lg) * 0.85);
+}
+
+.m-bottom-optical-lg {
+  margin-bottom: calc(var(--space-lg) * 1.15);
+}
+
+/* Optical padding adjustments */
+.p-optical-vertical {
+  padding-top: calc(var(--space-md) * 0.85);
+  padding-bottom: calc(var(--space-md) * 1.15);
 }
 
 /* ============================================

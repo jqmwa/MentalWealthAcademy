@@ -17,7 +17,7 @@ const ICON_SOON_3 = '/icons/ethlogo.svg';
 const ICON_ARROW = '/icons/Arrow.svg';
 
 export function DaemonTerminal() {
-  const [view, setView] = useState<View>('toolGrid');
+  const [view, setView] = useState<View>('terminal');
   const [mode, setMode] = useState<Mode>('rewrite');
   const [tone, setTone] = useState<Tone>('warm');
   const [contextEmail, setContextEmail] = useState('');

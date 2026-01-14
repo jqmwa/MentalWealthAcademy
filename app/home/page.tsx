@@ -14,6 +14,7 @@ import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { ShardAnimation } from '@/components/quests/ShardAnimation';
 import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
 import PersonalDashboard from '@/components/personal-dashboard/PersonalDashboard';
+import PencilLoader from '@/components/landing/PencilLoader';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -279,11 +280,10 @@ export default function Home() {
   // Show loading state while checking authentication
   if (isCheckingAuth) {
     return (
-      <main className={styles.main}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <div>Loading...</div>
-        </div>
-      </main>
+      <>
+        <PencilLoader hidden={false} />
+        <main className={styles.main} style={{ visibility: 'hidden' }}></main>
+      </>
     );
   }
 
@@ -291,11 +291,10 @@ export default function Home() {
   // Show loading state while redirecting instead of returning null
   if (!hasValidSession && hasCheckedAuthRef.current) {
     return (
-      <main className={styles.main}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <div>Redirecting...</div>
-        </div>
-      </main>
+      <>
+        <PencilLoader hidden={false} />
+        <main className={styles.main} style={{ visibility: 'hidden' }}></main>
+      </>
     );
   }
 

@@ -1,0 +1,116 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  /* Uses global body background (black with image) */
+  color: var(--color-text-dark);
+  position: relative;
+}
+
+.container {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.content {
+  flex: 0 1 auto;
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heading {
+  font-family: var(--font-primary);
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.paragraph {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  max-width: 500px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-text-dark);
+  font-family: var(--font-button);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  width: fit-content;
+}
+
+.cta:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light, #ffffff);
+  transform: translateY(-2px);
+}
+
+.imageWrapper {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  max-width: 400px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  object-fit: contain;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .content {
+    align-items: center;
+    text-align: center;
+    order: 2;
+  }
+
+  .imageWrapper {
+    order: 1;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .paragraph {
+    max-width: 100%;
+  }
+
+  .image {
+    max-width: 300px;
+  }
+}
