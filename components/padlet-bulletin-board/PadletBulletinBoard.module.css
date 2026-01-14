@@ -2,15 +2,15 @@
 
 .bulletinWrapper {
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
 }
 
 .bulletinHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--space-6, 32px);
+  margin-bottom: var(--space-5, 24px);
   gap: var(--space-4, 16px);
 }
 
@@ -248,6 +248,61 @@
   font-weight: var(--font-weight-medium, 500);
 }
 
+.postAttachment,
+.postAttachments {
+  margin-top: var(--space-4, 16px);
+  margin-bottom: var(--space-3, 12px);
+}
+
+.postAttachments {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+}
+
+.postImageWrapper {
+  width: 100%;
+  position: relative;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.postImageWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.postImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.postLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  color: var(--color-primary, #5168FF);
+  text-decoration: none;
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+  font-size: var(--font-size-sm, 0.75rem);
+  font-weight: var(--font-weight-medium, 500);
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  border-radius: var(--radius-md, 8px);
+  background: rgba(81, 104, 255, 0.05);
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.postLink:hover {
+  background: rgba(81, 104, 255, 0.1);
+  border-color: var(--color-primary, #5168FF);
+  transform: translateX(2px);
+}
+
 .emptyState {
   grid-column: 1 / -1;
   text-align: center;
@@ -268,6 +323,13 @@
 
 .error {
   color: var(--color-semantic-error, #BA1A1A);
+}
+
+.errorHint {
+  font-size: var(--font-size-sm, 0.75rem);
+  color: var(--color-text-muted, rgba(26, 27, 36, 0.6));
+  margin-top: var(--space-2, 8px);
+  font-style: italic;
 }
 
 .retryButton {

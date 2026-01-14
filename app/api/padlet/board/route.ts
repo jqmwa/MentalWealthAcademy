@@ -13,21 +13,19 @@ export async function GET(request: NextRequest) {
     }
 
     const response = await fetch(
-      `https://api.padlet.dev/v1/boards/${BOARD_ID}?include=posts,sections`,
+      `https://api.padlet.dev/v1/boards/${BOARD_ID}?include=posts%2Csections`,
       {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${PADLET_API_KEY}`,
-          'Content-Type': 'application/json',
+          'X-Api-Key': PADLET_API_KEY,
+          'accept': 'application/vnd.api+json',
         },
       }
     );
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Padlet API error:', errorText);
       return NextResponse.json(
-        { error: 'Failed to fetch board data', details: errorText },
+        { error: 'Failed to fetch board data' },
         { status: response.status }
       );
     }
@@ -35,9 +33,8 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error fetching Padlet board:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

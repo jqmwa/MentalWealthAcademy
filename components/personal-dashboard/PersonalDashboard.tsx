@@ -47,14 +47,13 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
                 <span className={styles.username}> {username}</span>
               )}
             </h1>
-            <p className={styles.subtitle}>
-              Track your progress, complete quests, and shape the future of mental health research.
-            </p>
           </header>
+          
+          {/* Padlet Bulletin Board */}
+          <div className={styles.bulletinBoardWrapper}>
+            <PadletBulletinBoard />
+          </div>
         </div>
-
-        {/* Padlet Bulletin Board */}
-        <PadletBulletinBoard />
 
         {/* Padlet Map Board */}
         <PadletMapBoard />

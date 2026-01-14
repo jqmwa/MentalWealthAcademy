@@ -22,16 +22,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const postData: any = {
-      content: content,
+    // Padlet API requires data in JSON:API format
+    const postData = {
+      data: {
+        type: 'post',
+        attributes: {
+          content: {
+            subject: title || '',
+            body: content,
+          },
+        },
+      },
     };
 
-    if (title) {
-      postData.title = title;
-    }
-
+    // Add color if provided
     if (color) {
-      postData.color = color;
+      postData.data.attributes.color = color;
     }
 
     const response = await fetch(
@@ -39,18 +45,17 @@ export async function POST(request: NextRequest) {
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${PADLET_API_KEY}`,
-          'Content-Type': 'application/json',
+          'X-Api-Key': PADLET_API_KEY,
+          'content-type': 'application/vnd.api+json',
+          'accept': 'application/vnd.api+json',
         },
         body: JSON.stringify(postData),
       }
     );
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Padlet API error:', errorText);
       return NextResponse.json(
-        { error: 'Failed to create post', details: errorText },
+        { error: 'Failed to create post' },
         { status: response.status }
       );
     }

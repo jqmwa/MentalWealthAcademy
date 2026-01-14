@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from './PadletBulletinBoard.module.css';
 
 interface Post {
@@ -13,6 +14,18 @@ interface Post {
     name?: string;
     avatar?: string;
   };
+  attachment?: {
+    url?: string;
+    type?: string;
+    thumbnail?: string;
+    title?: string;
+  };
+  attachments?: Array<{
+    url?: string;
+    type?: string;
+    thumbnail?: string;
+    title?: string;
+  }>;
 }
 
 interface Board {
@@ -42,14 +55,70 @@ export function PadletBulletinBoard() {
       const response = await fetch('/api/padlet/board');
       
       if (!response.ok) {
-        throw new Error('Failed to fetch board');
+        let errorMessage = 'Failed to fetch board';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          errorMessage = `${response.status} ${response.statusText}`;
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
-      setBoard(data);
-      setPosts(data.posts || []);
+      
+      // Handle JSON:API format response
+      // Padlet API returns data in JSON:API format with 'data' and 'included' fields
+      let boardData = data;
+      let postsData: Post[] = [];
+      
+      if (data.data) {
+        // JSON:API format
+        boardData = data.data;
+        // Posts might be in data.attributes.posts or in included array
+        if (data.included) {
+          postsData = data.included
+            .filter((item: any) => item.type === 'post')
+            .map((item: any) => {
+              const content = item.attributes?.content || {};
+              const attachment = content.attachment || item.attributes?.attachment;
+              
+              // Parse attachment data
+              const attachmentData = attachment ? {
+                url: attachment.url,
+                type: attachment.type || attachment.mime_type || attachment.mimeType,
+                thumbnail: attachment.thumbnail || attachment.thumbnail_url || attachment.thumbnailUrl,
+                title: attachment.title || attachment.filename || attachment.name,
+              } : undefined;
+              
+              // Use attachments array if available, otherwise use single attachment
+              // Don't create duplicates - if attachments array exists, don't also set attachment
+              const attachmentsArray = item.attributes?.attachments || 
+                (attachmentData ? [attachmentData] : undefined);
+              
+              return {
+                id: item.id,
+                title: content.subject || '',
+                content: content.body || '',
+                color: item.attributes?.color,
+                created_at: item.attributes?.created_at || item.attributes?.createdAt,
+                author: item.attributes?.author || item.relationships?.author?.data,
+                // Only set attachment if attachments array doesn't exist (to avoid duplicates)
+                attachment: attachmentsArray && attachmentsArray.length > 0 ? undefined : attachmentData,
+                attachments: attachmentsArray,
+              };
+            });
+        } else if (data.data.attributes?.posts) {
+          postsData = data.data.attributes.posts;
+        }
+      } else if (data.posts) {
+        // Direct format (fallback)
+        postsData = data.posts;
+      }
+      
+      setBoard(boardData);
+      setPosts(postsData);
     } catch (err: any) {
-      console.error('Error fetching board:', err);
       setError(err.message || 'Failed to load bulletin board');
     } finally {
       setLoading(false);
@@ -114,11 +183,24 @@ export function PadletBulletinBoard() {
     );
   }
 
-  if (error && !board) {
+  if (error && !board && !loading) {
     return (
       <div className={styles.bulletinWrapper}>
+        <div className={styles.bulletinHeader}>
+          <div>
+            <h3 className={styles.bulletinTitle}>Community Bulletin Board</h3>
+            <p className={styles.bulletinDescription}>
+              Share your thoughts, ideas, and announcements with the community.
+            </p>
+          </div>
+        </div>
         <div className={styles.error}>
-          <p>{error}</p>
+          <p>Unable to load bulletin board at this time.</p>
+          {error.includes('API key') && (
+            <p className={styles.errorHint}>
+              The Padlet API key needs to be configured in the environment variables.
+            </p>
+          )}
           <button onClick={fetchBoard} className={styles.retryButton}>
             Retry
           </button>
@@ -244,6 +326,62 @@ export function PadletBulletinBoard() {
                 <h4 className={styles.postTitle}>{post.title}</h4>
               )}
               <div className={styles.postContent}>{post.content}</div>
+              
+              {/* Display attachments - prioritize attachments array, fallback to single attachment */}
+              {post.attachments && post.attachments.length > 0 ? (
+                <div className={styles.postAttachments}>
+                  {post.attachments.map((att, idx) => (
+                    <div key={idx} className={styles.postAttachment}>
+                      {att.type?.startsWith('image/') || att.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                        <div className={styles.postImageWrapper}>
+                          <Image
+                            src={att.url || att.thumbnail || ''}
+                            alt={att.title || `Attachment ${idx + 1}`}
+                            width={600}
+                            height={400}
+                            className={styles.postImage}
+                            unoptimized
+                          />
+                        </div>
+                      ) : att.url ? (
+                        <a
+                          href={att.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.postLink}
+                        >
+                          {att.title || 'View attachment'} →
+                        </a>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : post.attachment ? (
+                <div className={styles.postAttachment}>
+                  {post.attachment.type?.startsWith('image/') || post.attachment.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                    <div className={styles.postImageWrapper}>
+                      <Image
+                        src={post.attachment.url || post.attachment.thumbnail || ''}
+                        alt={post.attachment.title || 'Post attachment'}
+                        width={600}
+                        height={400}
+                        className={styles.postImage}
+                        unoptimized
+                      />
+                    </div>
+                  ) : post.attachment.url ? (
+                    <a
+                      href={post.attachment.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.postLink}
+                    >
+                      {post.attachment.title || 'View attachment'} →
+                    </a>
+                  ) : null}
+                </div>
+              ) : null}
+              
               {post.created_at && (
                 <div className={styles.postMeta}>
                   <time dateTime={post.created_at}>
