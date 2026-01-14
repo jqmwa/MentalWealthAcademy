@@ -4,9 +4,10 @@ pragma solidity ^0.8.13;
 contract Counter {
     uint256 public number;
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
-    }
+   function setNumber(uint256 newNumber) public {
+    require(newNumber != number, "Same as current number");
+    number = newNumber;
+}
 
     function increment() public {
         number++;
