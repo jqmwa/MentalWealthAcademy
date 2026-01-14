@@ -23,7 +23,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Padlet API requires data in JSON:API format
-    const postData = {
+    const postData: {
+      data: {
+        type: string;
+        attributes: {
+          content: {
+            subject: string;
+            body: string;
+          };
+          color?: string;
+        };
+      };
+    } = {
       data: {
         type: 'post',
         attributes: {
