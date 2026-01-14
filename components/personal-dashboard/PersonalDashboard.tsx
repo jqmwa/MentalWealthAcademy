@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { DaemonTerminal } from '@/components/daemon/DaemonTerminal';
-import { PadletMapBoard } from '@/components/padlet-map-board/PadletMapBoard';
+import { PadletBulletinBoard } from '@/components/padlet-bulletin-board/PadletBulletinBoard';
 import styles from './PersonalDashboard.module.css';
 
 interface PersonalDashboardProps {
@@ -52,8 +52,8 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
           </header>
         </div>
 
-        {/* Padlet Map Board */}
-        <PadletMapBoard />
+        {/* Padlet Bulletin Board */}
+        <PadletBulletinBoard />
 
         {/* Bento Grid Layout */}
         <div className={styles.bentoGridContainer}>
@@ -68,11 +68,6 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
         </div>
         
         {/* Full Width Cards */}
-        {/* Daemon Terminal Card */}
-        <div className={`${styles.bentoCard} ${styles.daemonCard} ${styles.fullWidthCard}`}>
-          <DaemonTerminal />
-        </div>
-
         {/* Proposals Card */}
         <div className={`${styles.bentoCard} ${styles.statsCard} ${styles.fullWidthCard}`}>
           {/* Proposals Moving Toward Funding */}
@@ -104,6 +99,11 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Daemon Terminal Card */}
+        <div className={`${styles.bentoCard} ${styles.daemonCard} ${styles.fullWidthCard}`}>
+          <DaemonTerminal />
         </div>
         </div>
       </div>
