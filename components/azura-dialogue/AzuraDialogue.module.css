@@ -59,8 +59,7 @@
   font-family: var(--font-secondary, 'Space Grotesk'), sans-serif;
   font-weight: var(--font-weight-regular, 400);
   font-size: 0.75rem;
-  color: var(--color-primary, #5168FF);
-  opacity: 0.8;
+  color: var(--color-text-muted, rgba(26, 27, 36, 0.6));
 }
 
 .dialogueBox {

@@ -189,6 +189,7 @@
   min-height: 400px;
 }
 
+
 .daemonCard {
   min-height: 300px;
 }
@@ -343,6 +344,7 @@
 .proposalItem:hover .proposalArrow {
   transform: translateX(4px);
 }
+
 
 /* Responsive Design - Mobile Optimized Bento Grid */
 @media (max-width: 1024px) {

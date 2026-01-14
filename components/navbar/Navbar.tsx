@@ -8,6 +8,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import AvatarSelectorModal from '@/components/avatar-selector/AvatarSelectorModal';
 import UsernameChangeModal from '@/components/username-change/UsernameChangeModal';
+import AzuraChat from '@/components/azura-chat/AzuraChat';
 import styles from './Navbar.module.css';
 
 // Menu Icon Component - Chunky Y2K style
@@ -89,6 +90,7 @@ const Navbar: React.FC = () => {
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const [isUsernameChangeModalOpen, setIsUsernameChangeModalOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [shardCount, setShardCount] = useState<number | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -270,11 +272,16 @@ const Navbar: React.FC = () => {
           {/* Right Icons */}
           <div className={styles.rightIcons}>
             {/* Message Button */}
-            <div className={styles.messageButton} aria-label="Messages">
+            <button 
+              className={styles.messageButton} 
+              onClick={() => setIsChatOpen(true)}
+              aria-label="Messages"
+              type="button"
+            >
               <div className={styles.messageIcon}>
                 <span className={styles.notificationDot}></span>
               </div>
-            </div>
+            </button>
             <div className={styles.shardsCounter}>
               <Image
                 src="/icons/shard.svg"
@@ -493,6 +500,7 @@ const Navbar: React.FC = () => {
           onUsernameChanged={handleUsernameChanged}
         />
       )}
+      <AzuraChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </nav>
   );
 };

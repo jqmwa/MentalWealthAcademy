@@ -13,21 +13,21 @@
 
 :root {
   /* Colors */
-  --color-background: #F4F5FE;
+  --color-background: #FBF8FF;
   --color-primary: #5168FF;
-  --color-secondary: #62BE8F;
-  --color-text-dark: #000000;
-  --color-text-light: #ECECEC;
-  --color-text-muted: #CCCCCC;
+  --color-secondary: #50599B;
+  --color-text-dark: #1A1B24;
+  --color-text-light: #FFFFFF;
+  --color-text-muted: rgba(26, 27, 36, 0.6);
   
   /* Category Colors */
-  --color-mental-health: #9B7ED9;
+  --color-mental-health: #9724A6;
   --color-productivity: #5168FF;
-  --color-wealth: #62BE8F;
+  --color-wealth: #50599B;
   
   /* Gradient Colors */
-  --gradient-futuristic-floss-start: #ECECFF;
-  --gradient-futuristic-floss-end: #E1E1FE;
+  --gradient-futuristic-floss-start: #FBF8FF;
+  --gradient-futuristic-floss-end: #E1E1F4;
   
   /* Gradients */
   --gradient-futuristic-floss: linear-gradient(to bottom, var(--gradient-futuristic-floss-start), var(--gradient-futuristic-floss-end));
@@ -189,7 +189,7 @@ button,
 }
 
 .btn-primary:hover {
-  background-color: #3d52e6;
+  background-color: #324BE4;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
 }
@@ -200,9 +200,9 @@ button,
 }
 
 .btn-secondary:hover {
-  background-color: #4fa87a;
+  background-color: #3C4686;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
+  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
 }
 
 .btn-outline {

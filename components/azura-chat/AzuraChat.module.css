@@ -1,0 +1,387 @@
+/* Azura Chat - iMessage styled with retro-futuristic design */
+/* All values use design system tokens - no hard-coded CSS */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-overlay);
+  animation: fadeIn var(--duration-normal) var(--ease-default);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.chatContainer {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  width: min(420px, calc(100vw - var(--space-8)));
+  height: min(600px, calc(100vh - var(--space-16)));
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-background);
+  border: var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-modal);
+  overflow: hidden;
+  animation: slideUp var(--duration-slow) var(--ease-spring);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  background: var(--gradient-futuristic-floss);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatarWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 2px solid var(--color-primary);
+  background: var(--gradient-primary);
+  box-shadow: var(--shadow-primary);
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: var(--space-1);
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.headerName {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+  line-height: 1.2;
+}
+
+.headerStatus {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+
+.backButton {
+  width: 120px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--color-primary-muted);
+  background: var(--color-text-light);
+  color: var(--color-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: all var(--duration-normal) var(--ease-default);
+}
+
+.backArrow {
+  transform: scaleX(-1);
+  filter: brightness(0) saturate(100%) invert(35%) sepia(95%) saturate(3218%) hue-rotate(223deg) brightness(102%) contrast(101%);
+}
+
+.backText {
+  font-family: var(--font-button);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.backButton:hover {
+  background: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+/* Messages Area */
+.messagesArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-background);
+  scroll-behavior: smooth;
+}
+
+.messagesArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messagesArea::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.messagesArea::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Message Bubbles */
+.messageBubble {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 75%;
+  animation: messageSlideIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.userMessage {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.azuraMessage {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.messageContent {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-dark);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  position: relative;
+}
+
+.userMessage .messageContent {
+  background: var(--gradient-primary);
+  color: var(--color-text-light);
+  border-bottom-right-radius: var(--radius-sm);
+  box-shadow: var(--shadow-primary);
+}
+
+.azuraMessage .messageContent {
+  background: var(--card-background);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.messageTime {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
+  padding: 0 var(--space-2);
+  line-height: 1;
+}
+
+/* Typing Indicator */
+.typingIndicator {
+  padding: var(--space-4);
+}
+
+.typingDots {
+  display: flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.typingDots span {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-text-muted);
+  animation: typingDot 1.4s infinite ease-in-out;
+}
+
+.typingDots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* Input Area */
+.inputArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  background: var(--card-background);
+  border-top: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
+}
+
+.input {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-background);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-dark);
+  transition: all var(--duration-fast) var(--ease-default);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(81, 104, 255, 0.1);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  color: var(--color-text-light);
+  transition: all var(--duration-fast) var(--ease-default);
+  box-shadow: var(--shadow-primary);
+  flex-shrink: 0;
+}
+
+.sendButton:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(81, 104, 255, 0.4);
+}
+
+.sendButton:active:not(:disabled) {
+  transform: translateY(0) scale(0.95);
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chatContainer {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .messageBubble {
+    max-width: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .messagesArea {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .inputArea {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .messageBubble {
+    max-width: 90%;
+  }
+}

@@ -5,7 +5,7 @@
   padding: 24px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
-  border: 1px solid rgba(81, 104, 255, 0.1);
+  border: 1px solid rgba(80, 89, 155, 0.1);
 }
 
 .stage {
@@ -47,15 +47,15 @@
 }
 
 .stage1.rejected .stageIcon {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.25));
-  border: 2px solid rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, rgba(186, 26, 26, 0.25), rgba(147, 0, 10, 0.25));
+  border: 2px solid rgba(186, 26, 26, 0.5);
 }
 
 /* Stage 2 & 3: Generic states */
 .stage2 .stageIcon,
 .stage3 .stageIcon {
-  background: rgba(81, 104, 255, 0.05);
-  border: 2px solid rgba(81, 104, 255, 0.15);
+  background: rgba(80, 89, 155, 0.05);
+  border: 2px solid rgba(80, 89, 155, 0.15);
 }
 
 .stage2.waiting .stageIcon,
@@ -77,8 +77,8 @@
 }
 
 .stage2.failed .stageIcon {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.25));
-  border: 2px solid rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, rgba(186, 26, 26, 0.25), rgba(147, 0, 10, 0.25));
+  border: 2px solid rgba(186, 26, 26, 0.5);
 }
 
 .stageIcon svg {
@@ -121,7 +121,7 @@
 
 .stage1.rejected .stageStatus,
 .stage2.failed .stageStatus {
-  color: rgba(239, 68, 68, 0.9);
+  color: rgba(186, 26, 26, 0.9);
 }
 
 .stage1.analyzing .stageStatus,
@@ -205,7 +205,7 @@
 .tokenAllocation {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(81, 104, 255, 0.1);
+  border-top: 1px solid rgba(80, 89, 155, 0.1);
   font-size: 12px;
   font-family: var(--font-primary);
   color: #22c55e;

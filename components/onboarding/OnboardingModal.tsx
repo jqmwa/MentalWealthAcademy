@@ -435,6 +435,39 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
             </p>
             
             <div className={styles.formFields}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="onboarding-username" className={styles.inputLabel}>Username</label>
+                <div className={styles.inputWrapper}>
+                  <span className={styles.inputPrefix}>@</span>
+                  <input
+                    id="onboarding-username"
+                    name="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+                    placeholder="your_username"
+                    className={styles.input}
+                    maxLength={32}
+                    autoComplete="username"
+                    autoFocus
+                  />
+                  {checkingUsername && (
+                    <span className={styles.inputSuffix}>
+                      <div className={styles.spinner} />
+                    </span>
+                  )}
+                  {!checkingUsername && usernameAvailable === true && (
+                    <span className={`${styles.inputSuffix} ${styles.available}`}>✓</span>
+                  )}
+                  {!checkingUsername && usernameAvailable === false && (
+                    <span className={`${styles.inputSuffix} ${styles.taken}`}>✗</span>
+                  )}
+                </div>
+                <p className={styles.inputHint}>
+                  5-32 characters, letters, numbers, and underscores
+                </p>
+              </div>
+
               {!isWalletSignup && (
                 <>
                   <div className={styles.inputGroup}>
@@ -448,7 +481,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                       placeholder="researcher@example.com"
                       className={styles.input}
                       autoComplete="email"
-                      autoFocus
                     />
                   </div>
 
@@ -527,38 +559,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                 />
                 <p className={styles.inputHint}>
                   You must be at least 18 years old
-                </p>
-              </div>
-
-              <div className={styles.inputGroup}>
-                <label htmlFor="onboarding-username" className={styles.inputLabel}>Username</label>
-                <div className={styles.inputWrapper}>
-                  <span className={styles.inputPrefix}>@</span>
-                  <input
-                    id="onboarding-username"
-                    name="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-                    placeholder="your_username"
-                    className={styles.input}
-                    maxLength={32}
-                    autoComplete="username"
-                  />
-                  {checkingUsername && (
-                    <span className={styles.inputSuffix}>
-                      <div className={styles.spinner} />
-                    </span>
-                  )}
-                  {!checkingUsername && usernameAvailable === true && (
-                    <span className={`${styles.inputSuffix} ${styles.available}`}>✓</span>
-                  )}
-                  {!checkingUsername && usernameAvailable === false && (
-                    <span className={`${styles.inputSuffix} ${styles.taken}`}>✗</span>
-                  )}
-                </div>
-                <p className={styles.inputHint}>
-                  5-32 characters, letters, numbers, and underscores
                 </p>
               </div>
             </div>

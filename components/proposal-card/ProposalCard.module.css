@@ -96,13 +96,13 @@
 }
 
 .statusBadge.rejected {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(186, 26, 26, 0.15);
+  color: #BA1A1A;
+  border: 1px solid rgba(186, 26, 26, 0.3);
 }
 
 .statusBadge.rejected .statusDot {
-  background: #ef4444;
+  background: #BA1A1A;
 }
 
 .statusBadge.active {

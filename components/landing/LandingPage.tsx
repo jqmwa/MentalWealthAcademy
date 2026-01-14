@@ -596,7 +596,7 @@ const LandingPage: React.FC = () => {
                         className={styles.input}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
+                        placeholder="#%@$%$%@%@"
                         autoComplete="email"
                         autoFocus
                         required
@@ -618,7 +618,7 @@ const LandingPage: React.FC = () => {
                         className={styles.input}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
+                        placeholder="$@#%*&!@$"
                         required
                       />
                     </div>
@@ -664,7 +664,7 @@ const LandingPage: React.FC = () => {
 
                     <button
                       type="submit"
-                      className={styles.loginButton}
+                      className={styles.createAccountButton}
                       disabled={isLoading}
                     >
                       {isLoading 

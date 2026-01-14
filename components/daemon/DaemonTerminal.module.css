@@ -1,8 +1,8 @@
 .terminal {
   border: 2px solid rgba(81, 104, 255, 0.2);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0px 4px 16px rgba(81, 104, 255, 0.1);
+  border-radius: var(--radius-xl);
+  background: var(--card-background);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
@@ -10,9 +10,9 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 14px 16px;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  background: var(--color-primary, #5168FF);
+  background: var(--color-primary);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 4px 24px rgba(81, 104, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -35,16 +35,16 @@
 .backButton {
   width: 120px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(81, 104, 255, 0.35);
-  background: #fff;
+  background: var(--color-text-light);
   color: var(--color-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
+  gap: var(--space-2);
+  transition: all var(--duration-fast) var(--ease-default);
 }
 
 .backArrow {
@@ -54,22 +54,22 @@
 
 .backText {
   font-family: var(--font-button);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
   color: var(--color-primary);
 }
 
 .backButton:hover {
-  background: rgba(81, 104, 255, 0.08);
+  background: rgba(255, 255, 255, 0.95);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
 }
 
 .dots {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: center;
 }
 
@@ -85,15 +85,15 @@
 
 .headerTitle {
   font-family: var(--font-button);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.95);
 }
 
 .centerPanel {
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .centerPanelEnter {
@@ -103,7 +103,7 @@
 @keyframes daemonEnter {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(var(--space-3xs));
   }
   to {
     opacity: 1;
@@ -112,25 +112,25 @@
 }
 
 .toolGridWrap {
-  padding: 32px;
+  padding: var(--space-8);
 }
 
 .toolGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px;
+  gap: var(--space-8);
 }
 
 .toolCard {
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 2px solid rgba(81, 104, 255, 0.2);
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0px 4px 16px rgba(81, 104, 255, 0.1);
+  background: var(--card-background);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  padding: 24px;
+  padding: var(--space-6);
   min-height: 210px;
   text-align: left;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-default);
   position: relative;
   overflow: hidden;
 }
@@ -139,7 +139,7 @@
   transform: translateY(-2px);
   background: rgba(81, 104, 255, 0.08);
   border-color: rgba(81, 104, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .toolCardDisabled {
@@ -161,9 +161,9 @@
 
 .toolCardDisabled:hover {
   transform: none;
-  box-shadow: 0px 4px 16px rgba(81, 104, 255, 0.1);
+  box-shadow: var(--shadow-md);
   border-color: rgba(81, 104, 255, 0.2);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--card-background);
 }
 
 .toolInner {
@@ -172,7 +172,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 10px;
+  gap: var(--space-xs);
   position: relative;
   z-index: 2;
 }
@@ -183,9 +183,9 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(81, 104, 255, 0.2);
-  background: rgba(244, 245, 254, 0.9);
+  background: var(--color-background);
 }
 
 .toolCard:not(.toolCardDisabled):hover .toolIcon {
@@ -199,19 +199,19 @@
 
 .toolTitle {
   font-family: var(--font-primary);
-  font-size: 26px;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   margin: 0;
   line-height: 1.1;
-  color: white;
+  color: var(--color-text-light);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .toolDesc {
   font-family: var(--font-primary);
-  font-size: 14px;
+  font-size: var(--font-size-base);
   line-height: 1.5;
-  color: white;
+  color: var(--color-text-light);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -262,8 +262,8 @@
 
 .toolCardReviser:hover {
   background: linear-gradient(135deg, rgba(92, 92, 92, 0.8) 0%, rgb(250, 250, 250) 100%);
-  border-color: white;
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+  border-color: var(--color-text-light);
+  box-shadow: var(--shadow-lg);
 }
 
 .toolCardReviser:hover .toolTitle,
@@ -356,19 +356,19 @@
 .actionGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .actionCard {
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(81, 104, 255, 0.2);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--card-background);
   box-shadow: none;
-  padding: 16px;
+  padding: var(--space-4);
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-default);
 }
 
 .actionCard:hover {
@@ -380,22 +380,22 @@
 .actionCardActive {
   border-color: var(--color-primary);
   background: rgba(81, 104, 255, 0.15);
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .actionTitle {
   font-family: var(--font-primary);
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   color: var(--color-text-dark);
   line-height: 1.3;
 }
 
 .actionDesc {
   font-family: var(--font-primary);
-  font-size: 12px;
-  color: rgba(26, 29, 51, 0.72);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.5;
 }
@@ -405,47 +405,47 @@
 }
 
 .actionCardActive .actionDesc {
-  color: rgba(26, 29, 51, 0.85);
+  color: var(--color-text-muted);
 }
 
 .chat {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .row {
   display: grid;
   grid-template-columns: 96px 1fr;
-  gap: 16px;
+  gap: var(--space-4);
   align-items: start;
 }
 
 .label {
-  padding-top: 14px;
+  padding-top: var(--space-3);
   font-family: var(--font-button);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(26, 29, 51, 0.75);
+  color: var(--color-text-muted);
   text-align: right;
 }
 
 .field {
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(81, 104, 255, 0.25);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 14px 16px;
+  background: var(--card-background);
+  padding: var(--space-3) var(--space-4);
   font-family: var(--font-primary);
-  font-size: 14px;
+  font-size: var(--font-size-base);
   line-height: 1.6;
 }
 
 .textarea {
   min-height: 120px;
   resize: vertical;
-  padding: 14px 16px;
+  padding: var(--space-3) var(--space-4);
 }
 
 .select {
@@ -465,20 +465,20 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .button {
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: var(--space-xs) var(--space-3);
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(81, 104, 255, 0.35);
   cursor: pointer;
   font-family: var(--font-button);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-3xs);
   justify-content: space-between;
 }
 
@@ -493,7 +493,7 @@
 
 .rewardText {
   font-family: var(--font-primary);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: rgba(255, 255, 255, 0.9);
   margin-left: auto;
@@ -501,64 +501,64 @@
 
 .primary {
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-text-light);
 }
 
 .secondary {
-  background: #fff;
+  background: var(--color-text-light);
   color: var(--color-primary);
 }
 
 .secondary:hover {
   background: rgba(81, 104, 255, 0.08);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 .output {
-  margin-top: 20px;
-  border-radius: 16px;
+  margin-top: var(--space-5);
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(81, 104, 255, 0.2);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 18px;
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.1);
+  background: var(--card-background);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-md);
 }
 
 .outputHeader {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-3);
 }
 
 .outputTitle {
   font-family: var(--font-button);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(26, 29, 51, 0.75);
+  color: var(--color-text-muted);
 }
 
 .outputBody {
   font-family: var(--font-button);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   white-space: pre-wrap;
   line-height: 1.6;
-  color: rgba(10, 12, 22, 0.92);
+  color: var(--color-text-dark);
 }
 
 .error {
-  margin-top: 10px;
-  color: #b42318;
+  margin-top: var(--space-xs);
+  color: #BA1A1A;
   font-family: var(--font-primary);
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 @media (max-width: 1024px) {
@@ -586,6 +586,6 @@
   }
 
   .toolGridWrap {
-    padding: 20px;
+    padding: var(--space-5);
   }
 }

@@ -25,32 +25,32 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(81, 104, 255, 0.6);
+  color: rgba(80, 89, 155, 0.6);
   margin-bottom: 24px;
 }
 
 .breadcrumbs a {
-  color: rgba(81, 104, 255, 0.6);
+  color: rgba(80, 89, 155, 0.6);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .breadcrumbs a:hover {
-  color: #5168FF;
+  color: var(--color-secondary);
 }
 
 .chevron {
-  color: rgba(81, 104, 255, 0.3);
+  color: rgba(80, 89, 155, 0.3);
   user-select: none;
 }
 
 .current {
-  color: #5168FF;
+  color: var(--color-secondary);
 }
 
 /* Hero Header - aligned to left side */
 .hero {
-  background: #F4F5FE;
+  background: var(--color-background);
   border: 2px solid #FFFFFF;
   border-radius: 24px;
   padding: 48px 56px;
@@ -69,7 +69,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 13px;
   font-weight: 600;
-  color: #5168FF;
+  color: var(--color-secondary);
   text-transform: uppercase;
   letter-spacing: 1.2px;
   margin-bottom: 12px;
@@ -111,7 +111,7 @@
 
 /* User Card - using searchbar styling */
 .userCard {
-  background: #F4F5FE;
+  background: var(--color-background);
   border: 2px solid #FFFFFF;
   border-radius: 16px;
   padding: 24px;
@@ -137,7 +137,7 @@
   height: 48px;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid rgba(81, 104, 255, 0.2);
+  border: 2px solid rgba(80, 89, 155, 0.2);
 }
 
 .avatarImage {
@@ -157,7 +157,7 @@
   font-family: 'Poppins', sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #F4F5FE;
+  color: var(--color-background);
 }
 
 .userDetails {
@@ -170,7 +170,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(81, 104, 255, 0.6);
+  color: rgba(80, 89, 155, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -232,7 +232,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(81, 104, 255, 0.5);
+  color: rgba(80, 89, 155, 0.5);
 }
 
 .titleInput {
@@ -240,7 +240,7 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--color-text-dark);
-  background: #F4F5FE;
+  background: var(--color-background);
   border: 2px solid #FFFFFF;
   border-radius: 16px;
   padding: 20px 24px;
@@ -269,7 +269,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(81, 104, 255, 0.5);
+  color: rgba(80, 89, 155, 0.5);
 }
 
 /* Template Section */
@@ -283,7 +283,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(81, 104, 255, 0.6);
+  color: rgba(80, 89, 155, 0.6);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -295,7 +295,7 @@
 }
 
 .templateButton {
-  background: #F4F5FE;
+  background: var(--color-background);
   border: 2px solid #FFFFFF;
   border-radius: 16px;
   padding: 20px;
@@ -325,7 +325,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #F4F5FE;
+  color: var(--color-background);
   flex-shrink: 0;
   border: 1.605px solid #FFFFFF;
 }
@@ -349,7 +349,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(81, 104, 255, 0.6);
+  color: rgba(80, 89, 155, 0.6);
 }
 
 /* Markdown Input */
@@ -359,7 +359,7 @@
   font-weight: 400;
   line-height: 1.8;
   color: var(--color-text-dark);
-  background: #F4F5FE;
+  background: var(--color-background);
   border: 2px solid #FFFFFF;
   border-radius: 16px;
   padding: 24px;
@@ -387,12 +387,12 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   font-weight: 500;
-  color: rgba(81, 104, 255, 0.5);
+  color: rgba(80, 89, 155, 0.5);
 }
 
 .markdownIcon {
   font-weight: 700;
-  color: #5168FF;
+  color: var(--color-secondary);
 }
 
 /* Action Section */
@@ -462,8 +462,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: rgba(244, 245, 254, 0.1);
-  border: 1px solid rgba(244, 245, 254, 0.2);
+  background: rgba(251, 248, 255, 0.1);
+  border: 1px solid rgba(251, 248, 255, 0.2);
   border-radius: 12px;
   padding: 16px;
 }
@@ -488,13 +488,13 @@
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #F4F5FE;
+  color: var(--color-background);
 }
 
 .statDivider {
   width: 1px;
   height: 32px;
-  background: rgba(244, 245, 254, 0.2);
+  background: rgba(251, 248, 255, 0.2);
 }
 
 .submitButton {
@@ -502,7 +502,7 @@
   font-size: 12px;
   font-weight: 700;
   color: var(--color-text-dark);
-  background: #F4F5FE;
+  background: var(--color-background);
   border: none;
   border-radius: 12px;
   padding: 24px;
@@ -549,7 +549,7 @@
   font-size: 13px;
   font-weight: 700;
   color: #FFFFFF;
-  background: #5168FF;
+  background: var(--color-primary);
   border: 2px solid #FFFFFF;
   border-radius: 12px;
   padding: 18px 24px;
@@ -571,7 +571,7 @@
 }
 
 .connectWalletButton:hover {
-  background: #3d52e6;
+  background: var(--color-primary-hover);
   border-color: #FFFFFF;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(81, 104, 255, 0.6);
@@ -587,14 +587,14 @@
   gap: 12px;
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid rgba(244, 245, 254, 0.2);
+  border-top: 1px solid rgba(251, 248, 255, 0.2);
 }
 
 .footerIcon {
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  color: rgba(244, 245, 254, 0.6);
+  color: rgba(251, 248, 255, 0.6);
   margin-top: 2px;
 }
 
@@ -603,7 +603,7 @@
   font-size: 11px;
   font-weight: 500;
   line-height: 1.5;
-  color: rgba(244, 245, 254, 0.8);
+  color: rgba(251, 248, 255, 0.8);
   margin: 0;
 }
 

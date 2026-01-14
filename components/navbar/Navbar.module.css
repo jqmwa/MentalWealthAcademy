@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
   min-height: 80px;
-  background: #F4F5FE;
+  background: var(--color-background);
   border-bottom: 2px solid #000000;
   border-radius: 0;
   display: flex;
@@ -501,17 +501,19 @@
   gap: 8px;
   padding: 8px 12px;
   border-radius: 12px;
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  color: #856404;
+  background: #BBC3FF;
+  border: 1px solid #BBC3FF;
+  color: #000D5F;
   font-size: 14px;
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: var(--font-primary);
 }
 
 .incompleteProfile:hover {
-  background: #ffe69c;
+  background: #DFE0FF;
+  border-color: #DFE0FF;
 }
 
 .messageButton {
@@ -683,7 +685,7 @@
 .mobileMenu {
   display: none;
   width: 100%;
-  background: #F4F5FE;
+  background: var(--color-background);
   border-top: 2px solid #000000;
   padding: 0;
   max-height: 0;

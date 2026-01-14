@@ -19,27 +19,27 @@ export const colors = {
   // Primary Colors
   primary: {
     DEFAULT: '#5168FF',
-    hover: '#3d52e6',
+    hover: '#324BE4',
     muted: 'rgba(81, 104, 255, 0.6)',
-    light: '#7B8CFF',
-    dark: '#3d52e6',
+    light: '#7586FF',
+    dark: '#324BE4',
   },
   
-  // Secondary Colors (Growth Green)
+  // Secondary Colors
   secondary: {
-    DEFAULT: '#62BE8F',
-    hover: '#4fa87a',
-    muted: 'rgba(98, 190, 143, 0.6)',
-    light: '#8CD9B0',
-    dark: '#4fa87a',
+    DEFAULT: '#50599B',
+    hover: '#3C4686',
+    muted: 'rgba(80, 89, 155, 0.6)',
+    light: '#ADB7FF',
+    dark: '#3C4686',
   },
   
   // Background Colors
   background: {
-    DEFAULT: '#F4F5FE',
+    DEFAULT: '#FBF8FF',
     card: 'rgba(255, 255, 255, 0.95)',
-    dark: '#0A0A0F',
-    cardDark: '#151520',
+    dark: '#12131B',
+    cardDark: '#1E1F28',
   },
   
   // Neutral Colors (Gray Scale)
@@ -60,24 +60,24 @@ export const colors = {
   
   // Text Colors
   text: {
-    dark: '#000000',
-    light: '#ECECEC',
-    muted: 'rgba(0, 0, 0, 0.6)',
-    foreground: 'rgba(0, 0, 0, 1.0)',
-    secondary: 'rgba(0, 0, 0, 0.7)',
-    faint: 'rgba(0, 0, 0, 0.3)',
+    dark: '#1A1B24',
+    light: '#FFFFFF',
+    muted: 'rgba(26, 27, 36, 0.6)',
+    foreground: 'rgba(26, 27, 36, 1.0)',
+    secondary: 'rgba(26, 27, 36, 0.7)',
+    faint: 'rgba(26, 27, 36, 0.3)',
     // Dark mode variants
-    foregroundDark: 'rgba(255, 255, 255, 0.95)',
-    secondaryDark: 'rgba(255, 255, 255, 0.65)',
+    foregroundDark: 'rgba(227, 225, 238, 0.95)',
+    secondaryDark: 'rgba(227, 225, 238, 0.65)',
   },
   
   // Semantic Colors
   semantic: {
     success: {
-      DEFAULT: '#62BE8F',
-      light: '#8CD9B0',
-      dark: '#4fa87a',
-      muted: 'rgba(98, 190, 143, 0.2)',
+      DEFAULT: '#50599B',
+      light: '#ADB7FF',
+      dark: '#3C4686',
+      muted: 'rgba(80, 89, 155, 0.2)',
     },
     warning: {
       DEFAULT: '#F59E0B',
@@ -86,30 +86,30 @@ export const colors = {
       muted: 'rgba(245, 158, 11, 0.2)',
     },
     error: {
-      DEFAULT: '#EF4444',
-      light: '#FCA5A5',
-      dark: '#DC2626',
-      muted: 'rgba(239, 68, 68, 0.2)',
+      DEFAULT: '#BA1A1A',
+      light: '#FFDAD6',
+      dark: '#93000A',
+      muted: 'rgba(186, 26, 26, 0.2)',
     },
     info: {
       DEFAULT: '#5168FF',
-      light: '#7B8CFF',
-      dark: '#3d52e6',
+      light: '#7586FF',
+      dark: '#324BE4',
       muted: 'rgba(81, 104, 255, 0.2)',
     },
   },
   
   // Category Colors
   category: {
-    mentalHealth: '#9B7ED9',
+    mentalHealth: '#9724A6',
     productivity: '#5168FF',
-    wealth: '#62BE8F',
+    wealth: '#50599B',
   },
   
   // Gradient Colors
   gradient: {
-    futuristicFlossStart: '#ECECFF',
-    futuristicFlossEnd: '#E1E1FE',
+    futuristicFlossStart: '#FBF8FF',
+    futuristicFlossEnd: '#E1E1F4',
   },
   
   // Border Colors
@@ -127,7 +127,7 @@ export const gradients = {
   futuristicFloss: `linear-gradient(to bottom, ${colors.gradient.futuristicFlossStart}, ${colors.gradient.futuristicFlossEnd})`,
   primary: `linear-gradient(135deg, ${colors.primary.DEFAULT} 0%, ${colors.primary.light} 100%)`,
   secondary: `linear-gradient(135deg, ${colors.secondary.DEFAULT} 0%, ${colors.secondary.light} 100%)`,
-  swipeLike: `linear-gradient(135deg, ${colors.secondary.DEFAULT} 0%, #8CD9B0 100%)`,
+  swipeLike: `linear-gradient(135deg, ${colors.secondary.DEFAULT} 0%, #ADB7FF 100%)`,
   swipeSkip: `linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)`,
   swipeSave: `linear-gradient(135deg, ${colors.primary.DEFAULT} 0%, #7B8CFF 100%)`,
 } as const;
@@ -377,8 +377,8 @@ export const shadows = {
   // Brand shadows with primary color
   primary: '0 4px 12px rgba(81, 104, 255, 0.3)',
   primaryHover: '0 6px 16px rgba(81, 104, 255, 0.4)',
-  secondary: '0 4px 12px rgba(98, 190, 143, 0.3)',
-  secondaryHover: '0 6px 16px rgba(98, 190, 143, 0.4)',
+  secondary: '0 4px 12px rgba(80, 89, 155, 0.3)',
+  secondaryHover: '0 6px 16px rgba(80, 89, 155, 0.4)',
   
   // Card shadows
   card: '0 4px 16px rgba(81, 104, 255, 0.08)',

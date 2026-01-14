@@ -15,29 +15,29 @@
   /* ============================================
      Colors - Brand Palette
      ============================================ */
-  --color-background: #F4F5FE;
+  --color-background: #FBF8FF;
   --color-primary: #5168FF;
-  --color-primary-hover: #3d52e6;
+  --color-primary-hover: #324BE4;
   --color-primary-muted: rgba(81, 104, 255, 0.6);
-  --color-secondary: #62BE8F;
-  --color-secondary-hover: #4fa87a;
-  --color-text-dark: #000000;
-  --color-text-light: #ECECEC;
-  --color-text-muted: rgba(0, 0, 0, 0.6);
+  --color-secondary: #50599B;
+  --color-secondary-hover: #3C4686;
+  --color-text-dark: #1A1B24;
+  --color-text-light: #FFFFFF;
+  --color-text-muted: rgba(26, 27, 36, 0.6);
   
   /* Category Colors */
-  --color-mental-health: #9B7FE6;
+  --color-mental-health: #9724A6;
   --color-productivity: #FF8C42;
-  --color-wealth: #4ECDC4;
+  --color-wealth: #50599B;
   
   /* Gradient Colors */
-  --gradient-futuristic-floss-start: #ECECFF;
-  --gradient-futuristic-floss-end: #E1E1FE;
+  --gradient-futuristic-floss-start: #FBF8FF;
+  --gradient-futuristic-floss-end: #E1E1F4;
   
   /* Gradients */
   --gradient-futuristic-floss: linear-gradient(to bottom, var(--gradient-futuristic-floss-start), var(--gradient-futuristic-floss-end));
-  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, #7B8CFF 100%);
-  --gradient-secondary: linear-gradient(135deg, var(--color-secondary) 0%, #8CD9B0 100%);
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, #7586FF 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-secondary) 0%, #ADB7FF 100%);
   
   /* ============================================
      Typography
@@ -117,7 +117,7 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
   --shadow-primary: 0 4px 12px rgba(81, 104, 255, 0.3);
-  --shadow-secondary: 0 4px 12px rgba(98, 190, 143, 0.3);
+  --shadow-secondary: 0 4px 12px rgba(80, 89, 155, 0.3);
   
   /* Card Styles */
   --card-background: rgba(255, 255, 255, 0.95);
@@ -289,9 +289,9 @@ button,
 }
 
 .btn-secondary:hover {
-  background-color: #4fa87a;
+  background-color: #3C4686;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.3);
+  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
 }
 
 .btn-outline {
@@ -494,7 +494,7 @@ h6 { font-size: var(--font-size-xs); }
 }
 
 .swipe-card-like {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, #8CD9B0 100%);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, #ADB7FF 100%);
 }
 
 .swipe-card-skip {
@@ -638,10 +638,10 @@ h6 { font-size: var(--font-size-xs); }
 }
 
 .introjs-donebutton:hover {
-  background-color: #4fa87a;
-  border-color: #4fa87a;
+  background-color: #3C4686;
+  border-color: #3C4686;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(98, 190, 143, 0.4);
+  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.4);
 }
 
 .introjs-skipbutton {

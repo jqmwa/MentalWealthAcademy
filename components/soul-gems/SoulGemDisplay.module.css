@@ -100,9 +100,9 @@
 .aiTag {
   font-size: 9px;
   padding: 2px 6px;
-  background: rgba(81, 104, 255, 0.15);
+  background: rgba(81, 104, 255, 0.08);
   border-radius: 4px;
-  color: var(--color-primary);
+  color: var(--color-text-muted, rgba(26, 27, 36, 0.6));
   font-weight: 600;
   font-family: var(--font-button);
   text-transform: uppercase;
@@ -112,6 +112,23 @@
 .azuraPower .container {
   font-size: 11px;
   margin: 0;
+}
+
+.azuraPower .gemIcon {
+  filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.3));
+  opacity: 0.7;
+}
+
+.azuraPower .gemIcon svg {
+  opacity: 0.8;
+}
+
+.azuraPower .amount {
+  color: var(--color-text-muted, rgba(26, 27, 36, 0.6));
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
 }
 
 .viewWalletButton {

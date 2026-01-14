@@ -5,9 +5,7 @@ import Image from 'next/image';
 import styles from './DaemonTerminal.module.css';
 
 type Mode = 'rewrite' | 'tone' | 'critique' | 'summarize';
-
 type Tone = 'concise' | 'warm' | 'formal' | 'friendly' | 'direct';
-
 type View = 'toolGrid' | 'terminal';
 
 const ICON_REVISER = '/icons/bookicon.svg';
@@ -15,6 +13,95 @@ const ICON_SOON_1 = '/icons/Survey.svg';
 const ICON_SOON_2 = '/icons/Eye.svg';
 const ICON_SOON_3 = '/icons/ethlogo.svg';
 const ICON_ARROW = '/icons/Arrow.svg';
+
+// Compound Components
+function ToolCard({ 
+  icon, 
+  title, 
+  desc, 
+  disabled = false, 
+  variant,
+  onClick 
+}: { 
+  icon: string; 
+  title: string; 
+  desc: string; 
+  disabled?: boolean; 
+  variant?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.toolCard} ${variant ? styles[variant] : ''} ${disabled ? styles.toolCardDisabled : ''}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <div className={styles.toolInner}>
+        <div className={styles.toolIcon}>
+          <Image src={icon} alt="" width={32} height={32} />
+        </div>
+        <h1 className={styles.toolTitle}>{title}</h1>
+        <div className={styles.toolDesc}>{desc}</div>
+      </div>
+    </button>
+  );
+}
+
+function ActionCard({ 
+  title, 
+  desc, 
+  active = false, 
+  onClick 
+}: { 
+  title: string; 
+  desc: string; 
+  active?: boolean; 
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.actionCard} ${active ? styles.actionCardActive : ''}`}
+      onClick={onClick}
+    >
+      <div className={styles.actionTitle}>{title}</div>
+      <div className={styles.actionDesc}>{desc}</div>
+    </button>
+  );
+}
+
+function FormRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className={styles.row}>
+      <div className={styles.label}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+function Button({ 
+  variant = 'secondary', 
+  children, 
+  onClick, 
+  disabled = false 
+}: { 
+  variant?: 'primary' | 'secondary'; 
+  children: React.ReactNode; 
+  onClick?: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.button} ${styles[variant]}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function DaemonTerminal() {
   const [view, setView] = useState<View>('terminal');
@@ -104,49 +191,34 @@ export function DaemonTerminal() {
       {view === 'toolGrid' && (
         <div className={styles.toolGridWrap}>
           <div className={styles.toolGrid}>
-            <button
-              type="button"
-              className={`${styles.toolCard} ${styles.toolCardReviser}`}
+            <ToolCard
+              icon={ICON_REVISER}
+              title="Reviser"
+              desc="Rewrite drafts with clarity and tone."
+              variant="toolCardReviser"
               onClick={() => setView('terminal')}
-            >
-              <div className={styles.toolInner}>
-                <div className={styles.toolIcon}>
-                  <Image src={ICON_REVISER} alt="" width={32} height={32} />
-                </div>
-                <h1 className={styles.toolTitle}>Reviser</h1>
-                <div className={styles.toolDesc}>Rewrite drafts with clarity and tone.</div>
-              </div>
-            </button>
-
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardWeeklyReflection}`} disabled>
-              <div className={styles.toolInner}>
-                <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_1} alt="" width={32} height={32} />
-                </div>
-                <h1 className={styles.toolTitle}>Weekly Reflection</h1>
-                <div className={styles.toolDesc}>Structure your contributions to the community.</div>
-              </div>
-            </button>
-
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardShareSheets}`} disabled>
-              <div className={styles.toolInner}>
-                <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_2} alt="" width={32} height={32} />
-                </div>
-                <h1 className={styles.toolTitle}>Share sheets</h1>
-                <div className={styles.toolDesc}>Shared spreadsheets for MWA researchers.</div>
-              </div>
-            </button>
-
-            <button type="button" className={`${styles.toolCard} ${styles.toolCardDisabled} ${styles.toolCardDreamReader}`} disabled>
-              <div className={styles.toolInner}>
-                <div className={styles.toolIcon}>
-                  <Image src={ICON_SOON_3} alt="" width={32} height={32} />
-                </div>
-                <h1 className={styles.toolTitle}>Dream Reader</h1>
-                <div className={styles.toolDesc}>Study your unique Daemon.</div>
-              </div>
-            </button>
+            />
+            <ToolCard
+              icon={ICON_SOON_1}
+              title="Weekly Reflection"
+              desc="Structure your contributions to the community."
+              variant="toolCardWeeklyReflection"
+              disabled
+            />
+            <ToolCard
+              icon={ICON_SOON_2}
+              title="Share sheets"
+              desc="Shared spreadsheets for MWA researchers."
+              variant="toolCardShareSheets"
+              disabled
+            />
+            <ToolCard
+              icon={ICON_SOON_3}
+              title="Dream Reader"
+              desc="Study your unique Daemon."
+              variant="toolCardDreamReader"
+              disabled
+            />
           </div>
         </div>
       )}
@@ -156,21 +228,18 @@ export function DaemonTerminal() {
           <div className={styles.centerPanel}>
             <div className={styles.actionGrid}>
               {modeCards.map((c) => (
-                <button
+                <ActionCard
                   key={c.id}
-                  type="button"
-                  className={`${styles.actionCard} ${mode === c.id ? styles.actionCardActive : ''}`}
+                  title={c.title}
+                  desc={c.desc}
+                  active={mode === c.id}
                   onClick={() => setMode(c.id)}
-                >
-                  <div className={styles.actionTitle}>{c.title}</div>
-                  <div className={styles.actionDesc}>{c.desc}</div>
-                </button>
+                />
               ))}
             </div>
 
             <div className={styles.chat}>
-              <div className={styles.row}>
-                <div className={styles.label}>Tone</div>
+              <FormRow label="Tone">
                 <select
                   className={`${styles.field} ${styles.select}`}
                   value={tone}
@@ -182,32 +251,31 @@ export function DaemonTerminal() {
                   <option value="friendly">Friendly</option>
                   <option value="direct">Direct</option>
                 </select>
-              </div>
+              </FormRow>
 
-              <div className={styles.row}>
-                <div className={styles.label}>Context</div>
-                <textarea
-                  className={`${styles.field} ${styles.textarea}`}
-                  value={contextEmail}
-                  onChange={(e) => setContextEmail(e.target.value)}
-                  placeholder="Optional: paste the email you're replying to…"
-                />
-              </div>
+              {mode !== 'rewrite' && (
+                <FormRow label="Context">
+                  <textarea
+                    className={`${styles.field} ${styles.textarea}`}
+                    value={contextEmail}
+                    onChange={(e) => setContextEmail(e.target.value)}
+                    placeholder="Optional: paste the email you're replying to…"
+                  />
+                </FormRow>
+              )}
 
-              <div className={styles.row}>
-                <div className={styles.label}>Input</div>
+              <FormRow label="Input">
                 <textarea
                   className={`${styles.field} ${styles.textarea}`}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Paste text to refine…"
                 />
-              </div>
+              </FormRow>
 
               <div className={styles.actions}>
-                <button
-                  type="button"
-                  className={`${styles.button} ${styles.secondary}`}
+                <Button
+                  variant="secondary"
                   onClick={() => {
                     setContextEmail('');
                     setInput('');
@@ -216,10 +284,9 @@ export function DaemonTerminal() {
                   }}
                 >
                   Clear
-                </button>
-                <button
-                  type="button"
-                  className={`${styles.button} ${styles.primary}`}
+                </Button>
+                <Button
+                  variant="primary"
                   onClick={runDaemon}
                   disabled={loading}
                 >
@@ -232,20 +299,19 @@ export function DaemonTerminal() {
                   />
                   <span>{loading ? 'Generating…' : 'Generate'}</span>
                   <span className={styles.rewardText}>(+30)</span>
-                </button>
+                </Button>
               </div>
 
               <div className={styles.output}>
                 <div className={styles.outputHeader}>
                   <div className={styles.outputTitle}>Output</div>
-                  <button
-                    type="button"
-                    className={`${styles.button} ${styles.secondary}`}
+                  <Button
+                    variant="secondary"
                     onClick={copyOutput}
                     disabled={!output}
                   >
                     Copy
-                  </button>
+                  </Button>
                 </div>
                 <div className={styles.outputBody}>{output || 'Your output will appear here.'}</div>
               </div>
