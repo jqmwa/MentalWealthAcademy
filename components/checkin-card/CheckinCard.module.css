@@ -109,22 +109,22 @@
 
 /* Checked state */
 .checked {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.08));
-  border-color: rgba(76, 175, 80, 0.4);
+  background: var(--gradient-secondary);
+  border-color: rgba(80, 89, 155, 0.35);
 }
 
 .checked:hover {
   transform: none;
-  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.15);
+  box-shadow: inherit;
 }
 
 .checked .iconCircle {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  border-color: #4CAF50;
+  background: var(--gradient-secondary);
+  border-color: var(--color-secondary);
 }
 
 .checked .icon {
-  color: white;
+  color: var(--color-text-light);
 }
 
 .checked .checkmark {
@@ -132,7 +132,8 @@
 }
 
 .checked .text {
-  color: #2e7d32;
+  color: var(--color-text-light);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
 
 .checked .rightIcon {
@@ -176,6 +177,194 @@
   100% {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Gratitude modal */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-overlay);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: var(--z-modal);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.azuraAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 2px solid var(--color-secondary);
+  background: var(--gradient-secondary);
+  box-shadow: var(--shadow-secondary);
+  flex-shrink: 0;
+}
+
+.azuraImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modalTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modalTitle {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+}
+
+.modalSubtitle {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-muted);
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.labelText {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-secondary);
+  background: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dark);
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.textarea:focus {
+  border-color: var(--color-secondary-hover);
+  box-shadow: 0 0 0 3px rgba(80, 89, 155, 0.2);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.modalFooter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.helperText {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton {
+  width: 100%;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-family: var(--font-button);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.primaryButton {
+  background: var(--gradient-primary);
+  color: var(--color-text-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.primaryButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-primary);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.secondaryButton {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-dark);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Card surface used inside modal to keep glassmorphism feel */
+.modal > form,
+.modal > div {
+  background: var(--card-background);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-xl);
+  max-width: 480px;
+  width: 100%;
+  padding: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .modal {
+    padding: var(--space-6);
   }
 }
 
