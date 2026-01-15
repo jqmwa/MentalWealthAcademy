@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 import Image from 'next/image';
 import Link from 'next/link';
 import { providers } from 'ethers';
@@ -90,7 +90,8 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x
 
 export default function CreateProposalPage() {
   const router = useRouter();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, connector } = useAccount();
+  const { connect, connectors, isPending: isConnecting } = useConnect();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -100,8 +101,6 @@ export default function CreateProposalPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStep, setSubmissionStep] = useState<'idle' | 'blockchain' | 'database'>('idle');
   const [charCount, setCharCount] = useState(0);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -123,62 +122,11 @@ export default function CreateProposalPage() {
     setCharCount(proposal.length);
   }, [proposal]);
 
-  // Check for connected wallet via window.ethereum
-  useEffect(() => {
-    const checkWalletConnection = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-          if (accounts.length > 0) {
-            setWalletAddress(accounts[0]);
-          }
-        } catch (error) {
-          console.error('Error checking wallet connection:', error);
-        }
-      }
-    };
-
-    checkWalletConnection();
-
-    // Listen for account changes
-    if (typeof window.ethereum !== 'undefined') {
-      const handleAccountsChanged = (accounts: string[]) => {
-        if (accounts.length > 0) {
-          setWalletAddress(accounts[0]);
-        } else {
-          setWalletAddress(null);
-        }
-      };
-
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      return () => {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      };
-    }
-  }, []);
-
-  const handleConnectWallet = async () => {
-    if (typeof window.ethereum === 'undefined') {
-      alert('Please install MetaMask or another Web3 wallet to submit proposals.');
-      return;
-    }
-
-    setIsConnecting(true);
-    try {
-      // Request account access - works with MetaMask, Coinbase Wallet, etc.
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts.length > 0) {
-        setWalletAddress(accounts[0]);
-      }
-    } catch (error: any) {
-      if (error.code === 4001) {
-        alert('Please connect your wallet to submit a proposal.');
-      } else {
-        console.error('Error connecting wallet:', error);
-        alert('Failed to connect wallet. Please try again.');
-      }
-    } finally {
-      setIsConnecting(false);
+  const handleConnectWallet = () => {
+    // Use wagmi's connect which supports mobile wallets via WalletConnect/Reown
+    const connector = connectors[0];
+    if (connector) {
+      connect({ connector });
     }
   };
 
@@ -214,15 +162,13 @@ export default function CreateProposalPage() {
       return;
     }
 
-    const connectedAddress = address || walletAddress;
-    if (!connectedAddress) {
+    if (!isConnected || !address) {
       alert('Please connect your wallet using the "Connect Wallet" button below to submit your proposal.');
       return;
     }
 
-    // Check for Web3 provider
-    if (typeof window.ethereum === 'undefined') {
-      alert('Please install MetaMask or another Web3 wallet to submit proposals.');
+    if (!connector) {
+      alert('Wallet connector not available. Please reconnect your wallet.');
       return;
     }
 
@@ -236,7 +182,15 @@ export default function CreateProposalPage() {
       // Convert token amount to USDC format (6 decimals)
       const usdcAmount = Math.floor(tokenAmountNum * 1e6).toString();
       
-      const provider = new providers.Web3Provider(window.ethereum);
+      // Get the provider from the connector
+      // The connector exposes an EIP1193 provider that we can use with ethers
+      const provider = await connector.getProvider();
+      if (!provider) {
+        throw new Error('Provider not available from connector');
+      }
+      
+      // Convert EIP1193 provider to ethers Web3Provider
+      const ethersProvider = new providers.Web3Provider(provider);
       const { proposalId: onChainProposalId, txHash } = await createProposalOnChain(
         CONTRACT_ADDRESS,
         recipientAddress.trim(),
@@ -244,7 +198,7 @@ export default function CreateProposalPage() {
         title.trim(),
         proposal.trim(),
         7, // 7 days voting period
-        provider
+        ethersProvider
       );
 
       console.log('✅ On-chain proposal created!', { onChainProposalId, txHash });
@@ -260,7 +214,7 @@ export default function CreateProposalPage() {
         body: JSON.stringify({
           title: title.trim(),
           proposalMarkdown: proposal.trim(),
-          walletAddress: connectedAddress,
+          walletAddress: address,
           recipientAddress: recipientAddress.trim(),
           tokenAmount: tokenAmount.trim(),
           onChainProposalId: onChainProposalId.toString(),
@@ -363,11 +317,35 @@ export default function CreateProposalPage() {
                     </span>
                   </div>
                 </div>
-                {(address || walletAddress) && (
+                {!isConnected && (
+                  <button
+                    className={styles.connectWalletButton}
+                    onClick={handleConnectWallet}
+                    disabled={isConnecting}
+                    type="button"
+                  >
+                    {isConnecting ? (
+                      <>
+                        <div className={styles.spinner}></div>
+                        <span>Connecting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                          <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="16" cy="14" r="2" fill="currentColor"/>
+                        </svg>
+                        <span>Connect Wallet</span>
+                      </>
+                    )}
+                  </button>
+                )}
+                {address && (
                   <div className={styles.addressBadge}>
                     <span className={styles.addressLabel}>Wallet</span>
                     <span className={styles.addressValue}>
-                      {(address || walletAddress)?.slice(0, 6)}...{(address || walletAddress)?.slice(-4)}
+                      {address.slice(0, 6)}...{address.slice(-4)}
                     </span>
                   </div>
                 )}
@@ -551,31 +529,6 @@ Break down your needs..."
                     </>
                   )}
                 </button>
-
-                {(!isConnected && !walletAddress) && (
-                  <button
-                    className={styles.connectWalletButton}
-                    onClick={handleConnectWallet}
-                    disabled={isConnecting}
-                    type="button"
-                  >
-                    {isConnecting ? (
-                      <>
-                        <div className={styles.spinner}></div>
-                        <span>Connecting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-                          <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
-                          <circle cx="16" cy="14" r="2" fill="currentColor"/>
-                        </svg>
-                        <span>Connect Wallet</span>
-                      </>
-                    )}
-                  </button>
-                )}
 
                 <div className={styles.actionFooter}>
                   <div className={styles.footerIcon}>

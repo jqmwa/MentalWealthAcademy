@@ -201,6 +201,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Add padding for mobile bottom navigation */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 80px; /* Space for bottom nav + safe area */
+  }
+}
+
 /* ============================================
    Typography
    ============================================ */

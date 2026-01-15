@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Removed isMobileMenuOpen - bottom nav is always visible on mobile
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isYourAccountsModalOpen, setIsYourAccountsModalOpen] = useState(false);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
@@ -358,6 +358,21 @@ const Navbar: React.FC = () => {
                       </Link>
                     </div>
                     <div className={styles.profileDropdownMenu}>
+                      {/* Mobile Shards Counter in Dropdown */}
+                      <div className={styles.mobileShardsInDropdown}>
+                        <Image
+                          src="/icons/shard.svg"
+                          alt="Daemon"
+                          width={20}
+                          height={20}
+                          className={styles.shardIcon}
+                        />
+                        <span className={styles.shardsLabel}>Daemon:</span>
+                        <span className={styles.shardsValue}>
+                          {shardCount !== null ? String(shardCount).padStart(3, '0') : '000'}
+                        </span>
+                      </div>
+                      <div className={styles.dropdownDivider} />
                       <button 
                         className={styles.dropdownItem}
                         onClick={handleUsernameClick}
@@ -435,54 +450,40 @@ const Navbar: React.FC = () => {
                 <span>Get Started</span>
               </button>
             )}
-            {/* Mobile Menu Toggle */}
-            <button 
-              className={styles.mobileMenuButton}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              <MenuIcon size={24} />
-            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
-        <div className={styles.mobileLinksContainer}>
-          <Link 
-            href="/home" 
-            className={`${styles.mobileNavButton} ${isActive('/home') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <HomeIcon size={20} className={styles.homeIcon} />
-            <span>Home</span>
-          </Link>
-          <Link 
-            href="/quests" 
-            className={`${styles.mobileNavButton} ${isActive('/quests') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <QuestsIcon size={20} className={styles.questIcon} />
-            <span>Quests</span>
-          </Link>
-          <Link 
-            href="/voting" 
-            className={`${styles.mobileNavButton} ${isActive('/voting') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <VotingIcon size={20} className={styles.questIcon} />
-            <span>Voting</span>
-          </Link>
-          <Link 
-            href="/library" 
-            className={`${styles.mobileNavButton} ${isActive('/library') ? styles.mobileNavButtonActive : ''}`}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <LibraryIcon size={20} className={styles.questIcon} />
-            <span>Library</span>
-          </Link>
-        </div>
+      {/* Mobile Bottom Navigation */}
+      <div className={styles.mobileBottomNav}>
+        <Link 
+          href="/home" 
+          className={`${styles.mobileBottomNavButton} ${isActive('/home') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <HomeIcon size={24} className={styles.homeIcon} />
+          <span className={styles.mobileBottomNavLabel}>Home</span>
+        </Link>
+        <Link 
+          href="/quests" 
+          className={`${styles.mobileBottomNavButton} ${isActive('/quests') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <QuestsIcon size={24} className={styles.questIcon} />
+          <span className={styles.mobileBottomNavLabel}>Quests</span>
+        </Link>
+        <Link 
+          href="/voting" 
+          className={`${styles.mobileBottomNavButton} ${isActive('/voting') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <VotingIcon size={24} className={styles.questIcon} />
+          <span className={styles.mobileBottomNavLabel}>Voting</span>
+        </Link>
+        <Link 
+          href="/library" 
+          className={`${styles.mobileBottomNavButton} ${isActive('/library') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <LibraryIcon size={24} className={styles.questIcon} />
+          <span className={styles.mobileBottomNavLabel}>Library</span>
+        </Link>
       </div>
       {isYourAccountsModalOpen && (
         <YourAccountsModal onClose={() => setIsYourAccountsModalOpen(false)} />
