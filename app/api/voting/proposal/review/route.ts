@@ -4,6 +4,8 @@ import { isDbConfigured, sqlQuery } from '@/lib/db';
 import { ensureProposalSchema } from '@/lib/ensureProposalSchema';
 import { elizaAPI } from '@/lib/eliza-api';
 import azuraPersonality from '@/lib/Azurapersonality.json';
+import { providers, Wallet as EthersWallet } from 'ethers';
+import { azuraReviewProposal } from '@/lib/azura-contract';
 
 interface AzuraScores {
   clarity: number;
@@ -19,6 +21,9 @@ interface ProposalData {
   title: string;
   proposal_markdown: string;
   wallet_address: string;
+  on_chain_proposal_id: string | null;
+  recipient_address: string | null;
+  token_amount: string | null;
 }
 
 export async function POST(request: Request) {
@@ -51,7 +56,7 @@ export async function POST(request: Request) {
   let proposal: ProposalData;
   try {
     const proposals = await sqlQuery<ProposalData[]>(
-      `SELECT id, title, proposal_markdown, wallet_address 
+      `SELECT id, title, proposal_markdown, wallet_address, on_chain_proposal_id, recipient_address, token_amount 
        FROM proposals 
        WHERE id = :proposalId AND status = 'pending_review' 
        LIMIT 1`,
@@ -203,19 +208,84 @@ ${proposal.proposal_markdown}
       { status: newStatus, proposalId: proposal.id }
     );
 
-    // If approved, automatically create on-chain proposal
-    if (decision === 'approved' && tokenAllocation) {
-      // Convert tokenAllocation percentage to Azura level (1-40% → 1-4)
-      const azuraLevel = Math.ceil(tokenAllocation / 10);
+    // If approved OR rejected, Azura must review on-chain (for both approval and rejection)
+    if (proposal.on_chain_proposal_id) {
+      const azuraLevel = decision === 'approved' && tokenAllocation 
+        ? Math.ceil(tokenAllocation / 10)  // Level 1-4 for approved
+        : 0;  // Level 0 for rejected (kill)
       
-      // Trigger on-chain creation asynchronously (don't wait for it)
-      const baseUrl = request.url.split('/api')[0];
-      fetch(`${baseUrl}/api/voting/proposal/${proposal.id}/create-onchain`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      }).catch(error => {
-        console.error('Failed to trigger on-chain proposal creation:', error);
-      });
+      console.log(`Azura reviewing on-chain proposal ${proposal.on_chain_proposal_id} with level ${azuraLevel}`);
+      
+      try {
+        // Get Azura's private key
+        const azuraPrivateKey = process.env.AZURA_PRIVATE_KEY;
+        const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS;
+        const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
+
+        if (!azuraPrivateKey) {
+          throw new Error('Azura private key not configured. Set AZURA_PRIVATE_KEY in environment.');
+        }
+
+        if (!contractAddress) {
+          throw new Error('Contract address not configured.');
+        }
+
+        // Create provider and signer for Azura
+        const provider = new providers.JsonRpcProvider(rpcUrl);
+        const azuraWallet = new EthersWallet(azuraPrivateKey, provider);
+
+        console.log('Azura wallet address:', azuraWallet.address);
+
+        // Check Azura's gas balance
+        const balance = await azuraWallet.getBalance();
+        const balanceEth = Number(balance) / 1e18;
+        console.log('Azura ETH balance:', balanceEth);
+
+        if (balanceEth < 0.001) {
+          throw new Error(`Azura needs more gas! Current balance: ${balanceEth} ETH. Please fund Azura's wallet: ${azuraWallet.address}`);
+        }
+
+        // Create Web3Provider wrapper for azuraReviewProposal function
+        const web3Provider = new providers.Web3Provider({
+          request: async (args: any) => {
+            return provider.send(args.method, args.params || []);
+          },
+          // @ts-ignore
+          getSigner: () => azuraWallet,
+        });
+
+        // Azura reviews the proposal on-chain
+        const reviewTxHash = await azuraReviewProposal(
+          contractAddress,
+          parseInt(proposal.on_chain_proposal_id),
+          azuraLevel,
+          web3Provider
+        );
+
+        console.log(`✅ Azura reviewed on-chain! Level: ${azuraLevel}, TX: ${reviewTxHash}`);
+
+        // Store the review transaction hash
+        await sqlQuery(
+          `UPDATE proposal_reviews SET azura_review_tx_hash = :txHash WHERE proposal_id = :proposalId`,
+          { txHash: reviewTxHash, proposalId: proposal.id }
+        );
+
+        // Update proposal status based on Azura's level
+        const newStatus = azuraLevel > 0 ? 'active' : 'rejected';
+        await sqlQuery(
+          `UPDATE proposals SET status = :status WHERE id = :proposalId`,
+          { status: newStatus, proposalId: proposal.id }
+        );
+
+        console.log(`✅ Proposal status updated to: ${newStatus}`);
+      } catch (blockchainError: any) {
+        console.error('Error during on-chain review:', blockchainError);
+        // Don't fail the entire review if blockchain interaction fails
+        // The review is still saved to database
+        console.warn('⚠️ Review saved to database but on-chain review failed:', blockchainError.message);
+      }
+    } else {
+      console.warn('⚠️ Proposal has no on-chain ID, skipping blockchain review');
     }
 
     return NextResponse.json({

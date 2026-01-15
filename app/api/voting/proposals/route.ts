@@ -11,6 +11,8 @@ interface ProposalWithReview {
   status: string;
   created_at: string;
   updated_at: string;
+  on_chain_proposal_id: string | null;
+  on_chain_tx_hash: string | null;
   username: string | null;
   avatar_url: string | null;
   review_decision: string | null;
@@ -18,7 +20,7 @@ interface ProposalWithReview {
   review_token_allocation: number | null;
   review_scores: string | null;
   review_reviewed_at: string | null;
-  on_chain_proposal_id: string | null;
+  azura_review_tx_hash: string | null;
 }
 
 export async function GET() {
@@ -47,6 +49,8 @@ export async function GET() {
           p.status,
           p.created_at,
           p.updated_at,
+          p.on_chain_proposal_id,
+          p.on_chain_tx_hash,
           u.username,
           u.avatar_url,
           pr.decision as review_decision,
@@ -54,7 +58,7 @@ export async function GET() {
           pr.token_allocation_percentage as review_token_allocation,
           pr.scores as review_scores,
           pr.reviewed_at as review_reviewed_at,
-          pr.on_chain_proposal_id
+          pr.azura_review_tx_hash
          FROM proposals p
          LEFT JOIN users u ON p.user_id = u.id
          LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
@@ -62,9 +66,9 @@ export async function GET() {
          ORDER BY p.created_at DESC`
       );
     } catch (queryError: any) {
-      // If on_chain_proposal_id column doesn't exist, try without it
-      if (queryError.message?.includes('on_chain_proposal_id') || queryError.code === '42703') {
-        console.warn('on_chain_proposal_id column not found, querying without it');
+      // If on_chain fields don't exist, try without them
+      if (queryError.message?.includes('on_chain') || queryError.code === '42703') {
+        console.warn('on_chain columns not found, querying without them');
         proposals = await sqlQuery<ProposalWithReview[]>(
           `SELECT 
             p.id,
@@ -75,6 +79,8 @@ export async function GET() {
             p.status,
             p.created_at,
             p.updated_at,
+            NULL as on_chain_proposal_id,
+            NULL as on_chain_tx_hash,
             u.username,
             u.avatar_url,
             pr.decision as review_decision,
@@ -82,7 +88,7 @@ export async function GET() {
             pr.token_allocation_percentage as review_token_allocation,
             pr.scores as review_scores,
             pr.reviewed_at as review_reviewed_at,
-            NULL as on_chain_proposal_id
+            NULL as azura_review_tx_hash
            FROM proposals p
            LEFT JOIN users u ON p.user_id = u.id
            LEFT JOIN proposal_reviews pr ON p.id = pr.proposal_id
@@ -104,6 +110,8 @@ export async function GET() {
       status: p.status,
       createdAt: p.created_at,
       updatedAt: p.updated_at,
+      onChainProposalId: p.on_chain_proposal_id || null,
+      onChainTxHash: p.on_chain_tx_hash || null,
       user: {
         username: p.username,
         avatarUrl: p.avatar_url,
@@ -122,6 +130,7 @@ export async function GET() {
         })() : null,
         reviewedAt: p.review_reviewed_at,
         onChainProposalId: p.on_chain_proposal_id || null,
+        azuraReviewTxHash: p.azura_review_tx_hash || null,
       } : null,
     }));
 

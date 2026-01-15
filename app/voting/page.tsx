@@ -43,6 +43,8 @@ interface DatabaseProposal {
   status: 'pending_review' | 'approved' | 'rejected' | 'active' | 'completed';
   walletAddress: string;
   createdAt: string;
+  onChainProposalId: string | null;
+  onChainTxHash: string | null;
   user: {
     username: string | null;
     avatarUrl: string | null;
@@ -289,6 +291,28 @@ export default function VotingPage() {
                       onViewDetails={handleViewDetails}
                       showAvatar={false}
                     />
+                    
+                    {/* Show on-chain transaction info */}
+                    {proposal.onChainTxHash && (
+                      <div className={styles.onChainInfo}>
+                        <div className={styles.onChainBadge}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L3 7L12 12L21 7L12 2Z" fill="currentColor"/>
+                            <path d="M3 17L12 22L21 17" fill="currentColor" fillOpacity="0.6"/>
+                            <path d="M3 12L12 17L21 12" fill="currentColor" fillOpacity="0.8"/>
+                          </svg>
+                          <span>On-Chain Verified</span>
+                        </div>
+                        <a 
+                          href={`https://basescan.org/tx/${proposal.onChainTxHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.txLink}
+                        >
+                          View Transaction →
+                        </a>
+                      </div>
+                    )}
                     
                     {/* Show voting UI for active proposals with on-chain data */}
                     {proposal.status === 'active' && 

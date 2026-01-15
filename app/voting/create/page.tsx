@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import Image from 'next/image';
 import Link from 'next/link';
+import { providers } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
+import { createProposalOnChain } from '@/lib/azura-contract';
 import styles from './page.module.css';
 
 const ACTIVATION_TEMPLATE = `## Activation Proposal
@@ -84,6 +86,8 @@ const RESEARCH_TEMPLATE = `## Research Funding Proposal
 - Phase 2: [Description] - [Date]
 - Final Report: [Date]`;
 
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
+
 export default function CreateProposalPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
@@ -94,6 +98,7 @@ export default function CreateProposalPage() {
   const [username, setUsername] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionStep, setSubmissionStep] = useState<'idle' | 'blockchain' | 'database'>('idle');
   const [charCount, setCharCount] = useState(0);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -182,6 +187,7 @@ export default function CreateProposalPage() {
   };
 
   const handleSubmit = async () => {
+    // Validation
     if (!title.trim() || !proposal.trim()) {
       alert('Please fill in both title and proposal');
       return;
@@ -210,14 +216,44 @@ export default function CreateProposalPage() {
 
     const connectedAddress = address || walletAddress;
     if (!connectedAddress) {
-      // Show alert to guide user to Connect Wallet button
       alert('Please connect your wallet using the "Connect Wallet" button below to submit your proposal.');
+      return;
+    }
+
+    // Check for Web3 provider
+    if (typeof window.ethereum === 'undefined') {
+      alert('Please install MetaMask or another Web3 wallet to submit proposals.');
       return;
     }
 
     setIsSubmitting(true);
     
     try {
+      // STEP 1: Create proposal on-chain (user pays gas)
+      setSubmissionStep('blockchain');
+      console.log('Creating proposal on-chain...');
+      
+      // Convert token amount to USDC format (6 decimals)
+      const usdcAmount = Math.floor(tokenAmountNum * 1e6).toString();
+      
+      const provider = new providers.Web3Provider(window.ethereum);
+      const { proposalId: onChainProposalId, txHash } = await createProposalOnChain(
+        CONTRACT_ADDRESS,
+        recipientAddress.trim(),
+        usdcAmount,
+        title.trim(),
+        proposal.trim(),
+        7, // 7 days voting period
+        provider
+      );
+
+      console.log('✅ On-chain proposal created!', { onChainProposalId, txHash });
+      console.log(`View on BaseScan: https://basescan.org/tx/${txHash}`);
+
+      // STEP 2: Save to database with on-chain ID
+      setSubmissionStep('database');
+      console.log('Saving to database...');
+      
       const response = await fetch('/api/voting/proposal/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -227,22 +263,48 @@ export default function CreateProposalPage() {
           walletAddress: connectedAddress,
           recipientAddress: recipientAddress.trim(),
           tokenAmount: tokenAmount.trim(),
+          onChainProposalId: onChainProposalId.toString(),
+          onChainTxHash: txHash,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit proposal');
+        throw new Error(data.error || 'Failed to save proposal to database');
       }
 
-      alert('Proposal submitted successfully! Azura is reviewing your proposal...');
+      // Success! Show transaction info
+      const message = `✅ Proposal submitted successfully!\n\nTransaction: ${txHash}\nOn-chain ID: ${onChainProposalId}\n\nView on BaseScan: https://basescan.org/tx/${txHash}\n\nAzura will review your proposal soon.`;
+      alert(message);
+      
       router.push('/voting');
     } catch (error: any) {
       console.error('Error submitting proposal:', error);
-      alert(error.message || 'Failed to submit proposal. Please try again.');
+      
+      // Provide helpful error messages
+      let errorMessage = 'Failed to submit proposal. ';
+      
+      if (error.code === 4001) {
+        errorMessage += 'You rejected the transaction.';
+      } else if (error.code === 'INSUFFICIENT_FUNDS') {
+        errorMessage += 'Insufficient funds for gas. Please add more ETH to your wallet.';
+      } else if (error.message?.includes('user rejected')) {
+        errorMessage += 'Transaction was rejected.';
+      } else if (error.message?.includes('gas')) {
+        errorMessage += 'Gas estimation failed. Please check your wallet balance.';
+      } else if (submissionStep === 'blockchain') {
+        errorMessage += 'Blockchain transaction failed: ' + (error.message || 'Unknown error');
+      } else if (submissionStep === 'database') {
+        errorMessage += 'Proposal created on-chain but failed to save to database. Please contact support with transaction hash: ' + error.txHash;
+      } else {
+        errorMessage += error.message || 'Please try again.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
+      setSubmissionStep('idle');
     }
   };
 
@@ -472,7 +534,11 @@ Break down your needs..."
                   {isSubmitting ? (
                     <>
                       <div className={styles.spinner}></div>
-                      <span>Submitting to Chain...</span>
+                      <span>
+                        {submissionStep === 'blockchain' && 'Creating on-chain (sign transaction)...'}
+                        {submissionStep === 'database' && 'Saving to database...'}
+                        {submissionStep === 'idle' && 'Submitting...'}
+                      </span>
                     </>
                   ) : (
                     <>
@@ -481,7 +547,7 @@ Break down your needs..."
                         <path d="M3 17L12 22L21 17" fill="currentColor" fillOpacity="0.6"/>
                         <path d="M3 12L12 17L21 12" fill="currentColor" fillOpacity="0.8"/>
                       </svg>
-                      <span>Submit Proposal</span>
+                      <span>Submit Proposal (On-Chain)</span>
                     </>
                   )}
                 </button>

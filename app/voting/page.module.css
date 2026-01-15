@@ -1182,3 +1182,62 @@
     gap: 12px;
   }
 }
+
+/* On-Chain Info Display */
+.onChainInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(81, 104, 255, 0.08), rgba(98, 190, 143, 0.06));
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  border-radius: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.onChainBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  font-family: var(--font-primary);
+}
+
+.onChainBadge svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.txLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-family: var(--font-primary);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.txLink:hover {
+  color: var(--color-secondary-hover);
+  transform: translateX(2px);
+}
+
+@media (max-width: 768px) {
+  .onChainInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .txLink {
+    width: 100%;
+  }
+}

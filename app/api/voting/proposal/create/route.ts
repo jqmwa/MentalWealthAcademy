@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
 import { ensureProposalSchema } from '@/lib/ensureProposalSchema';
 import { getUserFromRequest } from '@/lib/auth';
+import { providers, Contract } from 'ethers';
+import { AZURA_KILLSTREAK_ABI } from '@/lib/azura-contract';
 
 export async function POST(request: Request) {
   if (!isDbConfigured()) {
@@ -26,7 +28,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { title, proposalMarkdown, walletAddress, recipientAddress, tokenAmount } = body;
+  const { title, proposalMarkdown, walletAddress, recipientAddress, tokenAmount, onChainProposalId, onChainTxHash } = body;
 
   // Validation
   if (!title || typeof title !== 'string' || title.trim().length === 0) {
@@ -93,6 +95,69 @@ export async function POST(request: Request) {
     );
   }
 
+  // Validate on-chain proposal ID and transaction hash (REQUIRED)
+  if (!onChainProposalId || typeof onChainProposalId !== 'string') {
+    return NextResponse.json(
+      { error: 'On-chain proposal ID is required. Proposal must be created on-chain first.' },
+      { status: 400 }
+    );
+  }
+
+  if (!onChainTxHash || typeof onChainTxHash !== 'string') {
+    return NextResponse.json(
+      { error: 'On-chain transaction hash is required.' },
+      { status: 400 }
+    );
+  }
+
+  // Verify the on-chain proposal exists
+  try {
+    const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS;
+    const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
+    
+    if (!contractAddress) {
+      console.error('Contract address not configured');
+      return NextResponse.json(
+        { error: 'System configuration error: Contract address not set.' },
+        { status: 500 }
+      );
+    }
+
+    const provider = new providers.JsonRpcProvider(rpcUrl);
+    const contract = new Contract(contractAddress, AZURA_KILLSTREAK_ABI, provider);
+    
+    // Verify the proposal exists on-chain
+    const onChainProposal = await contract.getProposal(parseInt(onChainProposalId));
+    
+    // Verify the proposal ID matches
+    if (onChainProposal.id.toString() !== onChainProposalId) {
+      return NextResponse.json(
+        { error: 'Invalid on-chain proposal ID. Proposal does not exist on blockchain.' },
+        { status: 400 }
+      );
+    }
+
+    // Verify the proposer matches the connected wallet
+    if (onChainProposal.proposer.toLowerCase() !== walletAddress.trim().toLowerCase()) {
+      return NextResponse.json(
+        { error: 'On-chain proposer does not match your wallet address.' },
+        { status: 400 }
+      );
+    }
+
+    console.log('✅ On-chain proposal verified:', {
+      id: onChainProposalId,
+      txHash: onChainTxHash,
+      proposer: onChainProposal.proposer,
+    });
+  } catch (error: any) {
+    console.error('Error verifying on-chain proposal:', error);
+    return NextResponse.json(
+      { error: 'Failed to verify on-chain proposal. Please ensure the transaction was successful.' },
+      { status: 400 }
+    );
+  }
+
   // Rate limiting: Check if user has submitted a proposal in the last 7 days
   try {
     const recentProposals = await sqlQuery<Array<{ created_at: string }>>(
@@ -125,12 +190,12 @@ export async function POST(request: Request) {
     );
   }
 
-  // Create proposal
+  // Create proposal with on-chain data
   try {
     const proposalId = uuidv4();
     await sqlQuery(
-      `INSERT INTO proposals (id, user_id, wallet_address, title, proposal_markdown, recipient_address, token_amount, status)
-       VALUES (:id, :userId, :walletAddress, :title, :proposalMarkdown, :recipientAddress, :tokenAmount, 'pending_review')`,
+      `INSERT INTO proposals (id, user_id, wallet_address, title, proposal_markdown, recipient_address, token_amount, on_chain_proposal_id, on_chain_tx_hash, status)
+       VALUES (:id, :userId, :walletAddress, :title, :proposalMarkdown, :recipientAddress, :tokenAmount, :onChainProposalId, :onChainTxHash, 'pending_review')`,
       {
         id: proposalId,
         userId: user.id,
@@ -139,6 +204,8 @@ export async function POST(request: Request) {
         proposalMarkdown: proposalMarkdown.trim(),
         recipientAddress: recipientAddress.trim().toLowerCase(),
         tokenAmount: tokenAmount.trim(),
+        onChainProposalId: onChainProposalId.toString(),
+        onChainTxHash: onChainTxHash.trim(),
       }
     );
 
@@ -155,7 +222,9 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       proposalId,
-      message: 'Proposal submitted successfully. Azura is reviewing your proposal...',
+      onChainProposalId,
+      onChainTxHash,
+      message: 'Proposal created on-chain and saved successfully. Azura is reviewing your proposal...',
     });
   } catch (error) {
     console.error('Error creating proposal:', error);
