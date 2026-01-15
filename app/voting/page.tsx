@@ -108,18 +108,6 @@ export default function VotingPage() {
   }, []);
 
   useEffect(() => {
-    // Check if user has seen the admin tutorial
-    const hasSeenTutorial = localStorage.getItem('hasSeenAdminTutorial');
-    if (!hasSeenTutorial) {
-      // Small delay to ensure page is rendered
-      const timer = setTimeout(() => {
-        setShowTutorial(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  useEffect(() => {
     fetchProposals();
   }, []);
 
