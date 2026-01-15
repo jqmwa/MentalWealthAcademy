@@ -1,0 +1,332 @@
+'use client';
+
+import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
+import styles from './EventsCarousel.module.css';
+
+interface EventData {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+  category: string;
+  imageUrl?: string;
+  emoji?: string;
+  gradient?: string;
+}
+
+// Mental Wealth Pathway Events - 12 events
+const mentalWealthEvents: EventData[] = [
+  {
+    id: '1',
+    title: 'Introduction to Mental Wealth',
+    date: 'January 20, 2026',
+    time: '10:00 AM PST',
+    description: 'Discover the foundations of mental wealth and how to build a sustainable practice for lifelong wellbeing.',
+    category: 'Foundation',
+    emoji: '🧠',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  },
+  {
+    id: '2',
+    title: 'Mindfulness & Meditation Basics',
+    date: 'January 27, 2026',
+    time: '10:00 AM PST',
+    description: 'Learn practical meditation techniques and mindfulness exercises you can incorporate into your daily routine.',
+    category: 'Practice',
+    emoji: '🧘',
+    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  },
+  {
+    id: '3',
+    title: 'Emotional Intelligence Workshop',
+    date: 'February 3, 2026',
+    time: '10:00 AM PST',
+    description: 'Develop your EQ skills to better understand, manage, and express your emotions effectively.',
+    category: 'Skills',
+    emoji: '💡',
+    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  },
+  {
+    id: '4',
+    title: 'Stress Management Strategies',
+    date: 'February 10, 2026',
+    time: '10:00 AM PST',
+    description: 'Evidence-based techniques to identify, manage, and reduce stress in your personal and professional life.',
+    category: 'Wellness',
+    emoji: '🌿',
+    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  },
+  {
+    id: '5',
+    title: 'Building Resilience',
+    date: 'February 17, 2026',
+    time: '10:00 AM PST',
+    description: 'Learn how to bounce back from setbacks and develop mental toughness for life\'s challenges.',
+    category: 'Growth',
+    emoji: '💪',
+    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+  },
+  {
+    id: '6',
+    title: 'Healthy Relationships & Boundaries',
+    date: 'February 24, 2026',
+    time: '10:00 AM PST',
+    description: 'Navigate interpersonal dynamics and set healthy boundaries for better mental health.',
+    category: 'Relationships',
+    emoji: '🤝',
+    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+  },
+  {
+    id: '7',
+    title: 'Sleep & Recovery Optimization',
+    date: 'March 3, 2026',
+    time: '10:00 AM PST',
+    description: 'Understand the science of sleep and learn techniques to improve your rest and recovery.',
+    category: 'Wellness',
+    emoji: '😴',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  },
+  {
+    id: '8',
+    title: 'Nutrition for Mental Health',
+    date: 'March 10, 2026',
+    time: '10:00 AM PST',
+    description: 'Explore the gut-brain connection and learn which foods support optimal mental function.',
+    category: 'Nutrition',
+    emoji: '🥗',
+    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  },
+  {
+    id: '9',
+    title: 'Movement & Exercise for Mind',
+    date: 'March 17, 2026',
+    time: '10:00 AM PST',
+    description: 'Discover how physical activity impacts mental health and create a sustainable movement practice.',
+    category: 'Fitness',
+    emoji: '🏃',
+    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  },
+  {
+    id: '10',
+    title: 'Digital Wellness & Tech Balance',
+    date: 'March 24, 2026',
+    time: '10:00 AM PST',
+    description: 'Develop a healthy relationship with technology and learn to manage digital overwhelm.',
+    category: 'Balance',
+    emoji: '📱',
+    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  },
+  {
+    id: '11',
+    title: 'Purpose & Meaning Discovery',
+    date: 'March 31, 2026',
+    time: '10:00 AM PST',
+    description: 'Explore what gives your life meaning and align your daily actions with your core values.',
+    category: 'Purpose',
+    emoji: '🎯',
+    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+  },
+  {
+    id: '12',
+    title: 'Creating Your Mental Wealth Plan',
+    date: 'April 7, 2026',
+    time: '10:00 AM PST',
+    description: 'Integrate everything you\'ve learned into a personalized, sustainable mental wealth action plan.',
+    category: 'Integration',
+    emoji: '📋',
+    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+  },
+];
+
+interface EventsCarouselProps {
+  title?: string;
+  events?: EventData[];
+  onRegister?: (eventId: string) => void;
+  onLearnMore?: (eventId: string) => void;
+}
+
+export const EventsCarousel: React.FC<EventsCarouselProps> = ({
+  title = 'Mental Wealth Pathway',
+  events = mentalWealthEvents,
+  onRegister,
+  onLearnMore,
+}) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollButtons = () => {
+    if (trackRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = trackRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (track) {
+      track.addEventListener('scroll', updateScrollButtons);
+      updateScrollButtons();
+      return () => track.removeEventListener('scroll', updateScrollButtons);
+    }
+  }, []);
+
+  const scrollToIndex = (index: number) => {
+    if (trackRef.current) {
+      const slideWidth = trackRef.current.children[0]?.clientWidth || 280;
+      const gap = 16;
+      trackRef.current.scrollTo({
+        left: index * (slideWidth + gap),
+        behavior: 'smooth',
+      });
+      setActiveIndex(index);
+    }
+  };
+
+  const scrollLeft = () => {
+    if (trackRef.current) {
+      const slideWidth = trackRef.current.children[0]?.clientWidth || 280;
+      const gap = 16;
+      const newScroll = trackRef.current.scrollLeft - (slideWidth + gap);
+      trackRef.current.scrollTo({ left: newScroll, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (trackRef.current) {
+      const slideWidth = trackRef.current.children[0]?.clientWidth || 280;
+      const gap = 16;
+      const newScroll = trackRef.current.scrollLeft + (slideWidth + gap);
+      trackRef.current.scrollTo({ left: newScroll, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (trackRef.current) {
+      const slideWidth = trackRef.current.children[0]?.clientWidth || 280;
+      const gap = 16;
+      const newIndex = Math.round(trackRef.current.scrollLeft / (slideWidth + gap));
+      setActiveIndex(newIndex);
+      updateScrollButtons();
+    }
+  };
+
+  // Create dot indicators (show max 6 dots for better UX)
+  const maxDots = 6;
+  const totalSlides = events.length;
+  const dotsToShow = Math.min(maxDots, totalSlides);
+
+  return (
+    <div className={styles.carouselSection}>
+      <div className={styles.carouselHeader}>
+        <h2 className={styles.carouselTitle}>{title}</h2>
+        <div className={styles.carouselNav}>
+          <button
+            className={styles.navButton}
+            onClick={scrollLeft}
+            disabled={!canScrollLeft}
+            aria-label="Previous events"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <button
+            className={styles.navButton}
+            onClick={scrollRight}
+            disabled={!canScrollRight}
+            aria-label="Next events"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.carouselContainer}>
+        <div
+          ref={trackRef}
+          className={styles.carouselTrack}
+          onScroll={handleScroll}
+        >
+          {events.map((event) => (
+            <div key={event.id} className={styles.carouselSlide}>
+              <div className={styles.carouselCard}>
+                <div
+                  className={styles.cardImageBox}
+                  style={{ background: event.gradient }}
+                >
+                  {event.imageUrl ? (
+                    <Image
+                      src={event.imageUrl}
+                      alt={event.title}
+                      fill
+                      className={styles.cardImage}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span className={styles.cardImagePlaceholder}>{event.emoji}</span>
+                  )}
+                  <span className={styles.cardBadge}>{event.category}</span>
+                </div>
+                <div className={styles.cardContent}>
+                  <h3 className={styles.cardTitle}>{event.title}</h3>
+                  <div className={styles.cardMeta}>
+                    <p className={styles.cardDate}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                      {event.date}
+                    </p>
+                    <p className={styles.cardTime}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      {event.time}
+                    </p>
+                  </div>
+                  <p className={styles.cardDescription}>{event.description}</p>
+                  <div className={styles.cardActions}>
+                    <button
+                      className={`${styles.cardButton} ${styles.cardButtonPrimary}`}
+                      onClick={() => onRegister?.(event.id)}
+                    >
+                      Register
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.dotsContainer}>
+        {Array.from({ length: dotsToShow }).map((_, index) => {
+          // Map dot index to actual slide range
+          const slideIndex = Math.floor((index / dotsToShow) * totalSlides);
+          const isActive = Math.floor((activeIndex / totalSlides) * dotsToShow) === index;
+          return (
+            <button
+              key={index}
+              className={`${styles.dot} ${isActive ? styles.dotActive : ''}`}
+              onClick={() => scrollToIndex(slideIndex)}
+              aria-label={`Go to event ${slideIndex + 1}`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default EventsCarousel;

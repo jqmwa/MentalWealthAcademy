@@ -129,33 +129,14 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </button>
-
         <div className={styles.content}>
-          <div className={styles.icon}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-              <path d="M21 15L16 10L9 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 21L8 15L3 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <h2 className={styles.title}>Select Your Avatar</h2>
-          <p className={styles.description}>
-            These 5 avatars were uniquely assigned to you. Choose one to represent your identity.
-          </p>
-
           {isFetching ? (
             <div className={styles.loading}>Loading avatars...</div>
           ) : error ? (
             <div className={styles.error}>{error}</div>
           ) : (
             <>
-              <div className={styles.avatarGrid} role="radiogroup" aria-label="Select your avatar">
+              <div className={styles.avatarGrid} role="radiogroup" aria-label="Avatar options">
                 {avatarChoices.map((avatar, index) => (
                   <button
                     key={avatar.id}

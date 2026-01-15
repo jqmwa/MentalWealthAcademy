@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
+import { ConnectKitButton } from 'connectkit';
 import Image from 'next/image';
 import Link from 'next/link';
 import { providers } from 'ethers';
@@ -91,7 +92,6 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x
 export default function CreateProposalPage() {
   const router = useRouter();
   const { address, isConnected, connector } = useAccount();
-  const { connect, connectors, isPending: isConnecting } = useConnect();
   const [title, setTitle] = useState('');
   const [proposal, setProposal] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -121,14 +121,6 @@ export default function CreateProposalPage() {
   useEffect(() => {
     setCharCount(proposal.length);
   }, [proposal]);
-
-  const handleConnectWallet = () => {
-    // Use wagmi's connect which supports mobile wallets via WalletConnect/Reown
-    const connector = connectors[0];
-    if (connector) {
-      connect({ connector });
-    }
-  };
 
   const handleTemplateClick = (template: string) => {
     setProposal(template);
@@ -287,6 +279,30 @@ export default function CreateProposalPage() {
                   <p className={styles.subtitle}>
                     Share your ideas with the community. Whether you&apos;re proposing an activation, research project, or community initiative, this is where great ideas begin their journey.
                   </p>
+                  <div className={styles.heroActions}>
+                    <ConnectKitButton.Custom>
+                      {({ isConnected, isConnecting, show, address }) => (
+                        isConnected ? (
+                          <div className={styles.connectedBadge}>
+                            <span className={styles.connectedDot} />
+                            <span>{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+                          </div>
+                        ) : (
+                          <button
+                            className={styles.primaryCta}
+                            onClick={show}
+                            disabled={isConnecting}
+                            type="button"
+                          >
+                            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                          </button>
+                        )
+                      )}
+                    </ConnectKitButton.Custom>
+                    <Link href="/voting" className={styles.secondaryCta}>
+                      View Proposals
+                    </Link>
+                  </div>
                 </div>
               </div>
               {/* Form Section */}
@@ -311,56 +327,23 @@ export default function CreateProposalPage() {
                     </div>
                   )}
                   <div className={styles.userDetails}>
-                    <span className={styles.userLabel}>Submitted by</span>
+                    <span className={styles.userLabel}>Submitting as</span>
                     <span className={styles.username}>
-                      @{username || 'connecting...'}
+                      @{username || 'anonymous'}
                     </span>
                   </div>
                 </div>
-                {!isConnected && (
-                  <button
-                    className={styles.connectWalletButton}
-                    onClick={handleConnectWallet}
-                    disabled={isConnecting}
-                    type="button"
-                  >
-                    {isConnecting ? (
-                      <>
-                        <div className={styles.spinner}></div>
-                        <span>Connecting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-                          <path d="M16 7V5C16 3.89543 15.1046 3 14 3H4C2.89543 3 2 3.89543 2 5V7" stroke="currentColor" strokeWidth="2"/>
-                          <circle cx="16" cy="14" r="2" fill="currentColor"/>
-                        </svg>
-                        <span>Connect Wallet</span>
-                      </>
-                    )}
-                  </button>
-                )}
-                {address && (
-                  <div className={styles.addressBadge}>
-                    <span className={styles.addressLabel}>Wallet</span>
-                    <span className={styles.addressValue}>
-                      {address.slice(0, 6)}...{address.slice(-4)}
-                    </span>
-                  </div>
-                )}
               </div>
 
               {/* Title Input */}
               <div className={styles.inputGroup}>
                 <label className={styles.label}>
                   <span className={styles.labelText}>Proposal Title</span>
-                  <span className={styles.labelHint}>Make it clear and compelling</span>
                 </label>
                 <input
                   type="text"
                   className={styles.titleInput}
-                  placeholder="e.g., Mental Health Workshop Series for Students"
+                  placeholder="Mental Health Workshop Series for Students"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   maxLength={120}
@@ -373,8 +356,7 @@ export default function CreateProposalPage() {
               {/* Recipient Address Input */}
               <div className={styles.inputGroup}>
                 <label className={styles.label}>
-                  <span className={styles.labelText}>Recipient Wallet Address</span>
-                  <span className={styles.labelHint}>Address to receive USDC if approved</span>
+                  <span className={styles.labelText}>Recipient Address</span>
                 </label>
                 <input
                   type="text"
@@ -388,13 +370,12 @@ export default function CreateProposalPage() {
               {/* Token Amount Input */}
               <div className={styles.inputGroup}>
                 <label className={styles.label}>
-                  <span className={styles.labelText}>Token Amount (USDC)</span>
-                  <span className={styles.labelHint}>Amount of USDC to request</span>
+                  <span className={styles.labelText}>Amount (USDC)</span>
                 </label>
                 <input
                   type="number"
                   className={styles.titleInput}
-                  placeholder="e.g., 1000"
+                  placeholder="1000"
                   value={tokenAmount}
                   onChange={(e) => setTokenAmount(e.target.value)}
                   step="0.01"
@@ -404,41 +385,21 @@ export default function CreateProposalPage() {
 
               {/* Template Buttons */}
               <div className={styles.templateSection}>
-                <span className={styles.templateLabel}>Quick Start Templates</span>
+                <span className={styles.templateLabel}>Templates</span>
                 <div className={styles.templateButtons}>
                   <button
                     className={styles.templateButton}
                     onClick={() => handleTemplateClick(ACTIVATION_TEMPLATE)}
                     type="button"
                   >
-                    <div className={styles.templateIcon}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="currentColor"/>
-                        <circle cx="8" cy="6" r="1" fill="currentColor"/>
-                        <circle cx="16" cy="6" r="1" fill="currentColor"/>
-                      </svg>
-                    </div>
-                    <div className={styles.templateInfo}>
-                      <span className={styles.templateName}>Activation</span>
-                      <span className={styles.templateDesc}>Events & Projects</span>
-                    </div>
+                    <span className={styles.templateName}>Activation</span>
                   </button>
                   <button
                     className={styles.templateButton}
                     onClick={() => handleTemplateClick(RESEARCH_TEMPLATE)}
                     type="button"
                   >
-                    <div className={styles.templateIcon}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="8" width="7" height="10" rx="1" fill="currentColor" fillOpacity="0.6"/>
-                        <rect x="9" y="6" width="7" height="12" rx="1" fill="currentColor" fillOpacity="0.8"/>
-                        <rect x="13" y="7" width="7" height="11" rx="1" fill="currentColor"/>
-                      </svg>
-                    </div>
-                    <div className={styles.templateInfo}>
-                      <span className={styles.templateName}>Research</span>
-                      <span className={styles.templateDesc}>Academic Studies</span>
-                    </div>
+                    <span className={styles.templateName}>Research</span>
                   </button>
                 </div>
               </div>
@@ -447,32 +408,15 @@ export default function CreateProposalPage() {
               <div className={styles.inputGroup}>
                 <label className={styles.label}>
                   <span className={styles.labelText}>Proposal Details</span>
-                  <span className={styles.labelHint}>Markdown supported • Be thorough and honest</span>
                 </label>
                 <textarea
                   className={styles.markdownInput}
-                  placeholder="## Your Proposal
-
-Tell us about your vision...
-
-### Why This Matters
-Explain the impact on our community...
-
-### Budget & Timeline
-Break down your needs..."
+                  placeholder="Describe your proposal, objectives, budget, and timeline..."
                   value={proposal}
                   onChange={(e) => setProposal(e.target.value)}
                 />
                 <div className={styles.inputFooter}>
-                  <div className={styles.markdownHint}>
-                    <span className={styles.markdownIcon}>#</span>
-                    <span>Headers</span>
-                    <span className={styles.markdownIcon}>**</span>
-                    <span>Bold</span>
-                    <span className={styles.markdownIcon}>-</span>
-                    <span>Lists</span>
-                  </div>
-                  <span className={styles.charCount}>{charCount.toLocaleString()} characters</span>
+                  <span className={styles.charCount}>{charCount.toLocaleString()} chars</span>
                 </div>
               </div>
               </div>

@@ -5,18 +5,33 @@
 
 .content {
   display: flex;
+  flex-direction: column;
   padding: 40px 20px;
-  gap: 40px;
-  max-width: 1600px;
+  gap: 24px;
+  max-width: 680px;
   width: 100%;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 @media (max-width: 900px) {
   .content {
-    flex-direction: column;
     padding: 24px 16px;
-    gap: 24px;
+    gap: 20px;
+  }
+}
+
+/* Mobile-first responsive spacing */
+@media (min-width: 768px) {
+  .content {
+    gap: 28px;
+    padding: 48px 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 720px;
   }
 }
 

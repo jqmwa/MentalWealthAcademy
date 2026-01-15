@@ -300,7 +300,24 @@
   }
 
   .viewButton {
+    /* Match the mobile CTA style from our profile connections / synced
+       blockchain account flows for consistency and better tap target */
     width: 100%;
     justify-content: center;
+    padding: 12px 20px;
+    height: 44px;
+    border-radius: 8px;
+    border-width: 0;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: var(--font-button);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .viewButton svg {
+    width: 16px;
+    height: 16px;
   }
 }

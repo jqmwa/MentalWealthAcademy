@@ -1073,6 +1073,11 @@
     width: 18px;
     height: 18px;
   }
+
+  /* Cancel out global mobile body bottom padding so footer sits tighter to the bottom on landing */
+  .container {
+    margin-bottom: -80px;
+  }
 }
 
 /* Company Logos Section */
@@ -1232,6 +1237,21 @@
   
   .rotatingTextWrapper {
     margin-top: -2px;
+  }
+}
+
+@media (max-width: 767px) {
+  .rotatingTextContainer {
+    padding: 0 16px;
+  }
+
+  .rotatingTextHeading {
+    flex-wrap: wrap;
+  }
+
+  .rotatingTextStatic,
+  .rotatingTextStaticLine {
+    white-space: normal;
   }
 }
 

@@ -429,9 +429,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                 <path d="M22 7L13.03 12.7C12.7213 12.8934 12.3643 12.996 12 12.996C11.6357 12.996 11.2787 12.8934 10.97 12.7L2 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </div>
-            <h2 className={styles.stepTitle}>Create Your Account</h2>
+            <h2 className={styles.stepTitle}>Create your account</h2>
             <p className={styles.stepDescription}>
-              Congrats on becoming a researcher
+              Enter your account details to continue.
             </p>
             
             <div className={styles.formFields}>
@@ -445,7 +445,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-                    placeholder="your_username"
+                    placeholder="username"
                     className={styles.input}
                     maxLength={32}
                     autoComplete="username"
@@ -478,7 +478,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="researcher@example.com"
+                    placeholder="name@example.com"
                       className={styles.input}
                       autoComplete="email"
                     />
@@ -492,7 +492,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isWa
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
+                    placeholder="password"
                       className={styles.input}
                       autoComplete="new-password"
                     />

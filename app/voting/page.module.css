@@ -166,13 +166,11 @@
 }
 
 .subtitle {
-  margin: 12px 0 0;
-  font-size: 16px;
+  margin: var(--space-sm) 0 0;
+  font-size: var(--font-size-md);
   line-height: 1.65;
-  color: rgba(26, 29, 51, 0.75);
-  max-width: 800px;
-  font-family: var(--font-secondary);
-  letter-spacing: -0.01em;
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
 }
 
 .badge {

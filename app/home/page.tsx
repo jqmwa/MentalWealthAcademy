@@ -3,9 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
-import Hero from '@/components/hero/Hero';
 import Banner from '@/components/banner/Banner';
-import SideNavigation from '@/components/side-navigation/SideNavigation';
 import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
@@ -13,8 +11,11 @@ import AvatarSelectionModal from '@/components/avatar-selection/AvatarSelectionM
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { ShardAnimation } from '@/components/quests/ShardAnimation';
 import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
-import PersonalDashboard from '@/components/personal-dashboard/PersonalDashboard';
 import PencilLoader from '@/components/landing/PencilLoader';
+import { CalendarDays } from '@/components/calendar-days/CalendarDays';
+import { CheckinCard } from '@/components/checkin-card/CheckinCard';
+import { ProgressCard } from '@/components/progress-card/ProgressCard';
+import { EventsCarousel } from '@/components/events-carousel/EventsCarousel';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -329,20 +330,16 @@ export default function Home() {
       <Navbar />
       <Banner />
       <div className={styles.content}>
-        <div className={styles.middleSection}>
-          {/* Personal Dashboard - Inspired by Blinkist/Habitica */}
-          <div data-intro="personal-dashboard">
-            <PersonalDashboard
-              username={me?.username}
-              avatarUrl={me?.avatarUrl}
-              shardCount={me?.shardCount}
-              streak={0}
-            />
-          </div>
-        </div>
-        <div data-intro="side-navigation">
-          <SideNavigation />
-        </div>
+        <CalendarDays />
+        <EventsCarousel />
+        <CheckinCard />
+        <ProgressCard 
+          title="Daily Wellness Goal"
+          currentValue={543}
+          targetValue={1000}
+          unit="minutes"
+          color="primary"
+        />
       </div>
       <Footer />
       {showRewardAnimation && rewardData && (

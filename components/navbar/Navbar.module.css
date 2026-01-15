@@ -840,6 +840,11 @@
     margin: 0;
   }
 
+  /* Hide logo/brand on mobile to save space */
+  .brandLink {
+    display: none;
+  }
+
   .searchButton {
     width: 40px;
     height: 40px;
