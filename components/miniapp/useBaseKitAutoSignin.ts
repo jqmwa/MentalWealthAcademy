@@ -28,6 +28,30 @@ export function useBaseKitAutoSignin(): BaseKitAutoSigninState {
 
     const checkAndSignIn = async () => {
       try {
+        // First, check if user already has a valid session
+        // This prevents infinite reload loops
+        try {
+          const meResponse = await fetch('/api/me', {
+            cache: 'no-store',
+            credentials: 'include',
+          });
+          const meData = await meResponse.json();
+          
+          if (meData.user) {
+            // User is already authenticated, no need to sign in
+            console.log('[BaseKit] User already authenticated:', meData.user.username);
+            if (isMounted) {
+              setState(prev => ({ 
+                ...prev, 
+                isBaseKit: false, // Not in mini-app sign-in flow
+              }));
+            }
+            return;
+          }
+        } catch (error) {
+          console.log('[BaseKit] No existing session, proceeding with auto-signin');
+        }
+
         // Check if we're in a mini-app context
         const isInMiniApp = await sdk.isInMiniApp();
         
@@ -106,8 +130,15 @@ export function useBaseKitAutoSignin(): BaseKitAutoSigninState {
 
             if (response.ok) {
               console.log('[BaseKit] Auto-signin successful:', data);
-              // Reload to ensure session is recognized
-              window.location.reload();
+              // Session cookie is now set - no need to reload
+              // Just update state to indicate sign-in is complete
+              setState(prev => ({ 
+                ...prev, 
+                isSigningIn: false,
+              }));
+              
+              // Dispatch event to notify other components that user is now signed in
+              window.dispatchEvent(new Event('profileUpdated'));
             } else {
               console.error('[BaseKit] Auto-signin failed:', data);
               setState(prev => ({ 
