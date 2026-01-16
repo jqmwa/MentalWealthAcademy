@@ -19,9 +19,12 @@ const nextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload'
           },
+          // Allow framing for mini app context (Base/Farcaster)
+          // X-Frame-Options is removed to allow iframe embedding
+          // Security is maintained via Content-Security-Policy frame-ancestors
           {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://*.base.org https://*.base.dev https://*.farcaster.xyz https://*.warpcast.com;"
           },
           {
             key: 'X-Content-Type-Options',
