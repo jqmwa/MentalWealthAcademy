@@ -1079,13 +1079,6 @@
     font-size: 16px;
     border-radius: 8px;
   }
-}
-
-  /* Hide mobile-only button on desktop */
-  .mobileEnterButtonContainer {
-    display: none !important;
-  }
-}
 
   .helpTooltipWrapper {
     display: block;
@@ -1185,6 +1178,13 @@
   /* Cancel out global mobile body bottom padding so footer sits tighter to the bottom on landing */
   .container {
     margin-bottom: -80px;
+  }
+}
+
+/* Desktop styles - hide mobile-only button */
+@media (min-width: 769px) {
+  .mobileEnterButtonContainer {
+    display: none !important;
   }
 }
 
