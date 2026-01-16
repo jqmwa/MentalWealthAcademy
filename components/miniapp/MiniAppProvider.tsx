@@ -9,19 +9,15 @@ interface MiniAppProviderProps {
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
   useEffect(() => {
-    // Initialize the mini app SDK
-    const initializeMiniApp = async () => {
-      try {
-        // Notify the mini app platform that the app is ready to be displayed
-        await sdk.actions.ready();
-        console.log('Mini app SDK initialized successfully');
-      } catch (error) {
-        console.error('Error initializing mini app SDK:', error);
-        // App will still work normally if not in mini app context
+    // Call ready() immediately to hide the splash screen
+    // This must be called as soon as the app is ready to be displayed
+    sdk.actions.ready().catch((error) => {
+      // Silently fail if not in mini app context (expected behavior)
+      // Only log unexpected errors
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Mini app SDK ready() called (may fail if not in mini app context)');
       }
-    };
-
-    initializeMiniApp();
+    });
   }, []);
 
   return <>{children}</>;
