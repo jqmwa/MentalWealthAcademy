@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, ReactNode } from 'react';
+import { useEffect, ReactNode, useLayoutEffect } from 'react';
 import { sdk } from '@farcaster/miniapp-sdk';
 import { useBaseKitAutoSignin } from './useBaseKitAutoSignin';
 
@@ -12,14 +12,17 @@ export function MiniAppProvider({ children }: MiniAppProviderProps) {
   // Auto-sign in BaseKit users
   const { isBaseKit, walletAddress, isSigningIn } = useBaseKitAutoSignin();
 
-  useEffect(() => {
+  // Use useLayoutEffect to call ready() synchronously before paint
+  // This ensures the splash screen is hidden as early as possible
+  useLayoutEffect(() => {
     // Call ready() immediately to hide the splash screen
     // This must be called as soon as the app is ready to be displayed
+    // Fire and forget - don't await to avoid any delays
     sdk.actions.ready().catch((error) => {
       // Silently fail if not in mini app context (expected behavior)
-      // Only log unexpected errors
+      // Only log in development for debugging
       if (process.env.NODE_ENV === 'development') {
-        console.log('Mini app SDK ready() called (may fail if not in mini app context)');
+        console.log('[MiniApp] SDK ready() called (may fail if not in mini app context):', error);
       }
     });
   }, []);
