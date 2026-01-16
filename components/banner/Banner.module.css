@@ -8,6 +8,7 @@
   justify-content: center;
   border-bottom: 1px solid rgba(81, 104, 255, 1);
   overflow: hidden;
+  margin-top: 0;
 }
 
 .banner::before {

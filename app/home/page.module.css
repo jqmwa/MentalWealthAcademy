@@ -12,12 +12,31 @@
   width: 100%;
   margin: 0 auto;
   overflow-x: hidden;
+  padding-top: max(40px, calc(40px + 60px));
+  padding-bottom: max(24px, calc(24px + 60px + env(safe-area-inset-bottom)));
+}
+
+.welcomeHeading {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-light);
+  margin: 0;
+  margin-bottom: var(--space-sm);
+  line-height: 1.2;
 }
 
 @media (max-width: 900px) {
   .content {
     padding: 24px 16px;
     gap: 20px;
+    padding-top: var(--space-md); /* ~26px - Golden ratio spacing */
+    padding-bottom: max(16px, calc(16px + 40px + env(safe-area-inset-bottom)));
+  }
+
+  .welcomeHeading {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xs);
   }
 }
 
@@ -26,6 +45,11 @@
   .content {
     gap: 28px;
     padding: 48px 24px;
+  }
+
+  .welcomeHeading {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-md);
   }
 }
 

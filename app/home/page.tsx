@@ -16,6 +16,9 @@ import { CalendarDays } from '@/components/calendar-days/CalendarDays';
 import { CheckinCard } from '@/components/checkin-card/CheckinCard';
 import { ProgressCard } from '@/components/progress-card/ProgressCard';
 import { EventsCarousel } from '@/components/events-carousel/EventsCarousel';
+import Surveys from '@/components/survey/Surveys';
+import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
+import MintModal from '@/components/mint-modal/MintModal';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -29,6 +32,7 @@ export default function Home() {
   const [hasValidSession, setHasValidSession] = useState(false);
   const [showRewardAnimation, setShowRewardAnimation] = useState(false);
   const [rewardData, setRewardData] = useState<{ shards: number; startingShards: number } | null>(null);
+  const [showMintModal, setShowMintModal] = useState(false);
   const hasCheckedAuthRef = useRef(false);
 
   // Handle X auth callback and auto quest completion
@@ -330,7 +334,11 @@ export default function Home() {
       <Navbar />
       <Banner />
       <div className={styles.content}>
+        {me?.username && !me.username.startsWith('user_') && (
+          <h1 className={styles.welcomeHeading}>Welcome {me.username}</h1>
+        )}
         <CalendarDays />
+        <Surveys />
         <EventsCarousel />
         <CheckinCard />
         <ProgressCard 
@@ -341,6 +349,8 @@ export default function Home() {
           color="primary"
         />
       </div>
+      <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
+      <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
       <Footer />
       {showRewardAnimation && rewardData && (
         <>

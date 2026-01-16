@@ -9,6 +9,7 @@ import YourAccountsModal from '@/components/nav-buttons/YourAccountsModal';
 import AvatarSelectorModal from '@/components/avatar-selector/AvatarSelectorModal';
 import UsernameChangeModal from '@/components/username-change/UsernameChangeModal';
 import AzuraChat from '@/components/azura-chat/AzuraChat';
+import AudioPlayer from '@/components/audio-player/AudioPlayer';
 import styles from './Navbar.module.css';
 
 // Menu Icon Component - Chunky Y2K style
@@ -229,7 +230,7 @@ const Navbar: React.FC = () => {
           <Link href="/home" className={styles.brandLink} aria-label="Mental Wealth Academy">
             <div className={styles.logoWrapper}>
               <Image
-                src="/icons/spacey2klogo.png"
+                src="/icons/mentalwealth-academy-logo.png"
                 alt="Mental Wealth Academy"
                 fill
                 priority
@@ -485,6 +486,12 @@ const Navbar: React.FC = () => {
           <span className={styles.mobileBottomNavLabel}>Library</span>
         </Link>
       </div>
+
+      {/* Audio Player */}
+      <div className={styles.audioPlayerContainer}>
+        <AudioPlayer />
+      </div>
+
       {isYourAccountsModalOpen && (
         <YourAccountsModal onClose={() => setIsYourAccountsModalOpen(false)} />
       )}

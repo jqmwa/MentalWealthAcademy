@@ -1,0 +1,209 @@
+/* Section Container */
+.angelSection {
+  position: relative;
+  width: 100%;
+  padding: var(--space-xl) var(--space-4);
+  background: transparent;
+  z-index: 1;
+  display: block;
+  min-height: 400px;
+}
+
+/* Main Container - Follows design system pattern */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Scrolling Images Container - Full width within section */
+.scrollingImagesContainer {
+  position: relative;
+  overflow: hidden;
+  width: calc(100% + 2 * var(--space-4));
+  padding: var(--space-md) 0;
+  min-height: 280px;
+  margin-left: calc(-1 * var(--space-4));
+  margin-right: calc(-1 * var(--space-4));
+}
+
+.scrollRow {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  width: fit-content;
+  padding: 0 var(--space-4);
+}
+
+.scrollRow:last-child {
+  margin-bottom: 0;
+}
+
+.scrollRowLeft {
+  animation: scrollLeft 30s linear infinite;
+  will-change: transform;
+}
+
+.scrollRowRight {
+  animation: scrollRight 30s linear infinite;
+  will-change: transform;
+}
+
+.angelImage {
+  flex-shrink: 0;
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: block;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mint Button Container */
+.mintButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md) 0;
+  width: 100%;
+}
+
+.mintButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border: 2px solid var(--color-text-dark);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-default);
+  font-family: var(--font-button);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mintButton:hover {
+  background: var(--color-text-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mintButton:active {
+  transform: translateY(0);
+}
+
+.mintButtonText {
+  color: var(--color-text-dark);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  transition: color var(--duration-normal) var(--ease-default);
+}
+
+.mintButton:hover .mintButtonText {
+  color: var(--color-text-light);
+}
+
+.mintButtonArrow {
+  color: var(--color-text-dark);
+  transition: color var(--duration-normal) var(--ease-default), transform var(--duration-normal) var(--ease-default);
+  flex-shrink: 0;
+}
+
+.mintButton:hover .mintButtonArrow {
+  color: var(--color-text-light);
+  transform: translateX(4px);
+}
+
+/* Animations */
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scrollRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .angelSection {
+    padding: var(--space-lg) var(--space-4);
+    min-height: 350px;
+  }
+
+  .container {
+    gap: var(--space-md);
+  }
+
+  .scrollingImagesContainer {
+    padding: var(--space-sm) 0;
+    min-height: 220px;
+    width: calc(100% + 2 * var(--space-4));
+    margin-left: calc(-1 * var(--space-4));
+    margin-right: calc(-1 * var(--space-4));
+  }
+
+  .scrollRow {
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .angelImage {
+    width: 96px;
+    height: 96px;
+  }
+
+  .mintButton {
+    padding: var(--space-2) var(--space-5);
+  }
+
+  .mintButtonText {
+    font-size: var(--font-size-sm);
+  }
+
+  .mintButtonArrow {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .angelSection {
+    padding: var(--space-2xl) var(--space-6);
+    min-height: 450px;
+  }
+
+  .container {
+    gap: var(--space-xl);
+  }
+
+  .scrollingImagesContainer {
+    padding: var(--space-lg) 0;
+    min-height: 340px;
+    width: calc(100% + 2 * var(--space-6));
+    margin-left: calc(-1 * var(--space-6));
+    margin-right: calc(-1 * var(--space-6));
+  }
+
+  .angelImage {
+    width: 160px;
+    height: 160px;
+  }
+}

@@ -2,12 +2,15 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import '../styles/globals.css';
 import { ConditionalWeb3Provider } from '@/components/web3/ConditionalWeb3Provider';
+import { MiniAppProvider } from '@/components/miniapp/MiniAppProvider';
+
+const APP_URL = process.env.NEXT_PUBLIC_URL || 'https://mentalwealthacademy.com';
 
 export const metadata: Metadata = {
   title: 'Mental Wealth Academy',
   description: 'Mental Wealth Academy is a virtual learning platform for the next generation. It\'s an online school where students can take classes, complete quests, earn rewards, and learn together. We use blockchain and cryptocurrency to make learning more engaging and rewarding.',
   icons: {
-    icon: '/icons/favicon.png',
+    icon: '/icons/mentalwealth-academy-logo.png',
   },
   openGraph: {
     title: 'Mental Wealth Academy',
@@ -27,6 +30,22 @@ export const metadata: Metadata = {
     title: 'Mental Wealth Academy',
     description: 'Mental Wealth Academy is a virtual learning platform for the next generation. It\'s an online school where students can take classes, complete quests, earn rewards, and learn together. We use blockchain and cryptocurrency to make learning more engaging and rewarding.',
     images: ['/icons/embbedBanner.png'],
+  },
+  other: {
+    'fc:miniapp': JSON.stringify({
+      version: 'next',
+      imageUrl: `${APP_URL}/icons/embbedBanner.png`,
+      button: {
+        title: 'Launch Mental Wealth Academy',
+        action: {
+          type: 'launch_miniapp',
+          name: 'Mental Wealth Academy',
+          url: APP_URL,
+          splashImageUrl: `${APP_URL}/icons/embbedBanner.png`,
+          splashBackgroundColor: '#000000',
+        },
+      },
+    }),
   },
 };
 
@@ -113,7 +132,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ConditionalWeb3Provider>{children}</ConditionalWeb3Provider>
+        <MiniAppProvider>
+          <ConditionalWeb3Provider>
+            {children}
+          </ConditionalWeb3Provider>
+        </MiniAppProvider>
       </body>
     </html>
   );

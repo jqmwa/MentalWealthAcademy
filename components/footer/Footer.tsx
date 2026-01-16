@@ -87,10 +87,10 @@ export function Footer() {
       <div className={styles.inner}>
         <div className={styles.logo}>
           <Image
-            src="/icons/favicon.png"
+            src="/icons/mentalwealth-academy-logo.png"
             alt="Mental Wealth Academy"
-            width={30}
-            height={30}
+            width={180}
+            height={48}
             className={styles.logoImage}
             unoptimized
           />

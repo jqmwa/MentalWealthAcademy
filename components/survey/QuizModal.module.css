@@ -1,0 +1,294 @@
+/* Quiz Modal Styles - Mobile First with Design Tokens */
+
+.quizModalOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.quizModalContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - var(--space-8));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(81, 104, 255, 0.2);
+  box-shadow: var(--shadow-primary);
+  overflow: hidden;
+}
+
+.quizModalHeader {
+  flex-shrink: 0;
+  padding: var(--space-4);
+  border-bottom: 1px solid rgba(81, 104, 255, 0.1);
+  background: var(--color-background);
+}
+
+.quizModalHeaderContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  gap: var(--space-3);
+}
+
+.quizModalTitle {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  line-height: var(--line-height-tight, 1.2);
+  flex: 1;
+}
+
+.quizModalClose {
+  background: transparent;
+  border: none;
+  color: var(--color-text-dark);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  padding: var(--space-1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--duration-fast) var(--ease-default);
+  opacity: 0.6;
+}
+
+.quizModalClose:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.quizModalProgressContainer {
+  width: 100%;
+  height: 6px;
+  background: rgba(81, 104, 255, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.quizModalProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-normal) var(--ease-default);
+}
+
+.quizModalProgressText {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.quizModalContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  min-height: 0;
+}
+
+.quizModalQuestion {
+  margin-bottom: var(--space-4);
+}
+
+.quizModalQuestionText {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-dark);
+  line-height: var(--line-height-relaxed, 1.6);
+}
+
+.quizModalOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.quizModalOption {
+  width: 100%;
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(81, 104, 255, 0.05);
+  border: 1px solid rgba(81, 104, 255, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.quizModalOption:hover {
+  background: rgba(81, 104, 255, 0.1);
+  border-color: rgba(81, 104, 255, 0.3);
+  transform: translateX(2px);
+}
+
+.quizModalOptionSelected {
+  background: rgba(81, 104, 255, 0.15);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.quizModalOptionContent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.quizModalOptionIndicator {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: rgba(81, 104, 255, 0.1);
+  border: 2px solid rgba(81, 104, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.quizModalOptionIndicatorSelected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.quizModalOptionText {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed, 1.6);
+  color: inherit;
+  text-transform: none;
+}
+
+.quizModalFooter {
+  flex-shrink: 0;
+  padding: var(--space-4);
+  border-top: 1px solid rgba(81, 104, 255, 0.1);
+  background: var(--color-background);
+}
+
+.quizModalFooterButtons {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.quizModalButton {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-default);
+  border: 1px solid;
+}
+
+.quizModalButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.quizModalButtonSecondary {
+  background: rgba(80, 89, 155, 0.1);
+  border-color: rgba(80, 89, 155, 0.3);
+  color: var(--color-secondary);
+}
+
+.quizModalButtonSecondary:hover:not(:disabled) {
+  background: rgba(80, 89, 155, 0.2);
+  border-color: rgba(80, 89, 155, 0.5);
+  transform: translateY(-1px);
+}
+
+.quizModalButtonPrimary {
+  background: rgba(81, 104, 255, 0.15);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.quizModalButtonPrimary:hover:not(:disabled) {
+  background: rgba(81, 104, 255, 0.25);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-primary);
+}
+
+/* Mobile adjustments */
+@media (max-width: 479px) {
+  .quizModalOverlay {
+    padding: var(--space-2);
+  }
+
+  .quizModalContainer {
+    max-height: calc(100vh - var(--space-4));
+  }
+
+  .quizModalHeader,
+  .quizModalContent,
+  .quizModalFooter {
+    padding: var(--space-3);
+  }
+
+  .quizModalTitle {
+    font-size: var(--font-size-xs);
+  }
+
+  .quizModalQuestionText {
+    font-size: var(--font-size-base);
+  }
+
+  .quizModalOption {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .quizModalOptionText {
+    font-size: var(--font-size-xs);
+  }
+
+  .quizModalButton {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .quizModalContainer {
+    max-width: 700px;
+  }
+
+  .quizModalTitle {
+    font-size: var(--font-size-base);
+  }
+
+  .quizModalQuestionText {
+    font-size: var(--font-size-xl);
+  }
+
+  .quizModalOptionText {
+    font-size: var(--font-size-base);
+  }
+}
