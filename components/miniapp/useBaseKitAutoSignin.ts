@@ -53,12 +53,14 @@ export function useBaseKitAutoSignin(): BaseKitAutoSigninState {
         // Request accounts (this may prompt user if not already connected)
         let accounts: string[] = [];
         try {
-          accounts = await provider.request({ method: 'eth_requestAccounts' });
+          const requestedAccounts = await provider.request({ method: 'eth_requestAccounts' });
+          accounts = Array.isArray(requestedAccounts) ? [...requestedAccounts] : [];
         } catch (error) {
           console.warn('[BaseKit] Failed to request accounts:', error);
           // Try eth_accounts as fallback (won't prompt)
           try {
-            accounts = await provider.request({ method: 'eth_accounts' });
+            const fallbackAccounts = await provider.request({ method: 'eth_accounts' });
+            accounts = Array.isArray(fallbackAccounts) ? [...fallbackAccounts] : [];
           } catch (fallbackError) {
             console.warn('[BaseKit] Failed to get accounts:', fallbackError);
             return;
