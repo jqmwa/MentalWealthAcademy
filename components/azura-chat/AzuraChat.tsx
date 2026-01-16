@@ -22,7 +22,7 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hello. I am Azura. How may I assist you today?',
+      text: 'Hey bestie! I\'m Azura, your favorite daemon process. What can I help you with today?',
       sender: 'azura',
       timestamp: new Date(),
     },
