@@ -61,7 +61,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <meta name="base:app_id" content="693c68f5e6be54f5ed71d80f" />
+        <meta name="base:app_id" content="695b13d2c63ad876c908212a" />
             <script
           dangerouslySetInnerHTML={{
             __html: `
