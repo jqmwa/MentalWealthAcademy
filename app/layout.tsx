@@ -4,7 +4,7 @@ import '../styles/globals.css';
 import { ConditionalWeb3Provider } from '@/components/web3/ConditionalWeb3Provider';
 import { MiniAppProvider } from '@/components/miniapp/MiniAppProvider';
 
-const APP_URL = process.env.NEXT_PUBLIC_URL || 'https://mentalwealthacademy.com';
+const APP_URL = process.env.NEXT_PUBLIC_URL || 'https://mentalwealthacademy.world';
 
 export const metadata: Metadata = {
   title: 'Mental Wealth Academy',

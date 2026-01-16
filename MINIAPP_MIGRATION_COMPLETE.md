@@ -46,7 +46,7 @@ npm run build
 Once deployed, you need to verify ownership of your app:
 
 1. Go to [Base Build Account Association Tool](https://www.base.dev/preview?tab=account)
-2. Paste your domain (e.g., `your-domain.vercel.app`)
+2. Paste your domain (e.g., `mentalwealthacademy.world`)
 3. Click "Submit" and follow the verification process
 4. Copy the generated `accountAssociation` fields
 5. Update `app/.well-known/farcaster.json/route.ts` with the generated values:
@@ -107,7 +107,7 @@ To test in an actual mini app context, you'll need to:
 
 - The app works both as a standalone web app and as a mini app
 - Account association credentials MUST be generated after deployment
-- The manifest is publicly accessible at `https://your-domain.com/.well-known/farcaster.json`
+- The manifest is publicly accessible at `https://mentalwealthacademy.world/.well-known/farcaster.json`
 - Changes to the manifest require redeployment
 - Mini app embeds will appear when sharing your URL in Farcaster/Base
 
