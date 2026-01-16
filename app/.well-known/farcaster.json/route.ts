@@ -23,7 +23,7 @@ export async function GET() {
       primaryCategory: "education",
       tags: ["education", "learning", "blockchain", "web3", "academy"],
       heroImageUrl: `${URL}/icons/embbedBanner.png`,
-      tagline: "Learn & Earn Together",
+      tagline: "Learn and Earn Together",
       ogTitle: "Mental Wealth Academy",
       ogDescription: "Virtual learning platform for the next generation with blockchain rewards",
       ogImageUrl: `${URL}/icons/embbedBanner.png`,
