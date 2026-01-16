@@ -24,7 +24,7 @@ const nextConfig = {
           // Security is maintained via Content-Security-Policy frame-ancestors
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.base.org https://*.base.dev https://*.farcaster.xyz https://*.warpcast.com;"
+            value: "frame-ancestors 'self' https://*.mentalwealthacademy.world https://mentalwealthacademy.world https://*.base.org https://*.base.dev https://*.farcaster.xyz https://*.warpcast.com;"
           },
           {
             key: 'X-Content-Type-Options',
