@@ -1,0 +1,148 @@
+'use client';
+
+import { useEffect, useState, useRef } from 'react';
+import { sdk } from '@farcaster/miniapp-sdk';
+
+interface BaseKitAutoSigninState {
+  isBaseKit: boolean;
+  walletAddress: string | null;
+  isSigningIn: boolean;
+  signInError: string | null;
+}
+
+/**
+ * Hook to detect BaseKit mini-app context and auto-sign in users
+ * Returns the wallet address if available and handles auto-signin
+ */
+export function useBaseKitAutoSignin(): BaseKitAutoSigninState {
+  const [state, setState] = useState<BaseKitAutoSigninState>({
+    isBaseKit: false,
+    walletAddress: null,
+    isSigningIn: false,
+    signInError: null,
+  });
+  const hasAttemptedSignIn = useRef(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkAndSignIn = async () => {
+      try {
+        // Check if we're in a mini-app context
+        const isInMiniApp = await sdk.isInMiniApp();
+        
+        if (!isInMiniApp) {
+          if (isMounted) {
+            setState(prev => ({ ...prev, isBaseKit: false }));
+          }
+          return;
+        }
+
+        if (isMounted) {
+          setState(prev => ({ ...prev, isBaseKit: true }));
+        }
+
+        // Get the Ethereum provider
+        const provider = await sdk.wallet.getEthereumProvider();
+        
+        if (!provider || !provider.request) {
+          console.warn('[BaseKit] Ethereum provider not available');
+          return;
+        }
+
+        // Request accounts (this may prompt user if not already connected)
+        let accounts: string[] = [];
+        try {
+          accounts = await provider.request({ method: 'eth_requestAccounts' });
+        } catch (error) {
+          console.warn('[BaseKit] Failed to request accounts:', error);
+          // Try eth_accounts as fallback (won't prompt)
+          try {
+            accounts = await provider.request({ method: 'eth_accounts' });
+          } catch (fallbackError) {
+            console.warn('[BaseKit] Failed to get accounts:', fallbackError);
+            return;
+          }
+        }
+
+        if (!Array.isArray(accounts) || accounts.length === 0) {
+          console.warn('[BaseKit] No accounts available');
+          return;
+        }
+
+        const walletAddress = accounts[0];
+        
+        if (!isMounted) return;
+
+        setState(prev => ({ 
+          ...prev, 
+          walletAddress,
+        }));
+
+        // Auto-sign in if we haven't already attempted
+        if (!hasAttemptedSignIn.current && walletAddress) {
+          hasAttemptedSignIn.current = true;
+          
+          if (isMounted) {
+            setState(prev => ({ ...prev, isSigningIn: true }));
+          }
+
+          try {
+            // Call wallet-signup endpoint which will create account or sign in existing user
+            const response = await fetch('/api/auth/wallet-signup', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include', // Important for session cookies
+              body: JSON.stringify({ walletAddress }),
+            });
+
+            const data = await response.json();
+
+            if (!isMounted) return;
+
+            if (response.ok) {
+              console.log('[BaseKit] Auto-signin successful:', data);
+              // Reload to ensure session is recognized
+              window.location.reload();
+            } else {
+              console.error('[BaseKit] Auto-signin failed:', data);
+              setState(prev => ({ 
+                ...prev, 
+                isSigningIn: false,
+                signInError: data.error || 'Failed to sign in',
+              }));
+            }
+          } catch (error) {
+            console.error('[BaseKit] Auto-signin error:', error);
+            if (isMounted) {
+              setState(prev => ({ 
+                ...prev, 
+                isSigningIn: false,
+                signInError: error instanceof Error ? error.message : 'Failed to sign in',
+              }));
+            }
+          }
+        }
+      } catch (error) {
+        console.error('[BaseKit] Error checking mini-app context:', error);
+        if (isMounted) {
+          setState(prev => ({ ...prev, isBaseKit: false }));
+        }
+      }
+    };
+
+    // Small delay to ensure SDK is ready
+    const timer = setTimeout(() => {
+      checkAndSignIn();
+    }, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, []);
+
+  return state;
+}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import QuizModal from './QuizModal'
 import SurveyResultsModal from './SurveyResultsModal'
 import styles from './Surveys.module.css'
@@ -407,9 +408,11 @@ export default function Surveys() {
             >
               <div className={styles.surveyCardContent}>
                 <div className={styles.surveyCardIconBox}>
-                  <img 
+                  <Image 
                     src="/icons/Survey.svg" 
                     alt="Survey icon" 
+                    width={48}
+                    height={48}
                     className={styles.surveyCardIcon}
                   />
                 </div>

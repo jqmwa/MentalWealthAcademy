@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './QuizModal.module.css'
 
@@ -46,6 +46,15 @@ export default function QuizModal({ isOpen, onClose, survey, onComplete }: QuizM
     }
   }, [isOpen])
 
+  const handleClose = useCallback((e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    setCurrentQuestionIndex(0)
+    setAnswers({})
+    onClose()
+  }, [onClose])
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -58,7 +67,7 @@ export default function QuizModal({ isOpen, onClose, survey, onComplete }: QuizM
     return () => {
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [isOpen])
+  }, [isOpen, handleClose])
 
   if (!isOpen || !survey || !mounted) return null
 
@@ -102,15 +111,6 @@ export default function QuizModal({ isOpen, onClose, survey, onComplete }: QuizM
       console.error('[QuizModal] Error submitting quiz:', error)
       setIsSubmitting(false)
     }
-  }
-
-  const handleClose = (e?: React.MouseEvent) => {
-    if (e) {
-      e.stopPropagation()
-    }
-    setCurrentQuestionIndex(0)
-    setAnswers({})
-    onClose()
   }
 
   const progress = ((currentQuestionIndex + 1) / survey.questions.length) * 100

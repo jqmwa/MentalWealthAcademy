@@ -477,6 +477,17 @@ const LandingPage: React.FC = () => {
         )}
       </div>
       
+      {/* Mobile-only Enter Academy Button */}
+      <div className={styles.mobileEnterButtonContainer}>
+        <button
+          type="button"
+          onClick={handleEnterAcademy}
+          className={styles.mobileEnterButton}
+        >
+          Enter Academy
+        </button>
+      </div>
+
       {/* Cards Container */}
       <div className={styles.cardsContainer}>
         {/* Promotional Card */}
@@ -502,9 +513,9 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Login Card */}
-        <div className={styles.loginCard}>
+        <div className={`${styles.loginCard} ${activeTab === 'signup' ? styles.loginCardMobileMinimal : ''}`}>
           <div className={styles.cardContent}>
-            <div className={styles.loginHeader}>
+            <div className={`${styles.loginHeader} ${activeTab === 'signup' ? styles.mobileHiddenSignup : ''}`}>
               <div className={styles.logoContainer}>
                 <Image
                   src="/icons/spacey2klogo.png"
@@ -521,7 +532,7 @@ const LandingPage: React.FC = () => {
             </div>
 
             {/* Tab Switcher */}
-            <div className={styles.tabSwitcher}>
+            <div className={`${styles.tabSwitcher} ${activeTab === 'signup' ? styles.mobileHiddenSignup : ''}`}>
               <button
                 type="button"
                 className={`${styles.tabButton} ${activeTab === 'signin' ? styles.tabButtonActive : ''}`}
@@ -579,8 +590,72 @@ const LandingPage: React.FC = () => {
                   {message.text}
                 </div>
               )}
-              {activeTab === 'signup' && (
+              {activeTab === 'signin' && (
                 <div className={styles.inputForm}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="signin-email" className={styles.label}>
+                      Email
+                    </label>
+                    <div className={styles.inputWrapper}>
+                      <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2.5 6.66667L9.0755 11.0504C9.63533 11.4236 10.3647 11.4236 10.9245 11.0504L17.5 6.66667M4.16667 15H15.8333C16.7538 15 17.5 14.2538 17.5 13.3333V6.66667C17.5 5.74619 16.7538 5 15.8333 5H4.16667C3.24619 5 2.5 5.74619 2.5 6.66667V13.3333C2.5 14.2538 3.24619 15 4.16667 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <input
+                        type="email"
+                        id="signin-email"
+                        name="email"
+                        className={styles.input}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="signin-password" className={styles.label}>
+                      Password
+                    </label>
+                    <div className={styles.inputWrapper}>
+                      <svg className={styles.inputIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5.83333 9.16667V6.66667C5.83333 4.36548 7.69881 2.5 10 2.5C12.3012 2.5 14.1667 4.36548 14.1667 6.66667V9.16667M10 12.0833V14.1667M6.66667 17.5H13.3333C14.2538 17.5 15 16.7538 15 15.8333V10.8333C15 9.91286 14.2538 9.16667 13.3333 9.16667H6.66667C5.74619 9.16667 5 9.91286 5 10.8333V15.8333C5 16.7538 5.74619 17.5 6.66667 17.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <input
+                        type="password"
+                        id="signin-password"
+                        className={styles.input}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.checkboxGroup}>
+                    <div className={styles.checkboxWrapper}>
+                      <input
+                        type="checkbox"
+                        id="signin-rememberMe"
+                        className={styles.checkbox}
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                      />
+                      <label htmlFor="signin-rememberMe" className={styles.checkboxLabel}>
+                        Remember this device
+                      </label>
+                    </div>
+                    <a href="#" className={styles.forgotLink}>
+                      Forgot username or password?
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'signup' && (
+                <div className={`${styles.inputForm} ${styles.mobileHidden}`}>
                   <div className={styles.formGroup}>
                     <label htmlFor="email" className={styles.label}>
                       Email
@@ -645,25 +720,40 @@ const LandingPage: React.FC = () => {
 
               {/* Actions */}
               <div className={styles.actions}>
+                {activeTab === 'signin' && (
+                  <button
+                    type="submit"
+                    className={styles.loginButton}
+                    disabled={isLoading}
+                  >
+                    {isLoading 
+                      ? 'Signing in...'
+                      : 'Sign In'
+                    }
+                  </button>
+                )}
+
                 {/* Primary CTA - Enter Academy */}
                 <div className={styles.walletSectionPrimary}>
                   <button
                     type="button"
                     onClick={handleEnterAcademy}
+                    className={styles.enterButton}
                   >
-                    Enter Academy
+                    <span className={styles.enterButtonTextDesktop}>Enter Academy</span>
+                    <span className={styles.enterButtonTextMobile}>Enter</span>
                   </button>
                 </div>
                 
                 {activeTab === 'signup' && (
                   <>
-                    <div className={styles.authDivider}>
+                    <div className={`${styles.authDivider} ${styles.mobileHidden}`}>
                       <span className={styles.authDividerText}>or continue with email</span>
                     </div>
 
                     <button
                       type="submit"
-                      className={styles.createAccountButton}
+                      className={`${styles.createAccountButton} ${styles.mobileHidden}`}
                       disabled={isLoading}
                     >
                       {isLoading 
@@ -674,7 +764,7 @@ const LandingPage: React.FC = () => {
                   </>
                 )}
                 
-                <div className={styles.termsText}>
+                <div className={`${styles.termsText} ${styles.mobileHidden}`}>
                   By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}
                   <a href="#" className={styles.link}>terms and services</a>,{' '}
                   <a href="#" className={styles.link}>privacy policy</a>, and to receive email updates.

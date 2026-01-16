@@ -957,15 +957,46 @@
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  /* Hide entire cards container on mobile */
   .cardsContainer {
-    position: absolute;
-    top: 50vh;
+    display: none !important;
+  }
+
+  /* Show mobile-only Enter Academy button */
+  .mobileEnterButtonContainer {
+    position: fixed;
+    top: 50%;
     left: 50%;
-    right: auto;
     transform: translate(-50%, -50%);
-    flex-direction: column;
-    width: 90vw;
-    max-width: 520px;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .mobileEnterButton {
+    width: 100%;
+    max-width: 300px;
+    background-color: var(--color-primary);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(81, 104, 255, 0.3);
+  }
+
+  .mobileEnterButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(81, 104, 255, 0.4);
+    background-color: var(--color-primary-hover);
   }
 
   /* Hide promo card on mobile */
@@ -978,6 +1009,83 @@
     border-radius: 28px;
     border: 2px solid white;
   }
+
+  /* Minimalist signup on mobile - hide container styling */
+  .loginCardMobileMinimal {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  .loginCardMobileMinimal .cardContent {
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  .loginCardMobileMinimal .loginForm {
+    gap: 0 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .loginCardMobileMinimal .actions {
+    gap: 0 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Make button container full viewport width on mobile for signup */
+  .loginCardMobileMinimal .walletSectionPrimary {
+    position: relative;
+    width: 100vw;
+    max-width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  /* Hide elements on mobile for signup */
+  .mobileHidden {
+    display: none !important;
+  }
+
+  /* Hide tab switcher on mobile for signup */
+  .mobileHiddenSignup {
+    display: none !important;
+  }
+
+  /* Show different button text on mobile */
+  .enterButtonTextDesktop {
+    display: none;
+  }
+
+  .enterButtonTextMobile {
+    display: inline;
+  }
+
+  /* Minimalist enter button on mobile for signup */
+  .loginCardMobileMinimal .walletSectionPrimary button {
+    width: auto;
+    min-width: 120px;
+    padding: 14px 32px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+}
+
+  /* Hide mobile-only button on desktop */
+  .mobileEnterButtonContainer {
+    display: none !important;
+  }
+}
 
   .helpTooltipWrapper {
     display: block;

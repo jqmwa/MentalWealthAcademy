@@ -20,7 +20,7 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-light);
+  color: #000000;
   margin: 0;
   margin-bottom: var(--space-sm);
   line-height: 1.2;

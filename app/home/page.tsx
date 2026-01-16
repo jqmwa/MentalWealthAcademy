@@ -19,11 +19,13 @@ import { EventsCarousel } from '@/components/events-carousel/EventsCarousel';
 import Surveys from '@/components/survey/Surveys';
 import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
 import MintModal from '@/components/mint-modal/MintModal';
+import { useBaseKitAutoSignin } from '@/components/miniapp/useBaseKitAutoSignin';
 import styles from './page.module.css';
 
 export default function Home() {
   const { isConnected, address } = useAccount();
   const router = useRouter();
+  const { isBaseKit, walletAddress } = useBaseKitAutoSignin();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -159,8 +161,12 @@ export default function Home() {
               
               const needsOnboarding = !hasUsername || !hasBirthday || !hasGender;
               
-              if (needsOnboarding) {
-                // Show onboarding modal first
+              // Skip onboarding for BaseKit users with complete profiles
+              // BaseKit users are auto-signed in, so if they have a complete profile, skip onboarding
+              const isBaseKitUserWithCompleteProfile = isBaseKit && !needsOnboarding;
+              
+              if (needsOnboarding && !isBaseKitUserWithCompleteProfile) {
+                // Show onboarding modal first (unless BaseKit user with complete profile)
                 setShowOnboarding(true);
               } else if (!data.user.avatarUrl) {
                 // Profile is complete but no avatar - show avatar selection

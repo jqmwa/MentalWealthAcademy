@@ -92,6 +92,7 @@ export default function AudioPlayer() {
         })
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrackIndex, currentTrack.url])
 
   const togglePlayPause = () => {

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import styles from './AngelMintSection.module.css'
 
 interface AngelMintSectionProps {
@@ -16,20 +17,26 @@ export default function AngelMintSection({ onOpenMintModal }: AngelMintSectionPr
             {/* Top Row - Scrolls Left */}
             <div className={`${styles.scrollRow} ${styles.scrollRowLeft}`}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
-                <img
+                <Image
                   key={`top-${num}`}
                   src={`/anbel${num.toString().padStart(2, '0')}.png`}
                   alt={`Angel ${num}`}
+                  width={200}
+                  height={200}
                   className={styles.angelImage}
+                  unoptimized
                 />
               ))}
               {/* Duplicate for seamless loop */}
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
-                <img
+                <Image
                   key={`top-dup-${num}`}
                   src={`/anbel${num.toString().padStart(2, '0')}.png`}
                   alt={`Angel ${num}`}
+                  width={200}
+                  height={200}
                   className={styles.angelImage}
+                  unoptimized
                 />
               ))}
             </div>
@@ -37,20 +44,26 @@ export default function AngelMintSection({ onOpenMintModal }: AngelMintSectionPr
             {/* Bottom Row - Scrolls Right */}
             <div className={`${styles.scrollRow} ${styles.scrollRowRight}`}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
-                <img
+                <Image
                   key={`bottom-${num}`}
                   src={`/anbel${num.toString().padStart(2, '0')}.png`}
                   alt={`Angel ${num}`}
+                  width={200}
+                  height={200}
                   className={styles.angelImage}
+                  unoptimized
                 />
               ))}
               {/* Duplicate for seamless loop */}
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
-                <img
+                <Image
                   key={`bottom-dup-${num}`}
                   src={`/anbel${num.toString().padStart(2, '0')}.png`}
                   alt={`Angel ${num}`}
+                  width={200}
+                  height={200}
                   className={styles.angelImage}
+                  unoptimized
                 />
               ))}
             </div>
@@ -87,6 +100,21 @@ export default function AngelMintSection({ onOpenMintModal }: AngelMintSectionPr
                 />
               </svg>
             </button>
+          </div>
+
+          {/* Logo and Text Section */}
+          <div className={styles.logoTextContainer}>
+            <div className={styles.logoContainer}>
+              <Image
+                src="/icons/spacey2klogo.png"
+                alt="Y2KBOX Logo"
+                width={150}
+                height={138}
+                className={styles.logoImage}
+                priority
+              />
+            </div>
+            <p className={styles.empoweringText}>EMPOWERING THE FUTURE</p>
           </div>
         </div>
       </section>

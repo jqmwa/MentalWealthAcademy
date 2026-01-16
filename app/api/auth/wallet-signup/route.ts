@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     );
 
     if (existingUser.length > 0) {
-      // User already exists - clear any old sessions and create new session
+      // User already exists with this wallet address - clear any old sessions and create new session
       const userId = existingUser[0].id;
       console.log('Wallet signup - User already exists, creating session:', userId);
       
@@ -125,6 +125,64 @@ export async function POST(request: Request) {
       setSessionCookie(response, session.token);
       console.log('Wallet signup - Session created for existing user');
       return response;
+    }
+
+    // Check if there's an active session (user signed in via email/password)
+    // If so, link the wallet address to their existing account
+    try {
+      const { getSessionTokenFromCookies } = await import('@/lib/auth');
+      const sessionToken = await getSessionTokenFromCookies();
+      
+      if (sessionToken) {
+        const sessionUser = await sqlQuery<Array<{ id: string; wallet_address: string | null }>>(
+          `SELECT u.id, u.wallet_address
+           FROM sessions s
+           JOIN users u ON u.id = s.user_id
+           WHERE s.token = :token AND s.expires_at > NOW()
+           LIMIT 1`,
+          { token: sessionToken }
+        );
+
+        if (sessionUser.length > 0 && !sessionUser[0].wallet_address) {
+          // Check if this wallet is already linked to another user
+          const walletInUse = await sqlQuery<Array<{ id: string }>>(
+            `SELECT id FROM users 
+             WHERE LOWER(wallet_address) = LOWER(:walletAddress) AND id != :userId 
+             LIMIT 1`,
+            { walletAddress: walletAddress.toLowerCase(), userId: sessionUser[0].id }
+          );
+
+          if (walletInUse.length > 0) {
+            console.warn('Wallet signup - Wallet address already linked to another user');
+            return NextResponse.json(
+              { error: 'This wallet address is already linked to another account.' },
+              { status: 409 }
+            );
+          }
+
+          // User has active session but no wallet address - link it
+          const userId = sessionUser[0].id;
+          console.log('Wallet signup - Linking wallet address to existing user session:', userId);
+          
+          await sqlQuery(
+            `UPDATE users 
+             SET wallet_address = :walletAddress,
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE id = :userId`,
+            { 
+              walletAddress: walletAddress.toLowerCase(), 
+              userId 
+            }
+          );
+
+          const response = NextResponse.json({ ok: true, userId, existing: true, linked: true });
+          console.log('Wallet signup - Wallet address linked to existing account');
+          return response;
+        }
+      }
+    } catch (linkError) {
+      // If linking fails, continue with creating new account
+      console.warn('Wallet signup - Failed to link to existing session, creating new account:', linkError);
     }
     
     console.log('Wallet signup - Creating new user with wallet address:', walletAddress);

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './SurveyResultsModal.module.css'
 
@@ -48,6 +48,14 @@ export default function SurveyResultsModal({ isOpen, onClose, results }: SurveyR
     }
   }, [isOpen])
 
+  const handleClose = useCallback((e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    setShowContent(false)
+    setTimeout(() => onClose(), 200)
+  }, [onClose])
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -60,17 +68,9 @@ export default function SurveyResultsModal({ isOpen, onClose, results }: SurveyR
     return () => {
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [isOpen])
+  }, [isOpen, handleClose])
 
   if (!isOpen || !results || !mounted) return null
-
-  const handleClose = (e?: React.MouseEvent) => {
-    if (e) {
-      e.stopPropagation()
-    }
-    setShowContent(false)
-    setTimeout(() => onClose(), 200)
-  }
 
   const modalContent = (
     <div

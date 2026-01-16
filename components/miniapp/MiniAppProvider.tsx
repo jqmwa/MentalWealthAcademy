@@ -2,12 +2,16 @@
 
 import { useEffect, ReactNode } from 'react';
 import { sdk } from '@farcaster/miniapp-sdk';
+import { useBaseKitAutoSignin } from './useBaseKitAutoSignin';
 
 interface MiniAppProviderProps {
   children: ReactNode;
 }
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
+  // Auto-sign in BaseKit users
+  const { isBaseKit, walletAddress, isSigningIn } = useBaseKitAutoSignin();
+
   useEffect(() => {
     // Call ready() immediately to hide the splash screen
     // This must be called as soon as the app is ready to be displayed
