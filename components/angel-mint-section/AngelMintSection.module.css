@@ -147,11 +147,11 @@
 
 .empoweringText {
   font-family: var(--font-primary);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  text-transform: none;
+  letter-spacing: 0.05em;
   margin: 0;
   text-align: center;
 }
@@ -218,12 +218,12 @@
   }
 
   .logoImage {
-    width: 120px;
+    width: 160px;
     height: auto;
   }
 
   .empoweringText {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
   }
 }
 
@@ -251,11 +251,11 @@
   }
 
   .logoImage {
-    width: 180px;
+    width: 240px;
     height: auto;
   }
 
   .empoweringText {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
   }
 }

@@ -59,6 +59,13 @@
   }
 }
 
+.eventsAndSurveysRow {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
 .middleSection {
   flex: 1;
   display: flex;

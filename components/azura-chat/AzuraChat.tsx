@@ -126,7 +126,7 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
           <div className={styles.headerInfo}>
             <div className={styles.avatarWrapper}>
               <Image
-                src="https://i.imgur.com/UIU9aSd.jpeg"
+                src="https://i.imgur.com/1q1EfBX.png"
                 alt="Azura"
                 width={40}
                 height={40}
@@ -136,7 +136,7 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
             </div>
             <div className={styles.headerText}>
               <div className={styles.headerName}>Azura</div>
-              <div className={styles.headerStatus}>Daemon Model V.231</div>
+              <div className={styles.headerStatus}>Version 1.3</div>
             </div>
           </div>
           <button className={styles.backButton} onClick={onClose} type="button" aria-label="Back">

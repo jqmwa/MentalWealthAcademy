@@ -106,15 +106,15 @@ export default function AngelMintSection({ onOpenMintModal }: AngelMintSectionPr
           <div className={styles.logoTextContainer}>
             <div className={styles.logoContainer}>
               <Image
-                src="/icons/spacey2klogo.png"
-                alt="Y2KBOX Logo"
-                width={150}
-                height={138}
+                src="/icons/mentalwealth-academy-logo.png"
+                alt="Mental Wealth Academy Logo"
+                width={200}
+                height={184}
                 className={styles.logoImage}
                 priority
               />
             </div>
-            <p className={styles.empoweringText}>EMPOWERING THE FUTURE</p>
+            <p className={styles.empoweringText}>EMPOWERING THE FUTURE OF HUMANITY WITH THE HEART OF TOMORROW</p>
           </div>
         </div>
       </section>

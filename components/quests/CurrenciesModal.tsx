@@ -15,10 +15,10 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
   return (
     <>
       <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Currencies</h2>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close" type="button">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -26,96 +26,56 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         <div className={styles.modalContent}>
-          {/* $DAEMON Token */}
-          <div className={styles.currencyCard}>
-            <div className={styles.currencyHeader}>
-              <div className={styles.currencyIcon}>
-                <Image
-                  src="/icons/Coin Poly.svg"
-                  alt="Daemon"
-                  width={40}
-                  height={40}
-                />
-              </div>
-              <div className={styles.currencyInfo}>
-                <h3 className={styles.currencyName}>$DAEMON</h3>
-                <p className={styles.currencySubtitle}>Network Gold</p>
-              </div>
-            </div>
-            <p className={styles.currencyDescription}>
-              $DAEMON is the foundational currency of Mental Wealth Academy. It serves as network gold, 
-              earned through completing quests and participating in the ecosystem. Use $DAEMON to unlock 
-              features, participate in governance, and stake for rewards.
-            </p>
-          </div>
-
-          {/* $ANGELS Token */}
-          <div className={styles.currencyCard}>
-            <div className={styles.currencyHeader}>
-              <div className={styles.currencyIcon}>
-                <div className={styles.angelIconPlaceholder}>👼</div>
-              </div>
-              <div className={styles.currencyInfo}>
-                <h3 className={styles.currencyName}>$ANGELS</h3>
-                <p className={styles.currencySubtitle}>Limited Celestial Guardians</p>
-              </div>
-            </div>
-            <p className={styles.currencyDescription}>
-              $ANGELS are limited celestial guardians—rare tokens that provide special privileges within 
-              the Mental Wealth Academy ecosystem. Holding an $ANGEL grants you unique benefits and 
-              enhanced rewards when staking $DAEMON.
-            </p>
-          </div>
-
-          {/* Shards */}
-          <div className={styles.currencyCard}>
-            <div className={styles.currencyHeader}>
+          <div className={styles.currenciesGrid}>
+            {/* Shards */}
+            <div className={styles.currencyItem}>
               <div className={styles.currencyIcon}>
                 <Image
                   src="/icons/shard.svg"
                   alt="Shards"
                   width={40}
                   height={40}
-                  style={{ filter: 'brightness(0)' }}
                 />
               </div>
               <div className={styles.currencyInfo}>
                 <h3 className={styles.currencyName}>Shards</h3>
-                <p className={styles.currencySubtitle}>Purified Rewards</p>
+                <p className={styles.currencyDescription}>Purified rewards earned by staking with an Academic Angel. The more you stake, the more you harvest.</p>
               </div>
             </div>
-            <p className={styles.currencyDescription}>
-              Shards are harvestable rewards created when you hold an $ANGEL while staking $DAEMON. 
-              This process purifies the daemon gold, transforming it into shards that can be collected 
-              as rewards. The more $DAEMON you stake with an $ANGEL, the more shards you can harvest.
-            </p>
-          </div>
 
-          {/* How It Works */}
-          <div className={styles.howItWorksSection}>
-            <h4 className={styles.howItWorksTitle}>How It Works</h4>
-            <ol className={styles.stepsList}>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>1</span>
-                <span className={styles.stepText}>Acquire $DAEMON by completing quests and participating in the ecosystem</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>2</span>
-                <span className={styles.stepText}>Obtain an $ANGEL token (limited celestial guardians)</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>3</span>
-                <span className={styles.stepText}>Hold your $ANGEL while staking your $DAEMON</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>4</span>
-                <span className={styles.stepText}>Watch as the daemon gold purifies into harvestable shards</span>
-              </li>
-              <li className={styles.step}>
-                <span className={styles.stepNumber}>5</span>
-                <span className={styles.stepText}>Collect your shards as rewards for your participation</span>
-              </li>
-            </ol>
+            {/* Coin / $MWG for Governance */}
+            <div className={styles.currencyItem}>
+              <div className={styles.currencyIcon}>
+                <Image
+                  src="/icons/Coin Poly.svg"
+                  alt="Coin"
+                  width={40}
+                  height={40}
+                />
+              </div>
+              <div className={styles.currencyInfo}>
+                <h3 className={styles.currencyName}>$MWG</h3>
+                <p className={styles.currencyDescription}>Governance token for Mental Wealth Academy. Vote on proposals, shape the future, and participate in the DAO.</p>
+              </div>
+            </div>
+
+            {/* Angel NFT */}
+            <div className={styles.angelSection}>
+              <div className={styles.angelImageWrapper}>
+                <Image
+                  src="/anbel01.png"
+                  alt="Academic Angel NFT"
+                  width={56}
+                  height={56}
+                  className={styles.angelImage}
+                  unoptimized
+                />
+              </div>
+              <div className={styles.currencyInfo}>
+                <h3 className={styles.currencyName}>Academic Angel</h3>
+                <p className={styles.currencyDescription}>Limited celestial guardian NFT. Grants special privileges, enhanced rewards, and shard harvesting abilities.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

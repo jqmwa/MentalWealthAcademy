@@ -25,8 +25,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Discover the foundations of mental wealth and how to build a sustainable practice for lifelong wellbeing.',
     category: 'Foundation',
-    emoji: '🧠',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    emoji: '💎',
+    gradient: 'linear-gradient(135deg, #0078d4 0%, #00a4e6 50%, #5ba3d0 100%)',
   },
   {
     id: '2',
@@ -35,8 +35,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Learn practical meditation techniques and mindfulness exercises you can incorporate into your daily routine.',
     category: 'Practice',
-    emoji: '🧘',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    emoji: '🌀',
+    gradient: 'linear-gradient(135deg, #ff6b9d 0%, #c471ed 50%, #ff00ff 100%)',
   },
   {
     id: '3',
@@ -45,8 +45,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Develop your EQ skills to better understand, manage, and express your emotions effectively.',
     category: 'Skills',
-    emoji: '💡',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    emoji: '✨',
+    gradient: 'linear-gradient(135deg, #00d4ff 0%, #00ffff 50%, #5ba3d0 100%)',
   },
   {
     id: '4',
@@ -55,8 +55,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Evidence-based techniques to identify, manage, and reduce stress in your personal and professional life.',
     category: 'Wellness',
-    emoji: '🌿',
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    emoji: '🌊',
+    gradient: 'linear-gradient(135deg, #0099cc 0%, #00ccff 50%, #66d9ff 100%)',
   },
   {
     id: '5',
@@ -65,8 +65,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Learn how to bounce back from setbacks and develop mental toughness for life\'s challenges.',
     category: 'Growth',
-    emoji: '💪',
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    emoji: '🔥',
+    gradient: 'linear-gradient(135deg, #ff00ff 0%, #ff6b9d 50%, #ff1493 100%)',
   },
   {
     id: '6',
@@ -75,8 +75,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Navigate interpersonal dynamics and set healthy boundaries for better mental health.',
     category: 'Relationships',
-    emoji: '🤝',
-    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+    emoji: '💫',
+    gradient: 'linear-gradient(135deg, #c471ed 0%, #f64f59 50%, #ff00ff 100%)',
   },
   {
     id: '7',
@@ -85,8 +85,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Understand the science of sleep and learn techniques to improve your rest and recovery.',
     category: 'Wellness',
-    emoji: '😴',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    emoji: '🌙',
+    gradient: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #5ba3d0 100%)',
   },
   {
     id: '8',
@@ -95,8 +95,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Explore the gut-brain connection and learn which foods support optimal mental function.',
     category: 'Nutrition',
-    emoji: '🥗',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    emoji: '🍑',
+    gradient: 'linear-gradient(135deg, #ff6b9d 0%, #ff8c9e 50%, #ffb3c1 100%)',
   },
   {
     id: '9',
@@ -105,8 +105,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Discover how physical activity impacts mental health and create a sustainable movement practice.',
     category: 'Fitness',
-    emoji: '🏃',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    emoji: '⚡',
+    gradient: 'linear-gradient(135deg, #00ccff 0%, #00ffff 50%, #5ba3d0 100%)',
   },
   {
     id: '10',
@@ -115,8 +115,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Develop a healthy relationship with technology and learn to manage digital overwhelm.',
     category: 'Balance',
-    emoji: '📱',
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    emoji: '💿',
+    gradient: 'linear-gradient(135deg, #0078d4 0%, #00a4e6 50%, #00d4ff 100%)',
   },
   {
     id: '11',
@@ -125,8 +125,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Explore what gives your life meaning and align your daily actions with your core values.',
     category: 'Purpose',
-    emoji: '🎯',
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    emoji: '⭐',
+    gradient: 'linear-gradient(135deg, #ff00ff 0%, #c471ed 50%, #5ba3d0 100%)',
   },
   {
     id: '12',
@@ -135,8 +135,8 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Integrate everything you\'ve learned into a personalized, sustainable mental wealth action plan.',
     category: 'Integration',
-    emoji: '📋',
-    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+    emoji: '🌈',
+    gradient: 'linear-gradient(135deg, #ff00ff 0%, #00ffff 50%, #5ba3d0 100%)',
   },
 ];
 
@@ -222,8 +222,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
 
   return (
     <div className={styles.carouselSection}>
-      <div className={styles.carouselHeader}>
-        <h2 className={styles.carouselTitle}>{title}</h2>
+      <div className={styles.carouselContainer}>
         <div className={styles.carouselNav}>
           <button
             className={styles.navButton}
@@ -246,9 +245,6 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
             </svg>
           </button>
         </div>
-      </div>
-
-      <div className={styles.carouselContainer}>
         <div
           ref={trackRef}
           className={styles.carouselTrack}
@@ -310,21 +306,6 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
         </div>
       </div>
 
-      <div className={styles.dotsContainer}>
-        {Array.from({ length: dotsToShow }).map((_, index) => {
-          // Map dot index to actual slide range
-          const slideIndex = Math.floor((index / dotsToShow) * totalSlides);
-          const isActive = Math.floor((activeIndex / totalSlides) * dotsToShow) === index;
-          return (
-            <button
-              key={index}
-              className={`${styles.dot} ${isActive ? styles.dotActive : ''}`}
-              onClick={() => scrollToIndex(slideIndex)}
-              aria-label={`Go to event ${slideIndex + 1}`}
-            />
-          );
-        })}
-      </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './QuestPage.module.css';
 import QuestDetailSidebar from './QuestDetailSidebar';
+import CurrenciesModal from './CurrenciesModal';
 
 // Daemon Icon Component
 const DaemonIcon: React.FC<{ size?: number }> = ({ size = 18.83 }) => {
@@ -123,6 +124,7 @@ const QuestPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedQuest, setSelectedQuest] = useState<QuestData | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCurrenciesModalOpen, setIsCurrenciesModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -212,7 +214,7 @@ const QuestPage: React.FC = () => {
             Quests are singular or collaborative tasks for users to complete, and Daemon are the rewarded currency that unlocks what comes next.
           </p>
           <div className={styles.heroActions}>
-            <button className={styles.primaryCta} type="button">
+            <button className={styles.primaryCta} type="button" onClick={() => setIsCurrenciesModalOpen(true)}>
               <DaemonIcon size={12} />
               <span>CURRENCIES</span>
             </button>
@@ -258,6 +260,12 @@ const QuestPage: React.FC = () => {
           setSelectedQuest(null);
         }}
         quest={selectedQuest}
+      />
+
+      {/* Currencies Modal */}
+      <CurrenciesModal
+        isOpen={isCurrenciesModalOpen}
+        onClose={() => setIsCurrenciesModalOpen(false)}
       />
 
       <div className={styles.leftSection}>

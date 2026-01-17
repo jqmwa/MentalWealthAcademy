@@ -79,8 +79,7 @@
 .avatar {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: var(--space-1);
+  object-fit: cover;
 }
 
 .headerText {

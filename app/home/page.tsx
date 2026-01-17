@@ -344,8 +344,10 @@ export default function Home() {
           <h1 className={styles.welcomeHeading}>Welcome {me.username}</h1>
         )}
         <CalendarDays />
-        <Surveys />
-        <EventsCarousel />
+        <div className={styles.eventsAndSurveysRow}>
+          <EventsCarousel />
+          <Surveys />
+        </div>
         <CheckinCard />
         <ProgressCard 
           title="Daily Wellness Goal"

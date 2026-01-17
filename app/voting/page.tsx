@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { providers } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
-import Link from 'next/link';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
 import { AzuraPowerIndicator } from '@/components/soul-gems/SoulGemDisplay';
 import TreasuryDisplay from '@/components/treasury-display/TreasuryDisplay';
@@ -12,6 +11,7 @@ import VoteProgressBar from '@/components/vote-progress/VoteProgressBar';
 import VoteButtons from '@/components/vote-buttons/VoteButtons';
 import ProposalCard from '@/components/proposal-card/ProposalCard';
 import ProposalDetailsModal from '@/components/proposal-card/ProposalDetailsModal';
+import SubmitProposalModal from '@/components/voting/SubmitProposalModal';
 import PencilLoader from '@/components/landing/PencilLoader';
 import { 
   fetchProposal,
@@ -101,6 +101,7 @@ export default function VotingPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProposal, setSelectedProposal] = useState<MergedProposal | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -209,9 +210,13 @@ export default function VotingPage() {
                     Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
                   </p>
                   <div className={styles.heroActions}>
-                    <Link href="/voting/create" className={styles.primaryCta}>
+                    <button
+                      className={styles.primaryCta}
+                      onClick={() => setIsSubmitModalOpen(true)}
+                      type="button"
+                    >
                       Submit Form
-                    </Link>
+                    </button>
                     <button
                       className={styles.secondaryCta}
                       onClick={() => setShowTutorial(true)}
@@ -259,7 +264,7 @@ export default function VotingPage() {
                 </svg>
                 <h3>Error Loading Proposals</h3>
                 <p>{error}</p>
-                <button onClick={() => window.location.reload()} className={styles.retryButton}>
+                <button onClick={() => window.location.reload()} className={styles.retryButton} type="button">
                   Retry
                 </button>
               </div>
@@ -341,6 +346,12 @@ export default function VotingPage() {
           proposal={selectedProposal}
         />
       )}
+
+      <SubmitProposalModal
+        isOpen={isSubmitModalOpen}
+        onClose={() => setIsSubmitModalOpen(false)}
+        onSuccess={fetchProposals}
+      />
     </>
   );
 }

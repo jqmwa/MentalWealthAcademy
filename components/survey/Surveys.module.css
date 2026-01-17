@@ -2,8 +2,10 @@
 
 .surveysSection {
   width: 100%;
-  padding: var(--space-4) var(--space-4);
-  margin-bottom: var(--space-6);
+  padding: 0;
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .surveysHeader {

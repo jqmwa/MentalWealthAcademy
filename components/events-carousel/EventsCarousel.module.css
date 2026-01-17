@@ -2,48 +2,35 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  /* Allow carousel to extend beyond parent on mobile for edge-to-edge scrolling */
-  margin-left: -20px;
-  margin-right: -20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  width: calc(100% + 40px);
-}
-
-.carouselHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 4px;
-}
-
-.carouselTitle {
-  font-family: var(--font-primary);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #000;
-  margin: 0;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
 }
 
 .carouselNav {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
 }
 
 .navButton {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 2px solid var(--color-primary);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
   color: var(--color-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .navButton:hover:not(:disabled) {
@@ -65,17 +52,18 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .carouselTrack {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 4px 20px 12px 0;
+  padding: 4px 12px 12px 4px;
   scroll-snap-type: x mandatory;
 }
 
@@ -85,7 +73,7 @@
 
 .carouselSlide {
   flex: 0 0 auto;
-  width: 280px;
+  width: 260px;
   scroll-snap-align: start;
 }
 
@@ -110,7 +98,7 @@
 
 .cardImageBox {
   width: 100%;
-  height: 160px;
+  height: 140px;
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -146,10 +134,10 @@
 }
 
 .cardContent {
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
 }
 
@@ -326,14 +314,10 @@
 
 @media (min-width: 768px) {
   .carouselSlide {
-    width: 300px;
+    width: 280px;
   }
 
   .cardImageBox {
-    height: 180px;
-  }
-
-  .carouselTitle {
-    font-size: 1.5rem;
+    height: 160px;
   }
 }
