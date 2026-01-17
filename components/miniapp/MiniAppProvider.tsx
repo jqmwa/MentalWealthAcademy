@@ -15,8 +15,25 @@ export function MiniAppProvider({ children }: MiniAppProviderProps) {
   // Use useLayoutEffect to call ready() synchronously before paint
   // This ensures the splash screen is hidden as early as possible
   useLayoutEffect(() => {
+    // Capture frame context and CSP violation info
+    const frameInfo = (() => {
+      try {
+        const isTopFrame = window === window.top;
+        const currentOrigin = window.location.origin;
+        let parentOrigin = null;
+        try {
+          parentOrigin = window.parent.location.origin;
+        } catch (e) {
+          parentOrigin = 'blocked-by-csp';
+        }
+        return {isTopFrame, currentOrigin, parentOrigin, userAgent: navigator.userAgent.substring(0, 50)};
+      } catch (e) {
+        return {error: String(e)};
+      }
+    })();
+    
     // #region agent log
-    fetch('http://127.0.0.1:1050/ingest/32dcef63-6d25-4009-a29b-e3432272eb4c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MiniAppProvider.tsx:17',message:'MiniAppProvider component rendered/mounted - useLayoutEffect started',data:{timestamp:Date.now(),sdkAvailable:!!sdk,hasChildren:!!children},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D'})}).catch(()=>{});
+    fetch('http://127.0.0.1:1050/ingest/32dcef63-6d25-4009-a29b-e3432272eb4c',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MiniAppProvider.tsx:17',message:'MiniAppProvider component rendered/mounted - useLayoutEffect started',data:{timestamp:Date.now(),sdkAvailable:!!sdk,hasChildren:!!children,...frameInfo},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
     // #endregion agent log
     
     // Call ready() immediately to hide the splash screen
