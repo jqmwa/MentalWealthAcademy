@@ -394,11 +394,6 @@ export default function Surveys() {
   return (
     <>
       <div className={styles.surveysSection}>
-        <div className={styles.surveysHeader}>
-          <h2 className={styles.surveysTitle}>Surveys</h2>
-          <p className={styles.surveysSubtitle}>Discover your patterns</p>
-        </div>
-
         <div className={styles.surveysGrid}>
           {SURVEYS.map((survey) => (
             <div 

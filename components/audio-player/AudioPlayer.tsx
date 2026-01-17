@@ -10,12 +10,31 @@ const TRACKS = [
   { name: 'Mental Wealth Academy', url: '/Mental Wealth Academy 精神財富学院.wav' },
 ]
 
+const STORAGE_KEY_TRACK_INDEX = 'audioPlayer_trackIndex'
+const STORAGE_KEY_IS_PLAYING = 'audioPlayer_isPlaying'
+const STORAGE_KEY_CURRENT_TIME = 'audioPlayer_currentTime'
+const STORAGE_KEY_SAVED_TRACK_INDEX = 'audioPlayer_savedTrackIndex' // Track which track the saved time belongs to
+
 export default function AudioPlayer() {
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
+  // Load persisted state from localStorage on mount
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY_TRACK_INDEX)
+      return saved !== null ? parseInt(saved, 10) : 0
+    }
+    return 0
+  })
+  const [isPlaying, setIsPlaying] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY_IS_PLAYING)
+      return saved === 'true'
+    }
+    return false
+  })
   const audioRef = useRef<HTMLAudioElement>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
   const isInitialMountRef = useRef(true)
+  const hasRestoredTimeRef = useRef(false)
 
   const currentTrack = TRACKS[currentTrackIndex]
 
@@ -37,42 +56,114 @@ export default function AudioPlayer() {
     audio.addEventListener('play', handlePlay)
     audio.addEventListener('pause', handlePause)
 
+    // Save state before unmounting
     return () => {
-      audio.removeEventListener('ended', handleEnded)
-      audio.removeEventListener('play', handlePlay)
-      audio.removeEventListener('pause', handlePause)
-    }
-  }, [])
-
-  // Initialize audio source and autoplay on mount
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    // Use the initial track (index 0)
-    const initialTrack = TRACKS[0]
-    audio.src = initialTrack.url
-    audio.load()
-    
-    // Try to autoplay on initial mount
-    if (isInitialMountRef.current) {
-      const playPromise = audio.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true)
-            isInitialMountRef.current = false
-          })
-          .catch((error) => {
-            // Autoplay was prevented - this is normal in many browsers
-            console.log('Autoplay prevented:', error)
-            isInitialMountRef.current = false
-          })
+      if (audio) {
+        // Save current playback time before component unmounts
+        if (typeof window !== 'undefined' && audio.currentTime > 0 && !audio.paused) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_TIME, audio.currentTime.toString())
+          localStorage.setItem(STORAGE_KEY_SAVED_TRACK_INDEX, currentTrackIndex.toString())
+        }
+        audio.removeEventListener('ended', handleEnded)
+        audio.removeEventListener('play', handlePlay)
+        audio.removeEventListener('pause', handlePause)
       }
     }
   }, [])
 
-  // Update audio source when track changes
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY_TRACK_INDEX, currentTrackIndex.toString())
+    }
+  }, [currentTrackIndex])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY_IS_PLAYING, isPlaying.toString())
+    }
+  }, [isPlaying])
+
+  // Save current time periodically to localStorage
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    const saveTime = () => {
+      if (typeof window !== 'undefined' && audio.currentTime > 0 && !audio.paused) {
+        localStorage.setItem(STORAGE_KEY_CURRENT_TIME, audio.currentTime.toString())
+        localStorage.setItem(STORAGE_KEY_SAVED_TRACK_INDEX, currentTrackIndex.toString())
+      }
+    }
+
+    const interval = setInterval(saveTime, 1000) // Save every second
+    
+    return () => clearInterval(interval)
+  }, [currentTrackIndex])
+
+  // Initialize audio source and restore state on mount
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    // Use the persisted track index
+    const trackToLoad = TRACKS[currentTrackIndex]
+    audio.src = trackToLoad.url
+    
+    // Restore playback position when metadata is loaded (only if same track)
+    const handleCanPlay = () => {
+      if (isInitialMountRef.current && typeof window !== 'undefined' && !hasRestoredTimeRef.current) {
+        const savedTime = localStorage.getItem(STORAGE_KEY_CURRENT_TIME)
+        const savedTrackIndex = localStorage.getItem(STORAGE_KEY_SAVED_TRACK_INDEX)
+        
+        // Only restore if we have saved time AND it's for the same track
+        if (savedTime && savedTrackIndex && parseInt(savedTrackIndex, 10) === currentTrackIndex) {
+          const time = parseFloat(savedTime)
+          // Only restore if the time is valid and less than duration
+          if (!isNaN(time) && time > 0 && time < audio.duration) {
+            audio.currentTime = time
+          }
+        }
+        hasRestoredTimeRef.current = true
+      }
+    }
+    
+    audio.addEventListener('canplay', handleCanPlay)
+    audio.load()
+    
+    // Restore playing state on initial mount
+    if (isInitialMountRef.current) {
+      // Wait for metadata to be ready before playing
+      const handleLoadedMetadata = () => {
+        if (isPlaying) {
+          const playPromise = audio.play()
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                isInitialMountRef.current = false
+              })
+              .catch((error) => {
+                // Autoplay was prevented - this is normal in many browsers
+                console.log('Autoplay prevented:', error)
+                setIsPlaying(false)
+                isInitialMountRef.current = false
+              })
+          }
+        } else {
+          isInitialMountRef.current = false
+        }
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      }
+      
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    }
+    
+    return () => {
+      audio.removeEventListener('canplay', handleCanPlay)
+    }
+  }, []) // Only run once on mount
+
+  // Update audio source when track changes (but not on initial mount)
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -80,17 +171,36 @@ export default function AudioPlayer() {
 
     const wasPlaying = isPlaying
     audio.src = currentTrack.url
+    
+    // Clear saved time when track changes (user manually changed track)
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY_CURRENT_TIME)
+      localStorage.removeItem(STORAGE_KEY_SAVED_TRACK_INDEX)
+    }
+    hasRestoredTimeRef.current = false
+    
+    // Load the new track
     audio.load()
     
-    // Continue playing if it was playing before
-    if (wasPlaying) {
-      const playPromise = audio.play()
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log('Play error:', error)
-          setIsPlaying(false)
-        })
+    // Wait for metadata before playing
+    const handleCanPlay = () => {
+      // Continue playing if it was playing before
+      if (wasPlaying) {
+        const playPromise = audio.play()
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.log('Play error:', error)
+            setIsPlaying(false)
+          })
+        }
       }
+      audio.removeEventListener('canplay', handleCanPlay)
+    }
+    
+    audio.addEventListener('canplay', handleCanPlay)
+    
+    return () => {
+      audio.removeEventListener('canplay', handleCanPlay)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrackIndex, currentTrack.url])

@@ -126,7 +126,7 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
           <div className={styles.headerInfo}>
             <div className={styles.avatarWrapper}>
               <Image
-                src="/uploads/HappyEmote.png"
+                src="https://i.imgur.com/UIU9aSd.jpeg"
                 alt="Azura"
                 width={40}
                 height={40}

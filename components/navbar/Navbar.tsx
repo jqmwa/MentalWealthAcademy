@@ -257,16 +257,16 @@ const Navbar: React.FC = () => {
               <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
-            {/* Voting Button */}
-            <Link href="/voting" className={`${styles.navButton} ${isActive('/voting') ? styles.navButtonActive : ''}`}>
-              <VotingIcon size={20} className={styles.questIcon} />
-              <span className={isActive('/voting') ? styles.buttonLabelActive : styles.buttonLabel}>Voting</span>
-            </Link>
-
             {/* Library Button */}
             <Link href="/library" className={`${styles.navButton} ${isActive('/library') ? styles.navButtonActive : ''}`}>
               <LibraryIcon size={20} className={styles.questIcon} />
               <span className={isActive('/library') ? styles.buttonLabelActive : styles.buttonLabel}>Library</span>
+            </Link>
+
+            {/* Voting Button */}
+            <Link href="/voting" className={`${styles.navButton} ${isActive('/voting') ? styles.navButtonActive : ''}`}>
+              <VotingIcon size={20} className={styles.questIcon} />
+              <span className={isActive('/voting') ? styles.buttonLabelActive : styles.buttonLabel}>Voting</span>
             </Link>
           </div>
 
@@ -472,18 +472,18 @@ const Navbar: React.FC = () => {
           <span className={styles.mobileBottomNavLabel}>Quests</span>
         </Link>
         <Link 
-          href="/voting" 
-          className={`${styles.mobileBottomNavButton} ${isActive('/voting') ? styles.mobileBottomNavButtonActive : ''}`}
-        >
-          <VotingIcon size={24} className={styles.questIcon} />
-          <span className={styles.mobileBottomNavLabel}>Voting</span>
-        </Link>
-        <Link 
           href="/library" 
           className={`${styles.mobileBottomNavButton} ${isActive('/library') ? styles.mobileBottomNavButtonActive : ''}`}
         >
           <LibraryIcon size={24} className={styles.questIcon} />
           <span className={styles.mobileBottomNavLabel}>Library</span>
+        </Link>
+        <Link 
+          href="/voting" 
+          className={`${styles.mobileBottomNavButton} ${isActive('/voting') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <VotingIcon size={24} className={styles.questIcon} />
+          <span className={styles.mobileBottomNavLabel}>Voting</span>
         </Link>
       </div>
 
