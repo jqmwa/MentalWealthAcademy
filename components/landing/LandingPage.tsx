@@ -7,7 +7,6 @@ import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { PatternTextSection } from './PatternTextSection';
 import { FeaturesSection } from './FeaturesSection';
 import { LandingFooter } from './LandingFooter';
-import PencilLoader from './PencilLoader';
 import styles from './LandingPage.module.css';
 
 // Dynamically import Scene with aggressive lazy loading
@@ -253,7 +252,6 @@ const LandingPage: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showScene, setShowScene] = useState(false);
   const [isWalletSignup, setIsWalletSignup] = useState(false);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
 
   // Listen for profile updates to re-check wallet connection status
   useEffect(() => {
@@ -412,32 +410,6 @@ const LandingPage: React.FC = () => {
     window.location.replace('/home');
   };
 
-  // Handle initial page load - show loader until page is ready
-  useEffect(() => {
-    const handlePageLoad = () => {
-      // Wait for DOM to be ready and give a minimum display time for the loader
-      const minDisplayTime = 1000; // Show loader for at least 1 second
-      const startTime = Date.now();
-
-      const checkAndHide = () => {
-        const elapsed = Date.now() - startTime;
-        const remainingTime = Math.max(0, minDisplayTime - elapsed);
-
-        setTimeout(() => {
-          setIsPageLoaded(true);
-        }, remainingTime);
-      };
-
-      if (document.readyState === 'complete') {
-        checkAndHide();
-      } else {
-        window.addEventListener('load', checkAndHide, { once: true });
-      }
-    };
-
-    handlePageLoad();
-  }, []);
-
   // Load Scene after page is fully interactive - don't block initial render
   useEffect(() => {
     // Wait for page to be interactive, then load Scene in background
@@ -467,7 +439,6 @@ const LandingPage: React.FC = () => {
 
   return (
     <>
-      <PencilLoader hidden={isPageLoaded} />
       <div className={styles.container}>
       <div className={styles.canvas}>
         {showScene && (
