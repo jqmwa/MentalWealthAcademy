@@ -183,15 +183,35 @@ export default function CreateProposalPage() {
       
       // Convert EIP1193 provider to ethers Web3Provider
       const ethersProvider = new providers.Web3Provider(provider);
-      const { proposalId: onChainProposalId, txHash } = await createProposalOnChain(
-        CONTRACT_ADDRESS,
-        recipientAddress.trim(),
-        usdcAmount,
-        title.trim(),
-        proposal.trim(),
-        7, // 7 days voting period
-        ethersProvider
-      );
+      let onChainProposalId: number;
+      let txHash: string;
+      
+      try {
+        const result = await createProposalOnChain(
+          CONTRACT_ADDRESS,
+          recipientAddress.trim(),
+          usdcAmount,
+          title.trim(),
+          proposal.trim(),
+          7, // 7 days voting period
+          ethersProvider
+        );
+        
+        onChainProposalId = result.proposalId;
+        txHash = result.txHash;
+        
+        // Validate the proposal ID is valid before proceeding
+        if (!onChainProposalId || onChainProposalId <= 0 || isNaN(onChainProposalId)) {
+          throw new Error(`Invalid proposal ID received from blockchain: ${onChainProposalId}. Please contact support with transaction hash: ${txHash}`);
+        }
+        
+        if (!txHash || !txHash.startsWith('0x')) {
+          throw new Error(`Invalid transaction hash received: ${txHash}`);
+        }
+      } catch (blockchainError: any) {
+        console.error('Blockchain transaction error:', blockchainError);
+        throw new Error(`Failed to create proposal on blockchain: ${blockchainError.message || blockchainError.toString()}`);
+      }
 
       console.log('✅ On-chain proposal created!', { onChainProposalId, txHash });
       console.log(`View on BaseScan: https://basescan.org/tx/${txHash}`);
@@ -214,10 +234,21 @@ export default function CreateProposalPage() {
         }),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        throw new Error(`Server returned invalid response (status ${response.status}). This may indicate a server error.`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to save proposal to database');
+        // Log the error details for debugging
+        console.error('API error response:', {
+          status: response.status,
+          error: data.error,
+          details: data.details,
+        });
+        throw new Error(data.error || `Failed to save proposal to database (HTTP ${response.status})`);
       }
 
       // Success! Show transaction info

@@ -96,16 +96,21 @@ export async function POST(request: Request) {
   }
 
   // Validate on-chain proposal ID and transaction hash (REQUIRED)
-  if (!onChainProposalId || typeof onChainProposalId !== 'string') {
+  // Accept both string and number (JSON may send number as number type)
+  const proposalIdStr = onChainProposalId?.toString() || '';
+  if (!proposalIdStr || proposalIdStr === '0' || proposalIdStr === 'NaN') {
+    console.error('Invalid on-chain proposal ID:', { onChainProposalId, type: typeof onChainProposalId });
     return NextResponse.json(
-      { error: 'On-chain proposal ID is required. Proposal must be created on-chain first.' },
+      { error: 'On-chain proposal ID is required and must be valid. Proposal must be created on-chain first.' },
       { status: 400 }
     );
   }
 
-  if (!onChainTxHash || typeof onChainTxHash !== 'string') {
+  const txHashStr = onChainTxHash?.toString() || '';
+  if (!txHashStr || !txHashStr.startsWith('0x') || txHashStr.length !== 66) {
+    console.error('Invalid on-chain transaction hash:', { onChainTxHash, type: typeof onChainTxHash });
     return NextResponse.json(
-      { error: 'On-chain transaction hash is required.' },
+      { error: 'On-chain transaction hash is required and must be a valid transaction hash.' },
       { status: 400 }
     );
   }
@@ -126,13 +131,35 @@ export async function POST(request: Request) {
     const provider = new providers.JsonRpcProvider(rpcUrl);
     const contract = new Contract(contractAddress, AZURA_KILLSTREAK_ABI, provider);
     
+    // Parse proposal ID (handle both string and number)
+    const proposalIdNum = parseInt(proposalIdStr, 10);
+    if (isNaN(proposalIdNum) || proposalIdNum <= 0) {
+      return NextResponse.json(
+        { error: `Invalid on-chain proposal ID format: "${proposalIdStr}". Must be a positive integer.` },
+        { status: 400 }
+      );
+    }
+    
     // Verify the proposal exists on-chain
-    const onChainProposal = await contract.getProposal(parseInt(onChainProposalId));
+    let onChainProposal;
+    try {
+      onChainProposal = await contract.getProposal(proposalIdNum);
+    } catch (contractError: any) {
+      console.error('Contract call error:', {
+        proposalId: proposalIdNum,
+        error: contractError.message,
+        code: contractError.code,
+      });
+      return NextResponse.json(
+        { error: `Failed to fetch proposal ${proposalIdNum} from blockchain. The proposal may not exist or the transaction may not have been confirmed yet.` },
+        { status: 400 }
+      );
+    }
     
     // Verify the proposal ID matches
-    if (onChainProposal.id.toString() !== onChainProposalId) {
+    if (onChainProposal.id.toString() !== proposalIdStr) {
       return NextResponse.json(
-        { error: 'Invalid on-chain proposal ID. Proposal does not exist on blockchain.' },
+        { error: `Invalid on-chain proposal ID. Proposal ID mismatch: expected ${proposalIdStr}, got ${onChainProposal.id.toString()}.` },
         { status: 400 }
       );
     }
@@ -140,20 +167,30 @@ export async function POST(request: Request) {
     // Verify the proposer matches the connected wallet
     if (onChainProposal.proposer.toLowerCase() !== walletAddress.trim().toLowerCase()) {
       return NextResponse.json(
-        { error: 'On-chain proposer does not match your wallet address.' },
+        { 
+          error: `On-chain proposer does not match your wallet address. On-chain proposer: ${onChainProposal.proposer}, Your wallet: ${walletAddress}` 
+        },
         { status: 400 }
       );
     }
 
     console.log('✅ On-chain proposal verified:', {
-      id: onChainProposalId,
-      txHash: onChainTxHash,
+      id: proposalIdStr,
+      txHash: txHashStr,
       proposer: onChainProposal.proposer,
     });
   } catch (error: any) {
-    console.error('Error verifying on-chain proposal:', error);
+    console.error('Error verifying on-chain proposal:', {
+      error: error.message,
+      stack: error.stack,
+      proposalId: proposalIdStr,
+      txHash: txHashStr,
+    });
     return NextResponse.json(
-      { error: 'Failed to verify on-chain proposal. Please ensure the transaction was successful.' },
+      { 
+        error: 'Failed to verify on-chain proposal. ' + (error.message || 'Please ensure the transaction was successful and confirmed on the blockchain.'),
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 400 }
     );
   }
@@ -204,8 +241,8 @@ export async function POST(request: Request) {
         proposalMarkdown: proposalMarkdown.trim(),
         recipientAddress: recipientAddress.trim().toLowerCase(),
         tokenAmount: tokenAmount.trim(),
-        onChainProposalId: onChainProposalId.toString(),
-        onChainTxHash: onChainTxHash.trim(),
+        onChainProposalId: proposalIdStr,
+        onChainTxHash: txHashStr,
       }
     );
 
