@@ -32,7 +32,7 @@ const ProposalStages: React.FC<ProposalStagesProps> = ({
       case 'approved':
         return 'Approved by Azura';
       case 'rejected':
-        return 'Killed';
+        return 'Failed';
       default:
         return 'Unknown';
     }

@@ -64,11 +64,11 @@ interface MergedProposal extends DatabaseProposal {
 
 const getTutorialSteps = (): TutorialStep[] => [
   {
-    message: 'Welcome to the Decision Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can kill proposals before they reach you. Or I can let them live.',
+    message: 'Welcome to the Decision Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can fail proposals before they reach you. Or I can let them live.',
     emotion: 'happy',
   },
   {
-    message: 'When someone submits a proposal, I read it. I look for clarity, impact, feasibility. I score it. If it passes, I create it on-chain and cast my vote. If it fails, I kill it. Simple.',
+    message: 'When someone submits a proposal, I read it. I look for clarity, impact, feasibility. I score it. If it passes, I create it on-chain and cast my vote. If it fails, I mark it as failed. Simple.',
     emotion: 'happy',
     targetElement: '[data-tutorial-target="voting-stages"]',
   },
@@ -207,7 +207,7 @@ export default function VotingPage() {
               <p className={styles.eyebrow}>MWA • Academy Decisions</p>
               <h1 className={styles.title}>Decision Room</h1>
                   <p className={styles.subtitle}>
-                    Every decision and submission from our community finds its way here. The Azura agent thoughtfully manages a 40% holding of voting tokens, carefully reviewing and adding votes to proposals. Users can seek grants, stipends, and other supportive resources.
+                    Micro-Decisions aided by agentic co-pilot DAEMON. Digital Autocrat Evaluation Model of Negotiation
                   </p>
                   <div className={styles.heroActions}>
                     <button

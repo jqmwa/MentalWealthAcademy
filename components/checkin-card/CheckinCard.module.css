@@ -4,12 +4,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px 24px;
+  padding: 12px 20px;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
+  border-radius: 16px;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 4px 20px rgba(81, 104, 255, 0.1);
@@ -54,15 +54,15 @@
 .leftSection {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .iconCircle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(135deg, rgba(81, 104, 255, 0.15), rgba(81, 104, 255, 0.08));
   border: 1.5px solid rgba(81, 104, 255, 0.3);
   border-radius: 50%;
@@ -81,7 +81,7 @@
 }
 
 .text {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-dark);
   transition: all 0.3s ease;
@@ -371,22 +371,22 @@
 /* Tablet and Desktop */
 @media (min-width: 768px) {
   .card {
-    padding: 24px 28px;
-    border-radius: 24px;
+    padding: 14px 24px;
+    border-radius: 18px;
   }
 
   .iconCircle {
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
   }
 
   .text {
-    font-size: 20px;
+    font-size: 17px;
   }
 
   .rightIcon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
   }
 }
 

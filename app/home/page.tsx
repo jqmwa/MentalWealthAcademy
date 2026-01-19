@@ -14,7 +14,6 @@ import { ConfettiCelebration } from '@/components/quests/ConfettiCelebration';
 import PencilLoader from '@/components/landing/PencilLoader';
 import { CalendarDays } from '@/components/calendar-days/CalendarDays';
 import { CheckinCard } from '@/components/checkin-card/CheckinCard';
-import { ProgressCard } from '@/components/progress-card/ProgressCard';
 import { EventsCarousel } from '@/components/events-carousel/EventsCarousel';
 import Surveys from '@/components/survey/Surveys';
 import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
@@ -344,18 +343,11 @@ export default function Home() {
           <h1 className={styles.welcomeHeading}>Welcome {me.username}</h1>
         )}
         <CalendarDays />
+        <CheckinCard />
         <div className={styles.eventsAndSurveysRow}>
           <EventsCarousel />
           <Surveys />
         </div>
-        <CheckinCard />
-        <ProgressCard 
-          title="Daily Wellness Goal"
-          currentValue={543}
-          targetValue={1000}
-          unit="minutes"
-          color="primary"
-        />
       </div>
       <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
       <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />

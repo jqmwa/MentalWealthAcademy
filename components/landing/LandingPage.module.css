@@ -17,6 +17,8 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  animation: none !important;
+  transform: none !important;
 }
 
 .logoImage {
@@ -24,6 +26,8 @@
   max-width: 100%;
   height: auto;
   object-fit: contain;
+  animation: none !important;
+  transform: none !important;
 }
 
 .canvas {
@@ -121,6 +125,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  animation: none !important;
+  transform: none !important;
 }
 
 .promoLogoImage {
@@ -128,6 +134,8 @@
   max-width: 100%;
   height: auto;
   object-fit: contain;
+  animation: none !important;
+  transform: none !important;
 }
 
 .promoCard::before {
@@ -359,6 +367,8 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  animation: none !important;
+  transform: none !important;
 }
 
 .logoImage {
@@ -366,6 +376,8 @@
   max-width: 100%;
   height: auto;
   object-fit: contain;
+  animation: none !important;
+  transform: none !important;
 }
 
 .googleSignupSection {

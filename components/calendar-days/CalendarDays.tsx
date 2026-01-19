@@ -50,13 +50,12 @@ export function CalendarDays() {
     };
   }, []);
 
-  // Generate current week dynamically
+    // Generate current week dynamically (Monday-Friday only)
   const days: DayButton[] = useMemo(() => {
     const today = currentDate;
     const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
     
-    // Calculate Monday of current week (or Sunday if we want week to start on Sunday)
-    // We'll start the week on Monday (ISO week)
+    // Calculate Monday of current week (ISO week)
     const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay; // Adjust for Monday start
     const monday = new Date(today);
     monday.setDate(today.getDate() + mondayOffset);
@@ -64,7 +63,8 @@ export function CalendarDays() {
     const weekDays: DayButton[] = [];
     const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     
-    for (let i = 0; i < 7; i++) {
+    // Only generate Monday through Friday (5 days)
+    for (let i = 0; i < 5; i++) {
       const dayDate = new Date(monday);
       dayDate.setDate(monday.getDate() + i);
       

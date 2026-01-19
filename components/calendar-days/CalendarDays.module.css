@@ -1,15 +1,21 @@
 .container {
   width: 100%;
+  max-width: 100%;
   padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .daysRow {
   display: flex;
   gap: 8px;
-  overflow-x: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding: 4px 0;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 .daysRow::-webkit-scrollbar {
@@ -23,6 +29,8 @@
   align-items: center;
   justify-content: center;
   min-width: 64px;
+  width: calc((100% - 32px) / 5);
+  max-width: 80px;
   height: 76px;
   padding: 12px 8px;
   background: rgba(255, 255, 255, 0.65);
@@ -35,6 +43,8 @@
   font-family: var(--font-primary);
   box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
   flex-shrink: 0;
+  flex-grow: 1;
+  box-sizing: border-box;
 }
 
 .dayButton:hover {
@@ -104,6 +114,13 @@
   background: white;
 }
 
+.selected:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.35);
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -119,11 +136,13 @@
 @media (min-width: 768px) {
   .daysRow {
     gap: 12px;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   .dayButton {
     min-width: 72px;
+    width: calc((100% - 48px) / 5);
+    max-width: 100px;
     height: 88px;
     padding: 14px 10px;
   }
@@ -141,6 +160,8 @@
 @media (min-width: 1024px) {
   .dayButton {
     min-width: 80px;
+    width: calc((100% - 48px) / 5);
+    max-width: 120px;
     height: 96px;
   }
 }
