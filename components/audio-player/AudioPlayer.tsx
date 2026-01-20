@@ -63,6 +63,7 @@ export default function AudioPlayer() {
         audio.removeEventListener('pause', handlePause)
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Save state to localStorage whenever it changes
@@ -133,6 +134,7 @@ export default function AudioPlayer() {
     return () => {
       audio.removeEventListener('canplay', handleCanPlay)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Only run once on mount
 
   // Update audio source when track changes (but not on initial mount)

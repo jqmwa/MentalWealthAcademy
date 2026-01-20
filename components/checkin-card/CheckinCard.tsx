@@ -38,7 +38,7 @@ function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
               <h3 id="gratitude-title" className={classes.modalTitle}>
                 Azura
               </h3>
-              <p className={classes.modalSubtitle}>"What are you grateful for today?"</p>
+              <p className={classes.modalSubtitle}>&quot;What are you grateful for today?&quot;</p>
             </div>
           </div>
 

@@ -203,6 +203,7 @@ export default function Home() {
     return () => {
       isMounted = false;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run once on mount - session cookie handles auth
 
   // Listen for profile updates to refresh avatar status and check onboarding
