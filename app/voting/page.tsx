@@ -13,6 +13,7 @@ import VoteButtons from '@/components/vote-buttons/VoteButtons';
 import ProposalCard from '@/components/proposal-card/ProposalCard';
 import ProposalDetailsModal from '@/components/proposal-card/ProposalDetailsModal';
 import SubmitProposalModal from '@/components/voting/SubmitProposalModal';
+import GuyTutorial, { GuyStep } from '@/components/voting/GuyTutorial';
 import PencilLoader from '@/components/landing/PencilLoader';
 import { 
   fetchProposal,
@@ -89,6 +90,21 @@ const getTutorialSteps = (): TutorialStep[] => [
   },
 ];
 
+const getGuyTutorialSteps = (): GuyStep[] => [
+  {
+    message: "Hey! I'm Guy, your friendly guide to $MWG tokens. These little gems are the heartbeat of our community rewards system. Pretty cool, right?",
+  },
+  {
+    message: "Earning $MWG is so simple. Just complete your weekly mental wealth tasks and writings.",
+  },
+  {
+    message: "Here's the exciting part, the more you earn, the more of a say you'll have in where the prize pool money goes at the end of the 12-weeks.",
+  },
+  {
+    message: "Instead of keeping all the profits like Zuck, we give to the dedicated members who've earned their spot at the finish line. We call it Decentralization.",
+  },
+];
+
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
 const GOV_TOKEN_ADDRESS = process.env.NEXT_PUBLIC_GOVERNANCE_TOKEN_ADDRESS || '0x84939fEc50EfdEDC8522917645AAfABFd5b3EA6F';
 const USDC_ADDRESS = process.env.NEXT_PUBLIC_USDC_ADDRESS || '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'; // Base mainnet USDC
@@ -105,6 +121,7 @@ export default function VotingPage() {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showMintModal, setShowMintModal] = useState(false);
+  const [showGuyDialogue, setShowGuyDialogue] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -202,8 +219,8 @@ export default function VotingPage() {
       />
       <main className={styles.page}>
         <div className={styles.content}>
-          <div className={styles.hero}>
-            <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
+          <div className={`${styles.hero} ${isLoaded ? styles.heroLoaded : ''}`}>
+            <header className={styles.header}>
               <div className={styles.headerContent}>
                 <div className={styles.headerText}>
                   <p className={styles.eyebrow}>MWA • Academy Decisions</p>
@@ -246,6 +263,15 @@ export default function VotingPage() {
               </div>
             </header>
           </div>
+
+          {/* Hero Banner Image - Click to open Guy Dialogue */}
+          <img
+            src="https://i.imgur.com/9Wvq3Rm.png"
+            alt="Guy - Click to learn about $MWG"
+            className={styles.heroBannerImage}
+            onClick={() => setShowGuyDialogue(true)}
+            style={{ cursor: 'pointer' }}
+          />
 
           {/* Proposals Section */}
           <section className={styles.proposalsSection}>
@@ -354,6 +380,14 @@ export default function VotingPage() {
         isOpen={isSubmitModalOpen}
         onClose={() => setIsSubmitModalOpen(false)}
         onSuccess={fetchProposals}
+      />
+
+      <GuyTutorial
+        steps={getGuyTutorialSteps()}
+        isOpen={showGuyDialogue}
+        onClose={() => setShowGuyDialogue(false)}
+        title="Meet $MWG!"
+        showProgress={true}
       />
     </>
   );

@@ -252,7 +252,19 @@ const LandingPage: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showScene, setShowScene] = useState(false);
   const [isWalletSignup, setIsWalletSignup] = useState(false);
-  const [showAuthForm, setShowAuthForm] = useState(false);
+  // Initialize showAuthForm based on screen width - true on desktop (1024px+)
+  const [showAuthForm, setShowAuthForm] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1024;
+    }
+    return true; // Default to true for SSR (desktop-first)
+  });
+
+  // Set showAuthForm based on screen width on mount (for SSR hydration)
+  useEffect(() => {
+    const isDesktop = window.innerWidth >= 1024;
+    setShowAuthForm(isDesktop);
+  }, []);
 
   // Listen for profile updates to re-check wallet connection status
   useEffect(() => {
@@ -724,7 +736,7 @@ const LandingPage: React.FC = () => {
                         setActiveTab('signin');
                       }}
                     >
-                      Have an account? Sign in
+                      Sign In
                     </button>
                     <span className={styles.authLinkDivider}>|</span>
                     <button
@@ -735,7 +747,7 @@ const LandingPage: React.FC = () => {
                         setActiveTab('signup');
                       }}
                     >
-                      New? Create account
+                      Sign Up
                     </button>
                   </div>
                 )}

@@ -203,8 +203,8 @@ export default function AudioPlayer() {
       ref={playerContainerRef}
       style={{
         width: '100%',
-        background: '#ffffff',
-        borderBottom: '1px solid rgba(26, 29, 51, 0.1)',
+        background: '#FBF8FF',
+        borderBottom: '2px solid #000000',
       }}
     >
       <div

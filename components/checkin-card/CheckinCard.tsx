@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classes from './CheckinCard.module.css';
 
@@ -82,6 +82,13 @@ export function CheckinCard() {
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Trigger slide-in animation on mount (delayed to come after calendar)
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleOpenGratitude = () => {
     if (isCheckedIn) return;
@@ -113,7 +120,7 @@ export function CheckinCard() {
   return (
     <>
       <button
-        className={`${classes.card} ${isCheckedIn ? classes.checked : ''} ${isAnimating ? classes.animating : ''}`}
+        className={`${classes.card} ${isCheckedIn ? classes.checked : ''} ${isAnimating ? classes.animating : ''} ${isLoaded ? classes.cardLoaded : ''}`}
         onClick={handleOpenGratitude}
         disabled={isCheckedIn}
         type="button"

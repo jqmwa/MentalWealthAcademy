@@ -8,8 +8,8 @@ import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
 import MintModal from '@/components/mint-modal/MintModal';
 import styles from './page.module.css';
 
-// Feed Azura Modal Component
-const FeedAzuraModal: React.FC<{
+// Library Info Modal Component
+const LibraryInfoModal: React.FC<{
   isVisible: boolean;
   onClose: () => void;
 }> = ({ isVisible, onClose }) => {
@@ -37,48 +37,16 @@ const FeedAzuraModal: React.FC<{
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.modalClose} onClick={onClose} aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
+          Close
         </button>
 
         <div className={styles.modalContent}>
-          <div className={styles.azuraIcon}>
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="20" fill="url(#azuraGradient)" />
-              <path d="M24 12L28 20H20L24 12Z" fill="white" opacity="0.9" />
-              <circle cx="24" cy="28" r="6" fill="white" opacity="0.9" />
-              <defs>
-                <linearGradient id="azuraGradient" x1="4" y1="4" x2="44" y2="44">
-                  <stop stopColor="#7C3AED" />
-                  <stop offset="1" stopColor="#2563EB" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+          <div className={styles.modalEmoji}>🍎</div>
 
-          <h2 className={styles.modalTitle}>Meet Azura</h2>
+          <h2 className={styles.modalTitle}>Your 12-Week Library</h2>
           <p className={styles.modalDescription}>
-            Azura is MWA&apos;s AI companion. Feed her prompts and watch her grow smarter. She learns from what you share.
+            This is your database for all pages in the 12-week journey, everything organized and ready for you here.
           </p>
-
-          <div className={styles.azuraFeatures}>
-            <div className={styles.azuraFeature}>
-              <span className={styles.featureIcon}>🍎</span>
-              <div className={styles.featureText}>
-                <strong>Feed</strong>
-                <span>Share prompts to help Azura learn</span>
-              </div>
-            </div>
-            <div className={styles.azuraFeature}>
-              <span className={styles.featureIcon}>✨</span>
-              <div className={styles.featureText}>
-                <strong>Grow</strong>
-                <span>Earn Daemon for quality contributions</span>
-              </div>
-            </div>
-          </div>
 
           <button className={styles.modalCta} onClick={onClose}>
             Got it!
@@ -122,7 +90,7 @@ const communityBooks = [
     author: 'Uploaded by: Dr. Kim',
     description:
       'Community-crafted templates for building reproducible, peer-audited course syllabi across STEM and humanities.',
-    category: 'Community Upload',
+    category: 'Week 1',
     imageUrl: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=900&q=80',
   },
   {
@@ -130,7 +98,7 @@ const communityBooks = [
     author: 'Uploaded by: Saanvi P.',
     description:
       'A living notebook on standards, safety, and funding models emerging from decentralized bio labs.',
-    category: 'Community Upload',
+    category: 'Week 2',
     imageUrl: 'https://images.unsplash.com/photo-1504711331083-9c895941bf81?auto=format&fit=crop&w=900&q=80',
   },
   {
@@ -138,7 +106,7 @@ const communityBooks = [
     author: 'Uploaded by: Alex G.',
     description:
       'Tools, checklists, and protocols for validating community-sourced data and observations in environmental research.',
-    category: 'Community Upload',
+    category: 'Week 3',
     imageUrl: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80',
   },
 ];
@@ -331,12 +299,12 @@ export default function Library() {
       <Navbar />
       <main className={styles.page}>
         <div className={styles.content}>
-          <div className={styles.hero}>
-            <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
-              <p className={styles.eyebrow}>MWA • Prompt Library</p>
-              <h1 className={styles.title}>Prompt Library</h1>
+          <div className={`${styles.hero} ${isLoaded ? styles.heroLoaded : ''}`}>
+            <header className={styles.header}>
+              <p className={styles.eyebrow}>MWA • Library</p>
+              <h1 className={styles.title}>Library</h1>
               <p className={styles.subtitle}>
-                Discover powerful AI prompts, share your favorites, and build a personal collection of prompts that unlock the full potential of AI assistants.
+                Your weekly readings, notes, and materials needed for the 12-week course. Everything you need to succeed in one place.
               </p>
               <div className={styles.heroActions}>
                 <button className={styles.primaryCta} type="button" onClick={() => setShowAzuraModal(true)}>
@@ -355,16 +323,7 @@ export default function Library() {
               type="button"
               aria-pressed={activeTab === 'prompts'}
             >
-              <span className={styles.tabTitle}>Prompts</span>
-            </button>
-
-            <button
-              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('curated')}
-              type="button"
-              aria-pressed={activeTab === 'curated'}
-            >
-              <span className={styles.tabTitle}>Books</span>
+              <span className={styles.tabTitle}>Tasks</span>
             </button>
 
             <button
@@ -373,7 +332,16 @@ export default function Library() {
               type="button"
               aria-pressed={activeTab === 'community'}
             >
-              <span className={styles.tabTitle}>Shared</span>
+              <span className={styles.tabTitle}>Exercises</span>
+            </button>
+
+            <button
+              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
+              onClick={() => setActiveTab('curated')}
+              type="button"
+              aria-pressed={activeTab === 'curated'}
+            >
+              <span className={styles.tabTitle}>Readings</span>
             </button>
           </div>
 
@@ -384,7 +352,7 @@ export default function Library() {
       <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
 
       {/* Feed Azura Modal */}
-      <FeedAzuraModal isVisible={showAzuraModal} onClose={closeAzuraModal} />
+      <LibraryInfoModal isVisible={showAzuraModal} onClose={closeAzuraModal} />
     </>
   );
 }

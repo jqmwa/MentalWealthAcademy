@@ -31,6 +31,30 @@
   border-radius: 4px;
   box-shadow: 6px 6px 0 #1A1D33;
   overflow: hidden;
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.heroLoaded {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://i.imgur.com/yUqIsUv.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  z-index: 1;
+  mask-image: linear-gradient(to left, transparent 0%, black 100%);
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, black 100%);
 }
 
 .header {
@@ -38,15 +62,8 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
+  z-index: 3;
   margin-bottom: 0;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
-}
-
-.headerLoaded {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .eyebrow {
@@ -145,6 +162,7 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 8px;
+  padding-top: 4px;
 }
 
 .tabCard {
@@ -222,6 +240,11 @@
     box-shadow: 4px 4px 0 #1A1D33;
   }
 
+  .hero::before {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
+  }
+
   .heroActions {
     width: 100%;
     gap: 12px;
@@ -247,6 +270,11 @@
   .hero {
     padding: 24px;
     box-shadow: 3px 3px 0 #1A1D33;
+  }
+
+  .hero::before {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
   }
 
   .heroActions {
@@ -324,31 +352,25 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  background: #ffffff;
-  border: 2px solid #1A1D33;
+  background: transparent;
+  border: 1px solid rgba(26, 29, 51, 0.3);
   border-radius: 4px;
-  width: 32px;
-  height: 32px;
+  padding: 4px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
   z-index: 10;
-  box-shadow: 2px 2px 0 #1A1D33;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(26, 29, 51, 0.8);
 }
 
 .modalClose:hover {
-  background: var(--color-accent);
-  color: #ffffff;
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 #1A1D33;
-}
-
-.modalClose svg {
-  width: 16px;
-  height: 16px;
-  color: inherit;
+  background: rgba(26, 29, 51, 0.1);
+  color: #1A1D33;
 }
 
 .modalContent {
@@ -356,22 +378,10 @@
   text-align: center;
 }
 
-.azuraIcon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 16px;
-  background: var(--color-primary);
-  border: 3px solid #1A1D33;
-  border-radius: 4px;
-  box-shadow: 3px 3px 0 #1A1D33;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.azuraIcon svg {
-  width: 40px;
-  height: 40px;
+.modalEmoji {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 16px;
 }
 
 .modalTitle {

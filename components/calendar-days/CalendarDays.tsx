@@ -14,6 +14,13 @@ interface DayButton {
 export function CalendarDays() {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Trigger animation on mount
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
   
   // Update current date every minute and check for day changes
   useEffect(() => {
@@ -98,20 +105,24 @@ export function CalendarDays() {
   return (
     <div className={classes.container}>
       <div className={classes.daysRow}>
-        {days.map((day) => {
+        {days.map((day, index) => {
           const dayKey = `${day.year}-${day.month}-${day.date}`;
           const selectedDate = selectedDay ? new Date(selectedDay) : null;
-          const isSelected = selectedDate && 
+          const isSelected = selectedDate &&
             selectedDate.getDate() === day.date &&
             selectedDate.getMonth() === day.month &&
             selectedDate.getFullYear() === day.year;
-          
+
+          // Staggered delay: 0s, 0.08s, 0.16s, 0.24s, 0.32s
+          const animationDelay = `${index * 0.08}s`;
+
           return (
             <button
               key={dayKey}
               className={`${classes.dayButton} ${
                 day.isToday ? classes.today : ''
-              } ${isSelected ? classes.selected : ''}`}
+              } ${isSelected ? classes.selected : ''} ${isLoaded ? classes.dayButtonLoaded : ''}`}
+              style={{ transitionDelay: animationDelay }}
               onClick={() => handleDayClick(day.date, day.month, day.year)}
             >
               <span className={classes.dayName}>{day.day}</span>

@@ -18,6 +18,30 @@
   border-radius: 4px;
   box-shadow: 6px 6px 0 #1A1D33;
   overflow: hidden;
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.heroLoaded {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://i.imgur.com/uPsIxd8.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
 }
 
 .breadcrumbs {
@@ -58,15 +82,8 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
+  z-index: 3;
   margin-bottom: 0;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
-}
-
-.headerLoaded {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .eyebrow {
@@ -224,21 +241,24 @@
   flex-direction: column;
   gap: 16px;
   flex: 1;
-  z-index: 1;
+  z-index: 2;
+  position: relative;
 }
 
 .mainCardRight {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 50%;
+  left: 0;
+  width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 1;
   overflow: hidden;
-  background-image: url('https://i.imgur.com/QDFW7Wp.png');
+  background-image: url('https://i.imgur.com/uPsIxd8.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
 }
 
 .amountValue {
@@ -944,6 +964,11 @@
     box-shadow: 3px 3px 0 #1A1D33;
   }
 
+  .hero::before {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
+  }
+
   .breadcrumbs {
     display: none;
   }
@@ -991,49 +1016,72 @@
   }
 
   .mainCard {
-    min-height: 280px;
+    min-height: 240px;
     box-shadow: 3px 3px 0 #1A1D33;
   }
 
   .mainCardContent {
-    min-height: 280px;
+    min-height: 240px;
+    flex-direction: column;
+    position: relative;
   }
 
   .mainCardLeft {
     padding: 24px;
-    gap: 16px;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mainCardRight {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
   }
 
   .vaultedReservesTitle {
-    font-size: 28px;
+    font-size: 14px;
   }
 
   .amountValue {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .cryptoList {
-    font-size: 16px;
+    font-size: 12px;
+  }
+
+  .cryptoIconsGroup {
+    margin-top: 4px;
   }
 
   .cryptoIconBg {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border: 2px solid rgb(6, 6, 9);
-    margin-left: -10px;
+    margin-left: -8px;
   }
 
   .cryptoIconText {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .cryptoIconImage {
+    padding: 3px;
   }
 
   .arrowUp {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
   .percentageText {
-    font-size: 16px;
+    font-size: 12px;
+  }
+
+  .percentageChange {
+    gap: 8px;
+    margin-top: 8px;
   }
 
   .questAlert {
@@ -1254,6 +1302,11 @@
     padding: 24px 20px;
   }
 
+  .hero::before {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
+  }
+
   .title {
     font-size: 22px;
   }
@@ -1264,6 +1317,55 @@
 
   .subtitle {
     font-size: 14px;
+  }
+
+  .mainCard {
+    min-height: 200px;
+  }
+
+  .mainCardContent {
+    min-height: 200px;
+  }
+
+  .mainCardLeft {
+    padding: 20px;
+    gap: 10px;
+  }
+
+  .mainCardRight {
+    mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
+  }
+
+  .amountValue {
+    font-size: 28px;
+  }
+
+  .vaultedReservesTitle {
+    font-size: 13px;
+  }
+
+  .cryptoList {
+    font-size: 11px;
+  }
+
+  .cryptoIconBg {
+    width: 28px;
+    height: 28px;
+    margin-left: -6px;
+  }
+
+  .cryptoIconImage {
+    padding: 2px;
+  }
+
+  .percentageText {
+    font-size: 11px;
+  }
+
+  .percentageChange {
+    gap: 6px;
+    margin-top: 6px;
   }
 
   .questCard {

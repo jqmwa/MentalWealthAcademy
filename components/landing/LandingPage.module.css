@@ -303,6 +303,8 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Minimal state - compact card when auth form is hidden */
@@ -359,6 +361,9 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .loginHeader {
@@ -550,6 +555,8 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .successMessage,
@@ -590,6 +597,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formGroup {
@@ -1242,6 +1251,14 @@
 @media (min-width: 769px) {
   .mobileEnterButtonContainer {
     display: none !important;
+  }
+
+  .enterButtonTextDesktop {
+    display: inline;
+  }
+
+  .enterButtonTextMobile {
+    display: none;
   }
 }
 
