@@ -3,10 +3,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
-import Banner from '@/components/banner/Banner';
 import OnboardingTour from '@/components/onboarding-tour/OnboardingTour';
 import Navbar from '@/components/navbar/Navbar';
-import { Footer } from '@/components/footer/Footer';
 import AvatarSelectionModal from '@/components/avatar-selection/AvatarSelectionModal';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import { ShardAnimation } from '@/components/quests/ShardAnimation';
@@ -333,11 +331,10 @@ export default function Home() {
             .catch(err => console.error('Failed to fetch user data:', err));
         }}
       />
-      <OnboardingTour 
-        isBlocked={showOnboarding || showAvatarModal || !me?.username || me?.username?.startsWith('user_')} 
+      <OnboardingTour
+        isBlocked={showOnboarding || showAvatarModal || !me?.username || me?.username?.startsWith('user_')}
       />
       <Navbar />
-      <Banner />
       <div className={styles.content}>
         {me?.username && !me.username.startsWith('user_') && (
           <h1 className={styles.welcomeHeading}>Welcome {me.username}</h1>
@@ -351,7 +348,6 @@ export default function Home() {
       </div>
       <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
       <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
-      <Footer />
       {showRewardAnimation && rewardData && (
         <>
           <ConfettiCelebration trigger={true} />

@@ -22,6 +22,7 @@
   display: none;
 }
 
+/* Brutalist flat style */
 .dayButton {
   position: relative;
   display: flex;
@@ -33,76 +34,72 @@
   max-width: 80px;
   height: 76px;
   padding: 12px 8px;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.8);
-  border-radius: 16px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.15s ease;
   font-family: var(--font-primary);
-  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.08);
+  box-shadow: 3px 3px 0 #1A1D33;
   flex-shrink: 0;
   flex-grow: 1;
   box-sizing: border-box;
 }
 
 .dayButton:hover {
-  transform: translateY(-4px) scale(1.02);
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(81, 104, 255, 0.3);
-  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.15);
+  transform: translate(-2px, -2px);
+  background: #ffffff;
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .dayButton:active {
-  transform: translateY(-1px) scale(0.98);
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .dayName {
-  font-size: 11px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  color: #1A1D33;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
   margin-bottom: 4px;
 }
 
 .dayDate {
   font-size: 22px;
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
+  color: #1A1D33;
   line-height: 1;
 }
 
 .today {
-  background: linear-gradient(135deg, rgba(81, 104, 255, 0.15) 0%, rgba(81, 104, 255, 0.08) 100%);
-  border-color: rgba(81, 104, 255, 0.4);
+  background: var(--color-tertiary);
+  border-color: #1A1D33;
 }
 
 .today .dayName {
-  color: var(--color-primary);
+  color: #ffffff;
 }
 
 .today .dayDate {
-  color: var(--color-primary);
+  color: #ffffff;
 }
 
 .todayIndicator {
   position: absolute;
-  bottom: 8px;
+  bottom: 6px;
   width: 6px;
   height: 6px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
+  background: #ffffff;
+  border-radius: 2px;
 }
 
 .selected {
   background: var(--color-primary);
-  border-color: var(--color-primary);
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.35);
+  border-color: #1A1D33;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .selected .dayName,
@@ -115,21 +112,9 @@
 }
 
 .selected:hover {
-  transform: translateY(-2px) scale(1.05);
+  transform: translate(-2px, -2px);
   background: var(--color-primary);
-  border-color: var(--color-primary);
-  box-shadow: 0 8px 24px rgba(81, 104, 255, 0.35);
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.2);
-  }
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 /* Tablet and Desktop */
@@ -148,7 +133,7 @@
   }
 
   .dayName {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .dayDate {

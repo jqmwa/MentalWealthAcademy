@@ -530,12 +530,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background: var(--color-primary);
-  box-shadow: 0px 1px 10.4px 0px rgba(81, 104, 255, 0.40);
+  box-shadow: var(--shadow-primary);
   position: relative;
 }
 
 .messageButton:hover {
-  background: rgba(81, 104, 255, 0.9);
+  background: var(--color-primary-hover);
 }
 
 .messageIcon {

@@ -197,19 +197,15 @@ export default function AudioPlayer() {
   }
 
   return (
-    <div 
+    <div
       ref={playerContainerRef}
       style={{
         width: '100%',
-        background: 'linear-gradient(135deg, #F4F5FE 0%, #EAEBF4 100%)',
-        borderTop: '1px solid #EAEBF4',
-        borderBottom: '1px solid #EAEBF4',
-        boxShadow: '0 4px 20px rgba(120, 138, 255, 0.15)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)'
+        background: '#ffffff',
+        borderBottom: '1px solid rgba(26, 29, 51, 0.1)',
       }}
     >
-      <div 
+      <div
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -219,45 +215,43 @@ export default function AudioPlayer() {
           width: '100%',
           maxWidth: '100%',
           boxSizing: 'border-box',
-          gap: '6px',
+          gap: '8px',
         }}
       >
         {/* Previous Button */}
         <button
           onClick={prevTrack}
           style={{
-            color: '#788AFF',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #F4F5FE 0%, #EAEBF4 100%)',
-            border: '1.5px solid #788AFF',
-            width: '18px',
-            height: '18px',
-            minWidth: '18px',
-            minHeight: '18px',
+            color: '#1A1D33',
+            borderRadius: '4px',
+            background: '#ffffff',
+            border: '2px solid #1A1D33',
+            width: '20px',
+            height: '20px',
+            minWidth: '20px',
+            minHeight: '20px',
             flexShrink: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(120, 138, 255, 0.2)',
+            boxShadow: '2px 2px 0 #1A1D33',
             cursor: 'pointer',
             padding: 0,
-            transition: 'all 0.3s ease'
+            transition: 'all 0.15s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.1)'
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(120, 138, 255, 0.4)'
-            e.currentTarget.style.background = 'linear-gradient(135deg, #EAEBF4 0%, #F4F5FE 100%)'
+            e.currentTarget.style.transform = 'translate(-1px, -1px)'
+            e.currentTarget.style.boxShadow = '3px 3px 0 #1A1D33'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)'
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(120, 138, 255, 0.2)'
-            e.currentTarget.style.background = 'linear-gradient(135deg, #F4F5FE 0%, #EAEBF4 100%)'
+            e.currentTarget.style.transform = 'translate(0, 0)'
+            e.currentTarget.style.boxShadow = '2px 2px 0 #1A1D33'
           }}
           aria-label="Previous track"
         >
           <svg
-            width="7"
-            height="7"
+            width="8"
+            height="8"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -276,117 +270,94 @@ export default function AudioPlayer() {
         <button
           onClick={togglePlayPause}
           style={{
-            color: '#F4F5FE',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, rgba(120, 138, 255, 0.3) 0%, rgba(106, 122, 238, 0.25) 100%)',
-            border: '1px solid rgba(120, 138, 255, 0.4)',
-            width: '24px',
-            height: '24px',
-            minWidth: '24px',
-            minHeight: '24px',
+            color: '#ffffff',
+            borderRadius: '4px',
+            background: '#5168FF',
+            border: '2px solid #1A1D33',
+            width: '26px',
+            height: '26px',
+            minWidth: '26px',
+            minHeight: '26px',
             flexShrink: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(120, 138, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            position: 'relative',
-            overflow: 'visible',
+            boxShadow: '2px 2px 0 #1A1D33',
             cursor: 'pointer',
             padding: 0,
-            transition: 'all 0.3s ease',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)'
+            transition: 'all 0.15s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.1)'
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(120, 138, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+            e.currentTarget.style.transform = 'translate(-1px, -1px)'
+            e.currentTarget.style.boxShadow = '3px 3px 0 #1A1D33'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)'
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(120, 138, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+            e.currentTarget.style.transform = 'translate(0, 0)'
+            e.currentTarget.style.boxShadow = '2px 2px 0 #1A1D33'
           }}
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
-          {/* Glossy highlight circle on top */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '2px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: 'rgba(255, 255, 255, 0.25)',
-              pointerEvents: 'none',
-              zIndex: 1
-            }}
-          />
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            {isPlaying ? (
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" />
-                <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" />
-              </svg>
-            ) : (
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 5L8 19L19 12L8 5Z"
-                  fill="currentColor"
-                />
-              </svg>
-            )}
-          </div>
+          {isPlaying ? (
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" />
+              <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" />
+            </svg>
+          ) : (
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 5L8 19L19 12L8 5Z"
+                fill="currentColor"
+              />
+            </svg>
+          )}
         </button>
 
         {/* Next Button */}
         <button
           onClick={nextTrack}
           style={{
-            color: '#788AFF',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #F4F5FE 0%, #EAEBF4 100%)',
-            border: '1.5px solid #788AFF',
-            width: '18px',
-            height: '18px',
-            minWidth: '18px',
-            minHeight: '18px',
+            color: '#1A1D33',
+            borderRadius: '4px',
+            background: '#ffffff',
+            border: '2px solid #1A1D33',
+            width: '20px',
+            height: '20px',
+            minWidth: '20px',
+            minHeight: '20px',
             flexShrink: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(120, 138, 255, 0.2)',
+            boxShadow: '2px 2px 0 #1A1D33',
             cursor: 'pointer',
             padding: 0,
-            transition: 'all 0.3s ease'
+            transition: 'all 0.15s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.1)'
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(120, 138, 255, 0.4)'
-            e.currentTarget.style.background = 'linear-gradient(135deg, #EAEBF4 0%, #F4F5FE 100%)'
+            e.currentTarget.style.transform = 'translate(-1px, -1px)'
+            e.currentTarget.style.boxShadow = '3px 3px 0 #1A1D33'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)'
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(120, 138, 255, 0.2)'
-            e.currentTarget.style.background = 'linear-gradient(135deg, #F4F5FE 0%, #EAEBF4 100%)'
+            e.currentTarget.style.transform = 'translate(0, 0)'
+            e.currentTarget.style.boxShadow = '2px 2px 0 #1A1D33'
           }}
           aria-label="Next track"
         >
           <svg
-            width="7"
-            height="7"
+            width="8"
+            height="8"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -402,21 +373,22 @@ export default function AudioPlayer() {
         </button>
 
         {/* Track Name */}
-        <div 
+        <div
           style={{
-            color: '#788AFF',
-            borderRadius: '20px',
-            background: 'linear-gradient(135deg, #EAEBF4 0%, #F4F5FE 100%)',
-            border: '1px solid #788AFF',
-            boxShadow: 'inset 0 1px 3px rgba(120, 138, 255, 0.1)',
+            color: '#FF7729',
+            borderRadius: '4px',
+            background: 'rgba(255, 119, 41, 0.1)',
+            border: '2px solid #1A1D33',
+            boxShadow: '2px 2px 0 #1A1D33',
             fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: '8px',
-            fontWeight: 500,
-            letterSpacing: '0.3px',
-            padding: '3px 8px',
-            minWidth: '70px',
+            fontSize: '9px',
+            fontWeight: 700,
+            letterSpacing: '0.02em',
+            padding: '4px 10px',
+            minWidth: '80px',
             textAlign: 'center',
-            flexShrink: 0
+            flexShrink: 0,
+            textTransform: 'uppercase'
           }}
         >
           {currentTrack.name}

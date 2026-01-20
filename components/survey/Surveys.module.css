@@ -1,4 +1,4 @@
-/* Mobile-first Survey Section Styles using Design Tokens */
+/* Brutalist flat Survey Section Styles */
 
 .surveysSection {
   width: 100%;
@@ -8,55 +8,44 @@
   min-width: 0;
 }
 
-.surveysHeader {
-  text-align: center;
-  margin-bottom: var(--space-6);
-}
-
 .surveysTitle {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
-  margin-bottom: var(--space-2);
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1D33;
+  margin: 0 0 12px 0;
   font-family: var(--font-primary);
-  line-height: var(--line-height-tight, 1.2);
-}
-
-.surveysSubtitle {
-  font-size: var(--font-size-base);
-  color: var(--color-secondary);
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .surveysGrid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 10px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Brutalist card style */
 .surveyCard {
-  background: var(--card-background);
-  border: 1px solid rgba(81, 104, 255, 0.15);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4) var(--space-5);
-  transition: all var(--duration-normal) var(--ease-default);
-  box-shadow: var(--shadow-sm);
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  padding: 12px 16px;
+  transition: all 0.15s ease;
+  box-shadow: 3px 3px 0 #1A1D33;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
+  min-height: 56px;
   position: relative;
 }
 
 .surveyCard:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-primary);
-  transform: translateX(4px);
-  background: var(--color-text-light);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
+  background: #ffffff;
 }
 
 .surveyCardContent {
@@ -65,56 +54,55 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: var(--space-4);
+  gap: 12px;
 }
 
 .surveyCardIconBox {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--gradient-primary);
-  border: 1px solid rgba(81, 104, 255, 0.25);
-  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(81, 104, 255, 0.2);
-  transition: all var(--duration-fast) var(--ease-default);
+  box-shadow: 2px 2px 0 #1A1D33;
+  transition: all 0.15s ease;
 }
 
 .surveyCard:hover .surveyCardIconBox {
-  transform: scale(1.05) rotate(5deg);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.35);
-  border-color: var(--color-primary);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .surveyCardIcon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  transition: all var(--duration-fast) var(--ease-default);
+  transition: all 0.15s ease;
 }
 
 .surveyCard:hover .surveyCardIcon {
-  transform: scale(1.1);
+  transform: none;
 }
 
 .surveyCardTitleGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px;
   flex: 1;
   min-width: 0;
 }
 
 .surveyCardTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1D33;
   font-family: var(--font-primary);
-  line-height: var(--line-height-snug, 1.4);
+  line-height: 1.3;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -122,134 +110,80 @@
 .surveyCardMeta {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .surveyCardQuestions {
-  font-size: var(--font-size-sm);
-  color: var(--color-secondary);
+  font-size: 12px;
+  color: #666666;
   font-family: var(--font-primary);
   white-space: nowrap;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
 }
 
 .surveyCardButton {
-  padding: var(--space-2) var(--space-4);
-  background: var(--gradient-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-light);
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: 2px solid #1A1D33;
+  border-radius: 2px;
+  color: #ffffff;
   font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-default);
+  transition: all 0.15s ease;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(81, 104, 255, 0.25);
+  box-shadow: 2px 2px 0 #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .surveyCardButton:hover {
   background: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-primary);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .surveyCardButton:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 2px rgba(81, 104, 255, 0.3);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #1A1D33;
 }
 
-/* Mobile-first responsive adjustments */
-@media (min-width: 480px) {
-  .surveysSection {
-    padding: var(--space-6) var(--space-4);
-  }
-
-  .surveysTitle {
-    font-size: var(--font-size-2xl);
-  }
-
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
   .surveyCard {
-    padding: var(--space-4) var(--space-5);
-    min-height: 72px;
-  }
-
-  .surveyCardTitle {
-    font-size: var(--font-size-base);
-  }
-}
-
-@media (min-width: 768px) {
-  .surveysSection {
-    padding: var(--space-8) var(--space-6);
-  }
-
-  .surveysTitle {
-    font-size: var(--font-size-3xl);
-  }
-
-  .surveysSubtitle {
-    font-size: var(--font-size-lg);
-  }
-
-  .surveyCard {
-    padding: var(--space-4) var(--space-6);
-    min-height: 80px;
-  }
-
-  .surveyCardTitle {
-    font-size: var(--font-size-base);
-  }
-}
-
-@media (max-width: 768px) {
-  .surveyCardContent {
-    flex-wrap: wrap;
-    gap: var(--space-3);
+    padding: 10px 12px;
+    min-height: 48px;
   }
 
   .surveyCardIconBox {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
   }
 
   .surveyCardIcon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .surveyCardTitleGroup {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .surveyCard {
-    min-height: auto;
-    padding: var(--space-4);
-  }
-}
-
-@media (max-width: 479px) {
-  .surveyCard {
-    padding: var(--space-3);
-  }
-
-  .surveyCardIconBox {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-  }
-
-  .surveyCardIcon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .surveyCardTitle {
-    font-size: var(--font-size-xs);
+    font-size: 12px;
+  }
+
+  .surveyCardQuestions {
+    font-size: 10px;
+  }
+
+  .surveyCardButton {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
+  .surveysTitle {
+    font-size: 12px;
+    margin-bottom: 10px;
   }
 }

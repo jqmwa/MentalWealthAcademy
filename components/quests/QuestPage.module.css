@@ -1,11 +1,10 @@
 .questPageContainer {
   width: 100%;
   min-height: 100vh;
-  padding: 32px 0 80px;
-  max-width: 1920px;
+  padding: 40px 24px 40px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   gap: 24px;
 }
@@ -13,13 +12,11 @@
 .hero {
   position: relative;
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto 48px auto;
-  padding: 48px 56px;
-  background: var(--color-background);
-  border: 2px solid #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 40px 48px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #1A1D33;
   overflow: hidden;
 }
 
@@ -28,16 +25,19 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-primary);
-  font-size: 14px;
-  color: rgba(26, 29, 51, 0.7);
-  margin-bottom: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666666;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .breadcrumbs a {
-  color: var(--color-text-dark);
+  color: #1A1D33;
   text-decoration: none;
-  font-weight: var(--font-weight-semibold);
-  transition: color 0.2s ease;
+  font-weight: 700;
+  transition: color 0.15s ease;
 }
 
 .breadcrumbs a:hover {
@@ -49,15 +49,16 @@
 }
 
 .current {
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
+  color: #1A1D33;
 }
 
 .header {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: 0;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
@@ -70,36 +71,38 @@
 
 .eyebrow {
   margin: 0;
-  font-size: 13px;
-  letter-spacing: 0.6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(26, 29, 51, 0.6);
+  color: #666666;
   font-family: var(--font-primary);
 }
 
 .title {
-  margin: 6px 0 4px;
-  font-size: 32px;
+  margin: 0;
+  font-size: 28px;
   font-family: var(--font-primary);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .subtitle {
-  margin: 12px 0 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: rgba(26, 29, 51, 0.75);
-  max-width: 800px;
-  font-family: var(--font-secondary);
-  letter-spacing: -0.01em;
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666666;
+  max-width: 600px;
+  font-family: var(--font-primary);
 }
 
 .heroActions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 12px;
+  gap: 12px;
+  margin-top: 16px;
   flex-wrap: wrap;
 }
 
@@ -109,41 +112,40 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  border-radius: 10px;
-  border: 1px solid;
-  font-family: var(--font-button);
-  font-size: 15px;
-  font-weight: var(--font-weight-medium);
+  border-radius: 4px;
+  border: 3px solid #1A1D33;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.primaryCta {
-  border-color: rgba(81, 104, 255, 0.35);
+  transition: all 0.15s ease;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .primaryCta {
   background: var(--color-primary);
   color: #ffffff;
-  box-shadow: 0 12px 30px rgba(81, 104, 255, 0.25);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .primaryCta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(81, 104, 255, 0.35);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .secondaryCta {
-  background: var(--color-secondary);
-  color: #ffffff;
-  border-color: var(--color-secondary);
+  background: #ffffff;
+  color: #1A1D33;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .secondaryCta:hover {
-  background: var(--color-secondary-hover);
-  border-color: var(--color-secondary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
+  background: var(--color-tertiary);
+  color: #ffffff;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .accountBannerWrap {
@@ -193,23 +195,20 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 1180px;
-  margin: 0 auto;
   width: 100%;
-  padding: 0 20px;
 }
 
-/* Main Large Card - Crypto Reserve Card */
+/* Main Large Card - Brutalist Style */
 .mainCard {
-  background: rgb(244, 245, 254);
-  border: 2px solid #ffffff;
-  border-radius: 24px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   padding: 0;
   min-height: 280px;
   position: relative;
   overflow: hidden;
   display: flex;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 4px 4px 0 #1A1D33;
 }
 
 .mainCardContent {
@@ -448,11 +447,8 @@
 .questsSection {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 /* Right Section */
@@ -701,22 +697,23 @@
   width: 100%;
 }
 
+/* Quest Card - Brutalist flat style */
 .questCard {
-  background: rgb(244, 245, 254); /* #F4F5FE */
-  border: 2px solid white;
-  border-radius: 16px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   width: 100%;
-  min-height: 120px;
-  padding: 27px 23px;
-  transition: all 0.3s ease;
+  min-height: 100px;
+  padding: 20px 24px;
+  transition: all 0.2s ease;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 4px 4px 0 #1A1D33;
 }
 
 .questCard:hover {
-  background: rgb(244, 245, 254);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  background: #ffffff;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1A1D33;
 }
 
 .questCardContent {
@@ -742,28 +739,43 @@
 .questDetailsSection {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
   min-width: 0;
 }
 
+/* Academy Badge - Brutalist style */
+.academyBadge {
+  display: inline-block;
+  background: #ffffff;
+  color: #1A1D33;
+  font-family: var(--font-primary);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 2px solid #1A1D33;
+  box-shadow: 2px 2px 0 #1A1D33;
+  width: fit-content;
+}
+
 .questCardTitle {
   font-family: var(--font-primary);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-xl); /* ~26px - golden ratio scale */
+  font-weight: 700;
+  font-size: 1.1rem;
   color: #000000;
-  line-height: 1.2;
+  line-height: 1.3;
   margin: 0;
-  display: flex;
-  align-items: center;
 }
 
 .questDescription {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-regular);
-  color: #000000;
-  line-height: 1.6;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.5;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -870,16 +882,15 @@
 }
 
 .arrowIcon {
-  color: rgb(81, 104, 255);
+  color: #1A1D33;
   width: 24px;
   height: 24px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 }
 
-.arrowIcon:hover {
-  transform: translateX(2px);
-  opacity: 0.8;
+.questCard:hover .arrowIcon {
+  transform: translateX(3px);
 }
 
 .noQuests {
@@ -907,8 +918,8 @@
 
 @media (max-width: 1024px) {
   .hero {
-    padding: 40px 32px;
-    margin-bottom: 32px;
+    padding: 32px;
+    box-shadow: 4px 4px 0 #1A1D33;
   }
 
   .heroActions {
@@ -925,13 +936,12 @@
 
 @media (max-width: 768px) {
   .questPageContainer {
-    padding: 20px 16px;
+    padding: 32px 16px 32px;
   }
 
   .hero {
-    padding: 32px 24px;
-    border-radius: 20px;
-    margin-bottom: 24px;
+    padding: 24px;
+    box-shadow: 3px 3px 0 #1A1D33;
   }
 
   .breadcrumbs {
@@ -939,21 +949,21 @@
   }
 
   .header {
-    margin-bottom: 16px;
+    margin-bottom: 0;
   }
 
   .title {
-    font-size: 26px;
+    font-size: 22px;
   }
 
   .subtitle {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .heroActions {
     flex-direction: column;
     width: 100%;
-    gap: 12px;
+    gap: 10px;
   }
 
   .primaryCta,
@@ -982,6 +992,7 @@
 
   .mainCard {
     min-height: 280px;
+    box-shadow: 3px 3px 0 #1A1D33;
   }
 
   .mainCardContent {
@@ -1083,25 +1094,41 @@
     font-size: 14px;
   }
 
+  .questCard {
+    padding: 16px 18px;
+    box-shadow: 3px 3px 0 #1A1D33;
+  }
+
+  .questCard:hover {
+    box-shadow: 4px 4px 0 #1A1D33;
+    transform: translate(-1px, -1px);
+  }
+
   .questCardContent {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
   }
 
   .questDetailsSection {
     min-width: 0;
     width: 100%;
     margin-right: 0;
+    gap: 8px;
+  }
+
+  .academyBadge {
+    font-size: 9px;
+    padding: 3px 8px;
   }
 
   .questCardTitle {
-    font-size: var(--font-size-lg); /* ~18px - golden ratio scale */
+    font-size: 0.95rem;
   }
 
   .questDescription {
     font-size: 12px;
-    line-height: 1.5;
+    line-height: 1.4;
     -webkit-line-clamp: 2;
   }
 
@@ -1237,6 +1264,170 @@
 
   .subtitle {
     font-size: 14px;
+  }
+
+  .questCard {
+    padding: 14px 16px;
+  }
+
+  .questCardTitle {
+    font-size: 0.9rem;
+  }
+
+  .questDescription {
+    font-size: 11px;
+  }
+
+  .arrowIcon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Info Popup Styles */
+.infoPopupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.infoPopup {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+  animation: popupSlideIn 0.3s ease-out;
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.infoPopupClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.infoPopupClose:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.infoPopupClose svg {
+  width: 18px;
+  height: 18px;
+  color: #666;
+}
+
+.infoPopupContent {
+  padding: 32px;
+}
+
+.infoPopupTitle {
+  font-family: var(--font-primary);
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+  margin: 0 0 24px 0;
+}
+
+.infoSection {
+  margin-bottom: 24px;
+}
+
+.infoSection:last-child {
+  margin-bottom: 0;
+}
+
+.infoSectionTitle {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoIcon {
+  font-size: 18px;
+}
+
+.infoText {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: rgba(26, 29, 51, 0.75);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.infoText strong {
+  color: var(--color-text-dark);
+  font-weight: var(--font-weight-semibold);
+}
+
+.infoList {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: rgba(26, 29, 51, 0.75);
+  line-height: 1.8;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.infoList li {
+  margin-bottom: 4px;
+}
+
+.infoList li:last-child {
+  margin-bottom: 0;
+}
+
+.infoList strong {
+  color: var(--color-text-dark);
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (max-width: 480px) {
+  .infoPopup {
+    max-height: 90vh;
+  }
+
+  .infoPopupContent {
+    padding: 24px;
+  }
+
+  .infoPopupTitle {
+    font-size: 20px;
   }
 }
 

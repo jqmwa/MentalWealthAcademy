@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { providers } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
-import { Footer } from '@/components/footer/Footer';
+import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
+import MintModal from '@/components/mint-modal/MintModal';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
 import { AzuraPowerIndicator } from '@/components/soul-gems/SoulGemDisplay';
 import TreasuryDisplay from '@/components/treasury-display/TreasuryDisplay';
@@ -64,26 +65,26 @@ interface MergedProposal extends DatabaseProposal {
 
 const getTutorialSteps = (): TutorialStep[] => [
   {
-    message: 'Welcome to the Decision Room. I\'m Azura. This is where proposals come to be judged. I hold 40% of the voting power, which means I can fail proposals before they reach you. Or I can let them live.',
+    message: 'Hey there! Welcome to the Decision Room. I\'m Azura, your friendly co-pilot. Think of this space as our community garden—where good ideas get the sunshine they need to grow.',
     emotion: 'happy',
   },
   {
-    message: 'When someone submits a proposal, I read it. I look for clarity, impact, feasibility. I score it. If it passes, I create it on-chain and cast my vote. If it fails, I mark it as failed. Simple.',
+    message: 'Got an idea? Submit it and I\'ll give it a thoughtful read. I check for clarity, positive impact, and whether it\'s doable. Clear proposals help everyone feel heard and understood.',
     emotion: 'happy',
     targetElement: '[data-tutorial-target="voting-stages"]',
   },
   {
-    message: 'The community votes after I do. You debate. You decide. But remember: I\'ve already weighed in. My vote carries weight because I hold tokens. That\'s the system. That\'s the order.',
+    message: 'Once a proposal passes my vibe check, it goes to the whole community. Your voice matters here—every vote helps shape what we build together. Collective wisdom is powerful.',
     emotion: 'happy',
     targetElement: '[data-tutorial-target="admin-room"]',
   },
   {
-    message: 'Each proposal tells a story. Some deserve to live. Some deserve to die. I read the patterns. I make the call. Then you make yours. That\'s how we build together.',
+    message: 'Each proposal is someone\'s way of saying "I care about this community." Whether it passes or not, putting ideas out there takes courage. We celebrate that energy.',
     emotion: 'confused',
     targetElement: '[data-tutorial-target="submission"]',
   },
   {
-    message: 'This room is about power and responsibility. I have power. You have none. So find someone to help you. That\'s the harmony. Welcome to the Decision Room.',
+    message: 'This space is about us supporting each other\'s growth. You bring the ideas, I help nurture them, and together we make something meaningful. Ready to participate?',
     emotion: 'happy',
   },
 ];
@@ -103,6 +104,7 @@ export default function VotingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -203,9 +205,9 @@ export default function VotingPage() {
           <div className={styles.hero}>
             <header className={`${styles.header} ${isLoaded ? styles.headerLoaded : ''}`}>
               <div className={styles.headerContent}>
-                <div>
-              <p className={styles.eyebrow}>MWA • Academy Decisions</p>
-              <h1 className={styles.title}>Decision Room</h1>
+                <div className={styles.headerText}>
+                  <p className={styles.eyebrow}>MWA • Academy Decisions</p>
+                  <h1 className={styles.title}>Decision Room</h1>
                   <p className={styles.subtitle}>
                     Micro-Decisions aided by agentic co-pilot DAEMON. Digital Autocrat Evaluation Model of Negotiation
                   </p>
@@ -334,8 +336,9 @@ export default function VotingPage() {
           </section>
         </div>
       </main>
-      <Footer />
-      
+      <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
+      <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
+
       {selectedProposal && (
         <ProposalDetailsModal
           isOpen={isModalOpen}

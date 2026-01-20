@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useAccount } from 'wagmi'
 import { providers } from 'ethers'
+import Image from 'next/image'
 import { getEligibleInviteLists, getMintTransaction, SCATTER_COLLECTION_SLUG, type MintList } from '@/lib/scatter-api'
 import styles from './MintModal.module.css'
 
@@ -151,7 +152,7 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
       setStep('success')
     } catch (err) {
       console.error('Mint error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to mint')
+      setError(err instanceof Error ? err.message : 'Failed to purchase')
       setStep('select')
     } finally {
       setLoading(false)
@@ -198,13 +199,27 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
           {/* Header */}
           <div className={styles.header}>
             <h2 className={styles.title}>
-              Mint Your Angel
+              Buy Your Angel
             </h2>
+          </div>
+
+          {/* NFT Preview */}
+          <div className={styles.nftPreview}>
+            <div className={styles.nftImageContainer}>
+              <Image
+                src="/anbel01.png"
+                alt="Angel NFT Preview"
+                width={180}
+                height={180}
+                className={styles.nftImage}
+                unoptimized
+              />
+            </div>
           </div>
 
           {!isConnected ? (
             <div>
-              <p className={styles.message}>Please connect your wallet to mint</p>
+              <p className={styles.message}>Please connect your wallet to buy</p>
               {error && (
                 <div className={styles.errorMessage}>
                   <p className={styles.errorText}>{error}</p>
@@ -215,7 +230,7 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
             <>
               {loading && mintLists.length === 0 ? (
                 <div className={styles.loadingContainer}>
-                  <p className={styles.loadingText}>Loading mint lists...</p>
+                  <p className={styles.loadingText}>Loading purchase options...</p>
                 </div>
               ) : error ? (
                 <div className={styles.errorMessage}>
@@ -223,12 +238,12 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
                 </div>
               ) : mintLists.length === 0 ? (
                 <div>
-                  <p className={styles.message}>No eligible mint lists found</p>
+                  <p className={styles.message}>No eligible purchase options found</p>
                 </div>
               ) : (
                 <>
                   <div className={styles.formGroup}>
-                    <label className={styles.label}>Select Mint List</label>
+                    <label className={styles.label}>Select Option</label>
                     <select
                       value={selectedList?.id || ''}
                       onChange={(e) => {
@@ -268,7 +283,7 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
                     className={styles.mintButton}
                     type="button"
                   >
-                    {loading ? 'Processing...' : 'Mint Angel'}
+                    {loading ? 'Processing...' : 'Buy Angel'}
                   </button>
                 </>
               )}
@@ -281,8 +296,8 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
           ) : step === 'success' ? (
             <div className={styles.successContainer}>
               <div className={styles.successIcon}>✨</div>
-              <p className={styles.successTitle}>Mint Successful!</p>
-              <p className={styles.successMessage}>Your angel has been minted</p>
+              <p className={styles.successTitle}>Purchase Successful!</p>
+              <p className={styles.successMessage}>Your angel is on its way</p>
               {txHash && (
                 <a
                   href={`https://basescan.org/tx/${txHash}`}

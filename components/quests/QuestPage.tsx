@@ -1,10 +1,95 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import styles from './QuestPage.module.css';
 import QuestDetailSidebar from './QuestDetailSidebar';
 import CurrenciesModal from './CurrenciesModal';
+
+// Info Popup Component
+const InfoPopup: React.FC<{
+  isVisible: boolean;
+  onClose: () => void;
+}> = ({ isVisible, onClose }) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isVisible) {
+        onClose();
+      }
+    };
+
+    if (isVisible) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isVisible, onClose]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className={styles.infoPopupOverlay} onClick={onClose}>
+      <div className={styles.infoPopup} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.infoPopupClose} onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div className={styles.infoPopupContent}>
+          <h2 className={styles.infoPopupTitle}>How Quests Work</h2>
+
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>
+              <span className={styles.infoIcon}>🎯</span>
+              What are Quests?
+            </h3>
+            <p className={styles.infoText}>
+              Quests are tasks you can complete to earn Daemon tokens. They range from simple actions like following social accounts to more complex challenges like creating content or participating in community events.
+            </p>
+          </div>
+
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>
+              <span className={styles.infoIcon}>💎</span>
+              Daemon Currency
+            </h3>
+            <p className={styles.infoText}>
+              Daemon is the native reward currency of Mental Wealth Academy. Earn Daemon by completing quests, then use them to unlock premium content, participate in governance, or access exclusive features.
+            </p>
+          </div>
+
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>
+              <span className={styles.infoIcon}>🔒</span>
+              Bonded vs Reward
+            </h3>
+            <p className={styles.infoText}>
+              <strong>Bonded Daemon:</strong> The total pool value committed to a quest by all participants.
+              <br />
+              <strong>Reward Daemon:</strong> What you earn upon successful completion.
+            </p>
+          </div>
+
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>
+              <span className={styles.infoIcon}>⚡</span>
+              Quest Types
+            </h3>
+            <ul className={styles.infoList}>
+              <li><strong>Automatic:</strong> Completed automatically when conditions are met</li>
+              <li><strong>Proof Required:</strong> Submit evidence of completion for review</li>
+              <li><strong>Oracle Vote:</strong> Community validates your submission</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Daemon Icon Component
 const DaemonIcon: React.FC<{ size?: number }> = ({ size = 18.83 }) => {
@@ -44,11 +129,6 @@ const SearchIcon: React.FC<{ size?: number }> = ({ size = 20 }) => {
 interface QuestCardProps {
   title: string;
   academy: string;
-  date: string;
-  time: string;
-  questName: string;
-  usdcBonded: string;
-  usdcReward: string;
   description?: string;
   onClick?: () => void;
 }
@@ -56,11 +136,6 @@ interface QuestCardProps {
 const QuestCard: React.FC<QuestCardProps> = ({
   title,
   academy,
-  date,
-  time,
-  questName,
-  usdcBonded,
-  usdcReward,
   description,
   onClick,
 }) => {
@@ -68,34 +143,14 @@ const QuestCard: React.FC<QuestCardProps> = ({
     <div className={styles.questCard} onClick={onClick}>
       <div className={styles.questCardContent}>
         <div className={styles.questDetailsSection}>
+          <span className={styles.academyBadge}>{academy}</span>
           <div className={styles.questCardTitle}>{title}</div>
           {description && (
             <div className={styles.questDescription}>{description}</div>
           )}
-          <div className={styles.descriptionWrapper}>
-            <span className={styles.academyName}>{academy}</span>
-            <span className={styles.separator}>|</span>
-            <span className={styles.date}>{date}</span>
-            <span className={styles.separator}>|</span>
-            <span className={styles.time}>{time}</span>
-          </div>
         </div>
-
-        <div className={styles.questInfoGroup}>
-          <div className={styles.questInfo}>
-            <div className={styles.questName}>{questName}</div>
-            <div className={styles.usdcBonded}>
-              <DaemonIcon />
-              <span>{usdcBonded}</span>
-            </div>
-            <div className={styles.usdcReward}>
-              <DaemonIcon />
-              <span>{usdcReward}</span>
-            </div>
-          </div>
-          <div className={styles.arrowIconWrapper}>
-            <ArrowRightCircleIcon />
-          </div>
+        <div className={styles.arrowIconWrapper}>
+          <ArrowRightCircleIcon />
         </div>
       </div>
     </div>
@@ -125,6 +180,7 @@ const QuestPage: React.FC = () => {
   const [selectedQuest, setSelectedQuest] = useState<QuestData | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrenciesModalOpen, setIsCurrenciesModalOpen] = useState(false);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -218,7 +274,7 @@ const QuestPage: React.FC = () => {
               <DaemonIcon size={12} />
               <span>CURRENCIES</span>
             </button>
-            <button className={styles.secondaryCta} type="button">More Info</button>
+            <button className={styles.secondaryCta} type="button" onClick={() => setIsInfoPopupOpen(true)}>More Info</button>
           </div>
         </header>
       </div>
@@ -232,11 +288,6 @@ const QuestPage: React.FC = () => {
                 key={quest.id}
                 title={quest.title}
                 academy={quest.academy}
-                date={quest.date}
-                time={quest.time}
-                questName={quest.questName}
-                usdcBonded={quest.usdcBonded}
-                usdcReward={quest.usdcReward}
                 description={quest.description}
                 onClick={() => {
                   setSelectedQuest(quest);
@@ -266,6 +317,12 @@ const QuestPage: React.FC = () => {
       <CurrenciesModal
         isOpen={isCurrenciesModalOpen}
         onClose={() => setIsCurrenciesModalOpen(false)}
+      />
+
+      {/* Info Popup */}
+      <InfoPopup
+        isVisible={isInfoPopupOpen}
+        onClose={() => setIsInfoPopupOpen(false)}
       />
 
       <div className={styles.leftSection}>

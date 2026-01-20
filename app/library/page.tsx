@@ -1,11 +1,93 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/navbar/Navbar';
 import BookCard from '@/components/book-card/BookCard';
 import PromptCard from '@/components/prompt-card/PromptCard';
-import { Footer } from '@/components/footer/Footer';
+import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
+import MintModal from '@/components/mint-modal/MintModal';
 import styles from './page.module.css';
+
+// Feed Azura Modal Component
+const FeedAzuraModal: React.FC<{
+  isVisible: boolean;
+  onClose: () => void;
+}> = ({ isVisible, onClose }) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isVisible) {
+        onClose();
+      }
+    };
+
+    if (isVisible) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isVisible, onClose]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.modalClose} onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div className={styles.modalContent}>
+          <div className={styles.azuraIcon}>
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="20" fill="url(#azuraGradient)" />
+              <path d="M24 12L28 20H20L24 12Z" fill="white" opacity="0.9" />
+              <circle cx="24" cy="28" r="6" fill="white" opacity="0.9" />
+              <defs>
+                <linearGradient id="azuraGradient" x1="4" y1="4" x2="44" y2="44">
+                  <stop stopColor="#7C3AED" />
+                  <stop offset="1" stopColor="#2563EB" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <h2 className={styles.modalTitle}>Meet Azura</h2>
+          <p className={styles.modalDescription}>
+            Azura is MWA&apos;s AI companion. Feed her prompts and watch her grow smarter. She learns from what you share.
+          </p>
+
+          <div className={styles.azuraFeatures}>
+            <div className={styles.azuraFeature}>
+              <span className={styles.featureIcon}>🍎</span>
+              <div className={styles.featureText}>
+                <strong>Feed</strong>
+                <span>Share prompts to help Azura learn</span>
+              </div>
+            </div>
+            <div className={styles.azuraFeature}>
+              <span className={styles.featureIcon}>✨</span>
+              <div className={styles.featureText}>
+                <strong>Grow</strong>
+                <span>Earn Daemon for quality contributions</span>
+              </div>
+            </div>
+          </div>
+
+          <button className={styles.modalCta} onClick={onClose}>
+            Got it!
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const curatedBooks = [
   {
@@ -195,9 +277,16 @@ Focus on clarity, persuasiveness, and professional presentation that gets result
 export default function Library() {
   const [activeTab, setActiveTab] = useState<'prompts' | 'curated' | 'community'>('prompts');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showAzuraModal, setShowAzuraModal] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
+  }, []);
+
+  const closeAzuraModal = useCallback(() => {
+    setShowAzuraModal(false);
   }, []);
 
   const renderContent = () => {
@@ -250,11 +339,8 @@ export default function Library() {
                 Discover powerful AI prompts, share your favorites, and build a personal collection of prompts that unlock the full potential of AI assistants.
               </p>
               <div className={styles.heroActions}>
-                <button className={styles.primaryCta} type="button">
-                  Browse Prompts
-                </button>
-                <button className={styles.secondaryCta} type="button">
-                  Feed Azura
+                <button className={styles.primaryCta} type="button" onClick={() => setShowAzuraModal(true)}>
+                  Learn More
                 </button>
               </div>
             </header>
@@ -262,57 +348,43 @@ export default function Library() {
         </div>
 
         <section className={styles.papersSection}>
-          <div className={styles.tabs}>
+          <div className={styles.tabs} ref={tabsRef}>
             <button
-              className={`${styles.tabCard} ${
-                activeTab === 'prompts' ? styles.tabCardActive : ''
-              }`}
+              className={`${styles.tabCard} ${activeTab === 'prompts' ? styles.tabCardActive : ''}`}
               onClick={() => setActiveTab('prompts')}
               type="button"
               aria-pressed={activeTab === 'prompts'}
             >
-              <div className={styles.tabIndicator}></div>
-              <div className={styles.tabContent}>
-                <span className={styles.tabTitle}>Prompts</span>
-                <span className={styles.tabSubtitle}>AI prompt library</span>
-              </div>
+              <span className={styles.tabTitle}>Prompts</span>
             </button>
 
             <button
-              className={`${styles.tabCard} ${
-                activeTab === 'curated' ? styles.tabCardActive : ''
-              }`}
+              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
               onClick={() => setActiveTab('curated')}
               type="button"
               aria-pressed={activeTab === 'curated'}
             >
-              <div className={styles.tabIndicator}></div>
-              <div className={styles.tabContent}>
-                <span className={styles.tabTitle}>Curated</span>
-                <span className={styles.tabSubtitle}>Scholarly works & peer-reviewed research</span>
-              </div>
+              <span className={styles.tabTitle}>Books</span>
             </button>
 
             <button
-              className={`${styles.tabCard} ${
-                activeTab === 'community' ? styles.tabCardActive : ''
-              }`}
+              className={`${styles.tabCard} ${activeTab === 'community' ? styles.tabCardActive : ''}`}
               onClick={() => setActiveTab('community')}
               type="button"
               aria-pressed={activeTab === 'community'}
             >
-              <div className={styles.tabIndicator}></div>
-              <div className={styles.tabContent}>
-                <span className={styles.tabTitle}>Community</span>
-                <span className={styles.tabSubtitle}>Peer-shared knowledge</span>
-              </div>
+              <span className={styles.tabTitle}>Shared</span>
             </button>
           </div>
 
           {renderContent()}
         </section>
       </main>
-      <Footer />
+      <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
+      <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
+
+      {/* Feed Azura Modal */}
+      <FeedAzuraModal isVisible={showAzuraModal} onClose={closeAzuraModal} />
     </>
   );
 }

@@ -1,79 +1,86 @@
+/* Quests Component - Brutalist Flat Design */
+
 .questsContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   margin-top: 0;
 }
 
 .questsWrapper {
-  background-color: rgb(244, 245, 254); /* #F4F5FE */
-  border: 2px solid white;
-  border-radius: 16px;
+  background-color: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  gap: 20px;
+  box-shadow: 6px 6px 0 #1A1D33;
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .title {
   font-family: var(--font-primary);
-  font-size: 32px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A1D33;
   margin: 0;
   line-height: 1.2;
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   flex-shrink: 0;
 }
 
 .viewAllButton {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
-  font-size: 14px;
-  color: var(--color-primary);
-  background: rgba(81, 104, 255, 0.1);
-  border: 1.09px solid var(--color-primary);
-  border-radius: 8.74px;
-  padding: 10.93px 12px;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 12px;
+  color: #1A1D33;
+  background: #ffffff;
+  border: 2px solid #1A1D33;
+  border-radius: 2px;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  opacity: 0.8;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 2px 2px 0 #1A1D33;
   flex-shrink: 0;
 }
 
 .viewAllButton:hover {
-  opacity: 1;
-  background: rgba(81, 104, 255, 0.1);
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .questBadge {
-  background: var(--color-text-light);
-  border: 1.34px solid rgba(0, 0, 0, 0.5);
-  border-radius: 5.35px;
-  padding: 13.39px;
+  background: rgba(81, 104, 255, 0.1);
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
   margin-top: 0;
   flex-wrap: wrap;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .questTitle {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
+  font-family: var(--font-primary);
+  font-weight: 700;
   font-size: 14px;
-  color: rgb(46, 30, 113); /* #2E1E71 - from Figma */
+  color: #1A1D33;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -81,10 +88,10 @@
 }
 
 .questDetails {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
+  font-family: var(--font-primary);
+  font-weight: 500;
   font-size: 14px;
-  color: rgb(31, 41, 55);
+  color: #666666;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -96,26 +103,27 @@
 .questsList {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 12px;
   width: 100%;
 }
 
 .questCard {
-  background: rgb(240, 240, 255); /* #F0F0FF - from Figma */
-  border: 1.046px solid rgb(81, 104, 255); /* var(--color-primary) */
-  border-radius: 12.55px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   width: 100%;
-  min-height: 120px;
-  padding: 36.17px 33px;
+  min-height: 80px;
+  padding: 20px 24px;
   margin-bottom: 0;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
   cursor: pointer;
+  box-shadow: 4px 4px 0 #1A1D33;
 }
 
 .questCard:hover {
-  background: rgb(230, 230, 255);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.2);
+  background: rgba(116, 196, 101, 0.08);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1A1D33;
 }
 
 .questCardContent {
@@ -127,38 +135,39 @@
 
 .questImageWrapper {
   flex-shrink: 0;
-  margin-right: 25.1px;
+  margin-right: 20px;
 }
 
 .questImage {
-  width: 43.67px;
-  height: 43.67px;
+  width: 44px;
+  height: 44px;
   object-fit: cover;
-  border-radius: 0;
+  border-radius: 4px;
+  border: 2px solid #1A1D33;
 }
 
 .questImagePlaceholder {
-  width: 43.67px;
-  height: 43.67px;
-  background: rgba(81, 104, 255, 0.2);
+  width: 44px;
+  height: 44px;
+  background: var(--color-primary);
   border-radius: 4px;
+  border: 2px solid #1A1D33;
 }
 
 .questDetailsSection {
   display: flex;
   flex-direction: column;
-  gap: 10.46px;
-  flex: 0 0 auto;
-  min-width: 363px;
-  margin-right: 106.7px;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .questCardTitle {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-bold);
-  font-size: 20px;
-  color: rgb(0, 0, 0);
-  line-height: 1.2;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 16px;
+  color: #1A1D33;
+  line-height: 1.3;
   margin: 0;
   display: flex;
   align-items: center;
@@ -168,33 +177,30 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8.37px;
+  gap: 8px;
   flex-wrap: wrap;
-  height: 19px;
 }
 
 .academyName,
 .date,
 .time,
 .base {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 13px;
+  color: #666666;
   line-height: 1.2;
   white-space: nowrap;
-  height: 19px;
   display: flex;
   align-items: center;
 }
 
 .separator {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 13px;
+  color: #999999;
   line-height: 1.2;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -204,7 +210,6 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 19px;
 }
 
 .usdcIcon {
@@ -218,29 +223,26 @@
   flex-direction: row;
   align-items: center;
   gap: 20px;
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
 }
 
 .questInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 87.87px;
-  flex: 1;
-  min-width: 0;
+  gap: 24px;
+  flex-shrink: 0;
 }
 
 .questName {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-bold);
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 14px;
+  color: #1A1D33;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -250,20 +252,22 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10.46px;
+  gap: 8px;
   flex-shrink: 0;
-  height: 19px;
+  background: rgba(81, 104, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 2px solid #1A1D33;
 }
 
 .usdcBonded span,
 .usdcReward span {
-  font-family: var(--font-button);
-  font-weight: var(--font-weight-medium);
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 13px;
+  color: #1A1D33;
   line-height: 1.2;
   white-space: nowrap;
-  height: 19px;
   display: flex;
   align-items: center;
 }
@@ -273,34 +277,46 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--color-primary);
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 #1A1D33;
+  transition: all 0.15s ease;
+}
+
+.questCard:hover .arrowIconWrapper {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .arrowIcon {
-  color: rgb(81, 104, 255); /* var(--color-primary) */
-  width: 24px;
-  height: 24px;
+  color: #ffffff;
+  width: 18px;
+  height: 18px;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.arrowIcon:hover {
-  transform: translateX(2px);
-  opacity: 0.8;
 }
 
 @media (max-width: 768px) {
+  .questsWrapper {
+    padding: 16px;
+    box-shadow: 4px 4px 0 #1A1D33;
+  }
+
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .viewAllButton {
     width: 100%;
+    text-align: center;
   }
 
   .questBadge {
@@ -309,9 +325,14 @@
     align-items: flex-start;
   }
 
+  .questCard {
+    padding: 16px;
+    box-shadow: 3px 3px 0 #1A1D33;
+  }
+
   .questCardContent {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     align-items: flex-start;
   }
 
@@ -323,7 +344,12 @@
   .questInfo {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
+  }
+
+  .questInfoGroup {
+    width: 100%;
+    justify-content: space-between;
   }
 }

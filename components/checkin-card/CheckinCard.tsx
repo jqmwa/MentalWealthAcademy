@@ -23,23 +23,22 @@ function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
       <div className={classes.modalBackdrop} onClick={onClose} />
       <div className={classes.modal} role="dialog" aria-modal="true" aria-labelledby="gratitude-title">
         <div className={classes.modalCard}>
-          <div className={classes.azuraAvatar}>
-            <Image
-              src="/uploads/HappyEmote.png"
-              alt="Azura"
-              width={56}
-              height={56}
-              className={classes.azuraImage}
-              unoptimized
-            />
-          </div>
-
           <div className={classes.modalHeader}>
+            <div className={classes.azuraAvatar}>
+              <Image
+                src="/uploads/HappyEmote.png"
+                alt="Azura"
+                width={56}
+                height={56}
+                className={classes.azuraImage}
+                unoptimized
+              />
+            </div>
             <div className={classes.modalTitleGroup}>
               <h3 id="gratitude-title" className={classes.modalTitle}>
                 Azura
               </h3>
-              <p className={classes.modalSubtitle}>“What are you grateful for today?”</p>
+              <p className={classes.modalSubtitle}>"What are you grateful for today?"</p>
             </div>
           </div>
 
@@ -58,17 +57,17 @@ function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
               <div className={classes.actions}>
                 <button
                   type="button"
-                  className={`${classes.secondaryButton} ${classes.fullWidthButton}`}
+                  className={classes.secondaryButton}
                   onClick={onClose}
                 >
                   Not now
                 </button>
                 <button
                   type="submit"
-                  className={`${classes.primaryButton} ${classes.fullWidthButton}`}
+                  className={classes.primaryButton}
                   disabled={!gratitudeText.trim()}
                 >
-                  Complete Gratitude
+                  Complete
                 </button>
               </div>
             </div>

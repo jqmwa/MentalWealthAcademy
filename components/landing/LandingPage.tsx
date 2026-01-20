@@ -243,7 +243,7 @@ export const RotatingTextSection: React.FC = () => {
 };
 
 const LandingPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signup');
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
@@ -252,6 +252,7 @@ const LandingPage: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showScene, setShowScene] = useState(false);
   const [isWalletSignup, setIsWalletSignup] = useState(false);
+  const [showAuthForm, setShowAuthForm] = useState(false);
 
   // Listen for profile updates to re-check wallet connection status
   useEffect(() => {
@@ -484,9 +485,9 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Login Card */}
-        <div className={`${styles.loginCard} ${activeTab === 'signup' ? styles.loginCardMobileMinimal : ''}`}>
+        <div className={`${styles.loginCard} ${!showAuthForm ? styles.loginCardMinimal : ''}`}>
           <div className={styles.cardContent}>
-            <div className={`${styles.loginHeader} ${activeTab === 'signup' ? styles.mobileHiddenSignup : ''}`}>
+            <div className={styles.loginHeader}>
               <div className={styles.logoContainer}>
                 <Image
                   src="/icons/spacey2klogo.png"
@@ -497,38 +498,42 @@ const LandingPage: React.FC = () => {
                   priority
                 />
               </div>
-              <h1 className={styles.loginTitle}>
-                {activeTab === 'signin' ? 'Enter' : 'Create Account'}
-              </h1>
+              {showAuthForm && (
+                <h1 className={styles.loginTitle}>
+                  {activeTab === 'signin' ? 'Welcome Back' : 'Create Account'}
+                </h1>
+              )}
             </div>
 
-            {/* Tab Switcher */}
-            <div className={`${styles.tabSwitcher} ${activeTab === 'signup' ? styles.mobileHiddenSignup : ''}`}>
-              <button
-                type="button"
-                className={`${styles.tabButton} ${activeTab === 'signin' ? styles.tabButtonActive : ''}`}
-                onClick={() => {
-                  setActiveTab('signin');
-                  setMessage(null);
-                  setEmail('');
-                  setPassword('');
-                }}
-              >
-                Enter
-              </button>
-              <button
-                type="button"
-                className={`${styles.tabButton} ${activeTab === 'signup' ? styles.tabButtonActive : ''}`}
-                onClick={() => {
-                  setActiveTab('signup');
-                  setMessage(null);
-                  setEmail('');
-                  setPassword('');
-                }}
-              >
-                Sign Up
-              </button>
-            </div>
+            {/* Tab Switcher - only show when auth form is visible */}
+            {showAuthForm && (
+              <div className={styles.tabSwitcher}>
+                <button
+                  type="button"
+                  className={`${styles.tabButton} ${activeTab === 'signin' ? styles.tabButtonActive : ''}`}
+                  onClick={() => {
+                    setActiveTab('signin');
+                    setMessage(null);
+                    setEmail('');
+                    setPassword('');
+                  }}
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.tabButton} ${activeTab === 'signup' ? styles.tabButtonActive : ''}`}
+                  onClick={() => {
+                    setActiveTab('signup');
+                    setMessage(null);
+                    setEmail('');
+                    setPassword('');
+                  }}
+                >
+                  Sign Up
+                </button>
+              </div>
+            )}
             
             {/* Google Sign Up Button - Hidden for now */}
             {false && (
@@ -561,7 +566,9 @@ const LandingPage: React.FC = () => {
                   {message.text}
                 </div>
               )}
-              {activeTab === 'signin' && (
+
+              {/* Show form fields only when showAuthForm is true */}
+              {showAuthForm && activeTab === 'signin' && (
                 <div className={styles.inputForm}>
                   <div className={styles.formGroup}>
                     <label htmlFor="signin-email" className={styles.label}>
@@ -619,14 +626,14 @@ const LandingPage: React.FC = () => {
                       </label>
                     </div>
                     <a href="#" className={styles.forgotLink}>
-                      Forgot username or password?
+                      Forgot password?
                     </a>
                   </div>
                 </div>
               )}
 
-              {activeTab === 'signup' && (
-                <div className={`${styles.inputForm} ${styles.mobileHidden}`}>
+              {showAuthForm && activeTab === 'signup' && (
+                <div className={styles.inputForm}>
                   <div className={styles.formGroup}>
                     <label htmlFor="email" className={styles.label}>
                       Email
@@ -668,42 +675,11 @@ const LandingPage: React.FC = () => {
                       />
                     </div>
                   </div>
-
-                  <div className={styles.checkboxGroup}>
-                    <div className={styles.checkboxWrapper}>
-                      <input
-                        type="checkbox"
-                        id="rememberMe"
-                        className={styles.checkbox}
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                      />
-                      <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-                        Remember this device
-                      </label>
-                    </div>
-                    <a href="#" className={styles.forgotLink}>
-                      Forgot username or password?
-                    </a>
-                  </div>
                 </div>
               )}
 
               {/* Actions */}
               <div className={styles.actions}>
-                {activeTab === 'signin' && (
-                  <button
-                    type="submit"
-                    className={styles.loginButton}
-                    disabled={isLoading}
-                  >
-                    {isLoading 
-                      ? 'Signing in...'
-                      : 'Sign In'
-                    }
-                  </button>
-                )}
-
                 {/* Primary CTA - Enter Academy */}
                 <div className={styles.walletSectionPrimary}>
                   <button
@@ -715,31 +691,62 @@ const LandingPage: React.FC = () => {
                     <span className={styles.enterButtonTextMobile}>Enter</span>
                   </button>
                 </div>
-                
-                {activeTab === 'signup' && (
-                  <>
-                    <div className={`${styles.authDivider} ${styles.mobileHidden}`}>
-                      <span className={styles.authDividerText}>or continue with email</span>
-                    </div>
 
-                    <button
-                      type="submit"
-                      className={`${styles.createAccountButton} ${styles.mobileHidden}`}
-                      disabled={isLoading}
-                    >
-                      {isLoading 
-                        ? 'Creating account...'
-                        : 'Create Account'
-                      }
-                    </button>
-                  </>
+                {/* Show sign-in/sign-up buttons when form is visible */}
+                {showAuthForm && activeTab === 'signin' && (
+                  <button
+                    type="submit"
+                    className={styles.loginButton}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Signing in...' : 'Sign In'}
+                  </button>
                 )}
-                
-                <div className={`${styles.termsText} ${styles.mobileHidden}`}>
-                  By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}
-                  <a href="#" className={styles.link}>terms and services</a>,{' '}
-                  <a href="#" className={styles.link}>privacy policy</a>, and to receive email updates.
-                </div>
+
+                {showAuthForm && activeTab === 'signup' && (
+                  <button
+                    type="submit"
+                    className={styles.createAccountButton}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Creating account...' : 'Create Account'}
+                  </button>
+                )}
+
+                {/* Show text links when form is hidden */}
+                {!showAuthForm && (
+                  <div className={styles.authLinks}>
+                    <button
+                      type="button"
+                      className={styles.authLink}
+                      onClick={() => {
+                        setShowAuthForm(true);
+                        setActiveTab('signin');
+                      }}
+                    >
+                      Have an account? Sign in
+                    </button>
+                    <span className={styles.authLinkDivider}>|</span>
+                    <button
+                      type="button"
+                      className={styles.authLink}
+                      onClick={() => {
+                        setShowAuthForm(true);
+                        setActiveTab('signup');
+                      }}
+                    >
+                      New? Create account
+                    </button>
+                  </div>
+                )}
+
+                {showAuthForm && (
+                  <div className={styles.termsText}>
+                    By joining Mental Wealth Academy, I confirm that I have read and agree to the{' '}
+                    <a href="#" className={styles.link}>terms and services</a>,{' '}
+                    <a href="#" className={styles.link}>privacy policy</a>, and to receive email updates.
+                  </div>
+                )}
               </div>
             </form>
           </div>

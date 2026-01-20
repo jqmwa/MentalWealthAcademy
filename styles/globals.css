@@ -21,10 +21,16 @@
   --color-primary-muted: rgba(81, 104, 255, 0.6);
   --color-secondary: #50599B;
   --color-secondary-hover: #3C4686;
+  --color-tertiary: #74C465;
+  --color-tertiary-hover: #5FA852;
+  --color-tertiary-muted: rgba(116, 196, 101, 0.6);
+  --color-accent: #FF7729;
+  --color-accent-hover: #E5631A;
+  --color-accent-muted: rgba(255, 119, 41, 0.6);
   --color-text-dark: #1A1B24;
   --color-text-light: #FFFFFF;
   --color-text-muted: rgba(26, 27, 36, 0.6);
-  
+
   /* Category Colors */
   --color-mental-health: #9724A6;
   --color-productivity: #FF8C42;
@@ -38,6 +44,8 @@
   --gradient-futuristic-floss: linear-gradient(to bottom, var(--gradient-futuristic-floss-start), var(--gradient-futuristic-floss-end));
   --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, #7586FF 100%);
   --gradient-secondary: linear-gradient(135deg, var(--color-secondary) 0%, #ADB7FF 100%);
+  --gradient-tertiary: linear-gradient(135deg, var(--color-tertiary) 0%, #9AD88F 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, #FF9A5C 100%);
   
   /* ============================================
      Typography
@@ -118,6 +126,8 @@
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
   --shadow-primary: 0 4px 12px rgba(81, 104, 255, 0.3);
   --shadow-secondary: 0 4px 12px rgba(80, 89, 155, 0.3);
+  --shadow-tertiary: 0 4px 12px rgba(116, 196, 101, 0.3);
+  --shadow-accent: 0 4px 12px rgba(255, 119, 41, 0.3);
   
   /* Card Styles */
   --card-background: rgba(255, 255, 255, 0.95);
@@ -301,6 +311,28 @@ button,
   box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
 }
 
+.btn-tertiary {
+  background-color: var(--color-tertiary);
+  color: var(--color-text-light);
+}
+
+.btn-tertiary:hover {
+  background-color: var(--color-tertiary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-tertiary);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+}
+
+.btn-accent:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent);
+}
+
 .btn-outline {
   background-color: transparent;
   color: var(--color-text-dark);
@@ -358,6 +390,14 @@ button,
   background-color: var(--color-secondary);
 }
 
+.bg-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
 .bg-background {
   background-color: var(--color-background);
 }
@@ -368,6 +408,14 @@ button,
 
 .text-secondary {
   color: var(--color-secondary);
+}
+
+.text-tertiary {
+  color: var(--color-tertiary);
+}
+
+.text-accent {
+  color: var(--color-accent);
 }
 
 .text-dark {

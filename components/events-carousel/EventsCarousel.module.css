@@ -18,41 +18,41 @@
 }
 
 .navButton {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--color-primary);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  color: var(--color-primary);
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  border: 2px solid #1A1D33;
+  background: #ffffff;
+  color: #1A1D33;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .navButton:hover:not(:disabled) {
-  background: var(--color-primary);
+  background: #1A1D33;
   color: white;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .navButton:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
 .navButton svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .carouselContainer {
   position: relative;
   width: 100%;
   overflow: hidden;
-  border-radius: 16px;
 }
 
 .carouselTrack {
@@ -77,34 +77,34 @@
   scroll-snap-align: start;
 }
 
-/* Carousel Card - Compact version for carousel */
+/* Carousel Card - Brutalist flat style */
 .carouselCard {
   width: 100%;
-  background-color: rgb(244, 245, 254);
-  border: 2px solid white;
-  border-radius: 16px;
+  background-color: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0 #1A1D33;
+  transition: all 0.2s ease;
   height: 100%;
 }
 
 .carouselCard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 6px 6px 0 #1A1D33;
+  transform: translate(-2px, -2px);
 }
 
 .cardImageBox {
   width: 100%;
-  height: 140px;
+  height: 100px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   justify-content: center;
   align-items: center;
+  border-bottom: 3px solid #1A1D33;
 }
 
 .cardImage {
@@ -113,24 +113,21 @@
   object-fit: cover;
 }
 
-.cardImagePlaceholder {
-  font-size: 48px;
-  opacity: 0.8;
-}
-
 .cardBadge {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--color-primary);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
+  top: 10px;
+  left: 10px;
+  background: #ffffff;
+  color: #1A1D33;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 2px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   font-family: var(--font-primary);
+  border: 2px solid #1A1D33;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .cardContent {
@@ -216,36 +213,41 @@
 .cardButton {
   flex: 1;
   padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
   font-family: var(--font-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
 }
 
 .cardButtonPrimary {
   background: var(--color-primary);
   color: white;
-  border: none;
+  border: 2px solid #1A1D33;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .cardButtonPrimary:hover {
   background: #3d52e6;
-  transform: translateY(-1px);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .cardButtonSecondary {
   background: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  color: #1A1D33;
+  border: 2px solid #1A1D33;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .cardButtonSecondary:hover {
-  background: var(--color-primary);
+  background: #1A1D33;
   color: white;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 /* Dots indicator */
@@ -280,15 +282,15 @@
 /* Mobile responsiveness */
 @media (max-width: 480px) {
   .carouselSlide {
-    width: 260px;
+    width: 240px;
   }
 
   .cardImageBox {
-    height: 140px;
+    height: 80px;
   }
 
   .cardTitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .cardDescription {
@@ -298,17 +300,22 @@
 
   .cardButton {
     padding: 8px 10px;
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .navButton {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
   }
 
   .navButton svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .cardBadge {
+    font-size: 9px;
+    padding: 3px 6px;
   }
 }
 
@@ -318,6 +325,130 @@
   }
 
   .cardImageBox {
-    height: 160px;
+    height: 110px;
   }
+}
+
+/* Registered button state */
+.cardButtonRegistered {
+  background: var(--color-tertiary);
+  color: white;
+  border: 2px solid #1A1D33;
+  box-shadow: 2px 2px 0 #1A1D33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.cardButtonRegistered:disabled {
+  opacity: 1;
+}
+
+.checkIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Toast styles */
+.toastOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  border: 2px solid #10b981;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  width: calc(100% - 32px);
+  pointer-events: auto;
+  animation: toastSlideIn 0.3s ease-out;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toastIcon {
+  width: 32px;
+  height: 32px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toastIcon svg {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
+
+.toastContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.toastTitle {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 700;
+  color: #10b981;
+  margin: 0 0 4px 0;
+}
+
+.toastMessage {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.toastMessage strong {
+  color: #1f2937;
+}
+
+.toastClose {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.toastClose:hover {
+  color: #4b5563;
+}
+
+.toastClose svg {
+  width: 18px;
+  height: 18px;
 }

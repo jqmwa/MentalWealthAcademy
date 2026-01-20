@@ -1,8 +1,51 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import styles from './EventsCarousel.module.css';
+
+// Registration Success Toast Component
+const RegistrationToast: React.FC<{
+  isVisible: boolean;
+  eventTitle: string;
+  onClose: () => void;
+}> = ({ isVisible, eventTitle, onClose }) => {
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onClose]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className={styles.toastOverlay}>
+      <div className={styles.toast}>
+        <div className={styles.toastIcon}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <div className={styles.toastContent}>
+          <h4 className={styles.toastTitle}>Registration Complete!</h4>
+          <p className={styles.toastMessage}>
+            You&apos;re registered for <strong>{eventTitle}</strong>. We&apos;ll send you a reminder before the event.
+          </p>
+        </div>
+        <button className={styles.toastClose} onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 interface EventData {
   id: string;
@@ -12,9 +55,18 @@ interface EventData {
   description: string;
   category: string;
   imageUrl?: string;
-  emoji?: string;
-  gradient?: string;
+  color: string;
 }
+
+// Brutalist pop-color palette from design system
+const POP_COLORS = [
+  '#5168FF', // primary blue
+  '#FF7729', // surge orange
+  '#74C465', // lime green
+  '#50599B', // secondary purple
+  '#1A1D33', // dark
+  '#F472B6', // pink pop
+];
 
 // Mental Wealth Pathway Events - 12 events
 const mentalWealthEvents: EventData[] = [
@@ -25,8 +77,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Discover the foundations of mental wealth and how to build a sustainable practice for lifelong wellbeing.',
     category: 'Foundation',
-    emoji: '💎',
-    gradient: 'linear-gradient(135deg, #0078d4 0%, #00a4e6 50%, #5ba3d0 100%)',
+    color: POP_COLORS[0],
   },
   {
     id: '2',
@@ -35,8 +86,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Learn practical meditation techniques and mindfulness exercises you can incorporate into your daily routine.',
     category: 'Practice',
-    emoji: '🌀',
-    gradient: 'linear-gradient(135deg, #ff6b9d 0%, #c471ed 50%, #ff00ff 100%)',
+    color: POP_COLORS[1],
   },
   {
     id: '3',
@@ -45,8 +95,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Develop your EQ skills to better understand, manage, and express your emotions effectively.',
     category: 'Skills',
-    emoji: '✨',
-    gradient: 'linear-gradient(135deg, #00d4ff 0%, #00ffff 50%, #5ba3d0 100%)',
+    color: POP_COLORS[2],
   },
   {
     id: '4',
@@ -55,8 +104,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Evidence-based techniques to identify, manage, and reduce stress in your personal and professional life.',
     category: 'Wellness',
-    emoji: '🌊',
-    gradient: 'linear-gradient(135deg, #0099cc 0%, #00ccff 50%, #66d9ff 100%)',
+    color: POP_COLORS[3],
   },
   {
     id: '5',
@@ -65,8 +113,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Learn how to bounce back from setbacks and develop mental toughness for life\'s challenges.',
     category: 'Growth',
-    emoji: '🔥',
-    gradient: 'linear-gradient(135deg, #ff00ff 0%, #ff6b9d 50%, #ff1493 100%)',
+    color: POP_COLORS[4],
   },
   {
     id: '6',
@@ -75,8 +122,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Navigate interpersonal dynamics and set healthy boundaries for better mental health.',
     category: 'Relationships',
-    emoji: '💫',
-    gradient: 'linear-gradient(135deg, #c471ed 0%, #f64f59 50%, #ff00ff 100%)',
+    color: POP_COLORS[5],
   },
   {
     id: '7',
@@ -85,8 +131,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Understand the science of sleep and learn techniques to improve your rest and recovery.',
     category: 'Wellness',
-    emoji: '🌙',
-    gradient: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #5ba3d0 100%)',
+    color: POP_COLORS[0],
   },
   {
     id: '8',
@@ -95,8 +140,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Explore the gut-brain connection and learn which foods support optimal mental function.',
     category: 'Nutrition',
-    emoji: '🍑',
-    gradient: 'linear-gradient(135deg, #ff6b9d 0%, #ff8c9e 50%, #ffb3c1 100%)',
+    color: POP_COLORS[1],
   },
   {
     id: '9',
@@ -105,8 +149,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Discover how physical activity impacts mental health and create a sustainable movement practice.',
     category: 'Fitness',
-    emoji: '⚡',
-    gradient: 'linear-gradient(135deg, #00ccff 0%, #00ffff 50%, #5ba3d0 100%)',
+    color: POP_COLORS[2],
   },
   {
     id: '10',
@@ -115,8 +158,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Develop a healthy relationship with technology and learn to manage digital overwhelm.',
     category: 'Balance',
-    emoji: '💿',
-    gradient: 'linear-gradient(135deg, #0078d4 0%, #00a4e6 50%, #00d4ff 100%)',
+    color: POP_COLORS[3],
   },
   {
     id: '11',
@@ -125,8 +167,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Explore what gives your life meaning and align your daily actions with your core values.',
     category: 'Purpose',
-    emoji: '⭐',
-    gradient: 'linear-gradient(135deg, #ff00ff 0%, #c471ed 50%, #5ba3d0 100%)',
+    color: POP_COLORS[4],
   },
   {
     id: '12',
@@ -135,8 +176,7 @@ const mentalWealthEvents: EventData[] = [
     time: '10:00 AM PST',
     description: 'Integrate everything you\'ve learned into a personalized, sustainable mental wealth action plan.',
     category: 'Integration',
-    emoji: '🌈',
-    gradient: 'linear-gradient(135deg, #ff00ff 0%, #00ffff 50%, #5ba3d0 100%)',
+    color: POP_COLORS[5],
   },
 ];
 
@@ -157,6 +197,28 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [registeredEvents, setRegisteredEvents] = useState<Set<string>>(new Set());
+  const [showToast, setShowToast] = useState(false);
+  const [toastEventTitle, setToastEventTitle] = useState('');
+
+  const handleRegister = useCallback((eventId: string, eventTitle: string) => {
+    // If already registered, do nothing
+    if (registeredEvents.has(eventId)) return;
+
+    // Mark as registered
+    setRegisteredEvents(prev => new Set(prev).add(eventId));
+
+    // Show success toast
+    setToastEventTitle(eventTitle);
+    setShowToast(true);
+
+    // Call external handler if provided
+    onRegister?.(eventId);
+  }, [registeredEvents, onRegister]);
+
+  const closeToast = useCallback(() => {
+    setShowToast(false);
+  }, []);
 
   const updateScrollButtons = () => {
     if (trackRef.current) {
@@ -255,9 +317,9 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
               <div className={styles.carouselCard}>
                 <div
                   className={styles.cardImageBox}
-                  style={{ background: event.gradient }}
+                  style={{ background: event.color }}
                 >
-                  {event.imageUrl ? (
+                  {event.imageUrl && (
                     <Image
                       src={event.imageUrl}
                       alt={event.title}
@@ -265,8 +327,6 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
                       className={styles.cardImage}
                       style={{ objectFit: 'cover' }}
                     />
-                  ) : (
-                    <span className={styles.cardImagePlaceholder}>{event.emoji}</span>
                   )}
                   <span className={styles.cardBadge}>{event.category}</span>
                 </div>
@@ -293,10 +353,20 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
                   <p className={styles.cardDescription}>{event.description}</p>
                   <div className={styles.cardActions}>
                     <button
-                      className={`${styles.cardButton} ${styles.cardButtonPrimary}`}
-                      onClick={() => onRegister?.(event.id)}
+                      className={`${styles.cardButton} ${registeredEvents.has(event.id) ? styles.cardButtonRegistered : styles.cardButtonPrimary}`}
+                      onClick={() => handleRegister(event.id, event.title)}
+                      disabled={registeredEvents.has(event.id)}
                     >
-                      Register
+                      {registeredEvents.has(event.id) ? (
+                        <>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.checkIcon}>
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          Registered
+                        </>
+                      ) : (
+                        'Register'
+                      )}
                     </button>
                   </div>
                 </div>
@@ -306,6 +376,12 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({
         </div>
       </div>
 
+      {/* Registration Success Toast */}
+      <RegistrationToast
+        isVisible={showToast}
+        eventTitle={toastEventTitle}
+        onClose={closeToast}
+      />
     </div>
   );
 };

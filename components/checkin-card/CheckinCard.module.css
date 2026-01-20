@@ -1,3 +1,4 @@
+/* Brutalist flat style */
 .card {
   position: relative;
   display: flex;
@@ -5,46 +6,25 @@
   justify-content: space-between;
   width: 100%;
   padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 20px rgba(81, 104, 255, 0.1);
+  transition: all 0.15s ease;
+  box-shadow: 4px 4px 0 #1A1D33;
   font-family: var(--font-primary);
   overflow: hidden;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(81, 104, 255, 0.1), 
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.card:hover::before {
-  left: 100%;
-}
-
 .card:hover {
-  transform: translateY(-4px) scale(1.01);
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(81, 104, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(81, 104, 255, 0.2);
+  transform: translate(-2px, -2px);
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #1A1D33;
 }
 
 .card:active:not(:disabled) {
-  transform: translateY(-1px) scale(0.99);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .card:disabled {
@@ -63,15 +43,16 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, rgba(81, 104, 255, 0.15), rgba(81, 104, 255, 0.08));
-  border: 1.5px solid rgba(81, 104, 255, 0.3);
-  border-radius: 50%;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--color-accent);
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  box-shadow: 2px 2px 0 #1A1D33;
 }
 
 .icon {
-  color: var(--color-primary);
-  transition: all 0.3s ease;
+  color: #ffffff;
+  transition: all 0.15s ease;
 }
 
 .checkmark {
@@ -81,50 +62,49 @@
 }
 
 .text {
-  font-size: 16px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
-  transition: all 0.3s ease;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
 }
 
 .rightIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  opacity: 0.7;
+  color: #1A1D33;
+  transition: all 0.15s ease;
 }
 
 .card:hover .rightIcon {
-  transform: rotate(90deg) scale(1.1);
-  opacity: 1;
+  transform: translateX(4px);
 }
 
 .card:hover .iconCircle {
-  background: linear-gradient(135deg, rgba(81, 104, 255, 0.25), rgba(81, 104, 255, 0.15));
-  border-color: rgba(81, 104, 255, 0.5);
-  transform: rotate(10deg) scale(1.05);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 /* Checked state */
 .checked {
-  background: var(--gradient-secondary);
-  border-color: rgba(80, 89, 155, 0.35);
+  background: var(--color-tertiary);
+  border-color: #1A1D33;
 }
 
 .checked:hover {
   transform: none;
-  box-shadow: inherit;
+  box-shadow: 4px 4px 0 #1A1D33;
 }
 
 .checked .iconCircle {
-  background: var(--gradient-secondary);
-  border-color: var(--color-secondary);
+  background: #ffffff;
+  border-color: #1A1D33;
 }
 
 .checked .icon {
-  color: var(--color-text-light);
+  color: var(--color-tertiary);
 }
 
 .checked .checkmark {
@@ -132,36 +112,29 @@
 }
 
 .checked .text {
-  color: var(--color-text-light);
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
 }
 
 .checked .rightIcon {
   opacity: 0;
-  transform: scale(0) rotate(180deg);
+  transform: scale(0);
 }
 
 /* Animating state */
 .animating .iconCircle {
-  animation: successBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: successBounce 0.4s ease;
 }
 
 .animating .text {
-  animation: textSlide 0.4s ease-out;
+  animation: textSlide 0.3s ease-out;
 }
 
 @keyframes successBounce {
   0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  25% {
-    transform: scale(1.2) rotate(-10deg);
+    transform: scale(1);
   }
   50% {
-    transform: scale(0.95) rotate(5deg);
-  }
-  75% {
-    transform: scale(1.05) rotate(-3deg);
+    transform: scale(1.15);
   }
 }
 
@@ -180,12 +153,11 @@
   }
 }
 
-/* Gratitude modal */
+/* Gratitude modal - Brutalist style */
 .modalBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.6);
   z-index: var(--z-overlay);
 }
 
@@ -201,19 +173,21 @@
 
 .modalHeader {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
+  gap: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .azuraAvatar {
   width: 56px;
   height: 56px;
-  border-radius: var(--radius-full);
+  min-width: 56px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 2px solid var(--color-secondary);
-  background: var(--gradient-secondary);
-  box-shadow: var(--shadow-secondary);
+  border: 3px solid #1A1D33;
+  background: var(--color-primary);
+  box-shadow: 3px 3px 0 #1A1D33;
   flex-shrink: 0;
 }
 
@@ -227,20 +201,27 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
+  min-width: 0;
 }
 
 .modalTitle {
   font-family: var(--font-secondary);
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
 }
 
 .modalSubtitle {
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular);
-  color: var(--color-text-muted);
+  color: #666666;
+  margin: 0;
+  line-height: 1.4;
 }
 
 .modalBody {
@@ -258,33 +239,35 @@
 .labelText {
   font-family: var(--font-secondary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .textarea {
   width: 100%;
   min-height: 120px;
   padding: var(--space-3);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-secondary);
-  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  border: 3px solid #1A1D33;
+  background: #ffffff;
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  color: var(--color-text-dark);
+  color: #1A1D33;
   resize: vertical;
   outline: none;
-  transition: border-color var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);
+  transition: all 0.15s ease;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .textarea::placeholder {
-  color: var(--color-text-muted);
+  color: #999999;
 }
 
 .textarea:focus {
-  border-color: var(--color-secondary-hover);
-  box-shadow: 0 0 0 3px rgba(80, 89, 155, 0.2);
-  background: rgba(255, 255, 255, 0.98);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .modalFooter {
@@ -297,67 +280,65 @@
 .helperText {
   font-family: var(--font-primary);
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: #666666;
 }
 
 .actions {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 12px;
 }
 
 .primaryButton,
 .secondaryButton {
-  width: 100%;
-  padding: var(--space-3);
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: 3px solid #1A1D33;
   font-family: var(--font-button);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-default);
+  transition: all 0.15s ease;
 }
 
 .primaryButton {
-  background: var(--gradient-primary);
-  color: var(--color-text-light);
-  box-shadow: var(--shadow-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .primaryButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-primary);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .primaryButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .secondaryButton {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--color-text-dark);
-  border-color: rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  color: #1A1D33;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .secondaryButton:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: var(--shadow-sm);
+  background: #f5f5f5;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
-/* Card surface used inside modal to keep glassmorphism feel */
-.modal > form,
-.modal > div {
-  background: var(--card-background);
-  border: var(--card-border);
-  border-radius: var(--card-radius);
-  box-shadow: var(--shadow-xl);
-  max-width: 480px;
+/* Card surface used inside modal */
+.modalCard {
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #1A1D33;
+  max-width: 420px;
   width: 100%;
   padding: var(--space-4);
 }
@@ -372,7 +353,6 @@
 @media (min-width: 768px) {
   .card {
     padding: 14px 24px;
-    border-radius: 18px;
   }
 
   .iconCircle {
@@ -381,7 +361,7 @@
   }
 
   .text {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .rightIcon {

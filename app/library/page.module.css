@@ -1,44 +1,44 @@
-/* Library Page - Match Voting Page Style */
+/* Library Page - Brutalist Flat Design */
 
 .page {
   min-height: 100vh;
-  padding: 40px 24px 80px;
+  padding: 40px 24px 40px;
   color: var(--color-text-dark);
   position: relative;
   overflow-x: hidden;
 }
 
 .content {
-  max-width: 1400px;
+  max-width: 1180px;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   position: relative;
   z-index: 1;
 }
 
-/* Hero Section - Match Voting Page */
+/* Hero Section - Brutalist Style */
 .hero {
   position: relative;
   width: 100%;
   max-width: 1180px;
-  margin: 0 auto;
-  padding: 48px 56px;
-  background: var(--color-background);
-  border: 2px solid #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin: 0 auto 16px;
+  padding: 40px 48px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #1A1D33;
   overflow: hidden;
 }
 
 .header {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: 0;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
@@ -51,36 +51,38 @@
 
 .eyebrow {
   margin: 0;
-  font-size: 13px;
-  letter-spacing: 0.6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(26, 29, 51, 0.6);
+  color: #666666;
   font-family: var(--font-primary);
 }
 
 .title {
-  margin: 6px 0 4px;
-  font-size: 32px;
+  margin: 0;
+  font-size: 28px;
   font-family: var(--font-primary);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .subtitle {
-  margin: 12px 0 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: rgba(26, 29, 51, 0.75);
-  max-width: 800px;
-  font-family: var(--font-secondary);
-  letter-spacing: -0.01em;
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666666;
+  max-width: 600px;
+  font-family: var(--font-primary);
 }
 
 .heroActions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 12px;
+  gap: 12px;
+  margin-top: 16px;
   flex-wrap: wrap;
 }
 
@@ -90,166 +92,115 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  border-radius: 10px;
-  border: 1px solid;
-  font-family: var(--font-button);
-  font-size: 15px;
-  font-weight: var(--font-weight-medium);
+  border-radius: 4px;
+  border: 3px solid #1A1D33;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.15s ease;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .primaryCta {
   background: var(--color-primary);
   color: #ffffff;
-  border-color: rgba(81, 104, 255, 0.35);
-  box-shadow: 0 12px 30px rgba(81, 104, 255, 0.25);
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .primaryCta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(81, 104, 255, 0.35);
-  background: var(--color-primary-hover);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .secondaryCta {
-  background: var(--color-secondary);
-  color: #ffffff;
-  border-color: var(--color-secondary);
+  background: #ffffff;
+  color: #1A1D33;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .secondaryCta:hover {
-  background: var(--color-secondary-hover);
-  border-color: var(--color-secondary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
+  background: var(--color-tertiary);
+  color: #ffffff;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 /* Papers Section */
 .papersSection {
   max-width: 1180px;
-  margin: 32px auto 0 auto;
-  padding: 0 24px 100px;
+  margin: 0 auto;
+  padding: 0 0 40px;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 24px;
 }
 
-/* Tabs */
+/* Tabs - Brutalist Style */
 .tabs {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
 }
 
 .tabCard {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px 28px;
-  border: 2px solid rgba(80, 89, 155, 0.2);
+  padding: 12px 20px;
+  border: 3px solid #1A1D33;
   background: #ffffff;
   cursor: pointer;
   text-align: left;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  min-width: 240px;
-}
-
-.tabCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: transparent;
-  transition: background 0.3s ease;
+  transition: all 0.15s ease;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .tabCard:hover {
-  border-color: rgba(80, 89, 155, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(80, 89, 155, 0.15);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #1A1D33;
 }
 
 .tabCardActive {
-  border-color: var(--color-secondary);
-  background: var(--color-secondary);
-  box-shadow: 0 4px 12px rgba(80, 89, 155, 0.3);
-}
-
-.tabCardActive::before {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--color-primary);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 .tabCardActive:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(80, 89, 155, 0.4);
-  background: var(--color-secondary-hover);
-}
-
-.tabIndicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(80, 89, 155, 0.3);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.tabCardActive .tabIndicator {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-  transform: scale(1.2);
-}
-
-.tabContent {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  background: var(--color-primary);
 }
 
 .tabTitle {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-semibold);
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-dark);
-  transition: color 0.3s ease;
+  letter-spacing: 0.08em;
+  color: #1A1D33;
+  transition: color 0.15s ease;
 }
 
 .tabCardActive .tabTitle {
   color: #ffffff;
 }
 
-.tabSubtitle {
-  font-family: var(--font-secondary);
-  font-size: 13px;
-  color: rgba(26, 29, 51, 0.6);
-  transition: color 0.3s ease;
-}
-
-.tabCardActive .tabSubtitle {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* Books Grid - Staggered Animation */
+/* Books Grid */
 .booksGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 32px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 8px;
 }
 
 .bookCardWrapper {
   opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.6s ease forwards;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease forwards;
 }
 
 .booksGridLoaded .bookCardWrapper {
@@ -267,12 +218,8 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hero {
-    padding: 40px 32px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 32px;
+    box-shadow: 4px 4px 0 #1A1D33;
   }
 
   .heroActions {
@@ -287,81 +234,247 @@
   }
 
   .booksGrid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-  }
-
-  .papersSection {
-    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .page {
-    padding: 32px 16px 60px;
+    padding: 32px 16px 32px;
   }
 
   .hero {
-    padding: 32px 24px;
-    border-radius: 20px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 24px;
+    box-shadow: 3px 3px 0 #1A1D33;
   }
 
   .heroActions {
     flex-direction: column;
     width: 100%;
-    gap: 12px;
+    gap: 10px;
   }
 
   .primaryCta,
   .secondaryCta {
     width: 100%;
     justify-content: center;
-    flex: 1;
   }
 
   .title {
-    font-size: 26px;
+    font-size: 22px;
   }
 
   .papersSection {
-    padding: 0 16px 60px;
-    gap: 32px;
+    gap: 20px;
   }
 
   .tabs {
-    flex-direction: column;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .tabCard {
-    width: 100%;
-    min-width: unset;
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    box-shadow: 2px 2px 0 #1A1D33;
+  }
+
+  .tabTitle {
+    font-size: 11px;
   }
 
   .booksGrid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 16px;
   }
 }
 
+/* Modal Styles - Brutalist */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 29, 51, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  position: relative;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  max-width: 420px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 6px 6px 0 #1A1D33;
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #ffffff;
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 10;
+  box-shadow: 2px 2px 0 #1A1D33;
+}
+
+.modalClose:hover {
+  background: var(--color-accent);
+  color: #ffffff;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1A1D33;
+}
+
+.modalClose svg {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.modalContent {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.azuraIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: var(--color-primary);
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #1A1D33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.azuraIcon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.modalTitle {
+  font-family: var(--font-primary);
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1D33;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.modalDescription {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.azuraFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.azuraFeature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(81, 104, 255, 0.08);
+  border: 2px solid #1A1D33;
+  border-radius: 4px;
+}
+
+.featureIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.featureText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featureText strong {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: #1A1D33;
+}
+
+.featureText span {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: #666666;
+}
+
+.modalCta {
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--color-tertiary);
+  color: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 3px 3px 0 #1A1D33;
+}
+
+.modalCta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1A1D33;
+}
+
 @media (max-width: 480px) {
-  .hero {
+  .modal {
+    box-shadow: 4px 4px 0 #1A1D33;
+  }
+
+  .modalContent {
     padding: 24px 20px;
   }
 
-  .subtitle {
-    font-size: 15px;
+  .azuraIcon {
+    width: 56px;
+    height: 56px;
   }
 
-  .papersSection {
-    padding: 0 16px 48px;
+  .modalTitle {
+    font-size: 18px;
   }
 
-  .tabCard {
-    padding: 16px 20px;
+  .modalDescription {
+    font-size: 13px;
   }
 }

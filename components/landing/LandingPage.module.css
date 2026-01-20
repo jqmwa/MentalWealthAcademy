@@ -305,6 +305,51 @@
   position: relative;
 }
 
+/* Minimal state - compact card when auth form is hidden */
+.loginCardMinimal {
+  width: 400px;
+}
+
+.loginCardMinimal .cardContent {
+  gap: 16px;
+  padding: 32px;
+}
+
+.loginCardMinimal .loginForm {
+  gap: 16px;
+}
+
+/* Auth links styling */
+.authLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.authLink {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.authLink:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.authLinkDivider {
+  color: rgba(26, 29, 51, 0.3);
+  font-size: 14px;
+}
+
 .helpTooltipWrapper {
   display: none;
 }

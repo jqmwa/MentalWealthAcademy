@@ -1,55 +1,62 @@
+/* BookCard - Brutalist Flat Design */
+
 .bookCard {
   width: 100%;
-  height: 510.10px;
-  background: #ECECEC;
-  border: 1.17px solid #A4A4A4;
-  border-radius: 14.26px;
-  padding: 27px 23px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  box-shadow: 
-    0 25.36px 39.62px rgba(0, 0, 0, 0.1),
-    0 28.53px 72.91px rgba(0, 0, 0, 0.17),
-    0 114.11px 96.20px rgba(0, 0, 0, 0.05),
-    0 293.21px 117.28px rgba(0, 0, 0, 0.01);
+  gap: 0;
+  box-shadow: 4px 4px 0 #1A1D33;
+  transition: all 0.15s ease;
+  overflow: hidden;
+}
+
+.bookCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1A1D33;
 }
 
 .bookImage {
   width: 100%;
-  height: 273.4px;
+  height: 180px;
   background-size: cover;
   background-position: center;
   border-radius: 0;
+  border-bottom: 3px solid #1A1D33;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 20px;
 }
 
 .title {
   font-family: var(--font-primary);
-  font-size: 28px;
+  font-size: 18px;
   font-weight: 700;
-  color: #000000;
+  color: #1A1D33;
   margin: 0;
+  line-height: 1.3;
 }
 
 .author {
   font-family: var(--font-primary);
-  font-size: 11px;
-  font-weight: 300;
-  color: #000000;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666666;
   margin: 0;
 }
 
 .description {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: 300;
-  color: #000000;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666666;
   line-height: 1.6;
   margin: 0;
   overflow: hidden;
@@ -62,21 +69,51 @@
 .category {
   display: flex;
   align-items: center;
-  gap: 11.09px;
-  height: 13px;
+  gap: 10px;
+  margin-top: 0;
+  padding: 0 20px 20px;
 }
 
 .categoryDot {
-  width: 12.68px;
-  height: 12.68px;
-  background: #3361FB;
-  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  border: 2px solid #1A1D33;
 }
 
 .categoryText {
   font-family: var(--font-primary);
   font-size: 11px;
-  font-weight: 400;
-  color: #000000;
+  font-weight: 700;
+  color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .bookCard {
+    box-shadow: 3px 3px 0 #1A1D33;
+  }
+
+  .bookImage {
+    height: 140px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+  .category {
+    padding: 0 16px 16px;
+  }
+}
