@@ -32,58 +32,28 @@ const InfoPopup: React.FC<{
   return (
     <div className={styles.infoPopupOverlay} onClick={onClose}>
       <div className={styles.infoPopup} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.infoPopupClose} onClick={onClose} aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
+        <div className={styles.infoPopupHeader}>
+          <h2 className={styles.infoPopupTitle}>How Quests Work</h2>
+          <button className={styles.infoPopupClose} onClick={onClose} aria-label="Close">
+            ×
+          </button>
+        </div>
 
         <div className={styles.infoPopupContent}>
-          <h2 className={styles.infoPopupTitle}>How Quests Work</h2>
-
           <div className={styles.infoSection}>
-            <h3 className={styles.infoSectionTitle}>
-              <span className={styles.infoIcon}>🎯</span>
-              What are Quests?
-            </h3>
-            <p className={styles.infoText}>
-              Quests are tasks you can complete to earn Daemon tokens. They range from simple actions like following social accounts to more complex challenges like creating content or participating in community events.
-            </p>
-          </div>
-
-          <div className={styles.infoSection}>
-            <h3 className={styles.infoSectionTitle}>
-              <span className={styles.infoIcon}>💎</span>
-              Daemon Currency
-            </h3>
-            <p className={styles.infoText}>
-              Daemon is the native reward currency of Mental Wealth Academy. Earn Daemon by completing quests, then use them to unlock premium content, participate in governance, or access exclusive features.
-            </p>
-          </div>
-
-          <div className={styles.infoSection}>
-            <h3 className={styles.infoSectionTitle}>
-              <span className={styles.infoIcon}>🔒</span>
-              Bonded vs Reward
-            </h3>
-            <p className={styles.infoText}>
-              <strong>Bonded Daemon:</strong> The total pool value committed to a quest by all participants.
-              <br />
-              <strong>Reward Daemon:</strong> What you earn upon successful completion.
-            </p>
-          </div>
-
-          <div className={styles.infoSection}>
-            <h3 className={styles.infoSectionTitle}>
-              <span className={styles.infoIcon}>⚡</span>
-              Quest Types
-            </h3>
+            <h3 className={styles.infoSectionTitle}>Quest Types</h3>
             <ul className={styles.infoList}>
-              <li><strong>Automatic:</strong> Completed automatically when conditions are met</li>
-              <li><strong>Proof Required:</strong> Submit evidence of completion for review</li>
-              <li><strong>Oracle Vote:</strong> Community validates your submission</li>
+              <li><strong>Automatic</strong> — Completes when conditions are met</li>
+              <li><strong>Proof Required</strong> — Submit evidence for review</li>
+              <li><strong>Oracle Vote</strong> — Community validates your work</li>
             </ul>
+          </div>
+
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>Quests</h3>
+            <p className={styles.infoText}>
+              Complete tasks to earn Daemon tokens. From social follows to content creation and community events.
+            </p>
           </div>
         </div>
       </div>
@@ -192,6 +162,19 @@ const QuestPage: React.FC = () => {
     // Quest data aligned with goals
     const allQuests: QuestData[] = [
       // Active Quests
+      {
+        id: 'daily-gratitude-quest',
+        title: 'Daily Gratitude Practice',
+        academy: 'Wellness Academy',
+        date: new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+        time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        questName: 'Proof Required',
+        usdcBonded: '250',
+        usdcReward: '50',
+        status: 'active',
+        questType: 'proof-required',
+        description: 'Complete a 7-day gratitude journaling streak. Share a screenshot of your journal entries to build mindfulness habits and strengthen your mental resilience.',
+      },
       {
         id: '1',
         title: 'Azura Viral Video Quest',

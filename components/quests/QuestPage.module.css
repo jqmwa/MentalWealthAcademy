@@ -1386,12 +1386,11 @@
   }
 }
 
-/* Info Popup Styles */
+/* Info Popup Styles - Brutalist Flat Design */
 .infoPopupOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(26, 29, 51, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1401,68 +1400,72 @@
 
 .infoPopup {
   position: relative;
-  background: white;
-  border-radius: 20px;
-  max-width: 520px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #1A1D33;
+  max-width: 480px;
   width: 100%;
   max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
-  animation: popupSlideIn 0.3s ease-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes popupSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.infoPopupClose {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(0, 0, 0, 0.05);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+.infoPopupHeader {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
-}
-
-.infoPopupClose:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.infoPopupClose svg {
-  width: 18px;
-  height: 18px;
-  color: #666;
-}
-
-.infoPopupContent {
-  padding: 32px;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--color-primary);
+  border-bottom: 3px solid #1A1D33;
 }
 
 .infoPopupTitle {
   font-family: var(--font-primary);
-  font-size: 24px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
-  margin: 0 0 24px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.infoPopupClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+}
+
+.infoPopupClose:hover {
+  background: #ffffff;
+  color: var(--color-primary);
+}
+
+.infoPopupContent {
+  padding: 24px;
+  overflow-y: auto;
 }
 
 .infoSection {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #1A1D33;
 }
 
 .infoSection:last-child {
@@ -1471,43 +1474,40 @@
 
 .infoSectionTitle {
   font-family: var(--font-primary);
-  font-size: 16px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1D33;
   margin: 0 0 8px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.infoIcon {
-  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .infoText {
-  font-family: var(--font-secondary);
-  font-size: 14px;
-  color: rgba(26, 29, 51, 0.75);
-  line-height: 1.6;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: #666666;
+  line-height: 1.5;
   margin: 0;
 }
 
 .infoText strong {
-  color: var(--color-text-dark);
-  font-weight: var(--font-weight-semibold);
+  color: #1A1D33;
+  font-weight: 700;
 }
 
 .infoList {
-  font-family: var(--font-secondary);
-  font-size: 14px;
-  color: rgba(26, 29, 51, 0.75);
-  line-height: 1.8;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: #666666;
+  line-height: 1.6;
   margin: 0;
-  padding-left: 20px;
+  padding-left: 0;
+  list-style: none;
 }
 
 .infoList li {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  padding-left: 0;
 }
 
 .infoList li:last-child {
@@ -1515,21 +1515,46 @@
 }
 
 .infoList strong {
-  color: var(--color-text-dark);
-  font-weight: var(--font-weight-semibold);
+  color: #1A1D33;
+  font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .infoPopup {
     max-height: 90vh;
+    box-shadow: 4px 4px 0 #1A1D33;
   }
 
-  .infoPopupContent {
-    padding: 24px;
+  .infoPopupHeader {
+    padding: 16px 20px;
   }
 
   .infoPopupTitle {
-    font-size: 20px;
+    font-size: 15px;
+  }
+
+  .infoPopupClose {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
+  .infoPopupContent {
+    padding: 20px;
+  }
+
+  .infoSection {
+    padding: 14px;
+    box-shadow: 2px 2px 0 #1A1D33;
+  }
+
+  .infoSectionTitle {
+    font-size: 13px;
+  }
+
+  .infoText,
+  .infoList {
+    font-size: 12px;
   }
 }
 

@@ -27,6 +27,22 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
 
         <div className={styles.modalContent}>
           <div className={styles.currenciesGrid}>
+            {/* Angel NFT - Membership */}
+            <div className={styles.angelSection}>
+              <div className={styles.angelImageWrapper}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://i.imgur.com/GXA3DBV.gif"
+                  alt="Academic Angel NFT"
+                  className={styles.angelImage}
+                />
+              </div>
+              <div className={styles.currencyInfo}>
+                <h3 className={styles.currencyName}>Academic Angel</h3>
+                <p className={styles.currencyDescription}>Your subscription is made out of art. Limited celestial guardian NFTs grant you access to the full 12-weeks of rewards and prizes.</p>
+              </div>
+            </div>
+
             {/* Shards */}
             <div className={styles.currencyItem}>
               <div className={styles.currencyIcon}>
@@ -39,7 +55,7 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
               </div>
               <div className={styles.currencyInfo}>
                 <h3 className={styles.currencyName}>Shards</h3>
-                <p className={styles.currencyDescription}>Purified rewards earned by staking with an Academic Angel. The more you stake, the more you harvest.</p>
+                <p className={styles.currencyDescription}>Fragments of the underworking Daemon. Shards can be used to unlock prizes at the end of the 12-weeks.</p>
               </div>
             </div>
 
@@ -55,25 +71,7 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
               </div>
               <div className={styles.currencyInfo}>
                 <h3 className={styles.currencyName}>$MWG</h3>
-                <p className={styles.currencyDescription}>Governance token for Mental Wealth Academy. Vote on proposals, shape the future, and participate in the DAO.</p>
-              </div>
-            </div>
-
-            {/* Angel NFT */}
-            <div className={styles.angelSection}>
-              <div className={styles.angelImageWrapper}>
-                <Image
-                  src="/anbel01.png"
-                  alt="Academic Angel NFT"
-                  width={56}
-                  height={56}
-                  className={styles.angelImage}
-                  unoptimized
-                />
-              </div>
-              <div className={styles.currencyInfo}>
-                <h3 className={styles.currencyName}>Academic Angel</h3>
-                <p className={styles.currencyDescription}>Limited celestial guardian NFT. Grants special privileges, enhanced rewards, and shard harvesting abilities.</p>
+                <p className={styles.currencyDescription}>Governance token for Mental Wealth Academy funds. You shape the future of the brand.</p>
               </div>
             </div>
           </div>

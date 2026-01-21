@@ -243,7 +243,7 @@ Focus on clarity, persuasiveness, and professional presentation that gets result
 ];
 
 export default function Library() {
-  const [activeTab, setActiveTab] = useState<'prompts' | 'curated' | 'community'>('prompts');
+  const [activeTab, setActiveTab] = useState<'prompts' | 'curated' | 'community'>('curated');
   const [isLoaded, setIsLoaded] = useState(false);
   const [showAzuraModal, setShowAzuraModal] = useState(false);
   const [showMintModal, setShowMintModal] = useState(false);
@@ -318,12 +318,12 @@ export default function Library() {
         <section className={styles.papersSection}>
           <div className={styles.tabs} ref={tabsRef}>
             <button
-              className={`${styles.tabCard} ${activeTab === 'prompts' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('prompts')}
+              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
+              onClick={() => setActiveTab('curated')}
               type="button"
-              aria-pressed={activeTab === 'prompts'}
+              aria-pressed={activeTab === 'curated'}
             >
-              <span className={styles.tabTitle}>Tasks</span>
+              <span className={styles.tabTitle}>Readings</span>
             </button>
 
             <button
@@ -336,12 +336,12 @@ export default function Library() {
             </button>
 
             <button
-              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('curated')}
+              className={`${styles.tabCard} ${activeTab === 'prompts' ? styles.tabCardActive : ''}`}
+              onClick={() => setActiveTab('prompts')}
               type="button"
-              aria-pressed={activeTab === 'curated'}
+              aria-pressed={activeTab === 'prompts'}
             >
-              <span className={styles.tabTitle}>Readings</span>
+              <span className={styles.tabTitle}>Tasks</span>
             </button>
           </div>
 
