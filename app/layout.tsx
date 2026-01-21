@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import '../styles/globals.css';
+import '@/styles/globals.css';
 import { ConditionalWeb3Provider } from '@/components/web3/ConditionalWeb3Provider';
 import { MiniAppProvider } from '@/components/miniapp/MiniAppProvider';
 

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useAccount } from 'wagmi'
 import { providers } from 'ethers'
-import Image from 'next/image'
 import { getEligibleInviteLists, getMintTransaction, SCATTER_COLLECTION_SLUG, type MintList } from '@/lib/scatter-api'
 import styles from './MintModal.module.css'
 
@@ -206,13 +205,11 @@ export default function MintModal({ isOpen, onClose }: MintModalProps) {
           {/* NFT Preview */}
           <div className={styles.nftPreview}>
             <div className={styles.nftImageContainer}>
-              <Image
-                src="/anbel01.png"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://i.imgur.com/GXA3DBV.gif"
                 alt="Angel NFT Preview"
-                width={180}
-                height={180}
                 className={styles.nftImage}
-                unoptimized
               />
             </div>
           </div>

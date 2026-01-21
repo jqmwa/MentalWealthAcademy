@@ -251,16 +251,16 @@ const Navbar: React.FC = () => {
               <span className={isActive('/home') ? styles.buttonLabelActive : styles.buttonLabel}>Home</span>
             </Link>
 
-            {/* Quests Button */}
-            <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
-              <QuestsIcon size={20} className={styles.questIcon} />
-              <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
-            </Link>
-
             {/* Library Button */}
             <Link href="/library" className={`${styles.navButton} ${isActive('/library') ? styles.navButtonActive : ''}`}>
               <LibraryIcon size={20} className={styles.questIcon} />
               <span className={isActive('/library') ? styles.buttonLabelActive : styles.buttonLabel}>Library</span>
+            </Link>
+
+            {/* Quests Button */}
+            <Link href="/quests" className={`${styles.navButton} ${isActive('/quests') ? styles.navButtonActive : ''}`}>
+              <QuestsIcon size={20} className={styles.questIcon} />
+              <span className={isActive('/quests') ? styles.buttonLabelActive : styles.buttonLabel}>Quests</span>
             </Link>
 
             {/* Voting Button */}
@@ -457,29 +457,29 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Bottom Navigation */}
       <div className={styles.mobileBottomNav}>
-        <Link 
-          href="/home" 
+        <Link
+          href="/home"
           className={`${styles.mobileBottomNavButton} ${isActive('/home') ? styles.mobileBottomNavButtonActive : ''}`}
         >
           <HomeIcon size={24} className={styles.homeIcon} />
           <span className={styles.mobileBottomNavLabel}>Home</span>
         </Link>
-        <Link 
-          href="/quests" 
-          className={`${styles.mobileBottomNavButton} ${isActive('/quests') ? styles.mobileBottomNavButtonActive : ''}`}
-        >
-          <QuestsIcon size={24} className={styles.questIcon} />
-          <span className={styles.mobileBottomNavLabel}>Quests</span>
-        </Link>
-        <Link 
-          href="/library" 
+        <Link
+          href="/library"
           className={`${styles.mobileBottomNavButton} ${isActive('/library') ? styles.mobileBottomNavButtonActive : ''}`}
         >
           <LibraryIcon size={24} className={styles.questIcon} />
           <span className={styles.mobileBottomNavLabel}>Library</span>
         </Link>
-        <Link 
-          href="/voting" 
+        <Link
+          href="/quests"
+          className={`${styles.mobileBottomNavButton} ${isActive('/quests') ? styles.mobileBottomNavButtonActive : ''}`}
+        >
+          <QuestsIcon size={24} className={styles.questIcon} />
+          <span className={styles.mobileBottomNavLabel}>Quests</span>
+        </Link>
+        <Link
+          href="/voting"
           className={`${styles.mobileBottomNavButton} ${isActive('/voting') ? styles.mobileBottomNavButtonActive : ''}`}
         >
           <VotingIcon size={24} className={styles.questIcon} />
