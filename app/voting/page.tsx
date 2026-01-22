@@ -322,7 +322,7 @@ export default function VotingPage() {
                             <path d="M3 17L12 22L21 17" fill="currentColor" fillOpacity="0.6"/>
                             <path d="M3 12L12 17L21 12" fill="currentColor" fillOpacity="0.8"/>
                           </svg>
-                          <span>On-Chain Verified</span>
+                          <span>Recorded Transparently</span>
                         </div>
                         <a 
                           href={`https://basescan.org/tx/${proposal.onChainTxHash}`}

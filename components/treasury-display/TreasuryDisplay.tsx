@@ -108,7 +108,7 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
           </div>
           <div className={styles.titleText}>
             <p className={styles.label}>Available Funding</p>
-            <h3 className={styles.title}>Treasury</h3>
+            <h3 className={styles.title}>Community Fund</h3>
           </div>
         </div>
         <button 
@@ -126,7 +126,7 @@ const TreasuryDisplay: React.FC<TreasuryDisplayProps> = ({
 
       <p className={styles.balance}>
         ${balance}
-        <span className={styles.currency}>USDC</span>
+        <span className={styles.currency}>Dollars</span>
       </p>
       <p className={styles.subtext}>
         Available for approved proposals

@@ -22,8 +22,8 @@ const features = [
   },
   {
     icon: '/icons/f619761a-7a68-4cc2-ab38-bbc05ba27486 1.png',
-    title: 'Community Governance',
-    description: 'Participate in decentralized decision-making to fund research and shape the future of mental health care.',
+    title: 'Community Decision-Making',
+    description: 'Participate in transparent decision-making to fund research and shape the future of mental health care.',
   },
 ];
 
@@ -37,7 +37,7 @@ export const FeaturesSection: React.FC = () => {
             Mental Wealth Academy is <span className={styles.highlight}>more</span> than just education
           </h2>
           <p className={styles.description}>
-            The crux of next gen education is a network not a platform. An ecosystem of cutting-edge AI technology, community governance, 
+            The crux of next gen education is a network not a platform. An ecosystem of cutting-edge AI technology, community decision-making,
             and transparent research funding to transform mental wealth worldwide.
           </p>
         </div>

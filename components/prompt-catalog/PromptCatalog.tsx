@@ -18,7 +18,7 @@ const PromptCatalog: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Available categories
-  const categories = ['All', 'Ai', 'Web3', 'Writing', 'Defi', 'NFT', 'DAO', 'Poetry', 'Art'];
+  const categories = ['All', 'Ai', 'Digital', 'Writing', 'Defi', 'NFT', 'Community', 'Poetry', 'Art'];
 
   // Sample data
   const [prompts] = useState<PromptRow[]>([
@@ -35,7 +35,7 @@ const PromptCatalog: React.FC = () => {
       id: '2',
       uploader: '0x8ba1f109551bD432803012645Hac136c22C1729',
       dataAdded: '2024-01-20',
-      category: 'Web3',
+      category: 'Digital',
       rewardsEarned: 890,
       downvotes: 1,
       timesCopied: 201,
@@ -71,7 +71,7 @@ const PromptCatalog: React.FC = () => {
       id: '6',
       uploader: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       dataAdded: '2024-01-16',
-      category: 'DAO',
+      category: 'Community',
       rewardsEarned: 1875,
       downvotes: 6,
       timesCopied: 512,
@@ -116,7 +116,7 @@ const PromptCatalog: React.FC = () => {
       id: '11',
       uploader: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
       dataAdded: '2024-01-24',
-      category: 'Web3',
+      category: 'Digital',
       rewardsEarned: 2780,
       downvotes: 4,
       timesCopied: 756,
@@ -143,7 +143,7 @@ const PromptCatalog: React.FC = () => {
       id: '14',
       uploader: '0x3845badAde8e6dDD04FcF2E8F3a5F96d2B398851',
       dataAdded: '2024-01-12',
-      category: 'DAO',
+      category: 'Community',
       rewardsEarned: 1340,
       downvotes: 1,
       timesCopied: 298,
@@ -161,13 +161,13 @@ const PromptCatalog: React.FC = () => {
 
   // Map category names for filtering
   const categoryMap: { [key: string]: string[] } = {
-    'All': ['AI', 'Web3', 'Writing', 'DeFi', 'NFT', 'DAO', 'Poetry', 'Art'],
+    'All': ['AI', 'Digital', 'Writing', 'DeFi', 'NFT', 'Community', 'Poetry', 'Art'],
     'Ai': ['AI'],
-    'Web3': ['Web3'],
+    'Digital': ['Digital'],
     'Writing': ['Writing'],
     'Defi': ['DeFi'],
     'NFT': ['NFT'],
-    'DAO': ['DAO'],
+    'Community': ['Community'],
     'Poetry': ['Poetry'],
     'Art': ['Art'],
   };
@@ -231,9 +231,9 @@ const PromptCatalog: React.FC = () => {
                 onClick={() => handleCategoryClick(category)}
               >
                 <span className={styles.badgeText}>
-                  {category === 'All' 
-                    ? 'All' 
-                    : category === 'NFT' || category === 'DAO'
+                  {category === 'All'
+                    ? 'All'
+                    : category === 'NFT' || category === 'Community'
                     ? category
                     : category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
                   }

@@ -98,7 +98,7 @@ const Quests: React.FC = () => {
   const quests = [
     {
       id: 'twitter-follow-quest',
-      title: 'Follow Mental Wealth DAO',
+      title: 'Follow Mental Wealth Community',
       academy: 'Mental Wealth Academy',
       date: new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
       time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),

@@ -61,7 +61,7 @@ export default function YourImpact() {
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>System Health</h2>
             <p className={styles.sectionDescription}>
-              The governance system is operating smoothly with low-intensity, reflective participation.
+              The decision-making system is operating smoothly with low-intensity, reflective participation.
             </p>
           </div>
           

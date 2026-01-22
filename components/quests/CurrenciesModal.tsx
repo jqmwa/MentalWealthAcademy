@@ -71,7 +71,7 @@ const CurrenciesModal: React.FC<CurrenciesModalProps> = ({ isOpen, onClose }) =>
               </div>
               <div className={styles.currencyInfo}>
                 <h3 className={styles.currencyName}>$MWG</h3>
-                <p className={styles.currencyDescription}>Governance token for Mental Wealth Academy funds. You shape the future of the brand.</p>
+                <p className={styles.currencyDescription}>Decision-making token for Mental Wealth Academy funds. You shape the future of the brand.</p>
               </div>
             </div>
           </div>
