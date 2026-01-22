@@ -107,6 +107,9 @@ contract AzuraKillStreak is Ownable, ReentrancyGuard {
         string title,
         uint256 votingDeadline
     );
+
+event AdminAdded(address indexed admin, address indexed addedBy);
+event AdminRemoved(address indexed admin, address indexed removedBy);
     
     event AzuraReview(
         uint256 indexed proposalId,
@@ -114,6 +117,12 @@ contract AzuraKillStreak is Ownable, ReentrancyGuard {
         bool approved,
         uint256 voteWeight
     );
+
+event AzuraAgentUpdated(
+    address indexed oldAgent,
+    address indexed newAgent,
+    address indexed updatedBy
+);
     
     event VoteCast(
         uint256 indexed proposalId,
@@ -137,6 +146,19 @@ contract AzuraKillStreak is Ownable, ReentrancyGuard {
         uint256 indexed proposalId,
         address indexed cancelledBy
     );
+
+event EmergencyWithdraw(
+    address indexed to,
+    uint256 amount,
+    address indexed executedBy
+);
+
+event VotingDeadlineExtended(
+    uint256 indexed proposalId,
+    uint256 oldDeadline,
+    uint256 newDeadline,
+    address indexed extendedBy
+);
     
     // ============================================================================
     // ERRORS
@@ -401,27 +423,39 @@ contract AzuraKillStreak is Ownable, ReentrancyGuard {
      * @param _admin Address to modify
      * @param _status true to add, false to remove
      */
-    function setAdmin(address _admin, bool _status) external onlyOwner {
-        isAdmin[_admin] = _status;
+  function setAdmin(address _admin, bool _status) external onlyOwner {
+    isAdmin[_admin] = _status;
+    
+    if (_status) {
+        emit AdminAdded(_admin, msg.sender);
+    } else {
+        emit AdminRemoved(_admin, msg.sender);
     }
+}
     
     /**
      * @notice Update Azura agent address
      * @param _newAzura New Azura agent address
      */
-    function setAzuraAgent(address _newAzura) external onlyOwner {
-        if (_newAzura == address(0)) revert InvalidProposal();
-        azuraAgent = _newAzura;
-    }
+  function setAzuraAgent(address _newAzura) external onlyOwner {
+    if (_newAzura == address(0)) revert InvalidProposal();
+    
+    address oldAgent = azuraAgent;
+    azuraAgent = _newAzura;
+    
+    emit AzuraAgentUpdated(oldAgent, _newAzura, msg.sender);
+}
     
     /**
      * @notice Emergency withdraw USDC (owner only)
      * @param _amount Amount to withdraw
      */
-    function emergencyWithdraw(uint256 _amount) external onlyOwner {
-        bool success = usdcToken.transfer(owner(), _amount);
-        if (!success) revert TransferFailed();
-    }
+  function emergencyWithdraw(uint256 _amount) external onlyOwner {
+    bool success = usdcToken.transfer(owner(), _amount);
+    if (!success) revert TransferFailed();
+    
+    emit EmergencyWithdraw(owner(), _amount, msg.sender);
+}
     
     // ============================================================================
     // VIEW FUNCTIONS
