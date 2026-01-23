@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { providers } from 'ethers';
 import Navbar from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
+import ProposalSuccessModal from '@/components/voting/ProposalSuccessModal';
 import { createProposalOnChain } from '@/lib/azura-contract';
 import styles from './page.module.css';
 
@@ -101,6 +102,11 @@ export default function CreateProposalPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStep, setSubmissionStep] = useState<'idle' | 'blockchain' | 'database'>('idle');
   const [charCount, setCharCount] = useState(0);
+  const [successModal, setSuccessModal] = useState<{ isOpen: boolean; txHash: string; proposalId: number }>({
+    isOpen: false,
+    txHash: '',
+    proposalId: 0,
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -251,11 +257,12 @@ export default function CreateProposalPage() {
         throw new Error(data.error || `Failed to save proposal to database (HTTP ${response.status})`);
       }
 
-      // Success! Show transaction info
-      const message = `✅ Proposal submitted successfully!\n\nTransaction: ${txHash}\nOn-chain ID: ${onChainProposalId}\n\nView on BaseScan: https://basescan.org/tx/${txHash}\n\nAzura will review your proposal soon.`;
-      alert(message);
-      
-      router.push('/voting');
+      // Success! Show styled modal
+      setSuccessModal({
+        isOpen: true,
+        txHash,
+        proposalId: onChainProposalId,
+      });
     } catch (error: any) {
       console.error('Error submitting proposal:', error);
       
@@ -481,6 +488,13 @@ export default function CreateProposalPage() {
         </div>
       </main>
       <Footer />
+
+      <ProposalSuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ isOpen: false, txHash: '', proposalId: 0 })}
+        txHash={successModal.txHash}
+        proposalId={successModal.proposalId}
+      />
     </>
   );
 }
