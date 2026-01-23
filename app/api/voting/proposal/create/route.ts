@@ -3,8 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { isDbConfigured, sqlQuery } from '@/lib/db';
 import { ensureProposalSchema } from '@/lib/ensureProposalSchema';
 import { getUserFromRequest } from '@/lib/auth';
-import { providers, Contract } from 'ethers';
-import { AZURA_KILLSTREAK_ABI } from '@/lib/azura-contract';
 
 export async function POST(request: Request) {
   if (!isDbConfigured()) {
@@ -115,111 +113,12 @@ export async function POST(request: Request) {
     );
   }
 
-  // Verify the on-chain proposal exists
-  try {
-    const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
-    const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
-    
-    if (!contractAddress) {
-      console.error('Contract address not configured');
-      return NextResponse.json(
-        { error: 'System configuration error: Contract address not set.' },
-        { status: 500 }
-      );
-    }
-
-    const provider = new providers.JsonRpcProvider(rpcUrl);
-    const contract = new Contract(contractAddress, AZURA_KILLSTREAK_ABI, provider);
-    
-    // Parse proposal ID (handle both string and number)
-    const proposalIdNum = parseInt(proposalIdStr, 10);
-    if (isNaN(proposalIdNum) || proposalIdNum <= 0) {
-      return NextResponse.json(
-        { error: `Invalid on-chain proposal ID format: "${proposalIdStr}". Must be a positive integer.` },
-        { status: 400 }
-      );
-    }
-    
-    // Verify the proposal exists on-chain (with retry for RPC sync delay)
-    // Public RPCs can be slow to sync, so we retry multiple times
-    let onChainProposal;
-    let lastError: any;
-    const maxRetries = 5;
-    const retryDelayMs = 3000;
-
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-        onChainProposal = await contract.getProposal(proposalIdNum);
-        if (onChainProposal && onChainProposal.id) {
-          break; // Success, exit retry loop
-        }
-      } catch (contractError: any) {
-        lastError = contractError;
-        console.log(`Attempt ${attempt}/${maxRetries} to fetch proposal ${proposalIdNum} failed:`, contractError.message);
-      }
-
-      if (attempt < maxRetries) {
-        // Wait before retrying (RPC might be slightly behind)
-        console.log(`Waiting ${retryDelayMs}ms before retry...`);
-        await new Promise(resolve => setTimeout(resolve, retryDelayMs));
-      }
-    }
-
-    if (!onChainProposal || !onChainProposal.id) {
-      console.error('Contract call error after retries:', {
-        proposalId: proposalIdNum,
-        error: lastError?.message,
-        code: lastError?.code,
-        txHash: txHashStr,
-      });
-      // Since we have a valid tx hash, proceed anyway but log the warning
-      // The frontend already confirmed the tx, so trust it
-      console.warn(`⚠️ Could not verify proposal ${proposalIdNum} on-chain, but tx hash ${txHashStr} exists. Proceeding with database save.`);
-    }
-    
-    // Only verify if we got the on-chain proposal
-    if (onChainProposal && onChainProposal.id) {
-      // Verify the proposal ID matches
-      if (onChainProposal.id.toString() !== proposalIdStr) {
-        return NextResponse.json(
-          { error: `Invalid on-chain proposal ID. Proposal ID mismatch: expected ${proposalIdStr}, got ${onChainProposal.id.toString()}.` },
-          { status: 400 }
-        );
-      }
-
-      // Verify the proposer matches the connected wallet
-      if (onChainProposal.proposer.toLowerCase() !== walletAddress.trim().toLowerCase()) {
-        return NextResponse.json(
-          {
-            error: `On-chain proposer does not match your wallet address. On-chain proposer: ${onChainProposal.proposer}, Your wallet: ${walletAddress}`
-          },
-          { status: 400 }
-        );
-      }
-
-      console.log('✅ On-chain proposal verified:', {
-        id: proposalIdStr,
-        txHash: txHashStr,
-        proposer: onChainProposal.proposer,
-      });
-    } else {
-      console.log('⚠️ Skipping on-chain verification, trusting tx hash:', txHashStr);
-    }
-  } catch (error: any) {
-    console.error('Error verifying on-chain proposal:', {
-      error: error.message,
-      stack: error.stack,
-      proposalId: proposalIdStr,
-      txHash: txHashStr,
-    });
-    return NextResponse.json(
-      { 
-        error: 'Failed to verify on-chain proposal. ' + (error.message || 'Please ensure the transaction was successful and confirmed on the blockchain.'),
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      },
-      { status: 400 }
-    );
-  }
+  // Log the on-chain data (no verification needed - user already paid gas)
+  console.log('📝 Proposal submission:', {
+    onChainProposalId: proposalIdStr,
+    txHash: txHashStr,
+    wallet: walletAddress,
+  });
 
   // Rate limiting: Check if user has submitted a proposal in the last 7 days
   try {
