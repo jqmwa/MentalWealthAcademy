@@ -32,7 +32,7 @@ function getWagmiConfig() {
       },
 
       // Required API Keys
-      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || process.env.NEXT_PUBLIC_WC_PROJECT_ID || '',
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
 
       // Required App Info
       appName: "Mental Wealth Academy",

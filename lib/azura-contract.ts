@@ -259,10 +259,28 @@ export async function azuraReviewProposal(
   provider: providers.Web3Provider
 ): Promise<string> {
   const contract = await getAzuraKillStreakContractWithSigner(contractAddress, provider);
-  
+
   const tx = await contract.azuraReview(proposalId, level);
   const receipt = await tx.wait();
-  
+
+  return receipt.hash;
+}
+
+/**
+ * Server-side Azura review using a Wallet signer directly
+ * Used by API routes where we have Azura's private key
+ */
+export async function azuraReviewProposalWithWallet(
+  contractAddress: string,
+  proposalId: number,
+  level: number,
+  wallet: providers.JsonRpcSigner | import('ethers').Wallet
+): Promise<string> {
+  const contract = new Contract(contractAddress, AZURA_KILLSTREAK_ABI, wallet);
+
+  const tx = await contract.azuraReview(proposalId, level);
+  const receipt = await tx.wait();
+
   return receipt.hash;
 }
 
