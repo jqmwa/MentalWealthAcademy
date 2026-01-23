@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
+import { useModal } from 'connectkit';
 import styles from './FinalizeButton.module.css';
 
 interface FinalizeButtonProps {
@@ -16,7 +17,7 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
   onFinalized,
 }) => {
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
+  const { setOpen } = useModal();
   const [finalizing, setFinalizing] = useState(false);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,7 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
     try {
       const response = await fetch(`/api/voting/proposal/${proposalId}/finalize`);
       const data = await response.json();
-      
+
       if (data.finalized && data.transaction) {
         setTxHash(data.transaction.hash);
       }
@@ -44,8 +45,7 @@ const FinalizeButton: React.FC<FinalizeButtonProps> = ({
   }, [checkFinalizationStatus]);
 
   const handleConnectWallet = () => {
-    const connector = connectors[0];
-    if (connector) connect({ connector });
+    setOpen(true);
   };
 
   const handleFinalize = async () => {
