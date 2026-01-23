@@ -140,15 +140,32 @@ export async function POST(request: Request) {
       );
     }
     
-    // Verify the proposal exists on-chain
+    // Verify the proposal exists on-chain (with retry for RPC sync delay)
     let onChainProposal;
-    try {
-      onChainProposal = await contract.getProposal(proposalIdNum);
-    } catch (contractError: any) {
-      console.error('Contract call error:', {
+    let lastError: any;
+    const maxRetries = 3;
+    const retryDelayMs = 2000;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        onChainProposal = await contract.getProposal(proposalIdNum);
+        break; // Success, exit retry loop
+      } catch (contractError: any) {
+        lastError = contractError;
+        console.log(`Attempt ${attempt}/${maxRetries} to fetch proposal ${proposalIdNum} failed:`, contractError.message);
+
+        if (attempt < maxRetries) {
+          // Wait before retrying (RPC might be slightly behind)
+          await new Promise(resolve => setTimeout(resolve, retryDelayMs));
+        }
+      }
+    }
+
+    if (!onChainProposal) {
+      console.error('Contract call error after retries:', {
         proposalId: proposalIdNum,
-        error: contractError.message,
-        code: contractError.code,
+        error: lastError?.message,
+        code: lastError?.code,
       });
       return NextResponse.json(
         { error: `Failed to fetch proposal ${proposalIdNum} from blockchain. The proposal may not exist or the transaction may not have been confirmed yet.` },
