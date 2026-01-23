@@ -117,7 +117,7 @@ export async function POST(request: Request) {
 
   // Verify the on-chain proposal exists
   try {
-    const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS;
+    const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
     const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
     
     if (!contractAddress) {

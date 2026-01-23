@@ -219,7 +219,7 @@ ${proposal.proposal_markdown}
       try {
         // Get Azura's private key
         const azuraPrivateKey = process.env.AZURA_PRIVATE_KEY;
-        const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS;
+        const contractAddress = process.env.NEXT_PUBLIC_AZURA_KILLSTREAK_ADDRESS || '0x2cbb90a761ba64014b811be342b8ef01b471992d';
         const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org';
 
         if (!azuraPrivateKey) {
