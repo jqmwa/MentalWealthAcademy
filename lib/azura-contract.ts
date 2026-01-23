@@ -190,11 +190,14 @@ export async function createProposalOnChain(
   );
   
   const receipt = await tx.wait();
-  
-  if (!receipt || !receipt.hash) {
+
+  // ethers v5: receipt has transactionHash, tx has hash
+  const txHash = receipt?.transactionHash || tx.hash;
+
+  if (!receipt || !txHash) {
     throw new Error('Transaction receipt is invalid. Transaction may have failed.');
   }
-  
+
   // Extract proposal ID from event
   const event = receipt.logs.find((log: any) => {
     try {
@@ -204,31 +207,31 @@ export async function createProposalOnChain(
       return false;
     }
   });
-  
+
   if (!event) {
-    throw new Error(`Could not find ProposalCreated event in transaction ${receipt.hash}. The transaction may not have emitted the expected event.`);
+    throw new Error(`Could not find ProposalCreated event in transaction ${txHash}. The transaction may not have emitted the expected event.`);
   }
-  
+
   let parsedEvent;
   try {
     parsedEvent = contract.interface.parseLog(event);
   } catch (parseError: any) {
     throw new Error(`Failed to parse ProposalCreated event: ${parseError.message}`);
   }
-  
+
   if (!parsedEvent || !parsedEvent.args || parsedEvent.args.proposalId === undefined || parsedEvent.args.proposalId === null) {
-    throw new Error('ProposalCreated event does not contain a valid proposalId. Transaction hash: ' + receipt.hash);
+    throw new Error('ProposalCreated event does not contain a valid proposalId. Transaction hash: ' + txHash);
   }
-  
+
   const proposalId = Number(parsedEvent.args.proposalId);
-  
+
   if (isNaN(proposalId) || proposalId <= 0) {
     throw new Error(`Invalid proposal ID extracted from event: ${parsedEvent.args.proposalId}. Proposal ID must be a positive integer.`);
   }
-  
+
   return {
     proposalId,
-    txHash: receipt.hash,
+    txHash,
   };
 }
 
