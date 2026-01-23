@@ -68,12 +68,13 @@ class ElizaAPIClient {
   /**
    * Chat completion using Eliza API
    * Uses Vercel AI SDK format with role and parts
+   * Handles streaming SSE responses from Eliza Cloud
    */
   async chat(request: ElizaChatRequest): Promise<string> {
     try {
       const url = `${this.baseUrl}/api/v1/chat`;
       console.log('Calling Eliza API:', { url, hasApiKey: !!this.apiKey, modelId: request.id || 'gpt-4o' });
-      
+
       const response = await fetch(url, {
         method: 'POST',
         headers: this.getHeaders(),
@@ -98,7 +99,7 @@ class ElizaAPIClient {
           url,
           hasApiKey: !!this.apiKey,
         });
-        
+
         // Provide specific error messages for common issues
         if (response.status === 401) {
           if (!this.apiKey) {
@@ -107,49 +108,53 @@ class ElizaAPIClient {
             throw new Error('Eliza API key is invalid or expired. Please check your ELIZA_API_KEY configuration.');
           }
         }
-        
+
         throw new Error(errorData.error?.message || errorData.message || `Eliza API error: ${response.status} ${response.statusText}`);
       }
 
+      const responseText = await response.text();
+      console.log('Eliza API raw response:', {
+        status: response.status,
+        statusText: response.statusText,
+        responseLength: responseText.length,
+        responsePreview: responseText.substring(0, 300),
+      });
+
+      // Check if response is SSE streaming format (starts with "data:")
+      if (responseText.startsWith('data:')) {
+        const fullText = this.parseSSEResponse(responseText);
+        console.log('Parsed SSE response, length:', fullText.length);
+        if (!fullText) {
+          throw new Error('Eliza API returned empty SSE response');
+        }
+        return fullText;
+      }
+
+      // Try parsing as standard JSON response
       let data: ElizaChatResponse;
       try {
-        const responseText = await response.text();
-        console.log('Eliza API raw response:', { 
-          status: response.status, 
-          statusText: response.statusText,
-          responseLength: responseText.length,
-          responsePreview: responseText.substring(0, 200),
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Failed to parse Eliza API response as JSON:', {
+          error: parseError,
+          responseText: responseText.substring(0, 500),
         });
-        
-        try {
-          data = JSON.parse(responseText);
-        } catch (parseError) {
-          console.error('Failed to parse Eliza API response as JSON:', {
-            error: parseError,
-            responseText: responseText.substring(0, 500),
-          });
-          throw new Error(`Eliza API returned invalid JSON: ${responseText.substring(0, 100)}`);
-        }
-      } catch (jsonError: any) {
-        if (jsonError.message?.includes('invalid JSON')) {
-          throw jsonError;
-        }
-        throw new Error(`Failed to read Eliza API response: ${jsonError.message}`);
+        throw new Error(`Eliza API returned invalid response format: ${responseText.substring(0, 100)}`);
       }
-      
-      console.log('Eliza API parsed response:', { 
-        hasChoices: !!data.choices, 
+
+      console.log('Eliza API parsed response:', {
+        hasChoices: !!data.choices,
         choicesLength: data.choices?.length,
         hasError: !!data.error,
         errorMessage: data.error?.message,
       });
-      
+
       // Check for error in response
       if (data.error) {
         console.error('Eliza API returned error:', data.error);
         throw new Error(data.error.message || 'Eliza API returned an error');
       }
-      
+
       // Handle different response formats
       if (data.choices && data.choices.length > 0) {
         const content = data.choices[0].message.content || '';
@@ -182,7 +187,7 @@ class ElizaAPIClient {
         });
         throw connectionError;
       }
-      
+
       console.error('Eliza API chat error:', {
         message: error.message,
         stack: error.stack,
@@ -192,6 +197,34 @@ class ElizaAPIClient {
       });
       throw error;
     }
+  }
+
+  /**
+   * Parse Server-Sent Events (SSE) streaming response from Eliza Cloud
+   * Extracts text-delta events and concatenates them into full response
+   */
+  private parseSSEResponse(sseText: string): string {
+    const lines = sseText.split('\n');
+    let fullText = '';
+
+    for (const line of lines) {
+      if (line.startsWith('data: ')) {
+        const jsonStr = line.slice(6); // Remove "data: " prefix
+        if (jsonStr === '[DONE]') continue;
+
+        try {
+          const event = JSON.parse(jsonStr);
+          // Extract text from text-delta events
+          if (event.type === 'text-delta' && event.delta) {
+            fullText += event.delta;
+          }
+        } catch {
+          // Skip non-JSON lines
+        }
+      }
+    }
+
+    return fullText;
   }
 
   /**
