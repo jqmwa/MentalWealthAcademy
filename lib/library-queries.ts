@@ -24,7 +24,7 @@ interface Prompt {
 
 interface ChapterProgress {
   id: number;
-  user_id: number;
+  user_id: string;
   chapter_id: number;
   status: 'locked' | 'in_progress' | 'unsealed';
   started_at: string | null;
@@ -33,7 +33,7 @@ interface ChapterProgress {
 
 interface Writing {
   id: number;
-  user_id: number;
+  user_id: string;
   chapter_id: number;
   prompt_id: number;
   content: string;
@@ -105,7 +105,7 @@ export async function getPromptById(promptId: number): Promise<Prompt | null> {
 // ============================================
 
 export async function getUserChapterProgress(
-  userId: number,
+  userId: string,
   chapterId: number
 ): Promise<ChapterProgress | null> {
   const rows = await sqlQuery<ChapterProgress[]>(
@@ -117,7 +117,7 @@ export async function getUserChapterProgress(
   return rows[0] || null;
 }
 
-export async function getAllUserProgress(userId: number): Promise<ChapterProgress[]> {
+export async function getAllUserProgress(userId: string): Promise<ChapterProgress[]> {
   const rows = await sqlQuery<(ChapterProgress & { chapter_number: number; title: string; theme: string })[]>(
     `SELECT ucp.id, ucp.chapter_id, ucp.status, ucp.started_at, ucp.unsealed_at,
             lc.chapter_number, lc.title, lc.theme
@@ -131,7 +131,7 @@ export async function getAllUserProgress(userId: number): Promise<ChapterProgres
 }
 
 export async function createOrUpdateChapterProgress(
-  userId: number,
+  userId: string,
   chapterId: number,
   status: 'locked' | 'in_progress' | 'unsealed'
 ): Promise<ChapterProgress | null> {
@@ -172,7 +172,7 @@ export async function createOrUpdateChapterProgress(
   return getUserChapterProgress(userId, chapterId);
 }
 
-export async function unlockFirstChapter(userId: number): Promise<ChapterProgress | null> {
+export async function unlockFirstChapter(userId: string): Promise<ChapterProgress | null> {
   // Get chapter 1
   const chapter1 = await getChapterByNumber(1);
   if (!chapter1) return null;
@@ -190,7 +190,7 @@ export async function unlockFirstChapter(userId: number): Promise<ChapterProgres
 // ============================================
 
 export async function getUserWritings(
-  userId: number,
+  userId: string,
   chapterId?: number
 ): Promise<(Writing & { day_number: number; prompt_text: string })[]> {
   if (chapterId) {
@@ -223,7 +223,7 @@ export async function getUserWritings(
 }
 
 export async function getWritingByPrompt(
-  userId: number,
+  userId: string,
   promptId: number
 ): Promise<Writing | null> {
   const rows = await sqlQuery<Writing[]>(
@@ -236,7 +236,7 @@ export async function getWritingByPrompt(
 }
 
 export async function getWritingsCountForChapter(
-  userId: number,
+  userId: string,
   chapterId: number
 ): Promise<number> {
   const rows = await sqlQuery<{ count: string }[]>(
@@ -249,7 +249,7 @@ export async function getWritingsCountForChapter(
 }
 
 export async function createWriting(
-  userId: number,
+  userId: string,
   chapterId: number,
   promptId: number,
   content: string,
@@ -283,7 +283,7 @@ interface WritingCountRow {
   count: string;
 }
 
-export async function getChaptersWithProgress(userId: number) {
+export async function getChaptersWithProgress(userId: string) {
   // Get all chapters
   const chapters = await getAllChapters();
 
@@ -333,7 +333,7 @@ export async function getChaptersWithProgress(userId: number) {
 }
 
 export async function getCurrentPromptForChapter(
-  userId: number,
+  userId: string,
   chapterId: number
 ): Promise<Prompt | null> {
   // Get all prompts for this chapter
@@ -355,7 +355,7 @@ export async function getCurrentPromptForChapter(
 }
 
 export async function checkAndUnsealNextChapter(
-  userId: number,
+  userId: string,
   chapterId: number
 ): Promise<{ unsealed: boolean; nextChapter: Chapter | null }> {
   // Count writings for this chapter
@@ -388,7 +388,7 @@ export async function checkAndUnsealNextChapter(
 // SHARD REWARD HELPERS
 // ============================================
 
-export async function awardShardsForWriting(userId: number, amount: number = 10): Promise<void> {
+export async function awardShardsForWriting(userId: string, amount: number = 10): Promise<void> {
   await sqlQuery(
     `UPDATE users
      SET shard_count = COALESCE(shard_count, 0) + $1
@@ -397,7 +397,7 @@ export async function awardShardsForWriting(userId: number, amount: number = 10)
   );
 }
 
-export async function awardShardsForUnseal(userId: number, amount: number = 50): Promise<void> {
+export async function awardShardsForUnseal(userId: string, amount: number = 50): Promise<void> {
   await sqlQuery(
     `UPDATE users
      SET shard_count = COALESCE(shard_count, 0) + $1

@@ -11,7 +11,7 @@ import {
 import { AZURA_DIALOGUES } from '@/lib/library-seed-data';
 
 interface User {
-  id: number;
+  id: string;
   username: string;
   wallet_address: string;
   shard_count: number;

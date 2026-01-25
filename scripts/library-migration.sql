@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS library_prompts (
   UNIQUE(chapter_id, day_number)
 );
 
--- User progress tracking
+-- User progress tracking (user_id matches users.id type - TEXT/VARCHAR)
 CREATE TABLE IF NOT EXISTS user_chapter_progress (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
   chapter_id INTEGER REFERENCES library_chapters(id) ON DELETE CASCADE,
   status VARCHAR(20) DEFAULT 'locked',
   started_at TIMESTAMP,
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS user_chapter_progress (
   UNIQUE(user_id, chapter_id)
 );
 
--- User writing entries
+-- User writing entries (user_id matches users.id type - TEXT/VARCHAR)
 CREATE TABLE IF NOT EXISTS user_writings (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
   chapter_id INTEGER REFERENCES library_chapters(id) ON DELETE CASCADE,
   prompt_id INTEGER REFERENCES library_prompts(id) ON DELETE CASCADE,
   content TEXT NOT NULL,

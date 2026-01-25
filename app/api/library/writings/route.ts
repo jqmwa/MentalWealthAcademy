@@ -14,7 +14,7 @@ import {
 } from '@/lib/library-queries';
 
 interface User {
-  id: number;
+  id: string;
   username: string;
   wallet_address: string;
   shard_count: number;
