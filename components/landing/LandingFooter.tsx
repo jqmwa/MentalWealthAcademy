@@ -1,14 +1,14 @@
-'use client';
-
-import React from 'react';
 import styles from './LandingFooter.module.css';
 
-export const LandingFooter: React.FC = () => {
+export const LandingFooter = () => {
+  // Use a fixed year for server rendering to avoid hydration mismatch
+  const year = new Date().getFullYear();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <p className={styles.footerText}>
-          © {new Date().getFullYear()} Mental Wealth Academy. All rights reserved.
+          © {year} Mental Wealth Academy. All rights reserved.
         </p>
       </div>
     </footer>

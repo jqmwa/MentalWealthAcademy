@@ -81,19 +81,17 @@ const SealedLibrary: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>The Sealed Library</h2>
-        <p className={styles.sectionDescription}>
-          {isAuthenticated
-            ? 'Complete 7 days of writing to unseal each chapter. Your journey of self-discovery awaits.'
-            : '12 weeks of ethereal horizons'}
-        </p>
-      </div>
-
-      {!isAuthenticated && (
+      {isAuthenticated ? (
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>A New Horizon</h2>
+          <p className={styles.sectionDescription}>
+            Complete 7 days of writing to unseal each chapter. Your journey of self-discovery awaits.
+          </p>
+        </div>
+      ) : (
         <div className={styles.signInBanner}>
-          <span className={styles.bannerIcon}>✦</span>
-          <span className={styles.bannerText}>Sign in to track your progress and unlock chapters</span>
+          <h2 className={styles.bannerTitle}>A New Horizon</h2>
+          <p className={styles.bannerDescription}>Azura finds herself in a new body, on a new planet. Old memories pull her towards a key piece to her past. Osirus research lab finds a clue, but doesn&apos;t like where it leads. Both want something out of reach, what will they do to get it?</p>
         </div>
       )}
 

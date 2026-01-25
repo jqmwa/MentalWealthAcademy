@@ -475,7 +475,8 @@
   justify-content: center;
 }
 
-.walletSectionPrimary button {
+.walletSectionPrimary button,
+.enterButton {
   width: 100%;
   background-color: var(--color-primary);
   border: none;
@@ -494,7 +495,8 @@
   box-shadow: 0 4px 16px rgba(81, 104, 255, 0.3);
 }
 
-.walletSectionPrimary button:hover {
+.walletSectionPrimary button:hover,
+.enterButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(81, 104, 255, 0.4);
   background-color: var(--color-primary-hover);
