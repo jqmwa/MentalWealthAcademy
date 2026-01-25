@@ -4,6 +4,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 24px;
   background: #ffffff;
   border: 3px solid #1A1D33;
@@ -48,6 +49,11 @@
   box-shadow: 6px 6px 0 var(--color-primary);
 }
 
+.cardInProgress:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-primary);
+}
+
 /* Unsealed state */
 .cardUnsealed {
   border-color: var(--color-tertiary);
@@ -57,6 +63,11 @@
 
 .cardUnsealed:hover {
   box-shadow: 6px 6px 0 var(--color-tertiary);
+}
+
+.cardUnsealed:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-tertiary);
 }
 
 /* Preview state (for visitors) */
@@ -69,6 +80,11 @@
 .cardPreview:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0 var(--color-primary);
+}
+
+.cardPreview:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-primary);
 }
 
 /* Seal Overlay */
@@ -242,8 +258,7 @@
 
 /* Preview Text */
 .previewText {
-  margin-top: auto;
-  padding-top: 16px;
+  margin-top: 8px;
   font-family: var(--font-primary);
   font-size: 12px;
   color: var(--color-primary);

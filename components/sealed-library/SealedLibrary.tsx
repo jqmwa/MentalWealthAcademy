@@ -42,14 +42,10 @@ const SealedLibrary: React.FC = () => {
   };
 
   const handleChapterClick = (chapter: ChapterData) => {
-    if (!isAuthenticated) {
-      // Redirect to login or show sign-in prompt
-      window.location.href = '/';
+    if (!isAuthenticated || chapter.status === 'locked' || chapter.status === 'preview') {
       return;
     }
-    if (chapter.status !== 'locked') {
-      setSelectedChapter(chapter);
-    }
+    setSelectedChapter(chapter);
   };
 
   const handleCloseDetail = () => {
@@ -90,7 +86,7 @@ const SealedLibrary: React.FC = () => {
         <p className={styles.sectionDescription}>
           {isAuthenticated
             ? 'Complete 7 days of writing to unseal each chapter. Your journey of self-discovery awaits.'
-            : 'A 12-week journey of self-discovery through daily writing. Sign in to begin your transformation.'}
+            : '12 weeks of ethereal horizons'}
         </p>
       </div>
 
