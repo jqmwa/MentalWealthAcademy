@@ -186,23 +186,9 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
           credentials: 'include',
         });
         
-        let hasCompleteProfile = hasUsername;
-        if (profileResponse.ok) {
-          const profileData = await profileResponse.json().catch(() => ({ user: null }));
-          const hasGender = profileData.user?.gender && profileData.user.gender !== null && profileData.user.gender !== '';
-          const hasBirthday = profileData.user?.birthday && profileData.user.birthday !== null && profileData.user.birthday !== '';
-          hasCompleteProfile = hasUsername && hasGender && hasBirthday;
-          
-          console.log('Profile completeness check:', {
-            hasUsername,
-            hasGender,
-            hasBirthday,
-            hasCompleteProfile,
-            profileData: profileData.user
-          });
-        } else {
-          console.warn('Failed to fetch profile:', profileResponse.status, profileResponse.statusText);
-        }
+        // Only username is required for complete profile - birthday/gender are optional
+        const hasCompleteProfile = hasUsername;
+        console.log('Profile completeness check:', { hasUsername, hasCompleteProfile });
         
         // User exists - redirect to home page
         window.location.replace('/home');

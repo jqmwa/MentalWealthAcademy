@@ -151,12 +151,11 @@ export default function Home() {
               
               // Check if profile is incomplete
               // Username is incomplete if it starts with "user_" (temporary username)
-              const hasUsername = userProfile.username && 
+              const hasUsername = userProfile.username &&
                 !userProfile.username.startsWith('user_');
-              const hasBirthday = userProfile.birthday && userProfile.birthday !== null && userProfile.birthday !== '';
-              const hasGender = userProfile.gender && userProfile.gender !== null && userProfile.gender !== '';
-              
-              const needsOnboarding = !hasUsername || !hasBirthday || !hasGender;
+
+              // Only require username for onboarding - birthday/gender are optional profile fields
+              const needsOnboarding = !hasUsername;
               
               // Skip onboarding for BaseKit users with complete profiles
               // BaseKit users are auto-signed in, so if they have a complete profile, skip onboarding
@@ -232,13 +231,12 @@ export default function Home() {
               const profileData = await profileResponse.json();
               const userProfile = profileData.user;
               
-              const hasUsername = userProfile.username && 
+              const hasUsername = userProfile.username &&
                 !userProfile.username.startsWith('user_');
-              const hasBirthday = userProfile.birthday && userProfile.birthday !== null && userProfile.birthday !== '';
-              const hasGender = userProfile.gender && userProfile.gender !== null && userProfile.gender !== '';
-              
-              const needsOnboarding = !hasUsername || !hasBirthday || !hasGender;
-              
+
+              // Only require username for onboarding - birthday/gender are optional
+              const needsOnboarding = !hasUsername;
+
               if (!needsOnboarding) {
                 // Onboarding complete - close onboarding modal and show avatar selection if needed
                 setShowOnboarding(false);
