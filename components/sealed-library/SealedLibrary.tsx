@@ -11,6 +11,7 @@ const SealedLibrary: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<ChapterData | null>(null);
   const [gridLoaded, setGridLoaded] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     fetchChapters();
@@ -29,6 +30,7 @@ const SealedLibrary: React.FC = () => {
 
       const data = await response.json();
       setChapters(data.chapters || []);
+      setIsAuthenticated(data.authenticated || false);
 
       // Trigger grid animation after data loads
       setTimeout(() => setGridLoaded(true), 100);
@@ -40,6 +42,11 @@ const SealedLibrary: React.FC = () => {
   };
 
   const handleChapterClick = (chapter: ChapterData) => {
+    if (!isAuthenticated) {
+      // Redirect to login or show sign-in prompt
+      window.location.href = '/';
+      return;
+    }
     if (chapter.status !== 'locked') {
       setSelectedChapter(chapter);
     }
@@ -81,9 +88,23 @@ const SealedLibrary: React.FC = () => {
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>The Sealed Library</h2>
         <p className={styles.sectionDescription}>
-          Complete 7 days of writing to unseal each chapter. Your journey of self-discovery awaits.
+          {isAuthenticated
+            ? 'Complete 7 days of writing to unseal each chapter. Your journey of self-discovery awaits.'
+            : 'A 12-week journey of self-discovery through daily writing. Sign in to begin your transformation.'}
         </p>
       </div>
+
+      {!isAuthenticated && (
+        <div className={styles.signInBanner}>
+          <div className={styles.bannerContent}>
+            <span className={styles.bannerIcon}>✦</span>
+            <span className={styles.bannerText}>Sign in to track your progress and unlock chapters</span>
+          </div>
+          <a href="/" className={styles.bannerButton}>
+            Get Started
+          </a>
+        </div>
+      )}
 
       <div className={`${styles.chaptersGrid} ${gridLoaded ? styles.gridLoaded : ''}`}>
         {chapters.map((chapter, index) => (
@@ -101,7 +122,7 @@ const SealedLibrary: React.FC = () => {
       </div>
 
       {/* Chapter Detail Modal */}
-      {selectedChapter && (
+      {selectedChapter && isAuthenticated && (
         <ChapterDetail
           chapterId={selectedChapter.id}
           onClose={handleCloseDetail}

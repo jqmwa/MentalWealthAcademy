@@ -36,25 +36,49 @@ export async function GET() {
 
     const user = await getUserFromSession();
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // If user is logged in, get their progress
+    if (user) {
+      // Ensure chapter 1 is unlocked for the user
+      await unlockFirstChapter(user.id);
+
+      // Get all chapters with user's progress
+      const chapters = await getChaptersWithProgress(user.id);
+
+      // Add Azura dialogue to each chapter
+      const chaptersWithDialogue = chapters.map((chapter) => ({
+        ...chapter,
+        azura: AZURA_DIALOGUES[chapter.chapter_number] || null,
+      }));
+
+      return NextResponse.json({
+        ok: true,
+        authenticated: true,
+        chapters: chaptersWithDialogue,
+      });
     }
 
-    // Ensure chapter 1 is unlocked for the user
-    await unlockFirstChapter(user.id);
+    // For visitors (not logged in), return chapters without progress
+    const chaptersRows = await sqlQuery<{ id: number; chapter_number: number; title: string; description: string; theme: string; image_url: string }[]>(
+      `SELECT id, chapter_number, title, description, theme, image_url
+       FROM library_chapters
+       ORDER BY chapter_number ASC`
+    );
 
-    // Get all chapters with user's progress
-    const chapters = await getChaptersWithProgress(user.id);
-
-    // Add Azura dialogue to each chapter
-    const chaptersWithDialogue = chapters.map((chapter) => ({
+    // Return chapters with locked status for visitors
+    const chaptersForVisitors = chaptersRows.map((chapter) => ({
       ...chapter,
+      status: chapter.chapter_number === 1 ? 'preview' : 'locked',
+      writingsCompleted: 0,
+      totalWritings: 7,
+      startedAt: null,
+      unsealedAt: null,
       azura: AZURA_DIALOGUES[chapter.chapter_number] || null,
     }));
 
     return NextResponse.json({
       ok: true,
-      chapters: chaptersWithDialogue,
+      authenticated: false,
+      chapters: chaptersForVisitors,
     });
   } catch (error) {
     console.error('Get chapters error:', error);

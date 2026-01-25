@@ -11,7 +11,7 @@ export interface ChapterData {
   description: string;
   theme: string;
   image_url: string;
-  status: 'locked' | 'in_progress' | 'unsealed';
+  status: 'locked' | 'in_progress' | 'unsealed' | 'preview';
   writingsCompleted: number;
   totalWritings: number;
   azura?: {
@@ -30,6 +30,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, onClick }) => {
   const isLocked = chapter.status === 'locked';
   const isInProgress = chapter.status === 'in_progress';
   const isUnsealed = chapter.status === 'unsealed';
+  const isPreview = chapter.status === 'preview';
 
   const progressDots = Array.from({ length: 7 }, (_, i) => (
     <div
@@ -40,14 +41,13 @@ const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, onClick }) => {
 
   return (
     <button
-      className={`${styles.card} ${isLocked ? styles.cardLocked : ''} ${isInProgress ? styles.cardInProgress : ''} ${isUnsealed ? styles.cardUnsealed : ''}`}
+      className={`${styles.card} ${isLocked ? styles.cardLocked : ''} ${isInProgress ? styles.cardInProgress : ''} ${isUnsealed ? styles.cardUnsealed : ''} ${isPreview ? styles.cardPreview : ''}`}
       onClick={onClick}
-      disabled={isLocked}
       type="button"
     >
-      {/* Seal overlay for locked/in-progress states */}
+      {/* Seal overlay for locked/in-progress/preview states */}
       {!isUnsealed && (
-        <div className={`${styles.sealOverlay} ${isInProgress ? styles.sealCracking : ''}`}>
+        <div className={`${styles.sealOverlay} ${isInProgress ? styles.sealCracking : ''} ${isPreview ? styles.sealPreview : ''}`}>
           <Image
             src="/uploads/AzuraSeal.png"
             alt="Azura's Seal"
@@ -91,6 +91,10 @@ const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, onClick }) => {
 
         {isLocked && (
           <div className={styles.lockedText}>Complete previous chapter to unlock</div>
+        )}
+
+        {isPreview && (
+          <div className={styles.previewText}>Sign in to begin your journey</div>
         )}
       </div>
     </button>

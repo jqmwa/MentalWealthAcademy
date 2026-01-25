@@ -59,6 +59,18 @@
   box-shadow: 6px 6px 0 var(--color-tertiary);
 }
 
+/* Preview state (for visitors) */
+.cardPreview {
+  border-color: var(--color-primary);
+  box-shadow: 4px 4px 0 var(--color-primary);
+  cursor: pointer;
+}
+
+.cardPreview:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-primary);
+}
+
 /* Seal Overlay */
 .sealOverlay {
   position: absolute;
@@ -81,6 +93,11 @@
   opacity: 0.5;
   filter: grayscale(50%);
   animation: crackPulse 2s ease-in-out infinite;
+}
+
+.sealPreview .sealImage {
+  opacity: 0.4;
+  filter: grayscale(30%) sepia(20%);
 }
 
 @keyframes crackPulse {
@@ -221,6 +238,16 @@
   font-size: 12px;
   color: #999999;
   font-style: italic;
+}
+
+/* Preview Text */
+.previewText {
+  margin-top: auto;
+  padding-top: 16px;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 /* Responsive */
