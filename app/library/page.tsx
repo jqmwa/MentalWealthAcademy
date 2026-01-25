@@ -303,23 +303,6 @@ export default function Library() {
     <>
       <Navbar />
       <main className={styles.page}>
-        <div className={styles.content}>
-          <div className={`${styles.hero} ${isLoaded ? styles.heroLoaded : ''}`}>
-            <header className={styles.header}>
-              <p className={styles.eyebrow}>MWA • Library</p>
-              <h1 className={styles.title}>Library</h1>
-              <p className={styles.subtitle}>
-                Your weekly readings, notes, and materials needed for the 12-week course. Everything you need to succeed in one place.
-              </p>
-              <div className={styles.heroActions}>
-                <button className={styles.primaryCta} type="button" onClick={() => setShowAzuraModal(true)}>
-                  Learn More
-                </button>
-              </div>
-            </header>
-          </div>
-        </div>
-
         <section className={styles.papersSection}>
           <div className={styles.tabs} ref={tabsRef}>
             <button
@@ -328,7 +311,7 @@ export default function Library() {
               type="button"
               aria-pressed={activeTab === 'journey'}
             >
-              <span className={styles.tabTitle}>12-Week Journey</span>
+              <span className={styles.tabTitle}>Chapters</span>
             </button>
 
             <button
@@ -338,15 +321,6 @@ export default function Library() {
               aria-pressed={activeTab === 'curated'}
             >
               <span className={styles.tabTitle}>Readings</span>
-            </button>
-
-            <button
-              className={`${styles.tabCard} ${activeTab === 'community' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('community')}
-              type="button"
-              aria-pressed={activeTab === 'community'}
-            >
-              <span className={styles.tabTitle}>Exercises</span>
             </button>
 
             <button

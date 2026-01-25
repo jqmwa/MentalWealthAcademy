@@ -2,147 +2,10 @@
 
 .page {
   min-height: 100vh;
-  padding: 40px 24px 40px;
+  padding: 16px 24px 40px;
   color: var(--color-text-dark);
   position: relative;
   overflow-x: hidden;
-}
-
-.content {
-  max-width: 1180px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Hero Section - Brutalist Style */
-.hero {
-  position: relative;
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto 16px;
-  padding: 40px 48px;
-  background: #ffffff;
-  border: 3px solid #1A1D33;
-  border-radius: 4px;
-  box-shadow: 6px 6px 0 #1A1D33;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.heroLoaded {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://i.imgur.com/VGmK4CY.jpeg');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  z-index: 1;
-  mask-image: linear-gradient(to left, transparent 0%, black 100%);
-  -webkit-mask-image: linear-gradient(to left, transparent 0%, black 100%);
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
-  z-index: 3;
-  margin-bottom: 0;
-}
-
-.eyebrow {
-  margin: 0;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #666666;
-  font-family: var(--font-primary);
-}
-
-.title {
-  margin: 0;
-  font-size: 28px;
-  font-family: var(--font-primary);
-  font-weight: 700;
-  color: #1A1D33;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.subtitle {
-  margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #666666;
-  max-width: 600px;
-  font-family: var(--font-primary);
-}
-
-.heroActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-
-.primaryCta,
-.secondaryCta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 4px;
-  border: 3px solid #1A1D33;
-  font-family: var(--font-primary);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.primaryCta {
-  background: var(--color-primary);
-  color: #ffffff;
-  box-shadow: 3px 3px 0 #1A1D33;
-}
-
-.primaryCta:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 #1A1D33;
-}
-
-.secondaryCta {
-  background: #ffffff;
-  color: #1A1D33;
-  box-shadow: 3px 3px 0 #1A1D33;
-}
-
-.secondaryCta:hover {
-  background: var(--color-tertiary);
-  color: #ffffff;
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 /* Papers Section */
@@ -235,27 +98,6 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .hero {
-    padding: 32px;
-    box-shadow: 4px 4px 0 #1A1D33;
-  }
-
-  .hero::before {
-    mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 100%);
-  }
-
-  .heroActions {
-    width: 100%;
-    gap: 12px;
-  }
-
-  .primaryCta,
-  .secondaryCta {
-    flex: 1;
-    justify-content: center;
-  }
-
   .booksGrid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
@@ -264,33 +106,7 @@
 
 @media (max-width: 768px) {
   .page {
-    padding: 32px 16px 32px;
-  }
-
-  .hero {
-    padding: 24px;
-    box-shadow: 3px 3px 0 #1A1D33;
-  }
-
-  .hero::before {
-    mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 15%, black 100%);
-  }
-
-  .heroActions {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-  }
-
-  .primaryCta,
-  .secondaryCta {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .title {
-    font-size: 22px;
+    padding: 12px 16px 32px;
   }
 
   .papersSection {

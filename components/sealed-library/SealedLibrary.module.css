@@ -36,26 +36,35 @@
 /* Sign In Banner */
 .signInBanner {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
+  padding: 24px;
   background: linear-gradient(135deg, rgba(81, 104, 255, 0.1) 0%, rgba(81, 104, 255, 0.05) 100%);
-  border: 2px solid var(--color-primary);
+  border: 3px solid var(--color-primary);
   border-radius: 4px;
   margin-bottom: 24px;
-  gap: 12px;
+  gap: 8px;
+  box-shadow: 4px 4px 0 var(--color-primary);
 }
 
-.bannerIcon {
-  font-size: 18px;
-  color: var(--color-primary);
-}
-
-.bannerText {
+.bannerTitle {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 700;
   color: #1A1D33;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.bannerDescription {
+  font-family: var(--font-primary);
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin: 0;
+  max-width: 600px;
 }
 
 /* Chapters Grid */
