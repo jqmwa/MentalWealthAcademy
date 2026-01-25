@@ -71,7 +71,7 @@ const stage3Config: Record<Stage3Variant, { title: string; description: string }
     description: 'Transaction is being executed on-chain. This may take several minutes to confirm.',
   },
   success: {
-    title: 'Success',
+    title: 'Outcome',
     description: 'Transaction successfully executed on-chain. The vote outcome has been finalized.',
   },
 };
