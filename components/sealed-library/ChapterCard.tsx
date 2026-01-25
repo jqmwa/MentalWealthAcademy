@@ -80,7 +80,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, onClick }) => {
         <h3 className={styles.title}>{chapter.title}</h3>
         <div className={styles.theme}>{chapter.theme}</div>
 
-        {!isLocked && (
+        {(isInProgress || isUnsealed) && (
           <div className={styles.progressSection}>
             <div className={styles.progressDots}>{progressDots}</div>
             <div className={styles.progressText}>

@@ -96,13 +96,8 @@ const SealedLibrary: React.FC = () => {
 
       {!isAuthenticated && (
         <div className={styles.signInBanner}>
-          <div className={styles.bannerContent}>
-            <span className={styles.bannerIcon}>✦</span>
-            <span className={styles.bannerText}>Sign in to track your progress and unlock chapters</span>
-          </div>
-          <a href="/" className={styles.bannerButton}>
-            Get Started
-          </a>
+          <span className={styles.bannerIcon}>✦</span>
+          <span className={styles.bannerText}>Sign in to track your progress and unlock chapters</span>
         </div>
       )}
 

@@ -37,24 +37,17 @@
 .signInBanner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 16px 24px;
   background: linear-gradient(135deg, rgba(81, 104, 255, 0.1) 0%, rgba(81, 104, 255, 0.05) 100%);
   border: 2px solid var(--color-primary);
   border-radius: 4px;
   margin-bottom: 24px;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.bannerContent {
-  display: flex;
-  align-items: center;
   gap: 12px;
 }
 
 .bannerIcon {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--color-primary);
 }
 
@@ -63,28 +56,6 @@
   font-size: 14px;
   font-weight: 500;
   color: #1A1D33;
-}
-
-.bannerButton {
-  padding: 10px 20px;
-  background: var(--color-primary);
-  color: #ffffff;
-  border: 2px solid #1A1D33;
-  border-radius: 4px;
-  font-family: var(--font-primary);
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 3px 3px 0 #1A1D33;
-}
-
-.bannerButton:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 #1A1D33;
 }
 
 /* Chapters Grid */
