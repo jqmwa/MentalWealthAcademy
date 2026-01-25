@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/navbar/Navbar';
 import BookCard from '@/components/book-card/BookCard';
 import PromptCard from '@/components/prompt-card/PromptCard';
+import SealedLibrary from '@/components/sealed-library/SealedLibrary';
 import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
 import MintModal from '@/components/mint-modal/MintModal';
 import styles from './page.module.css';
@@ -60,23 +61,23 @@ const LibraryInfoModal: React.FC<{
 const curatedBooks = [
   {
     title: 'How to make something great',
-    author: 'By: Dr. Lina Ortiz, Ph.D. (Computational Sociology)',
+    author: 'By: Dr. Lina Ortiz, Ph.D.',
     description:
       'In the pantheon of creativity, wether product design, art, schiece, architecture, software, or some hybrid creature from the abyss of the mind\'s black hole, true greatness emerges not from one stroke of genius, but careful curation of the entire process.',
     category: 'Digital Research',
     imageUrl: 'https://images.unsplash.com/photo-1639628739763-3d4ada1a656a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y3liZXIlMjBwc3ljaG9sb2d5fGVufDB8fDB8fHww',
   },
   {
-    title: 'What is the next gen micro-university?',
-    author: 'By: Prof. Marcus Li, D.Phil. (Institutional Economics)',
+    title: 'Micro University?',
+    author: 'By: Prof. Marcus Li, D.Phil.',
     description:
       'A rigorous theoretical and empirical analysis of governance mechanisms within academic decentralized autonomous organizations. This monograph synthesizes mechanism design theory, social choice theory, and institutional economics to evaluate the efficacy of quadratic voting protocols, reputation-weighted decision-making, and stewardship models in maintaining both democratic legitimacy and epistemic rigor within scholarly communities.',
     category: 'Decision-making',
     imageUrl: 'https://plus.unsplash.com/premium_photo-1683977922495-3ab3ce7ba4e6?q=80&w=2200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
-    title: 'From viral to etheral cyberpsychology',
-    author: 'By: Dr. Jhinn Bay, Ph.D. (Cybertrends & Machine Empathy)',
+    title: 'From Viral 2 Ethereal',
+    author: 'By: Dr. Jhinn Bay, Ph.D.',
     description:
       'A critical examination of autonomous agents designed for systematic literature review, citation network analysis, and knowledge synthesis. This investigation employs both computational experiments and philosophical inquiry to delineate the boundaries between algorithmic summarization and genuine scholarly comprehension, addressing questions of epistemic authority, bias propagation, and the necessary conditions for human oversight in AI-augmented research workflows.',
     category: 'AI Tools',
@@ -243,7 +244,7 @@ Focus on clarity, persuasiveness, and professional presentation that gets result
 ];
 
 export default function Library() {
-  const [activeTab, setActiveTab] = useState<'prompts' | 'curated' | 'community'>('curated');
+  const [activeTab, setActiveTab] = useState<'journey' | 'prompts' | 'curated' | 'community'>('journey');
   const [isLoaded, setIsLoaded] = useState(false);
   const [showAzuraModal, setShowAzuraModal] = useState(false);
   const [showMintModal, setShowMintModal] = useState(false);
@@ -258,16 +259,20 @@ export default function Library() {
   }, []);
 
   const renderContent = () => {
+    if (activeTab === 'journey') {
+      return <SealedLibrary />;
+    }
+
     if (activeTab === 'prompts') {
       return (
         <div className={`${styles.booksGrid} ${isLoaded ? styles.booksGridLoaded : ''}`}>
           {promptLibrary.map((prompt, index) => (
-            <div 
-              key={prompt.promptName} 
+            <div
+              key={prompt.promptName}
               className={styles.bookCardWrapper}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <PromptCard 
+              <PromptCard
                 promptName={prompt.promptName}
                 promptText={prompt.promptText}
                 submittedBy={prompt.submittedBy}
@@ -282,8 +287,8 @@ export default function Library() {
     return (
       <div className={`${styles.booksGrid} ${isLoaded ? styles.booksGridLoaded : ''}`}>
         {activeBooks.map((book, index) => (
-          <div 
-            key={book.title} 
+          <div
+            key={book.title}
             className={styles.bookCardWrapper}
             style={{ animationDelay: `${index * 0.1}s` }}
           >
@@ -317,6 +322,15 @@ export default function Library() {
 
         <section className={styles.papersSection}>
           <div className={styles.tabs} ref={tabsRef}>
+            <button
+              className={`${styles.tabCard} ${activeTab === 'journey' ? styles.tabCardActive : ''}`}
+              onClick={() => setActiveTab('journey')}
+              type="button"
+              aria-pressed={activeTab === 'journey'}
+            >
+              <span className={styles.tabTitle}>12-Week Journey</span>
+            </button>
+
             <button
               className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
               onClick={() => setActiveTab('curated')}
