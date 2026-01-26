@@ -232,17 +232,6 @@
   gap: 12px;
 }
 
-.shardsCounter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: #FFFFFF;
-  border: 1px solid #FFFFFF;
-  border-radius: 12px;
-  font-family: var(--font-primary);
-}
-
 .shardIcon {
   width: 20px;
   height: 20px;
@@ -779,9 +768,9 @@
   opacity: 1;
 }
 
-/* Mobile Shards in Dropdown */
+/* Shards/Daemon Counter in Dropdown */
 .mobileShardsInDropdown {
-  display: none;
+  display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
@@ -844,14 +833,6 @@
     height: 18px;
   }
 
-  .shardsCounter {
-    padding: 6px 12px;
-  }
-
-  .shardsLabel,
-  .shardsValue {
-    font-size: 14px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -909,15 +890,6 @@
     display: none;
   }
 
-  /* Hide shards counter in top navbar on mobile */
-  .shardsCounter {
-    display: none;
-  }
-
-  /* Show mobile shards in dropdown */
-  .mobileShardsInDropdown {
-    display: flex;
-  }
 
   /* Show mobile bottom navigation */
   .mobileBottomNav {
@@ -954,10 +926,6 @@
 
   .rightIcons {
     gap: 8px;
-  }
-
-  .shardsCounter {
-    padding: 6px 8px;
   }
 
   .mobileBottomNav {

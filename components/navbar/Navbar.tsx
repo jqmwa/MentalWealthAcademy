@@ -283,19 +283,6 @@ const Navbar: React.FC = () => {
                 <span className={styles.notificationDot}></span>
               </div>
             </button>
-            <div className={styles.shardsCounter}>
-              <Image
-                src="/icons/shard.svg"
-                alt="Daemon"
-                width={20}
-                height={20}
-                className={styles.shardIcon}
-              />
-              <span className={styles.shardsLabel}>Daemon:</span>
-              <span className={styles.shardsValue}>
-                {shardCount !== null ? String(shardCount).padStart(3, '0') : '000'}
-              </span>
-            </div>
             {/* User Info Dropdown */}
             {username && !username.startsWith('user_') && (
               <div className={styles.profileDropdownWrapper} ref={profileDropdownRef}>
