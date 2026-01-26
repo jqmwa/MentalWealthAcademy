@@ -1,4 +1,4 @@
-/* MobileOnboarding - Mobile-only onboarding overlay */
+/* MobileOnboarding - Premium dark onboarding overlay */
 
 .overlay {
   position: fixed;
@@ -6,11 +6,27 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-futuristic-floss);
   z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  /* Premium dark gradient background */
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(81, 104, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(135, 93, 196, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 40% 80%, rgba(116, 196, 101, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #0d0d14 0%, #0a0a0f 50%, #080810 100%);
+}
+
+.overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(81, 104, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(135, 93, 196, 0.06) 0%, transparent 30%);
+  pointer-events: none;
 }
 
 /* Hide on desktop */
@@ -21,31 +37,14 @@
 }
 
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: var(--space-md);
-  padding-top: var(--space-lg);
-  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
-}
-
-.skipButton {
-  align-self: flex-end;
-  background: transparent;
-  border: none;
-  font-family: var(--font-button);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  padding: var(--space-2xs) var(--space-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: color var(--duration-normal) var(--ease-out);
-}
-
-.skipButton:hover,
-.skipButton:active {
-  color: var(--color-text-dark);
+  padding: var(--space-sm);
+  padding-top: var(--space-md);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+  z-index: 1;
 }
 
 /* Screen content area */
@@ -62,45 +61,425 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--space-md);
-  max-width: 320px;
+  padding: var(--space-sm);
+  max-width: 380px;
   width: 100%;
+}
+
+/* ============================================
+   Welcome Screen (Screen 1) - Unique Layout
+   ============================================ */
+
+.welcomeScreen {
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.mascotContainer {
+  width: 64px;
+  height: 64px;
+}
+
+.mascotImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 20px rgba(135, 93, 196, 0.5));
+}
+
+.welcomeTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcomeSubtitle {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-light);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.welcomeHeading {
+  font-family: var(--font-primary);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.welcomeMessage {
+  margin-top: var(--space-xs);
+}
+
+.congratsText {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-md);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  margin: 0 0 var(--space-sm) 0;
+  text-wrap: balance;
+}
+
+.personalizeText {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.personalizeHighlight {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Membership Card */
+.membershipCard {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 1.586 / 1;
+  border-radius: var(--radius-xl);
+  padding: var(--space-sm);
+  margin: var(--space-xs) 0;
+  overflow: hidden;
+
+  /* Holographic gradient background */
+  background: linear-gradient(
+    135deg,
+    rgba(200, 220, 255, 0.95) 0%,
+    rgba(220, 180, 255, 0.9) 25%,
+    rgba(180, 255, 220, 0.85) 50%,
+    rgba(255, 200, 220, 0.9) 75%,
+    rgba(200, 220, 255, 0.95) 100%
+  );
+  background-size: 400% 400%;
+  animation: holographicShift 8s ease-in-out infinite;
+
+  box-shadow:
+    0 8px 32px rgba(81, 104, 255, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+@keyframes holographicShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-2xs);
+}
+
+.cardLogo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.cardTitle {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  color: rgba(26, 27, 36, 0.9);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cardSubtitle {
+  font-family: var(--font-primary);
+  font-size: 8px;
+  font-weight: var(--font-weight-light);
+  color: rgba(26, 27, 36, 0.6);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.cardContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: calc(100% - 40px);
+  padding-bottom: 20px;
+}
+
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2xs);
+}
+
+.cardChip {
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cardStars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: #d4af37;
+  font-size: 12px;
+}
+
+.cardCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardGem {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 200, 255, 0.8) 0%,
+    rgba(180, 100, 255, 0.8) 50%,
+    rgba(100, 255, 200, 0.8) 100%
+  );
+  border-radius: 50%;
+  box-shadow:
+    0 4px 16px rgba(100, 200, 255, 0.4),
+    0 0 24px rgba(180, 100, 255, 0.3);
+}
+
+.cardRight {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardLabel {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  color: rgba(26, 27, 36, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Did You Know section */
+.didYouKnow {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-xs);
+  width: 100%;
+}
+
+.didYouKnowLabel {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-3xs) 0;
+}
+
+.didYouKnowText {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.statHighlight {
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+}
+
+/* ============================================
+   Mood Screen (Screen 2)
+   ============================================ */
+
+.moodScreen {
+  position: relative;
+  align-items: flex-start;
+  padding: var(--space-sm);
+  background: transparent;
+  gap: var(--space-2xs);
+}
+
+
+.moodLogo {
+  align-self: flex-start;
+}
+
+.moodTitle {
+  font-family: var(--font-primary);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  margin: 0;
+  align-self: center;
+  text-align: center;
+  width: 100%;
+}
+
+.moodOval {
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(
+    180deg,
+    #FFD6E8 0%,
+    #FFB8D9 50%,
+    #E8A0C8 100%
+  );
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(255, 115, 198, 0.3);
+}
+
+.moodQuestion {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: rgba(255, 255, 255, 0.9);
+  margin: var(--space-2xs) 0;
+  text-align: center;
+  width: 100%;
+}
+
+.moodChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  justify-content: center;
+  padding: var(--space-xs) 0;
+  width: 100%;
+}
+
+.moodChip {
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.moodChip:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.moodChipSelected {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.moodChipSelected:hover {
+  background: var(--color-primary-hover);
+}
+
+/* Confirm button for mood screen */
+.confirmButton {
+  width: 100%;
+  padding: 14px var(--space-md);
+  border-radius: var(--radius-md);
+  font-family: var(--font-button);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.4);
+}
+
+.confirmButton:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(81, 104, 255, 0.5);
+}
+
+.confirmButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ============================================
+   Standard Screens (Screens 2-5)
+   ============================================ */
+
+.standardScreen {
+  gap: var(--space-md);
 }
 
 .iconContainer {
   width: 96px;
   height: 96px;
   border-radius: var(--radius-full);
-  background: var(--gradient-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--shadow-primary);
+  margin-bottom: var(--space-sm);
+
+  /* Gradient background with glow */
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    #7586FF 50%,
+    var(--color-secondary) 100%
+  );
+  box-shadow:
+    0 8px 32px rgba(81, 104, 255, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .iconContainer svg {
-  color: var(--color-text-light);
+  color: #ffffff;
 }
 
 .title {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
-  margin-bottom: var(--space-sm);
+  color: #ffffff;
+  margin: 0 0 var(--space-sm) 0;
   line-height: 1.3;
 }
 
 .description {
   font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-light);
   font-size: var(--font-size-md);
-  color: rgba(26, 27, 36, 0.75);
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
+  margin: 0;
 }
 
-/* Screen 5 wallet actions */
+/* ============================================
+   Wallet Actions (Screen 5)
+   ============================================ */
+
 .walletActions {
   display: flex;
   flex-direction: column;
@@ -124,38 +503,92 @@
 
 .connectWalletButton {
   background: var(--color-primary);
-  color: var(--color-text-light);
+  color: #ffffff;
   border: none;
-  box-shadow: var(--shadow-primary);
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.4);
 }
 
 .connectWalletButton:hover {
   background: var(--color-primary-hover);
   transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(81, 104, 255, 0.5);
 }
 
 .connectWalletButton:active {
-  background: var(--color-primary-hover);
   transform: translateY(0) scale(0.98);
-  transition: transform 0.1s ease-out;
 }
 
 .guestButton {
   background: transparent;
-  color: var(--color-text-dark);
-  border: 2px solid var(--color-text-dark);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .guestButton:hover {
-  background: var(--color-text-dark);
-  color: var(--color-text-light);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .guestButton:active {
-  background: var(--color-text-dark);
-  color: var(--color-text-light);
   transform: scale(0.98);
-  transition: transform 0.1s ease-out;
+}
+
+/* ============================================
+   Bottom Section - Buttons & Navigation
+   ============================================ */
+
+.bottomSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+/* Continue Button - Light gradient style */
+.continueButton {
+  width: 100%;
+  padding: 14px var(--space-md);
+  border-radius: var(--radius-md);
+  font-family: var(--font-button);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+
+  /* Light frosted glass effect */
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-dark);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.continueButton:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.continueButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Skip Link */
+.skipLink {
+  background: none;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: var(--space-2xs);
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.skipLink:hover {
+  color: #ffffff;
 }
 
 /* Progress dots */
@@ -163,28 +596,29 @@
   display: flex;
   justify-content: center;
   gap: var(--space-2xs);
-  padding: var(--space-md) 0;
+  padding: var(--space-xs) 0;
 }
 
 .dot {
   height: 8px;
   border-radius: var(--radius-full);
-  background: var(--color-primary-muted);
+  background: rgba(255, 255, 255, 0.3);
   border: none;
   padding: 0;
   cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
 .dot:hover {
-  background: var(--color-primary);
-  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .dot[aria-current='step'] {
   background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(81, 104, 255, 0.5);
 }
 
-/* Navigation buttons */
+/* Navigation buttons (for screens 2-4) */
 .navigation {
   display: flex;
   justify-content: space-between;
@@ -208,20 +642,18 @@
 
 .backButton {
   background: transparent;
-  color: var(--color-text-dark);
-  border: 2px solid var(--color-text-dark);
+  color: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .backButton:hover {
-  background: var(--color-text-dark);
-  color: var(--color-text-light);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .backButton:active {
-  background: var(--color-text-dark);
-  color: var(--color-text-light);
   transform: scale(0.98);
-  transition: transform 0.1s ease-out;
 }
 
 .backButton:disabled {
@@ -231,9 +663,9 @@
 
 .nextButton {
   background: var(--color-primary);
-  color: var(--color-text-light);
+  color: #ffffff;
   border: none;
-  box-shadow: var(--shadow-primary);
+  box-shadow: 0 4px 16px rgba(81, 104, 255, 0.4);
 }
 
 .nextButton:hover {
@@ -242,9 +674,7 @@
 }
 
 .nextButton:active {
-  background: var(--color-primary-hover);
   transform: translateY(0) scale(0.98);
-  transition: transform 0.1s ease-out;
 }
 
 /* Hide nav on last screen */
@@ -252,10 +682,16 @@
   visibility: hidden;
 }
 
-/* Focus states for keyboard navigation */
+/* ============================================
+   Focus & Accessibility
+   ============================================ */
+
 .navButton:focus-visible,
 .walletButton:focus-visible,
-.skipButton:focus-visible,
+.continueButton:focus-visible,
+.confirmButton:focus-visible,
+.skipLink:focus-visible,
+.moodChip:focus-visible,
 .dot:focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
@@ -263,16 +699,28 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .skipButton,
+  .membershipCard {
+    animation: none;
+  }
+
+  .continueButton,
+  .confirmButton,
+  .skipLink,
   .navButton,
-  .walletButton {
+  .walletButton,
+  .moodChip {
     transition: none;
   }
 
   .connectWalletButton:hover,
   .connectWalletButton:active,
   .nextButton:hover,
-  .nextButton:active {
+  .nextButton:active,
+  .continueButton:hover,
+  .continueButton:active,
+  .confirmButton:hover,
+  .confirmButton:active,
+  .moodChip:hover {
     transform: none;
   }
 

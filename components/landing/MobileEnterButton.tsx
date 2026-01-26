@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './LandingPage.module.css';
 import MobileOnboarding from '../mobile-onboarding/MobileOnboarding';
 
-const STORAGE_KEY = 'hasSeenMobileOnboarding';
+const STORAGE_KEY = 'hasSeenMobileOnboarding_v2';
 
 export const MobileEnterButton: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
