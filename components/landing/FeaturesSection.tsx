@@ -4,8 +4,8 @@ import styles from './FeaturesSection.module.css';
 const features = [
   {
     icon: '/icons/4b31ae03-5c43-4b80-9526-730a6b5a6c09 1.png',
-    title: 'Research Library',
-    description: 'Access a comprehensive library of mental health research, papers, and resources curated by the community.',
+    title: 'Characterized 12-Week Support Group',
+    description: 'Weekly workshops, writing exercises, and guided tasks designed to help you process, reflect, and grow at your own pace.',
   },
   {
     icon: '/icons/c4c15e74-d725-4715-8000-edd05808a0ed 1.png',
@@ -14,8 +14,8 @@ const features = [
   },
   {
     icon: '/icons/f36a4cca-81ba-4103-8cf1-114190d63f4c 1.png',
-    title: 'AI-Powered Support',
-    description: 'Interact with Azura, our AI companion designed to provide personalized mental health guidance and support.',
+    title: 'Real-time SMS Support',
+    description: 'Reach out whenever you need it. Our team is just a text away to help you through the hard moments.',
   },
   {
     icon: '/icons/f619761a-7a68-4cc2-ab38-bbc05ba27486 1.png',
@@ -29,13 +29,11 @@ export const FeaturesSection: React.FC = () => {
     <section className={styles.featuresSection}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <p className={styles.supTitle}>Features</p>
           <h2 className={styles.title}>
-            Mental Wealth Academy is <span className={styles.highlight}>more</span> than just education
+            For students at every stage of their journey.
           </h2>
           <p className={styles.description}>
-            The crux of next gen education is a network not a platform. An ecosystem of cutting-edge AI technology, community decision-making,
-            and transparent research funding to transform mental wealth worldwide.
+            Feeling lost? Not sure what&apos;s next? You&apos;re not alone. We built this for the ones still figuring it out, because clarity comes from connection, not pressure.
           </p>
         </div>
 

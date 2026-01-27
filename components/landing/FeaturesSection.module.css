@@ -13,7 +13,7 @@
 }
 
 .header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 60px;
 }
 
@@ -35,9 +35,7 @@
   letter-spacing: -0.02em;
   color: var(--color-text-dark);
   margin: 0 0 24px 0;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 600px;
 }
 
 .highlight {
@@ -51,8 +49,6 @@
   color: var(--color-text-secondary, rgba(26, 27, 36, 0.7));
   margin: 0;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .grid {

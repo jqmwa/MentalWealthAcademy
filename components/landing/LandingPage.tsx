@@ -4,6 +4,8 @@ import { HeroSection } from './HeroSection';
 import { DonationPopup } from './DonationPopup';
 import { PatternTextSection } from './PatternTextSection';
 import { FeaturesSection } from './FeaturesSection';
+import { KeyFiguresSection } from './KeyFiguresSection';
+import { TestimonialSection } from './TestimonialSection';
 import { LandingFooter } from './LandingFooter';
 import styles from './LandingPage.module.css';
 
@@ -146,6 +148,12 @@ const LandingPage = () => {
 
       {/* Features Section - Server rendered */}
       <FeaturesSection />
+
+      {/* Key Figures Section - Server rendered */}
+      <KeyFiguresSection />
+
+      {/* Testimonial Section - Server rendered */}
+      <TestimonialSection />
 
       {/* Pattern Background Section - Contains client component for animation */}
       <PatternTextSection />
