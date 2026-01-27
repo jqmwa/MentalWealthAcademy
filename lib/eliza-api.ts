@@ -28,11 +28,6 @@ interface ElizaChatResponse {
   };
 }
 
-interface ElizaTTSRequest {
-  text: string;
-  voiceId?: string;
-  modelId?: 'eleven_flash_v2_5' | 'eleven_turbo_v2_5' | 'eleven_multilingual_v2' | 'eleven_monolingual_v1';
-}
 
 class ElizaAPIClient {
   private baseUrl: string;
@@ -227,113 +222,10 @@ class ElizaAPIClient {
     return fullText;
   }
 
-  /**
-   * Text-to-Speech using Eliza API (ElevenLabs)
-   * Returns audio blob URL (for client-side) or base64 data URL (for server-side)
-   */
-  async textToSpeech(request: ElizaTTSRequest, returnBase64: boolean = false): Promise<string> {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/elevenlabs/tts`, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({
-          text: request.text,
-          voiceId: request.voiceId,
-          modelId: request.modelId || 'eleven_flash_v2_5',
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `Eliza TTS API error: ${response.statusText}`);
-      }
-
-      // TTS returns audio/mpeg stream
-      const audioBlob = await response.blob();
-      
-      if (returnBase64) {
-        // For server-side: convert to base64 data URL
-        const arrayBuffer = await audioBlob.arrayBuffer();
-        const base64 = Buffer.from(arrayBuffer).toString('base64');
-        return `data:audio/mpeg;base64,${base64}`;
-      } else {
-        // For client-side: create object URL
-        const audioUrl = URL.createObjectURL(audioBlob);
-        return audioUrl;
-      }
-    } catch (error) {
-      console.error('Eliza TTS API error:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Generate Azura's voice response for a proposal
-   * Combines chat completion with TTS
-   */
-  async generateProposalVoiceResponse(
-    proposalTitle: string,
-    proposalContent: string,
-    azuraPersonality: any
-  ): Promise<{ text: string; audioUrl: string }> {
-    // Create system prompt from Azura's personality
-    const systemPrompt = this.buildAzuraSystemPrompt(azuraPersonality);
-    
-    // Create user message
-    const userMessage = `Review this proposal and provide a brief, thoughtful response (2-3 sentences):
-
-**Title:** ${proposalTitle}
-
-**Proposal:**
-${proposalContent.substring(0, 1000)}${proposalContent.length > 1000 ? '...' : ''}`;
-
-    // Get text response from Azura
-    const messages: ElizaChatMessage[] = [
-      {
-        role: 'system',
-        parts: [{ type: 'text', text: systemPrompt }],
-      },
-      {
-        role: 'user',
-        parts: [{ type: 'text', text: userMessage }],
-      },
-    ];
-
-    const textResponse = await this.chat({ messages });
-
-    // Generate voice from text (server-side, return base64)
-    const audioUrl = await this.textToSpeech({
-      text: textResponse,
-      modelId: 'eleven_flash_v2_5',
-      // voiceId can be set if you have a cloned Azura voice
-    }, true); // Return base64 for server-side use
-
-    return {
-      text: textResponse,
-      audioUrl,
-    };
-  }
-
-  /**
-   * Build system prompt from Azura's personality JSON
-   */
-  private buildAzuraSystemPrompt(personality: any): string {
-    const basePrompt = personality.system || '';
-    const style = personality.style?.chat?.[0] || '';
-    const bio = personality.bio || '';
-
-    return `${basePrompt}
-
-${bio}
-
-Communication style: ${style}
-
-Keep responses concise, light, and airy. When reviewing proposals, be thoughtful but brief.`;
-  }
 }
 
 // Export singleton instance
 export const elizaAPI = new ElizaAPIClient();
 
 // Export types
-export type { ElizaChatMessage, ElizaChatRequest, ElizaTTSRequest };
+export type { ElizaChatMessage, ElizaChatRequest };

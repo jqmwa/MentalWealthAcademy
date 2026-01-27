@@ -28,7 +28,6 @@ export class WalletErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError && this.state.error) {
-      // Only show error UI for non-Family wallet errors
       return (
         <div style={{ padding: '20px', textAlign: 'center' }}>
           <h2>Something went wrong</h2>

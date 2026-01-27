@@ -17,11 +17,16 @@ const Web3Provider = dynamic(
 
 /**
  * Conditionally wraps children with Web3Provider only on pages that need wallet functionality.
- * The landing page (/) now needs Web3Provider for wallet connection functionality.
+ * The landing page (/) does not need Web3Provider.
  */
 export function ConditionalWeb3Provider({ children }: { children: React.ReactNode }) {
-  // Always wrap with Web3Provider since landing page now needs wallet functionality
-  // Wrap in error boundary to catch Family wallet errors
+  const pathname = usePathname();
+
+  // Skip Web3Provider on landing page to avoid family accounts runtime error
+  if (pathname === '/') {
+    return <>{children}</>;
+  }
+
   return (
     <WalletErrorBoundary>
       <Web3Provider>{children}</Web3Provider>

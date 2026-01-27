@@ -177,12 +177,6 @@
   border-top: 2px solid rgba(26, 29, 51, 0.1);
 }
 
-.voiceSection {
-  padding: 16px 24px;
-  border-top: 2px solid rgba(26, 29, 51, 0.1);
-  width: 100%;
-}
-
 .previewLabel {
   font-size: 11px;
   font-weight: 700;
@@ -292,8 +286,7 @@
 
   .stagesSection,
   .preview,
-  .finalizeSection,
-  .voiceSection {
+  .finalizeSection {
     padding: 16px;
   }
 

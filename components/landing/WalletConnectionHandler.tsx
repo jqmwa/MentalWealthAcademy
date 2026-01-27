@@ -252,7 +252,7 @@ export function WalletConnectionHandler({ onWalletConnected, buttonText = 'Conne
       return;
     }
 
-    // Connect with WalletConnect (Family/Reown)
+    // Connect with WalletConnect
     const walletConnector = connectors[0];
     if (walletConnector) {
       connect({ connector: walletConnector });

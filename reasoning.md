@@ -16,6 +16,28 @@ Mobile users clicking "Enter Academy" on the landing page were immediately redir
 
 A 5-screen onboarding flow that appears only for first-time mobile visitors, with localStorage persistence to ensure returning users skip directly to the app.
 
+## Design Approach - Premium Dark Aesthetic
+
+The onboarding uses a **premium dark theme** inspired by the landing page and reference designs:
+
+### Visual Elements
+1. **Background**: Multi-layered gradient with subtle colored glows (primary blue, purple, green) on a deep dark base (#0a0a0f) - no external images
+2. **Welcome Screen (Screen 1)**: Unique layout with:
+   - Academy mascot/logo at the top
+   - "Welcome to Mental Wealth Academy" title hierarchy
+   - Congratulatory message with personalization highlight
+   - Holographic membership card with animated gradient shift
+   - "Did you know?" statistic section in frosted glass container
+   - Light "Continue" button with "Skip for now" link
+3. **Standard Screens (2-5)**: Icon in gradient circle, title, description
+4. **Final Screen**: Wallet connect and guest options
+
+### Color Palette
+- Background: Deep dark (#0a0a0f to #080810)
+- Accent glows: Primary blue (rgba(81, 104, 255)), Purple (rgba(135, 93, 196)), Green (rgba(116, 196, 101))
+- Text: White (#ffffff) with varying opacity for hierarchy
+- Buttons: Light frosted glass for primary CTA, transparent with borders for secondary
+
 ## Files Created
 
 ### 1. `components/mobile-onboarding/MobileOnboarding.tsx`
