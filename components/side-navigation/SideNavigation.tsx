@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAccount, useDisconnect } from 'wagmi';
+import { useModal } from 'connectkit';
 import styles from './SideNavigation.module.css';
+import AudioPlayer from '../audio-player/AudioPlayer';
 import AzuraChat from '../azura-chat/AzuraChat';
+import AvatarSelectorModal from '../avatar-selector/AvatarSelectorModal';
+import UsernameChangeModal from '../username-change/UsernameChangeModal';
 
 interface NavItem {
   id: string;
@@ -66,11 +70,20 @@ const navSections: NavSection[] = [
 
 const SideNavigation: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { setOpen: openConnectModal } = useModal();
   const [shardCount, setShardCount] = useState<number | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
+  const [isUsernameChangeModalOpen, setIsUsernameChangeModalOpen] = useState(false);
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
 
-  // Fetch user data for shard count
+  // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -79,20 +92,88 @@ const SideNavigation: React.FC = () => {
           credentials: 'include',
         });
         const data = await response.json();
-        if (data?.user?.shardCount !== undefined) {
-          setShardCount(data.user.shardCount);
+        if (data?.user) {
+          if (data.user.shardCount !== undefined) {
+            setShardCount(data.user.shardCount);
+          }
+          setUsername(data.user.username || null);
+          setAvatarUrl(data.user.avatarUrl || null);
+        } else {
+          setShardCount(null);
+          setUsername(null);
+          setAvatarUrl(null);
         }
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        setShardCount(null);
+        setUsername(null);
+        setAvatarUrl(null);
       }
     };
 
     fetchUserData();
 
     const handleShardsUpdate = () => fetchUserData();
+    const handleProfileUpdate = () => fetchUserData();
     window.addEventListener('shardsUpdated', handleShardsUpdate);
-    return () => window.removeEventListener('shardsUpdated', handleShardsUpdate);
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('shardsUpdated', handleShardsUpdate);
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+    };
   }, []);
+
+  // Close account menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target as Node)) {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    if (isAccountMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isAccountMenuOpen]);
+
+  const handleAvatarClick = () => {
+    setIsAccountMenuOpen(false);
+    setIsAvatarSelectorOpen(true);
+  };
+
+  const handleAvatarSelected = (newAvatarUrl: string) => {
+    setAvatarUrl(newAvatarUrl);
+  };
+
+  const handleUsernameClick = () => {
+    setIsAccountMenuOpen(false);
+    setIsUsernameChangeModalOpen(true);
+  };
+
+  const handleUsernameChanged = (newUsername: string) => {
+    setUsername(newUsername);
+  };
+
+  const handleSignOut = async () => {
+    setIsAccountMenuOpen(false);
+
+    if (isConnected) {
+      disconnect();
+    }
+
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Failed to logout:', err);
+    }
+
+    setShardCount(null);
+    setUsername(null);
+    setAvatarUrl(null);
+
+    router.push('/');
+  };
 
   const isActive = (href: string) => {
     if (href === '/home') {
@@ -115,6 +196,11 @@ const SideNavigation: React.FC = () => {
             <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
         </button>
+      </div>
+
+      {/* Music Player */}
+      <div className={styles.musicPlayerWrapper}>
+        <AudioPlayer />
       </div>
 
       {/* Navigation Sections */}
@@ -191,19 +277,80 @@ const SideNavigation: React.FC = () => {
           </span>
         </div>
 
-        {/* Connect Wallet Button */}
-        <button className={styles.connectWalletButton}>
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-            <path d="M17 8V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            <rect x="13" y="9" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-            <circle cx="15" cy="11" r="1" fill="currentColor"/>
-          </svg>
-          <span>Connect Wallet</span>
-        </button>
+        {/* User Account Section or Connect Wallet Button */}
+        {username && !username.startsWith('user_') ? (
+          <div className={styles.accountSection} ref={accountMenuRef}>
+            <button
+              className={styles.accountButton}
+              onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+            >
+              {avatarUrl && (
+                <Image
+                  src={avatarUrl}
+                  alt={username}
+                  width={32}
+                  height={32}
+                  className={styles.accountAvatar}
+                  unoptimized
+                />
+              )}
+              <span className={styles.accountUsername}>@{username}</span>
+            </button>
+
+            {isAccountMenuOpen && (
+              <div className={styles.accountMenu}>
+                <button
+                  className={styles.accountMenuItem}
+                  onClick={handleAvatarClick}
+                >
+                  <span className={styles.accountMenuLabel}>Change Avatar</span>
+                </button>
+                <button
+                  className={styles.accountMenuItem}
+                  onClick={handleUsernameClick}
+                >
+                  <span className={styles.accountMenuLabel}>Change Username</span>
+                </button>
+                <div className={styles.accountMenuDivider} />
+                <button
+                  className={styles.accountMenuItem}
+                  onClick={handleSignOut}
+                >
+                  <span className={styles.accountMenuLabel}>Sign Out</span>
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            className={styles.connectWalletButton}
+            onClick={() => openConnectModal(true)}
+          >
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M17 8V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <rect x="13" y="9" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              <circle cx="15" cy="11" r="1" fill="currentColor"/>
+            </svg>
+            <span>Connect Wallet</span>
+          </button>
+        )}
       </div>
 
-      {/* Azura Chat Modal */}
+      {/* Modals */}
       <AzuraChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      {isAvatarSelectorOpen && (
+        <AvatarSelectorModal
+          onClose={() => setIsAvatarSelectorOpen(false)}
+          onAvatarSelected={handleAvatarSelected}
+        />
+      )}
+      {isUsernameChangeModalOpen && username && (
+        <UsernameChangeModal
+          onClose={() => setIsUsernameChangeModalOpen(false)}
+          currentUsername={username}
+          onUsernameChanged={handleUsernameChanged}
+        />
+      )}
     </nav>
   );
 };

@@ -318,6 +318,90 @@
   flex-shrink: 0;
 }
 
+/* Account Section */
+.accountSection {
+  position: relative;
+  width: 100%;
+}
+
+.accountButton {
+  width: 100%;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1D33;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 4px 4px 0 #1A1D33;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accountButton:hover {
+  background: rgba(81, 104, 255, 0.08);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1A1D33;
+}
+
+.accountAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 2px solid #1A1D33;
+  flex-shrink: 0;
+}
+
+.accountUsername {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountMenu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #1A1D33;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.accountMenuItem {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1D33;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.accountMenuItem:hover {
+  background: rgba(81, 104, 255, 0.1);
+}
+
+.accountMenuLabel {
+  display: block;
+}
+
+.accountMenuDivider {
+  height: 2px;
+  background: rgba(26, 29, 51, 0.1);
+}
+
 /* Scrollbar styling */
 .sideNav::-webkit-scrollbar {
   width: 6px;
