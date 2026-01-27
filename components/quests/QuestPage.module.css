@@ -1,7 +1,7 @@
 .questPageContainer {
   width: 100%;
-  min-height: 100vh;
-  padding: 40px 24px 40px;
+  min-height: auto;
+  padding: 0;
   max-width: 1180px;
   margin: 0 auto;
   display: flex;
@@ -956,7 +956,7 @@
 
 @media (max-width: 768px) {
   .questPageContainer {
-    padding: 32px 16px 32px;
+    padding: 0;
   }
 
   .hero {

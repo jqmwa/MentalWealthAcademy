@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react'
 const TRACKS = [
   { name: 'Plastic Love', url: '/Plastic Love.mp3' },
   { name: 'Heavenly Drift', url: '/Heavenly Drift.mp3' },
-  { name: 'Crumbling World', url: '/Crumbling World.wav' },
   { name: 'Digital World', url: '/Digital World.wav' },
   { name: 'Mental Wealth Academy', url: '/Mental Wealth Academy 精神財富学院.wav' },
 ]
@@ -203,7 +202,7 @@ export default function AudioPlayer() {
       ref={playerContainerRef}
       style={{
         width: '100%',
-        background: '#FBF8FF',
+        background: '#ffffff',
         borderBottom: '2px solid #000000',
       }}
     >

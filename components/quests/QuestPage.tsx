@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from './QuestPage.module.css';
 import QuestDetailSidebar from './QuestDetailSidebar';
 import CurrenciesModal from './CurrenciesModal';
+import { QuestsPageSkeleton } from '@/components/skeleton/Skeleton';
 
 // Info Popup Component
 const InfoPopup: React.FC<{
@@ -152,9 +153,15 @@ const QuestPage: React.FC = () => {
   const [isCurrenciesModalOpen, setIsCurrenciesModalOpen] = useState(false);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isContentLoading, setIsContentLoading] = useState(true);
 
   useEffect(() => {
     setIsLoaded(true);
+    // Show skeleton briefly, then reveal content
+    const timer = setTimeout(() => {
+      setIsContentLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
   }, []);
 
   // Filter quests based on active tab and search query
@@ -242,6 +249,14 @@ const QuestPage: React.FC = () => {
 
     return filtered;
   }, [activeTab, searchQuery]);
+
+  if (isContentLoading) {
+    return (
+      <div className={styles.questPageContainer}>
+        <QuestsPageSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.questPageContainer}>

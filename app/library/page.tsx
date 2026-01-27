@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Navbar from '@/components/navbar/Navbar';
+import SideNavigation from '@/components/side-navigation/SideNavigation';
 import BookCard from '@/components/book-card/BookCard';
 import PromptCard from '@/components/prompt-card/PromptCard';
 import SealedLibrary from '@/components/sealed-library/SealedLibrary';
 import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
 import MintModal from '@/components/mint-modal/MintModal';
+import { LibraryPageSkeleton } from '@/components/skeleton/Skeleton';
 import styles from './page.module.css';
 
 // Library Info Modal Component
@@ -246,12 +247,18 @@ Focus on clarity, persuasiveness, and professional presentation that gets result
 export default function Library() {
   const [activeTab, setActiveTab] = useState<'journey' | 'prompts' | 'curated' | 'community'>('journey');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isContentLoading, setIsContentLoading] = useState(true);
   const [showAzuraModal, setShowAzuraModal] = useState(false);
   const [showMintModal, setShowMintModal] = useState(false);
   const tabsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
+    // Show skeleton briefly, then reveal content
+    const timer = setTimeout(() => {
+      setIsContentLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
   }, []);
 
   const closeAzuraModal = useCallback(() => {
@@ -301,41 +308,49 @@ export default function Library() {
 
   return (
     <>
-      <Navbar />
-      <main className={styles.page}>
-        <section className={styles.papersSection}>
-          <div className={styles.tabs} ref={tabsRef}>
-            <button
-              className={`${styles.tabCard} ${activeTab === 'journey' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('journey')}
-              type="button"
-              aria-pressed={activeTab === 'journey'}
-            >
-              <span className={styles.tabTitle}>Chapters</span>
-            </button>
+      <div className={styles.pageLayout}>
+        <SideNavigation />
+        <main className={styles.page}>
+          <section className={styles.papersSection}>
+            {isContentLoading ? (
+              <LibraryPageSkeleton />
+            ) : (
+              <>
+                <div className={styles.tabs} ref={tabsRef}>
+                  <button
+                    className={`${styles.tabCard} ${activeTab === 'journey' ? styles.tabCardActive : ''}`}
+                    onClick={() => setActiveTab('journey')}
+                    type="button"
+                    aria-pressed={activeTab === 'journey'}
+                  >
+                    <span className={styles.tabTitle}>Chapters</span>
+                  </button>
 
-            <button
-              className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('curated')}
-              type="button"
-              aria-pressed={activeTab === 'curated'}
-            >
-              <span className={styles.tabTitle}>Readings</span>
-            </button>
+                  <button
+                    className={`${styles.tabCard} ${activeTab === 'curated' ? styles.tabCardActive : ''}`}
+                    onClick={() => setActiveTab('curated')}
+                    type="button"
+                    aria-pressed={activeTab === 'curated'}
+                  >
+                    <span className={styles.tabTitle}>Readings</span>
+                  </button>
 
-            <button
-              className={`${styles.tabCard} ${activeTab === 'prompts' ? styles.tabCardActive : ''}`}
-              onClick={() => setActiveTab('prompts')}
-              type="button"
-              aria-pressed={activeTab === 'prompts'}
-            >
-              <span className={styles.tabTitle}>Tasks</span>
-            </button>
-          </div>
+                  <button
+                    className={`${styles.tabCard} ${activeTab === 'prompts' ? styles.tabCardActive : ''}`}
+                    onClick={() => setActiveTab('prompts')}
+                    type="button"
+                    aria-pressed={activeTab === 'prompts'}
+                  >
+                    <span className={styles.tabTitle}>Tasks</span>
+                  </button>
+                </div>
 
-          {renderContent()}
-        </section>
-      </main>
+                {renderContent()}
+              </>
+            )}
+          </section>
+        </main>
+      </div>
       <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
       <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
 

@@ -1,19 +1,54 @@
 .main {
   min-height: 100vh;
   /* Background removed to show global body background (same as quests page) */
+  margin-left: 272px; /* Sidebar width (265px) + shadow (4px) + gap */
+}
+
+.pageLayout {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+  gap: 24px;
+  align-items: flex-start;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  padding: 40px 20px;
   gap: 20px;
+  flex: 1;
+  min-width: 0;
   max-width: 680px;
   width: 100%;
-  margin: 0 auto;
   overflow-x: hidden;
-  padding-top: max(40px, calc(40px + 60px));
   padding-bottom: 20px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 .welcomeHeading {
@@ -24,13 +59,44 @@
   margin: 0;
   margin-bottom: var(--space-sm);
   line-height: 1.2;
+  opacity: 0;
+  animation: textReveal 0.6s ease forwards;
 }
 
-@media (max-width: 900px) {
-  .content {
+.contentLoaded .welcomeHeading {
+  animation-delay: 0s;
+}
+
+.staggeredItem {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.staggeredItem:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.staggeredItem:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.staggeredItem:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    padding-top: 0; /* Sidebar becomes top bar on mobile */
+  }
+
+  .pageLayout {
     padding: 24px 16px;
     gap: 20px;
-    padding-top: var(--space-md); /* ~26px - Golden ratio spacing */
+  }
+
+  .content {
+    max-width: 100%;
     padding-bottom: max(16px, calc(16px + 40px + env(safe-area-inset-bottom)));
   }
 
@@ -44,7 +110,6 @@
 @media (min-width: 768px) {
   .content {
     gap: 28px;
-    padding: 48px 24px;
   }
 
   .welcomeHeading {
@@ -53,9 +118,19 @@
   }
 }
 
+@media (min-width: 769px) {
+  .pageLayout {
+    padding: 48px 32px;
+  }
+}
+
 @media (min-width: 1024px) {
   .content {
     max-width: 720px;
+  }
+
+  .pageLayout {
+    gap: 32px;
   }
 }
 

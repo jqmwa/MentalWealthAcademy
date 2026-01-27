@@ -1,0 +1,740 @@
+/* Skeleton loading styles - Brutalist flat design */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 25%,
+    #f5f5f5 50%,
+    #e8e8e8 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Calendar Days Skeleton */
+.calendarSkeleton {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: space-between;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.calendarDaySkeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  width: calc((100% - 32px) / 5);
+  max-width: 80px;
+  height: 76px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #e0e0e0;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.calendarDayName {
+  width: 28px;
+  height: 10px;
+  margin-bottom: 6px;
+}
+
+.calendarDayDate {
+  width: 24px;
+  height: 22px;
+}
+
+/* Checkin Card Skeleton */
+.checkinSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 20px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.checkinLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkinIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+}
+
+.checkinText {
+  width: 140px;
+  height: 16px;
+}
+
+.checkinRight {
+  width: 20px;
+  height: 20px;
+}
+
+/* Events Carousel Skeleton */
+.eventsSkeleton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.eventsTrack {
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  padding: 4px 12px 12px 4px;
+}
+
+.eventCardSkeleton {
+  flex: 0 0 auto;
+  width: 260px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  overflow: hidden;
+}
+
+.eventImageSkeleton {
+  width: 100%;
+  height: 100px;
+  border-bottom: 3px solid #e0e0e0;
+}
+
+.eventContentSkeleton {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eventTitleSkeleton {
+  width: 80%;
+  height: 18px;
+}
+
+.eventDateSkeleton {
+  width: 60%;
+  height: 14px;
+}
+
+.eventTimeSkeleton {
+  width: 40%;
+  height: 12px;
+}
+
+.eventDescSkeleton {
+  width: 100%;
+  height: 40px;
+}
+
+.eventButtonSkeleton {
+  width: 100%;
+  height: 36px;
+  margin-top: 8px;
+}
+
+/* Surveys Skeleton */
+.surveysSkeleton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.surveysTitleSkeleton {
+  width: 120px;
+  height: 14px;
+}
+
+.surveysGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.surveyCardSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #e0e0e0;
+  min-height: 56px;
+}
+
+.surveyIconSkeleton {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 4px;
+}
+
+.surveyTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.surveyTitleSkeleton {
+  width: 100px;
+  height: 14px;
+}
+
+.surveyMetaSkeleton {
+  width: 70px;
+  height: 12px;
+}
+
+.surveyButtonSkeleton {
+  width: 60px;
+  height: 32px;
+  border-radius: 2px;
+}
+
+/* Events and Surveys Row Skeleton */
+.eventsAndSurveysRowSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .calendarSkeleton {
+    gap: 12px;
+  }
+
+  .calendarDaySkeleton {
+    min-width: 72px;
+    width: calc((100% - 48px) / 5);
+    max-width: 100px;
+    height: 88px;
+  }
+
+  .checkinSkeleton {
+    padding: 14px 24px;
+  }
+
+  .checkinIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .eventCardSkeleton {
+    width: 280px;
+  }
+
+  .eventImageSkeleton {
+    height: 110px;
+  }
+}
+
+@media (max-width: 480px) {
+  .eventCardSkeleton {
+    width: 240px;
+  }
+
+  .eventImageSkeleton {
+    height: 80px;
+  }
+
+  .surveyCardSkeleton {
+    padding: 10px 12px;
+    min-height: 48px;
+  }
+
+  .surveyIconSkeleton {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+}
+
+/* ==================== LIBRARY PAGE SKELETONS ==================== */
+
+.libraryPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Tabs Skeleton */
+.tabsSkeleton {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.tabSkeleton {
+  width: 100px;
+  height: 44px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 #e0e0e0;
+}
+
+/* Books Grid Skeleton */
+.booksGridSkeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.15s;
+}
+
+.bookCardSkeleton {
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  overflow: hidden;
+}
+
+.bookImageSkeleton {
+  width: 100%;
+  height: 160px;
+  border-bottom: 3px solid #e0e0e0;
+}
+
+.bookContentSkeleton {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bookCategorySkeleton {
+  width: 80px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.bookTitleSkeleton {
+  width: 90%;
+  height: 20px;
+}
+
+.bookAuthorSkeleton {
+  width: 60%;
+  height: 14px;
+}
+
+.bookDescSkeleton {
+  width: 100%;
+  height: 48px;
+}
+
+@media (max-width: 768px) {
+  .tabsSkeleton {
+    gap: 8px;
+  }
+
+  .tabSkeleton {
+    width: 80px;
+    height: 40px;
+  }
+
+  .booksGridSkeleton {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ==================== QUESTS PAGE SKELETONS ==================== */
+
+.questsPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Hero Skeleton */
+.heroSkeleton {
+  width: 100%;
+  padding: 40px 48px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #e0e0e0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.heroEyebrowSkeleton {
+  width: 120px;
+  height: 12px;
+  margin-bottom: 12px;
+}
+
+.heroTitleSkeleton {
+  width: 70%;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.heroSubtitleSkeleton {
+  width: 90%;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.heroActionsSkeleton {
+  display: flex;
+  gap: 12px;
+}
+
+.heroButtonSkeleton {
+  width: 120px;
+  height: 44px;
+  border-radius: 4px;
+}
+
+/* Quest Cards Skeleton */
+.questsListSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.15s;
+}
+
+.questCardSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+}
+
+.questCardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.questBadgeSkeleton {
+  width: 100px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.questTitleSkeleton {
+  width: 70%;
+  height: 18px;
+}
+
+.questDescSkeleton {
+  width: 90%;
+  height: 14px;
+}
+
+.questArrowSkeleton {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+/* Main Card Skeleton */
+.mainCardSkeleton {
+  padding: 24px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.mainCardAmountSkeleton {
+  width: 150px;
+  height: 36px;
+  margin-bottom: 8px;
+}
+
+.mainCardLabelSkeleton {
+  width: 180px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.cryptoIconsSkeleton {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cryptoIconSkeleton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .heroSkeleton {
+    padding: 24px;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .heroTitleSkeleton {
+    width: 90%;
+    height: 24px;
+  }
+
+  .heroActionsSkeleton {
+    flex-direction: column;
+  }
+
+  .heroButtonSkeleton {
+    width: 100%;
+  }
+
+  .questCardSkeleton {
+    padding: 12px 16px;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+}
+
+/* ==================== VOTING PAGE SKELETONS ==================== */
+
+.votingPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Voting Hero with Stats */
+.votingHeroSkeleton {
+  width: 100%;
+  padding: 40px 48px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #e0e0e0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.votingHeroContentSkeleton {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.votingHeroLeftSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.votingHeroRightSkeleton {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 200px;
+}
+
+.statCardSkeleton {
+  padding: 16px;
+  background: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLabelSkeleton {
+  width: 80px;
+  height: 12px;
+}
+
+.statValueSkeleton {
+  width: 100px;
+  height: 24px;
+}
+
+/* Banner Image Skeleton */
+.bannerImageSkeleton {
+  width: clamp(200px, 35%, 400px);
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 4px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.15s;
+}
+
+/* Proposals Grid Skeleton */
+.proposalsGridSkeleton {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.25s;
+}
+
+.proposalCardSkeleton {
+  padding: 20px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.proposalHeaderSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.proposalTitleSkeleton {
+  width: 60%;
+  height: 20px;
+}
+
+.proposalStatusSkeleton {
+  width: 80px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.proposalBodySkeleton {
+  width: 100%;
+  height: 60px;
+}
+
+.proposalFooterSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.proposalMetaSkeleton {
+  width: 150px;
+  height: 14px;
+}
+
+.proposalButtonSkeleton {
+  width: 100px;
+  height: 36px;
+  border-radius: 4px;
+}
+
+@media (max-width: 1024px) {
+  .votingHeroContentSkeleton {
+    flex-direction: column;
+  }
+
+  .votingHeroRightSkeleton {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .votingHeroSkeleton {
+    padding: 24px;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .votingHeroRightSkeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .bannerImageSkeleton {
+    width: clamp(180px, 55%, 300px);
+    height: 100px;
+  }
+
+  .proposalCardSkeleton {
+    padding: 16px;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .proposalHeaderSkeleton {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .proposalFooterSkeleton {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .proposalButtonSkeleton {
+    width: 100%;
+  }
+}

@@ -380,6 +380,6 @@
 /* Desktop large screens */
 @media (min-width: 1024px) {
   .card {
-    max-width: 600px;
+    max-width: 100%;
   }
 }

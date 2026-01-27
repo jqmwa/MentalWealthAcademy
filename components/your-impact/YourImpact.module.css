@@ -1,209 +1,137 @@
-.content {
+/* YourImpact - Brutalist Flat Design */
+
+.container {
   width: 100%;
+  background: #ffffff;
+  border: 3px solid #1A1D33;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #1A1D33;
+  overflow: hidden;
+}
+
+.header {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--color-primary);
+  border-bottom: 3px solid #1A1D33;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
 }
 
 .section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-right: 2px solid rgba(26, 29, 51, 0.1);
 }
 
 .section:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.sectionHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  border-right: none;
 }
 
 .sectionTitle {
   font-family: var(--font-primary);
-  font-size: 24px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-dark);
-  line-height: 1.3;
-  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px 0;
 }
 
-.sectionDescription {
-  font-family: var(--font-primary);
-  font-size: 16px;
-  font-weight: var(--font-weight-regular);
-  color: rgba(0, 0, 0, 0.7);
-  line-height: 1.5;
-  margin: 0;
-}
-
-.metricsContainer {
+.metricsList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 8px;
 }
 
 .metric {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: #f4f5fe;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  flex-direction: column;
+  gap: 2px;
 }
 
 .metricLabel {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: rgba(0, 0, 0, 0.7);
+  font-size: 11px;
+  font-weight: 500;
+  color: #666666;
 }
 
 .metricValue {
   font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
-}
-
-.statusContainer {
-  margin-top: 8px;
-}
-
-.statusBadge {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  background: #f4f5fe;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.statusLabel {
-  font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-dark);
+  font-size: 13px;
+  font-weight: 700;
+  color: #1A1D33;
 }
 
 .statusTags {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
+  margin-top: 4px;
 }
 
-.statusIntensity,
-.statusUrgency {
+.tag {
   font-family: var(--font-primary);
-  font-size: 12px;
-  font-weight: var(--font-weight-regular);
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-primary);
   padding: 4px 8px;
   background: rgba(81, 104, 255, 0.1);
-  border-radius: 6px;
-  display: inline-block;
-  width: fit-content;
-}
-
-.proposalsContainer {
-  margin-top: 8px;
-}
-
-.proposalsHeader {
-  margin-bottom: 12px;
-}
-
-.proposalsTitle {
-  font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-dark);
-}
-
-.proposalsList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.proposalItem {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: #f4f5fe;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-}
-
-.proposalItem:hover {
-  transform: translateX(4px);
-  border-color: var(--color-primary);
-}
-
-.proposalContent {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-
-.proposalTitle {
-  font-family: var(--font-primary);
-  font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-dark);
-}
-
-.proposalStatus {
-  font-family: var(--font-primary);
-  font-size: 12px;
-  font-weight: var(--font-weight-regular);
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.proposalArrow {
-  font-size: 20px;
-  color: var(--color-primary);
-  font-weight: bold;
-  margin-left: 12px;
-  transition: transform 0.2s ease;
-}
-
-.proposalItem:hover .proposalArrow {
-  transform: translateX(4px);
+  border: 1px solid rgba(81, 104, 255, 0.3);
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 @media (max-width: 768px) {
   .content {
-    gap: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    border-right: none;
+    border-bottom: 2px solid rgba(26, 29, 51, 0.1);
+    padding: 12px 16px;
+  }
+
+  .section:last-child {
+    border-bottom: none;
+  }
+
+  .header {
+    padding: 12px 16px;
+  }
+
+  .title {
+    font-size: 12px;
   }
 
   .sectionTitle {
-    font-size: 20px;
+    font-size: 10px;
+    margin-bottom: 8px;
   }
 
-  .sectionDescription {
-    font-size: 14px;
+  .metricLabel {
+    font-size: 10px;
   }
 
-  .metric {
-    padding: 10px 12px;
-  }
-
-  .metricLabel,
   .metricValue {
-    font-size: 13px;
+    font-size: 12px;
   }
 }

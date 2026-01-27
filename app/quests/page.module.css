@@ -1,0 +1,28 @@
+/* Quests Page Layout */
+
+.pageLayout {
+  margin-left: 265px; /* Account for fixed sidebar width */
+  min-height: 100vh;
+}
+
+.content {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+@media (max-width: 900px) {
+  .pageLayout {
+    margin-left: 0; /* Remove margin when sidebar is hidden */
+  }
+
+  .pageLayout > nav:first-child {
+    display: none;
+  }
+
+  .content {
+    padding: 24px 16px;
+    padding-top: var(--space-md);
+  }
+}

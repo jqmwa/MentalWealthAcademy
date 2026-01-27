@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { providers } from 'ethers';
-import Navbar from '@/components/navbar/Navbar';
+import SideNavigation from '@/components/side-navigation/SideNavigation';
+import YourImpact from '@/components/your-impact/YourImpact';
 import AngelMintSection from '@/components/angel-mint-section/AngelMintSection';
 import MintModal from '@/components/mint-modal/MintModal';
 import StillTutorial, { TutorialStep } from '@/components/still-tutorial/StillTutorial';
@@ -14,8 +15,8 @@ import ProposalCard from '@/components/proposal-card/ProposalCard';
 import ProposalDetailsModal from '@/components/proposal-card/ProposalDetailsModal';
 import SubmitProposalModal from '@/components/voting/SubmitProposalModal';
 import GuyTutorial, { GuyStep } from '@/components/voting/GuyTutorial';
-import PencilLoader from '@/components/landing/PencilLoader';
-import { 
+import { VotingPageSkeleton, ProposalCardSkeleton } from '@/components/skeleton/Skeleton';
+import {
   fetchProposal,
   formatTokenAmount,
   ProposalStatus
@@ -120,11 +121,17 @@ export default function VotingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isContentLoading, setIsContentLoading] = useState(true);
   const [showMintModal, setShowMintModal] = useState(false);
   const [showGuyDialogue, setShowGuyDialogue] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
+    // Show skeleton briefly, then reveal content
+    const timer = setTimeout(() => {
+      setIsContentLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -208,7 +215,6 @@ export default function VotingPage() {
 
   return (
     <>
-      <Navbar />
       <StillTutorial
         steps={getTutorialSteps()}
         isOpen={showTutorial}
@@ -217,8 +223,14 @@ export default function VotingPage() {
         title="Voting Guide"
         showProgress={true}
       />
-      <main className={styles.page}>
+      <div className={styles.pageLayout}>
+        <SideNavigation />
+        <main className={styles.page}>
         <div className={styles.content}>
+          {isContentLoading ? (
+            <VotingPageSkeleton />
+          ) : (
+          <>
           <div className={`${styles.hero} ${isLoaded ? styles.heroLoaded : ''}`}>
             <header className={styles.header}>
               <div className={styles.headerContent}>
@@ -264,6 +276,9 @@ export default function VotingPage() {
             </header>
           </div>
 
+          {/* Your Impact Section */}
+          <YourImpact />
+
           {/* Hero Banner Image - Click to open Guy Dialogue */}
           <img
             src="https://i.imgur.com/9Wvq3Rm.png"
@@ -276,7 +291,11 @@ export default function VotingPage() {
           {/* Proposals Section */}
           <section className={styles.proposalsSection}>
             {loading ? (
-              <PencilLoader hidden={false} />
+              <div className={styles.proposalsGrid}>
+                {[...Array(3)].map((_, i) => (
+                  <ProposalCardSkeleton key={i} />
+                ))}
+              </div>
             ) : proposals.length === 0 ? (
               <div className={styles.emptyState}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -360,8 +379,11 @@ export default function VotingPage() {
               </div>
             )}
           </section>
+          </>
+          )}
         </div>
       </main>
+      </div>
       <AngelMintSection onOpenMintModal={() => setShowMintModal(true)} />
       <MintModal isOpen={showMintModal} onClose={() => setShowMintModal(false)} />
 
