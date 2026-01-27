@@ -1,7 +1,6 @@
 import Image from 'next/image';
-import { LandingAuthCard } from './LandingAuthCard';
 import { LandingScene } from './LandingScene';
-import { MobileEnterButton } from './MobileEnterButton';
+import { HeroSection } from './HeroSection';
 import { DonationPopup } from './DonationPopup';
 import { PatternTextSection } from './PatternTextSection';
 import { FeaturesSection } from './FeaturesSection';
@@ -15,36 +14,8 @@ const LandingPage = () => {
       {/* 3D Scene - Client component, loads after LCP */}
       <LandingScene />
 
-      {/* Mobile-only Enter Academy Button - Client component */}
-      <MobileEnterButton />
-
-      {/* Cards Container - Mix of server and client rendered */}
-      <div className={styles.cardsContainer}>
-        {/* Promotional Card - Server rendered (static content) */}
-        <div className={styles.promoCard}>
-          <div className={styles.promoLogoContainer}>
-            <Image
-              src="/icons/spacey2klogo.png"
-              alt="Logo"
-              width={150}
-              height={138}
-              className={styles.promoLogoImage}
-              priority
-            />
-          </div>
-          <div className={styles.promoContent}>
-            <div className={styles.promoText}>
-              <h2 className={styles.promoTitle}>THE NEXT GEN MICRO-UNIVERSITY</h2>
-              <p className={styles.promoDescription}>
-                The most complete digital AI super-tool for fast-paced, transparent education, a transformative academic research.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Login Card - Client component (interactive) */}
-        <LandingAuthCard />
-      </div>
+      {/* Hero Section - Centered headline and CTA */}
+      <HeroSection />
 
       {/* Company Logos Section - Server rendered */}
       <div className={styles.companyLogosSection}>

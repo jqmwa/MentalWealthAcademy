@@ -6,6 +6,106 @@
   overflow-y: auto;
 }
 
+/* Hero Section - Centered over 3D scene */
+.heroSection {
+  position: absolute;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 24px;
+  pointer-events: auto;
+}
+
+.heroLogo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 24px;
+}
+
+.heroHeadline {
+  font-family: var(--font-primary);
+  font-size: 2.618rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: white;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.heroSubtext {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+}
+
+.heroButton {
+  background-color: var(--color-primary);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-button);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(81, 104, 255, 0.3);
+}
+
+.heroButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(81, 104, 255, 0.5);
+  background-color: var(--color-primary-hover);
+}
+
+.heroButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Hero responsive styles */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 0 20px;
+  }
+
+  .heroLogo {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+
+  .heroHeadline {
+    font-size: 1.618rem;
+    margin-bottom: 16px;
+  }
+
+  .heroSubtext {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .heroButton {
+    padding: 12px 24px;
+    font-size: 0.875rem;
+  }
+}
+
 .loginHeader {
   display: flex;
   align-items: center;
@@ -1666,17 +1766,17 @@
 }
 
 .opportunityListItemTitle {
-  font-family: var(--font-primary);
-  font-size: 18px;
-  line-height: 1.2;
-  font-weight: var(--font-weight-bold);
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-dark);
   margin: 0 0 16px 0;
 }
 
 @media (min-width: 768px) {
   .opportunityListItemTitle {
-    font-size: 20px;
+    font-size: 1rem;
     margin-bottom: 12px;
   }
 }
@@ -1686,10 +1786,10 @@
 }
 
 .opportunityListItemText p {
-  font-family: var(--font-secondary);
+  font-family: var(--font-primary);
   font-weight: var(--font-weight-light);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.6;
   color: var(--color-text-dark);
   margin: 0;
   word-wrap: break-word;
@@ -1698,8 +1798,8 @@
 
 @media (min-width: 768px) {
   .opportunityListItemText p {
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.6;
     max-width: 100%;
   }
 }
@@ -1720,10 +1820,11 @@
 }
 
 .opportunityTitle {
-  font-family: var(--font-primary);
-  font-size: 24px;
-  line-height: 1;
-  font-weight: var(--font-weight-bold);
+  font-family: var(--font-secondary);
+  font-size: 1.618rem;
+  line-height: 1.2;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
   color: var(--color-text-dark);
   margin: 0;
   padding: 0 16px;
@@ -1731,7 +1832,7 @@
 
 @media (min-width: 768px) {
   .opportunityTitle {
-    font-size: 28px;
+    font-size: 2.618rem;
     padding-left: 52px;
   }
 }
@@ -1763,10 +1864,11 @@
 }
 
 .opportunityTextTop p {
-  font-family: var(--font-secondary);
+  font-family: var(--font-primary);
   font-weight: var(--font-weight-light);
+  font-size: 0.875rem;
   color: var(--color-text-dark);
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -1826,10 +1928,11 @@
 }
 
 .opportunityTextBottom p {
-  font-family: var(--font-secondary);
+  font-family: var(--font-primary);
   font-weight: var(--font-weight-light);
+  font-size: 0.875rem;
   color: var(--color-text-dark);
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
 }
 
