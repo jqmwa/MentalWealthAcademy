@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import styles from './SideNavigation.module.css';
-import AudioPlayer from '../audio-player/AudioPlayer';
+import AzuraChat from '../azura-chat/AzuraChat';
 
 interface NavItem {
   id: string;
@@ -29,7 +29,7 @@ const navSections: NavSection[] = [
     label: 'Featured',
     items: [
       { id: 'home', label: 'Home', href: '/home', icon: '/icons/Home Icon.svg' },
-      { id: 'ai-coach', label: 'AI Coach', href: '/coach', icon: '/icons/ai-coach.png', badge: 'New', badgeType: 'highlight' },
+      { id: 'ai-coach', label: 'Azura AI', href: '/coach', icon: '/icons/ai-coach.png', badge: 'New', badgeType: 'highlight' },
     ],
   },
   {
@@ -45,7 +45,7 @@ const navSections: NavSection[] = [
     id: 'tools',
     label: 'Tools',
     items: [
-      { id: 'community', label: 'Community', href: '/community', icon: '/icons/World Icon.svg' },
+      { id: 'community', label: 'Community', href: 'https://mentalwealthacademy.net', icon: '/icons/World Icon.svg' },
       { id: 'podcasts', label: 'Podcasts', href: '/podcasts', icon: '/icons/Library Icon.svg' },
       { id: 'videos', label: 'Videos', href: '/videos', icon: '/icons/Eye.svg' },
       { id: 'courses', label: 'Courses', href: '/courses', icon: '/icons/Graduate.svg' },
@@ -67,8 +67,8 @@ const navSections: NavSection[] = [
 const SideNavigation: React.FC = () => {
   const pathname = usePathname();
   const { address, isConnected } = useAccount();
-  const [searchQuery, setSearchQuery] = useState('');
   const [shardCount, setShardCount] = useState<number | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Fetch user data for shard count
   useEffect(() => {
@@ -117,26 +117,6 @@ const SideNavigation: React.FC = () => {
         </button>
       </div>
 
-      {/* Music Player */}
-      <div className={styles.musicPlayerWrapper}>
-        <AudioPlayer />
-      </div>
-
-      {/* Search Bar */}
-      <div className={styles.searchBar}>
-        <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M17.5 17.5L12.5 12.5M14.167 8.333A5.833 5.833 0 112.5 8.333a5.833 5.833 0 0111.667 0z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className={styles.searchInput}
-        />
-        <span className={styles.searchShortcut}>⌘K</span>
-      </div>
-
       {/* Navigation Sections */}
       <div className={styles.navSections}>
         {navSections.map((section) => (
@@ -146,25 +126,48 @@ const SideNavigation: React.FC = () => {
             </div>
             <div className={styles.sectionItems}>
               {section.items.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={`${styles.navItem} ${isActive(item.href) ? styles.navItemActive : ''}`}
-                >
-                  <Image
-                    src={item.icon}
-                    alt=""
-                    width={20}
-                    height={20}
-                    className={styles.navItemIcon}
-                  />
-                  <span className={styles.navItemLabel}>{item.label}</span>
-                  {item.badge && (
-                    <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </Link>
+                item.id === 'ai-coach' ? (
+                  <button
+                    key={item.id}
+                    onClick={() => setIsChatOpen(true)}
+                    className={`${styles.navItem} ${styles.navItemButton}`}
+                  >
+                    <Image
+                      src={item.icon}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={styles.navItemIcon}
+                    />
+                    <span className={styles.navItemLabel}>{item.label}</span>
+                    {item.badge && (
+                      <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={`${styles.navItem} ${isActive(item.href) ? styles.navItemActive : ''}`}
+                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    <Image
+                      src={item.icon}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={styles.navItemIcon}
+                    />
+                    <span className={styles.navItemLabel}>{item.label}</span>
+                    {item.badge && (
+                      <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                )
               ))}
             </div>
           </div>
@@ -198,6 +201,9 @@ const SideNavigation: React.FC = () => {
           <span>Connect Wallet</span>
         </button>
       </div>
+
+      {/* Azura Chat Modal */}
+      <AzuraChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </nav>
   );
 };

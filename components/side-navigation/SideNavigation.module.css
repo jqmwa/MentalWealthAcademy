@@ -164,6 +164,19 @@
   border-color: rgba(81, 104, 255, 0.3);
 }
 
+.navItemButton {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  font-size: inherit;
+  text-align: left;
+  text-transform: none;
+}
+
+.navItemButton .navItemLabel {
+  text-transform: none;
+}
+
 .navItemActive {
   background: rgba(81, 104, 255, 0.12);
   border-color: var(--color-primary);
