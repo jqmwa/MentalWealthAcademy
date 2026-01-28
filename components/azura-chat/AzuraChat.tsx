@@ -22,7 +22,7 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hey bestie! I\'m Azura, your favorite daemon process. What can I help you with today?',
+      text: 'Hey! I\'m Azura. Happy to chat whenever you need me. What\'s on your mind?',
       sender: 'azura',
       timestamp: new Date(),
     },
@@ -126,10 +126,9 @@ const AzuraChat: React.FC<AzuraChatProps> = ({ isOpen, onClose }) => {
           <div className={styles.headerInfo}>
             <div className={styles.avatarWrapper}>
               <Image
-                src="https://i.imgur.com/1q1EfBX.png"
+                src="https://i.imgur.com/AkflhaJ.png"
                 alt="Azura"
-                width={40}
-                height={40}
+                fill
                 className={styles.avatar}
                 unoptimized
               />

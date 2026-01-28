@@ -6,27 +6,24 @@ import styles from './DaemonTerminal.module.css';
 
 type Mode = 'rewrite' | 'tone' | 'critique' | 'summarize';
 type Tone = 'concise' | 'warm' | 'formal' | 'friendly' | 'direct';
-type View = 'toolGrid' | 'terminal';
+type View = 'toolGrid' | 'terminal' | 'editAgents';
+type Agent = 'azura' | 'guy';
 
-const ICON_REVISER = '/icons/bookicon.svg';
-const ICON_SOON_1 = '/icons/Survey.svg';
-const ICON_SOON_2 = '/icons/Eye.svg';
-const ICON_SOON_3 = '/icons/ethlogo.svg';
 const ICON_ARROW = '/icons/Arrow.svg';
 
 // Compound Components
-function ToolCard({ 
-  icon, 
-  title, 
-  desc, 
-  disabled = false, 
+function ToolCard({
+  title,
+  desc,
+  icon,
+  disabled = false,
   variant,
-  onClick 
-}: { 
-  icon: string; 
-  title: string; 
-  desc: string; 
-  disabled?: boolean; 
+  onClick
+}: {
+  title: string;
+  desc: string;
+  icon?: string;
+  disabled?: boolean;
   variant?: string;
   onClick?: () => void;
 }) {
@@ -38,9 +35,15 @@ function ToolCard({
       disabled={disabled}
     >
       <div className={styles.toolInner}>
-        <div className={styles.toolIcon}>
-          <Image src={icon} alt="" width={32} height={32} />
-        </div>
+        {icon && (
+          <Image
+            src={icon}
+            alt=""
+            width={24}
+            height={24}
+            className={styles.toolIcon}
+          />
+        )}
         <h1 className={styles.toolTitle}>{title}</h1>
         <div className={styles.toolDesc}>{desc}</div>
       </div>
@@ -112,15 +115,34 @@ export function DaemonTerminal() {
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
 
   const modeCards = useMemo(
     () =>
       [
-        { id: 'rewrite' as const, title: 'Reviser', desc: 'Polish and organize.' },
+        { id: 'rewrite' as const, title: 'Polish', desc: 'Clean up and organize.' },
         { id: 'tone' as const, title: 'Tone Shift', desc: 'Change voice, keep meaning.' },
         { id: 'critique' as const, title: 'Critique', desc: 'Clarity + structure notes.' },
         { id: 'summarize' as const, title: 'Summarize', desc: 'Key points + next steps.' },
       ],
+    []
+  );
+
+  const agents = useMemo(
+    () => [
+      {
+        id: 'azura' as const,
+        name: 'Azura',
+        desc: 'Warm and supportive AI companion focused on emotional wellness.',
+        avatar: 'https://i.imgur.com/1q1EfBX.png',
+      },
+      {
+        id: 'guy' as const,
+        name: 'Guy',
+        desc: 'Direct and practical AI assistant for productivity and clarity.',
+        avatar: 'https://i.imgur.com/9Wvq3Rm.png',
+      },
+    ],
     []
   );
 
@@ -166,7 +188,7 @@ export function DaemonTerminal() {
         </div>
         <div className={styles.headerTitle}>Mental Wealth AI</div>
         <div className={styles.headerRight}>
-          {view === 'terminal' ? (
+          {view !== 'toolGrid' ? (
             <button
               type="button"
               className={styles.backButton}
@@ -192,30 +214,30 @@ export function DaemonTerminal() {
         <div className={styles.toolGridWrap}>
           <div className={styles.toolGrid}>
             <ToolCard
-              icon={ICON_REVISER}
-              title="Reviser"
-              desc="Rewrite drafts with clarity and tone."
+              title="Text Helper"
+              desc="Polish your drafts with ease."
+              icon="/icons/Mental Health Icon.svg"
               variant="toolCardReviser"
               onClick={() => setView('terminal')}
             />
             <ToolCard
-              icon={ICON_SOON_1}
-              title="Weekly Reflection"
-              desc="Structure your contributions to the community."
-              variant="toolCardWeeklyReflection"
-              disabled
+              title="Edit Agents"
+              desc="Configure your AI companions."
+              icon="/icons/daemon.svg"
+              variant="toolCardEditAgents"
+              onClick={() => setView('editAgents')}
             />
             <ToolCard
-              icon={ICON_SOON_2}
-              title="Share sheets"
+              title="Share Sheets"
               desc="Shared spreadsheets for MWA researchers."
+              icon="/icons/bookicon.svg"
               variant="toolCardShareSheets"
               disabled
             />
             <ToolCard
-              icon={ICON_SOON_3}
               title="Dream Reader"
               desc="Study your unique Daemon."
+              icon="/icons/Eye.svg"
               variant="toolCardDreamReader"
               disabled
             />
@@ -318,6 +340,52 @@ export function DaemonTerminal() {
 
               {error && <div className={styles.error}>{error}</div>}
             </div>
+          </div>
+        </div>
+      )}
+
+      {view === 'editAgents' && (
+        <div className={styles.centerPanelEnter}>
+          <div className={styles.centerPanel}>
+            <div className={styles.agentHeader}>
+              <h2 className={styles.agentTitle}>Select an Agent to Configure</h2>
+              <p className={styles.agentSubtitle}>Choose your AI companion to customize their behavior and personality.</p>
+            </div>
+            <div className={styles.agentGrid}>
+              {agents.map((agent) => (
+                <button
+                  key={agent.id}
+                  type="button"
+                  className={`${styles.agentCard} ${selectedAgent === agent.id ? styles.agentCardActive : ''}`}
+                  onClick={() => setSelectedAgent(agent.id)}
+                >
+                  <div className={styles.agentAvatar}>
+                    <Image
+                      src={agent.avatar}
+                      alt={agent.name}
+                      width={64}
+                      height={64}
+                    />
+                  </div>
+                  <div className={styles.agentInfo}>
+                    <h3 className={styles.agentName}>{agent.name}</h3>
+                    <p className={styles.agentDesc}>{agent.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {selectedAgent && (
+              <div className={styles.agentConfigSection}>
+                <div className={styles.agentConfigHeader}>
+                  <h3 className={styles.agentConfigTitle}>
+                    Configuring {agents.find(a => a.id === selectedAgent)?.name}
+                  </h3>
+                </div>
+                <div className={styles.agentConfigPlaceholder}>
+                  Agent configuration options coming soon.
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
