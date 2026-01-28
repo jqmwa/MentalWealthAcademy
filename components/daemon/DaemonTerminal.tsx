@@ -107,7 +107,7 @@ function Button({
 }
 
 export function DaemonTerminal() {
-  const [view, setView] = useState<View>('terminal');
+  const [view, setView] = useState<View>('toolGrid');
   const [mode, setMode] = useState<Mode>('rewrite');
   const [tone, setTone] = useState<Tone>('warm');
   const [contextEmail, setContextEmail] = useState('');

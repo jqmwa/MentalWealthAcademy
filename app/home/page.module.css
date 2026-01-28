@@ -84,10 +84,10 @@
   animation-delay: 0.3s;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .main {
     margin-left: 0;
-    padding-top: 0; /* Sidebar becomes top bar on mobile */
+    padding-top: 66px; /* Account for mobile top bar (60px + 6px shadow) */
   }
 
   .pageLayout {

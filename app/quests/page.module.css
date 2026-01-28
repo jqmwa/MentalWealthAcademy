@@ -14,15 +14,11 @@
 
 @media (max-width: 900px) {
   .pageLayout {
-    margin-left: 0; /* Remove margin when sidebar is hidden */
-  }
-
-  .pageLayout > nav:first-child {
-    display: none;
+    margin-left: 0;
+    padding-top: 66px; /* Account for mobile top bar (60px + 6px shadow) */
   }
 
   .content {
     padding: 24px 16px;
-    padding-top: var(--space-md);
   }
 }

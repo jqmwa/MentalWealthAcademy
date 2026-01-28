@@ -51,9 +51,9 @@ const navSections: NavSection[] = [
     items: [
       { id: 'community', label: 'Community', href: 'https://mentalwealthacademy.net', icon: '/icons/World Icon.svg' },
       { id: 'podcasts', label: 'Podcasts', href: '/podcasts', icon: '/icons/Library Icon.svg' },
-      { id: 'videos', label: 'Videos', href: '/videos', icon: '/icons/Eye.svg' },
-      { id: 'courses', label: 'Courses', href: '/courses', icon: '/icons/Graduate.svg' },
+      { id: 'agents', label: 'Agents', href: '/agents', icon: '/icons/daemon.svg' },
       { id: 'surveys', label: 'Surveys', href: '/surveys', icon: '/icons/Survey.svg' },
+      { id: 'livestream', label: 'Livestream', href: '/livestream', icon: '/icons/livestream.svg' },
     ],
   },
   {
@@ -61,9 +61,9 @@ const navSections: NavSection[] = [
     label: 'Manage',
     items: [
       { id: 'teams', label: 'Teams', href: '/teams', icon: '/icons/Venetian carnival.svg' },
-      { id: 'agents', label: 'Agents', href: '/agents', icon: '/icons/daemon.svg' },
+      { id: 'videos', label: 'Videos', href: '/videos', icon: '/icons/Eye.svg' },
       { id: 'files', label: 'Files', href: '/files', icon: '/icons/bookicon.svg' },
-      { id: 'apps', label: 'Apps', href: '/apps', icon: '/icons/Teleport.svg' },
+      { id: 'courses', label: 'Courses', href: '/courses', icon: '/icons/Graduate.svg' },
     ],
   },
 ];
@@ -81,7 +81,9 @@ const SideNavigation: React.FC = () => {
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const [isUsernameChangeModalOpen, setIsUsernameChangeModalOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Fetch user data
   useEffect(() => {
@@ -137,6 +139,29 @@ const SideNavigation: React.FC = () => {
     }
   }, [isAccountMenuOpen]);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   const handleAvatarClick = () => {
     setIsAccountMenuOpen(false);
     setIsAvatarSelectorOpen(true);
@@ -187,154 +212,193 @@ const SideNavigation: React.FC = () => {
   };
 
   return (
-    <nav className={styles.sideNav}>
-      {/* Header */}
-      <div className={styles.header}>
-        <span className={styles.logoText}>Mental Wealth Academy</span>
-        <button className={styles.menuButton} aria-label="Menu">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
+    <>
+      {/* Mobile Top Bar */}
+      <div className={styles.mobileTopBar}>
+        <Link href="/home" className={styles.mobileLogoLink}>
+          <span className={styles.mobileLogo}>MWA</span>
+        </Link>
+        <button
+          className={`${styles.hamburgerButton} ${isMobileMenuOpen ? styles.hamburgerOpen : ''}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span className={styles.hamburgerLine} />
+          <span className={styles.hamburgerLine} />
+          <span className={styles.hamburgerLine} />
         </button>
       </div>
 
-      {/* Music Player */}
-      <div className={styles.musicPlayerWrapper}>
-        <AudioPlayer />
-      </div>
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className={styles.mobileOverlay} onClick={() => setIsMobileMenuOpen(false)} />
+      )}
 
-      {/* Navigation Sections */}
-      <div className={styles.navSections}>
-        {navSections.map((section) => (
-          <div key={section.id} className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>{section.label}</span>
-            </div>
-            <div className={styles.sectionItems}>
-              {section.items.map((item) => (
-                item.id === 'ai-coach' ? (
-                  <button
-                    key={item.id}
-                    onClick={() => setIsChatOpen(true)}
-                    className={`${styles.navItem} ${styles.navItemButton}`}
-                  >
-                    <Image
-                      src={item.icon}
-                      alt=""
-                      width={20}
-                      height={20}
-                      className={styles.navItemIcon}
-                    />
-                    <span className={styles.navItemLabel}>{item.label}</span>
-                    {item.badge && (
-                      <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
-                        {item.badge}
-                      </span>
-                    )}
-                  </button>
-                ) : (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    className={`${styles.navItem} ${isActive(item.href) ? styles.navItemActive : ''}`}
-                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    <Image
-                      src={item.icon}
-                      alt=""
-                      width={20}
-                      height={20}
-                      className={styles.navItemIcon}
-                    />
-                    <span className={styles.navItemLabel}>{item.label}</span>
-                    {item.badge && (
-                      <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
-                        {item.badge}
-                      </span>
-                    )}
-                  </Link>
-                )
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Bottom Section */}
-      <div className={styles.bottomSection}>
-        {/* Daemon Shards Counter */}
-        <div className={styles.shardsCounter}>
-          <Image
-            src="/icons/shard.svg"
-            alt="Daemon"
-            width={20}
-            height={20}
-            className={styles.shardIcon}
-          />
-          <span className={styles.shardsLabel}>Daemon:</span>
-          <span className={styles.shardsValue}>
-            {shardCount !== null ? String(shardCount).padStart(3, '0') : '000'}
-          </span>
+      {/* Side Navigation / Mobile Drawer */}
+      <nav
+        className={`${styles.sideNav} ${isMobileMenuOpen ? styles.sideNavOpen : ''}`}
+        ref={mobileMenuRef}
+      >
+        {/* Header */}
+        <div className={styles.header}>
+          <span className={styles.logoText}>Mental Wealth Academy</span>
+          <button
+            className={styles.menuButton}
+            aria-label="Close menu"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
         </div>
 
-        {/* User Account Section or Connect Wallet Button */}
-        {username && !username.startsWith('user_') ? (
-          <div className={styles.accountSection} ref={accountMenuRef}>
-            <button
-              className={styles.accountButton}
-              onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-            >
-              {avatarUrl && (
-                <Image
-                  src={avatarUrl}
-                  alt={username}
-                  width={32}
-                  height={32}
-                  className={styles.accountAvatar}
-                  unoptimized
-                />
-              )}
-              <span className={styles.accountUsername}>@{username}</span>
-            </button>
+        {/* Music Player */}
+        <div className={styles.musicPlayerWrapper}>
+          <AudioPlayer />
+        </div>
 
-            {isAccountMenuOpen && (
-              <div className={styles.accountMenu}>
-                <button
-                  className={styles.accountMenuItem}
-                  onClick={handleAvatarClick}
-                >
-                  <span className={styles.accountMenuLabel}>Change Avatar</span>
-                </button>
-                <button
-                  className={styles.accountMenuItem}
-                  onClick={handleUsernameClick}
-                >
-                  <span className={styles.accountMenuLabel}>Change Username</span>
-                </button>
-                <div className={styles.accountMenuDivider} />
-                <button
-                  className={styles.accountMenuItem}
-                  onClick={handleSignOut}
-                >
-                  <span className={styles.accountMenuLabel}>Sign Out</span>
-                </button>
+        {/* Navigation Sections */}
+        <div className={styles.navSections}>
+          {navSections.map((section) => (
+            <div key={section.id} className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>{section.label}</span>
               </div>
-            )}
+              <div className={styles.sectionItems}>
+                {section.items.map((item) => (
+                  item.id === 'ai-coach' ? (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setIsChatOpen(true);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`${styles.navItem} ${styles.navItemButton}`}
+                    >
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        width={20}
+                        height={20}
+                        className={styles.navItemIcon}
+                      />
+                      <span className={styles.navItemLabel}>{item.label}</span>
+                      {item.badge && (
+                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  ) : (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className={`${styles.navItem} ${isActive(item.href) ? styles.navItemActive : ''}`}
+                      {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        width={20}
+                        height={20}
+                        className={styles.navItemIcon}
+                      />
+                      <span className={styles.navItemLabel}>{item.label}</span>
+                      {item.badge && (
+                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  )
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Section */}
+        <div className={styles.bottomSection}>
+          {/* Daemon Shards Counter */}
+          <div className={styles.shardsCounter}>
+            <Image
+              src="/icons/shard.svg"
+              alt="Daemon"
+              width={20}
+              height={20}
+              className={styles.shardIcon}
+            />
+            <span className={styles.shardsLabel}>Daemon:</span>
+            <span className={styles.shardsValue}>
+              {shardCount !== null ? String(shardCount).padStart(3, '0') : '000'}
+            </span>
           </div>
-        ) : (
-          <button
-            className={styles.connectWalletButton}
-            onClick={() => openConnectModal(true)}
-          >
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M17 8V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              <rect x="13" y="9" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-              <circle cx="15" cy="11" r="1" fill="currentColor"/>
-            </svg>
-            <span>Connect Wallet</span>
-          </button>
-        )}
-      </div>
+
+          {/* User Account Section or Connect Wallet Button */}
+          {username && !username.startsWith('user_') ? (
+            <div className={styles.accountSection} ref={accountMenuRef}>
+              <button
+                className={styles.accountButton}
+                onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+              >
+                {avatarUrl && (
+                  <Image
+                    src={avatarUrl}
+                    alt={username}
+                    width={32}
+                    height={32}
+                    className={styles.accountAvatar}
+                    unoptimized
+                  />
+                )}
+                <span className={styles.accountUsername}>@{username}</span>
+              </button>
+
+              {isAccountMenuOpen && (
+                <div className={styles.accountMenu}>
+                  <button
+                    className={styles.accountMenuItem}
+                    onClick={handleAvatarClick}
+                  >
+                    <span className={styles.accountMenuLabel}>Change Avatar</span>
+                  </button>
+                  <button
+                    className={styles.accountMenuItem}
+                    onClick={handleUsernameClick}
+                  >
+                    <span className={styles.accountMenuLabel}>Change Username</span>
+                  </button>
+                  <div className={styles.accountMenuDivider} />
+                  <button
+                    className={styles.accountMenuItem}
+                    onClick={handleSignOut}
+                  >
+                    <span className={styles.accountMenuLabel}>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              className={styles.connectWalletButton}
+              onClick={() => {
+                openConnectModal(true);
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M17 8V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <rect x="13" y="9" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                <circle cx="15" cy="11" r="1" fill="currentColor"/>
+              </svg>
+              <span>Connect Wallet</span>
+            </button>
+          )}
+        </div>
+      </nav>
 
       {/* Modals */}
       <AzuraChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
@@ -351,7 +415,7 @@ const SideNavigation: React.FC = () => {
           onUsernameChanged={handleUsernameChanged}
         />
       )}
-    </nav>
+    </>
   );
 };
 

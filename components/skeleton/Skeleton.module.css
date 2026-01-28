@@ -738,3 +738,392 @@
     width: 100%;
   }
 }
+
+/* ==================== DAEMON PAGE SKELETONS ==================== */
+
+.daemonPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.daemonTerminalSkeleton {
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.daemonHeaderSkeleton {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 3px solid #e0e0e0;
+  background: #f5f5f5;
+}
+
+.daemonDotsSkeleton {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  width: 56px;
+}
+
+.daemonDotSkeleton {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.daemonHeaderTitleSkeleton {
+  width: 120px;
+  height: 14px;
+  margin: 0 auto;
+}
+
+.daemonToolGridSkeleton {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 24px;
+}
+
+.daemonToolCardSkeleton {
+  padding: 20px;
+  min-height: 120px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.daemonToolIconSkeleton {
+  width: 24px;
+  height: 24px;
+}
+
+.daemonToolTitleSkeleton {
+  width: 80%;
+  height: 18px;
+}
+
+.daemonToolDescSkeleton {
+  width: 100%;
+  height: 14px;
+}
+
+@media (max-width: 1024px) {
+  .daemonToolGridSkeleton {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .daemonToolGridSkeleton {
+    padding: 16px;
+  }
+
+  .daemonTerminalSkeleton {
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+}
+
+/* ==================== LIVESTREAM PAGE SKELETONS ==================== */
+
+.livestreamPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+/* Hero Section */
+.livestreamHeroSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.livestreamEyebrowSkeleton {
+  width: 140px;
+  height: 12px;
+}
+
+.livestreamPageTitleSkeleton {
+  width: 200px;
+  height: 36px;
+}
+
+.livestreamSubtitleSkeleton {
+  width: 80%;
+  max-width: 500px;
+  height: 40px;
+}
+
+/* Stream Container - Video + Chat Layout */
+.livestreamStreamContainerSkeleton {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.15s;
+}
+
+/* Video Section */
+.livestreamVideoSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.livestreamVideoPlayerSkeleton {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+}
+
+.livestreamVideoInfoSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+}
+
+.livestreamVideoTitleRowSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.livestreamTitleSkeleton {
+  width: 60%;
+  height: 24px;
+}
+
+.livestreamLiveBadgeSkeleton {
+  width: 60px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.livestreamHostSkeleton {
+  width: 180px;
+  height: 14px;
+}
+
+.livestreamDescSkeleton {
+  width: 100%;
+  height: 40px;
+}
+
+.livestreamTagsSkeleton {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.livestreamTagSkeleton {
+  width: 70px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+/* Chat Section */
+.livestreamChatSkeleton {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+  overflow: hidden;
+}
+
+.livestreamChatHeaderSkeleton {
+  width: 100%;
+  height: 48px;
+  border-bottom: 3px solid #e0e0e0;
+}
+
+.livestreamChatMessagesSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.livestreamChatMessageSkeleton {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.livestreamChatAvatarSkeleton {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.livestreamChatContentSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.livestreamChatUsernameSkeleton {
+  width: 80px;
+  height: 12px;
+}
+
+.livestreamChatTextSkeleton {
+  width: 90%;
+  height: 16px;
+}
+
+.livestreamChatInputSkeleton {
+  width: 100%;
+  height: 52px;
+  border-top: 3px solid #e0e0e0;
+}
+
+/* Upcoming Section */
+.livestreamUpcomingSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.livestreamSectionTitleSkeleton {
+  width: 180px;
+  height: 24px;
+}
+
+.livestreamUpcomingGridSkeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.livestreamUpcomingCardSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+}
+
+.livestreamUpcomingTimeSkeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 60px;
+}
+
+.livestreamUpcomingDaySkeleton {
+  width: 40px;
+  height: 14px;
+}
+
+.livestreamUpcomingHourSkeleton {
+  width: 50px;
+  height: 12px;
+}
+
+.livestreamUpcomingInfoSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.livestreamUpcomingTitleSkeleton {
+  width: 80%;
+  height: 18px;
+}
+
+.livestreamUpcomingDescSkeleton {
+  width: 100%;
+  height: 32px;
+}
+
+.livestreamUpcomingButtonSkeleton {
+  width: 100px;
+  height: 36px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .livestreamStreamContainerSkeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .livestreamChatSkeleton {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .livestreamVideoPlayerSkeleton {
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .livestreamVideoInfoSkeleton {
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .livestreamChatSkeleton {
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .livestreamUpcomingCardSkeleton {
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .livestreamUpcomingTimeSkeleton {
+    flex-direction: row;
+    gap: 8px;
+    width: auto;
+  }
+
+  .livestreamUpcomingButtonSkeleton {
+    width: 100%;
+  }
+}

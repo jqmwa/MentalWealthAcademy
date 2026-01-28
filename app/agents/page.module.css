@@ -24,9 +24,10 @@
   width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .main {
     margin-left: 0;
+    padding-top: 66px; /* Account for mobile top bar (60px + 6px shadow) */
   }
 
   .pageLayout {

@@ -1,0 +1,680 @@
+/* Livestream Page Layout */
+
+.pageLayout {
+  margin-left: 265px;
+  min-height: 100vh;
+  background: #F4F5FE;
+}
+
+.content {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* Hero Section */
+.hero {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0;
+}
+
+/* Stream Container - Video + Chat */
+.streamContainer {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+/* Video Section */
+.videoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border: 3px solid #000000;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #000000;
+  overflow: hidden;
+}
+
+.videoPlayer {
+  width: 100%;
+  height: 100%;
+}
+
+.videoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.liveIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ff4444;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Offline State */
+.offlineState {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.offlineIcon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.offlineTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.offlineText {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 400px;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.nextStreamInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 24px;
+  background: rgba(81, 104, 255, 0.15);
+  border: 2px solid rgba(81, 104, 255, 0.3);
+  border-radius: 4px;
+}
+
+.nextStreamLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nextStreamTime {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5168FF;
+}
+
+/* Video Controls */
+.videoControls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+}
+
+.controlsLeft,
+.controlsRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.liveIndicatorSmall {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #ff4444;
+  border-radius: 2px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.liveDotSmall {
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.controlButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.controlButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Stream Info Card */
+.streamInfo {
+  padding: 20px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #000000;
+}
+
+.streamHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.streamTitleSection {
+  flex: 1;
+}
+
+.streamTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.streamHost {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.viewerCount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(81, 104, 255, 0.1);
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5168FF;
+}
+
+.streamDescription {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+.streamTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 6px 12px;
+  background: #F4F5FE;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Chat Section */
+.chatSection {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #000000;
+  overflow: hidden;
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+}
+
+.chatExpanded {
+  min-height: 500px;
+}
+
+.chatCollapsed {
+  min-height: auto;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #F4F5FE;
+  border-bottom: 3px solid #000000;
+}
+
+.chatTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.chatToggle {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #000000;
+  transition: all 150ms ease;
+}
+
+.chatToggle:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chatMessage {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.chatAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.chatContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.chatUsername {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.chatText {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.8);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chatInputWrapper {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 3px solid #000000;
+  background: #F4F5FE;
+}
+
+.chatInput {
+  flex: 1;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #000000;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+
+.chatInput:focus {
+  border-color: #5168FF;
+}
+
+.chatInput:disabled {
+  background: #f0f0f0;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: not-allowed;
+}
+
+.chatInput::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.chatSendButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #5168FF;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.chatSendButton:hover:not(:disabled) {
+  background: #3d4fcc;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.chatSendButton:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Upcoming Sessions */
+.upcomingSection {
+  margin-top: 16px;
+}
+
+.sectionTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 20px 0;
+}
+
+.upcomingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.upcomingCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 150ms ease;
+}
+
+.upcomingCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.upcomingTime {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+  padding: 8px 12px;
+  background: #F4F5FE;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.upcomingDay {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.upcomingHour {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.upcomingInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.upcomingTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.upcomingDescription {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.remindButton {
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+
+.remindButton:hover {
+  background: #5168FF;
+  border-color: #5168FF;
+  color: #ffffff;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .streamContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .chatSection {
+    max-height: 450px;
+  }
+}
+
+@media (max-width: 900px) {
+  .pageLayout {
+    margin-left: 0;
+    padding-top: 66px; /* Account for mobile top bar (60px + 6px shadow) */
+  }
+
+  .content {
+    padding: 24px 16px;
+  }
+
+  .videoWrapper {
+    box-shadow: 4px 4px 0 #000000;
+  }
+
+  .streamInfo {
+    box-shadow: 3px 3px 0 #000000;
+  }
+
+  .chatSection {
+    box-shadow: 3px 3px 0 #000000;
+  }
+
+  .upcomingCard {
+    box-shadow: 3px 3px 0 #000000;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .streamContainer {
+    gap: 16px;
+  }
+
+  .upcomingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .upcomingCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .upcomingTime {
+    flex-direction: row;
+    gap: 8px;
+    width: auto;
+  }
+
+  .remindButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .streamHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .viewerCount {
+    align-self: flex-start;
+  }
+}

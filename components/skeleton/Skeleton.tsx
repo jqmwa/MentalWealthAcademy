@@ -242,3 +242,121 @@ export function VotingPageSkeleton() {
     </div>
   );
 }
+
+// ==================== DAEMON PAGE SKELETONS ====================
+
+export function DaemonToolCardSkeleton() {
+  return (
+    <div className={styles.daemonToolCardSkeleton}>
+      <div className={`${styles.skeleton} ${styles.daemonToolIconSkeleton}`} />
+      <div className={`${styles.skeleton} ${styles.daemonToolTitleSkeleton}`} />
+      <div className={`${styles.skeleton} ${styles.daemonToolDescSkeleton}`} />
+    </div>
+  );
+}
+
+export function DaemonPageSkeleton() {
+  return (
+    <div className={styles.daemonPageSkeleton}>
+      <div className={styles.daemonTerminalSkeleton}>
+        <div className={styles.daemonHeaderSkeleton}>
+          <div className={styles.daemonDotsSkeleton}>
+            <div className={`${styles.skeleton} ${styles.daemonDotSkeleton}`} />
+            <div className={`${styles.skeleton} ${styles.daemonDotSkeleton}`} />
+            <div className={`${styles.skeleton} ${styles.daemonDotSkeleton}`} />
+          </div>
+          <div className={`${styles.skeleton} ${styles.daemonHeaderTitleSkeleton}`} />
+          <div style={{ width: 56 }} />
+        </div>
+        <div className={styles.daemonToolGridSkeleton}>
+          {[...Array(4)].map((_, i) => (
+            <DaemonToolCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==================== LIVESTREAM PAGE SKELETONS ====================
+
+export function LivestreamVideoSkeleton() {
+  return (
+    <div className={styles.livestreamVideoSkeleton}>
+      <div className={`${styles.skeleton} ${styles.livestreamVideoPlayerSkeleton}`} />
+      <div className={styles.livestreamVideoInfoSkeleton}>
+        <div className={styles.livestreamVideoTitleRowSkeleton}>
+          <div className={`${styles.skeleton} ${styles.livestreamTitleSkeleton}`} />
+          <div className={`${styles.skeleton} ${styles.livestreamLiveBadgeSkeleton}`} />
+        </div>
+        <div className={`${styles.skeleton} ${styles.livestreamHostSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.livestreamDescSkeleton}`} />
+        <div className={styles.livestreamTagsSkeleton}>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className={`${styles.skeleton} ${styles.livestreamTagSkeleton}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function LivestreamChatSkeleton() {
+  return (
+    <div className={styles.livestreamChatSkeleton}>
+      <div className={`${styles.skeleton} ${styles.livestreamChatHeaderSkeleton}`} />
+      <div className={styles.livestreamChatMessagesSkeleton}>
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className={styles.livestreamChatMessageSkeleton}>
+            <div className={`${styles.skeleton} ${styles.livestreamChatAvatarSkeleton}`} />
+            <div className={styles.livestreamChatContentSkeleton}>
+              <div className={`${styles.skeleton} ${styles.livestreamChatUsernameSkeleton}`} />
+              <div className={`${styles.skeleton} ${styles.livestreamChatTextSkeleton}`} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className={`${styles.skeleton} ${styles.livestreamChatInputSkeleton}`} />
+    </div>
+  );
+}
+
+export function LivestreamUpcomingCardSkeleton() {
+  return (
+    <div className={styles.livestreamUpcomingCardSkeleton}>
+      <div className={styles.livestreamUpcomingTimeSkeleton}>
+        <div className={`${styles.skeleton} ${styles.livestreamUpcomingDaySkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.livestreamUpcomingHourSkeleton}`} />
+      </div>
+      <div className={styles.livestreamUpcomingInfoSkeleton}>
+        <div className={`${styles.skeleton} ${styles.livestreamUpcomingTitleSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.livestreamUpcomingDescSkeleton}`} />
+      </div>
+      <div className={`${styles.skeleton} ${styles.livestreamUpcomingButtonSkeleton}`} />
+    </div>
+  );
+}
+
+export function LivestreamPageSkeleton() {
+  return (
+    <div className={styles.livestreamPageSkeleton}>
+      <div className={styles.livestreamHeroSkeleton}>
+        <div className={`${styles.skeleton} ${styles.livestreamEyebrowSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.livestreamPageTitleSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.livestreamSubtitleSkeleton}`} />
+      </div>
+      <div className={styles.livestreamStreamContainerSkeleton}>
+        <LivestreamVideoSkeleton />
+        <LivestreamChatSkeleton />
+      </div>
+      <div className={styles.livestreamUpcomingSkeleton}>
+        <div className={`${styles.skeleton} ${styles.livestreamSectionTitleSkeleton}`} />
+        <div className={styles.livestreamUpcomingGridSkeleton}>
+          {[...Array(3)].map((_, i) => (
+            <LivestreamUpcomingCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

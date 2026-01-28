@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import PencilLoader from '@/components/landing/PencilLoader';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
 import { DaemonTerminal } from '@/components/daemon/DaemonTerminal';
+import { DaemonPageSkeleton } from '@/components/skeleton/Skeleton';
 import styles from './page.module.css';
 
 export default function AgentsPage() {
@@ -64,19 +64,27 @@ export default function AgentsPage() {
 
   if (isCheckingAuth) {
     return (
-      <>
-        <PencilLoader hidden={false} />
-        <main className={styles.main} style={{ visibility: 'hidden' }}></main>
-      </>
+      <main className={styles.main}>
+        <SideNavigation />
+        <div className={styles.pageLayout}>
+          <div className={styles.content}>
+            <DaemonPageSkeleton />
+          </div>
+        </div>
+      </main>
     );
   }
 
   if (!hasValidSession && hasCheckedAuthRef.current) {
     return (
-      <>
-        <PencilLoader hidden={false} />
-        <main className={styles.main} style={{ visibility: 'hidden' }}></main>
-      </>
+      <main className={styles.main}>
+        <SideNavigation />
+        <div className={styles.pageLayout}>
+          <div className={styles.content}>
+            <DaemonPageSkeleton />
+          </div>
+        </div>
+      </main>
     );
   }
 
