@@ -1127,3 +1127,169 @@
     width: 100%;
   }
 }
+
+/* ==================== SURVEYS PAGE SKELETONS ==================== */
+
+.surveysPageSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+}
+
+/* Surveys Hero */
+.surveysHeroSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.surveysEyebrowSkeleton {
+  width: 140px;
+  height: 12px;
+}
+
+.surveysTitleSkeleton {
+  width: 220px;
+  height: 36px;
+}
+
+.surveysSubtitleSkeleton {
+  width: 80%;
+  max-width: 500px;
+  height: 40px;
+}
+
+/* Surveys Filter */
+.surveysFilterSkeleton {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.surveysFilterTabSkeleton {
+  width: 90px;
+  height: 38px;
+  border-radius: 4px;
+}
+
+/* Surveys Grid */
+.surveysGridSkeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 0.2s;
+}
+
+/* Survey Task Card */
+.surveyTaskCardSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #ffffff;
+  border: 3px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 #e0e0e0;
+}
+
+.surveyTaskHeaderSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.surveyTaskTitleSkeleton {
+  width: 70%;
+  height: 22px;
+}
+
+.surveyTaskCopyButtonSkeleton {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.surveyTaskTextSkeleton {
+  width: 100%;
+  height: 80px;
+  border-radius: 4px;
+}
+
+.surveyTaskFooterSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.surveyTaskSubmitterSkeleton {
+  width: 140px;
+  height: 14px;
+}
+
+.surveyTaskViewButtonSkeleton {
+  width: 100px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.surveyTaskActionBarSkeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.surveyTaskStarsSkeleton {
+  display: flex;
+  gap: 4px;
+}
+
+.surveyTaskStarSkeleton {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.surveyTaskSaveButtonSkeleton {
+  width: 70px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .surveysGridSkeleton {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .surveyTaskCardSkeleton {
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+
+  .surveysFilterSkeleton {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .surveysFilterTabSkeleton {
+    flex-shrink: 0;
+    width: 80px;
+    height: 34px;
+  }
+}

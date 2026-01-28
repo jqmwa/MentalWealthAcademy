@@ -1,0 +1,31 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer decorative ring -->
+  <circle cx="40" cy="40" r="38" stroke="#5168FF" stroke-width="3" fill="none" opacity="0.3"/>
+
+  <!-- Main seal body -->
+  <circle cx="40" cy="40" r="32" fill="#5168FF"/>
+
+  <!-- Inner ring -->
+  <circle cx="40" cy="40" r="26" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.4"/>
+
+  <!-- Starburst pattern -->
+  <g opacity="0.2">
+    <path d="M40 8L42 32H38L40 8Z" fill="#ffffff"/>
+    <path d="M40 72L38 48H42L40 72Z" fill="#ffffff"/>
+    <path d="M8 40L32 38V42L8 40Z" fill="#ffffff"/>
+    <path d="M72 40L48 42V38L72 40Z" fill="#ffffff"/>
+    <path d="M17.3 17.3L35.5 35.5L33.3 37.7L17.3 17.3Z" fill="#ffffff"/>
+    <path d="M62.7 62.7L44.5 44.5L46.7 42.3L62.7 62.7Z" fill="#ffffff"/>
+    <path d="M62.7 17.3L42.3 33.3L44.5 35.5L62.7 17.3Z" fill="#ffffff"/>
+    <path d="M17.3 62.7L37.7 46.7L35.5 44.5L17.3 62.7Z" fill="#ffffff"/>
+  </g>
+
+  <!-- Center "A" for Azura -->
+  <text x="40" y="48" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="28" font-weight="700" fill="#ffffff">A</text>
+
+  <!-- Small decorative dots -->
+  <circle cx="40" cy="18" r="3" fill="#ffffff" opacity="0.6"/>
+  <circle cx="40" cy="62" r="3" fill="#ffffff" opacity="0.6"/>
+  <circle cx="18" cy="40" r="3" fill="#ffffff" opacity="0.6"/>
+  <circle cx="62" cy="40" r="3" fill="#ffffff" opacity="0.6"/>
+</svg>

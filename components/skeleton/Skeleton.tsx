@@ -360,3 +360,51 @@ export function LivestreamPageSkeleton() {
     </div>
   );
 }
+
+// ==================== SURVEYS PAGE SKELETONS ====================
+
+export function SurveyTaskCardSkeleton() {
+  return (
+    <div className={styles.surveyTaskCardSkeleton}>
+      <div className={styles.surveyTaskHeaderSkeleton}>
+        <div className={`${styles.skeleton} ${styles.surveyTaskTitleSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.surveyTaskCopyButtonSkeleton}`} />
+      </div>
+      <div className={`${styles.skeleton} ${styles.surveyTaskTextSkeleton}`} />
+      <div className={styles.surveyTaskFooterSkeleton}>
+        <div className={`${styles.skeleton} ${styles.surveyTaskSubmitterSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.surveyTaskViewButtonSkeleton}`} />
+      </div>
+      <div className={styles.surveyTaskActionBarSkeleton}>
+        <div className={styles.surveyTaskStarsSkeleton}>
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className={`${styles.skeleton} ${styles.surveyTaskStarSkeleton}`} />
+          ))}
+        </div>
+        <div className={`${styles.skeleton} ${styles.surveyTaskSaveButtonSkeleton}`} />
+      </div>
+    </div>
+  );
+}
+
+export function SurveysPageSkeleton() {
+  return (
+    <div className={styles.surveysPageSkeleton}>
+      <div className={styles.surveysHeroSkeleton}>
+        <div className={`${styles.skeleton} ${styles.surveysEyebrowSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.surveysTitleSkeleton}`} />
+        <div className={`${styles.skeleton} ${styles.surveysSubtitleSkeleton}`} />
+      </div>
+      <div className={styles.surveysFilterSkeleton}>
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className={`${styles.skeleton} ${styles.surveysFilterTabSkeleton}`} />
+        ))}
+      </div>
+      <div className={styles.surveysGridSkeleton}>
+        {[...Array(6)].map((_, i) => (
+          <SurveyTaskCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -49,7 +49,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, onClick }) => {
       {(isLocked || isInProgress) && (
         <div className={`${styles.sealOverlay} ${isInProgress ? styles.sealCracking : ''}`}>
           <Image
-            src="/uploads/AzuraSeal.png"
+            src="/uploads/AzuraSeal.svg"
             alt="Azura's Seal"
             width={80}
             height={80}

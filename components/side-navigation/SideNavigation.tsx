@@ -18,7 +18,8 @@ interface NavItem {
   href: string;
   icon: string;
   badge?: string;
-  badgeType?: 'default' | 'highlight';
+  badgeType?: 'default' | 'highlight' | 'muted' | 'green';
+  disabled?: boolean;
 }
 
 interface NavSection {
@@ -33,37 +34,37 @@ const navSections: NavSection[] = [
     label: 'Featured',
     items: [
       { id: 'home', label: 'Home', href: '/home', icon: '/icons/Home Icon.svg' },
-      { id: 'ai-coach', label: 'Azura AI', href: '/coach', icon: '/icons/ai-coach.png', badge: 'New', badgeType: 'highlight' },
+      { id: 'newsletter', label: 'Newsletter', href: 'https://mentalwealthacademy.net', icon: '/icons/newsletter.svg' },
+      { id: 'ai-coach', label: 'Azura AI', href: '/coach', icon: '/icons/ai-coach.png', badge: 'New', badgeType: 'green' },
     ],
   },
   {
     id: 'main',
     label: 'Main',
     items: [
+      { id: 'courses', label: 'Courses', href: '/courses', icon: '/icons/Graduate.svg' },
+      { id: 'tasks', label: 'Tasks', href: '/tasks', icon: '/icons/Survey.svg' },
       { id: 'library', label: 'Chapters', href: '/library', icon: '/icons/Library Icon.svg' },
-      { id: 'quests', label: 'Quests', href: '/quests', icon: '/icons/World Icon.svg' },
-      { id: 'voting', label: 'Voting', href: '/voting', icon: '/icons/Vote Icon (1).svg' },
+      { id: 'livestream', label: 'Livestream', href: '/livestream', icon: '/icons/livestream.svg' },
     ],
   },
   {
     id: 'tools',
     label: 'Tools',
     items: [
-      { id: 'community', label: 'Community', href: 'https://mentalwealthacademy.net', icon: '/icons/World Icon.svg' },
+      { id: 'quests', label: 'Quests', href: '/quests', icon: '/icons/World Icon.svg' },
       { id: 'podcasts', label: 'Podcasts', href: '/podcasts', icon: '/icons/Library Icon.svg' },
       { id: 'agents', label: 'Agents', href: '/agents', icon: '/icons/daemon.svg' },
-      { id: 'surveys', label: 'Surveys', href: '/surveys', icon: '/icons/Survey.svg' },
-      { id: 'livestream', label: 'Livestream', href: '/livestream', icon: '/icons/livestream.svg' },
+      { id: 'voting', label: 'Voting', href: '/voting', icon: '/icons/Vote Icon (1).svg' },
     ],
   },
   {
     id: 'manage',
     label: 'Manage',
     items: [
-      { id: 'teams', label: 'Teams', href: '/teams', icon: '/icons/Venetian carnival.svg' },
-      { id: 'videos', label: 'Videos', href: '/videos', icon: '/icons/Eye.svg' },
+      { id: 'squads', label: 'Squads', href: '/squads', icon: '/icons/Venetian carnival.svg', badge: 'Coming Soon', badgeType: 'muted', disabled: true },
+      { id: 'videos', label: 'Videos', href: '/videos', icon: '/icons/Eye.svg', badge: 'Coming Soon', badgeType: 'muted', disabled: true },
       { id: 'files', label: 'Files', href: '/files', icon: '/icons/bookicon.svg' },
-      { id: 'courses', label: 'Courses', href: '/courses', icon: '/icons/Graduate.svg' },
     ],
   },
 ];
@@ -286,11 +287,30 @@ const SideNavigation: React.FC = () => {
                       />
                       <span className={styles.navItemLabel}>{item.label}</span>
                       {item.badge && (
-                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : item.badgeType === 'green' ? styles.badgeGreen : ''}`}>
                           {item.badge}
                         </span>
                       )}
                     </button>
+                  ) : item.disabled ? (
+                    <div
+                      key={item.id}
+                      className={`${styles.navItem} ${styles.navItemDisabled}`}
+                    >
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        width={20}
+                        height={20}
+                        className={styles.navItemIcon}
+                      />
+                      <span className={styles.navItemLabel}>{item.label}</span>
+                      {item.badge && (
+                        <span className={`${styles.badge} ${item.badgeType === 'muted' ? styles.badgeMuted : item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                   ) : (
                     <Link
                       key={item.id}
@@ -308,7 +328,7 @@ const SideNavigation: React.FC = () => {
                       />
                       <span className={styles.navItemLabel}>{item.label}</span>
                       {item.badge && (
-                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : ''}`}>
+                        <span className={`${styles.badge} ${item.badgeType === 'highlight' ? styles.badgeHighlight : item.badgeType === 'green' ? styles.badgeGreen : ''}`}>
                           {item.badge}
                         </span>
                       )}

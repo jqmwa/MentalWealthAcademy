@@ -183,9 +183,9 @@ export default function AudioPlayer() {
         {/* Track Name */}
         <div
           style={{
-            color: '#FF7729',
+            color: '#62BE8F',
             borderRadius: '4px',
-            background: 'rgba(255, 119, 41, 0.1)',
+            background: 'rgba(98, 190, 143, 0.1)',
             border: '2px solid #1A1D33',
             boxShadow: '2px 2px 0 #1A1D33',
             fontFamily: "'IBM Plex Mono', monospace",
