@@ -234,7 +234,7 @@ export default function Home() {
         }}
       />
       <OnboardingTour
-        isBlocked={showOnboarding || showAvatarModal || !me?.username || me?.username?.startsWith('user_')}
+        isBlocked={showOnboarding || showAvatarModal}
       />
       <SideNavigation />
       <div className={styles.pageLayout}>

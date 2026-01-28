@@ -15,15 +15,15 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isBlocked = false }) =>
 
   const messages: Array<{ message: string; emotion: AzuraEmotion }> = [
     {
-      message: "Welcome to Mental Wealth Academy! I'm Azura, your AI co-pilot. We're here to explore how enframent and pattern-recognition shape behavior—and how we can build better systems.",
+      message: "Hey there! I'm Azura, and I'll be here whenever you need me. Welcome to Mental Wealth Academy — a place to learn, reflect, and grow together.",
       emotion: 'happy',
     },
     {
-      message: "This homepage is your gateway to understanding decentralized systems. Here you'll find quests to complete, daily Daemon to earn, events to join, and a messageboard where the community builds together.",
+      message: "This is your home base. You can check in daily, join events, take surveys, and explore what the community is building. Take your time and look around!",
       emotion: 'happy',
     },
     {
-      message: "Remember: we're not just learning—we're building the decentralized systems that will shape the future. Question everything. Build with intention. Let's begin!",
+      message: "Ready when you are. If you ever need help or just want to chat, I'm always here. Let's get started!",
       emotion: 'happy',
     },
   ];

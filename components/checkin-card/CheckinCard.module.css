@@ -165,7 +165,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: var(--z-overlay);
+  z-index: 1000;
 }
 
 .modal {
@@ -175,7 +175,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  z-index: var(--z-modal);
+  z-index: 1001;
 }
 
 .modalHeader {
