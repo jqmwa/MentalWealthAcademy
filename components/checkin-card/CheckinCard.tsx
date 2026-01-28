@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import classes from './CheckinCard.module.css';
 
@@ -11,6 +12,15 @@ interface GratitudeModalProps {
 
 function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
   const [gratitudeText, setGratitudeText] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -18,18 +28,19 @@ function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
     onComplete();
   };
 
-  return (
-    <>
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className={classes.modalOverlay}>
       <div className={classes.modalBackdrop} onClick={onClose} />
       <div className={classes.modal} role="dialog" aria-modal="true" aria-labelledby="gratitude-title">
         <div className={classes.modalCard}>
           <div className={classes.modalHeader}>
             <div className={classes.azuraAvatar}>
               <Image
-                src="/uploads/HappyEmote.png"
+                src="https://i.imgur.com/AkflhaJ.png"
                 alt="Azura"
-                width={56}
-                height={56}
+                fill
                 className={classes.azuraImage}
                 unoptimized
               />
@@ -74,7 +85,8 @@ function GratitudeModal({ onClose, onComplete }: GratitudeModalProps) {
           </form>
         </div>
       </div>
-    </>
+    </div>,
+    document.body
   );
 }
 

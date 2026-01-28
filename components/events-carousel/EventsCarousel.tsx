@@ -78,6 +78,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Discover the foundations of mental wealth and how to build a sustainable practice for lifelong wellbeing.',
     category: 'Foundation',
     color: POP_COLORS[0],
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '2',
@@ -87,6 +88,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Learn practical meditation techniques and mindfulness exercises you can incorporate into your daily routine.',
     category: 'Practice',
     color: POP_COLORS[1],
+    imageUrl: 'https://images.unsplash.com/photo-1614851099511-773084f6911d?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '3',
@@ -96,6 +98,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Develop your EQ skills to better understand, manage, and express your emotions effectively.',
     category: 'Skills',
     color: POP_COLORS[2],
+    imageUrl: 'https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '4',
@@ -105,6 +108,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Evidence-based techniques to identify, manage, and reduce stress in your personal and professional life.',
     category: 'Wellness',
     color: POP_COLORS[3],
+    imageUrl: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '5',
@@ -114,6 +118,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Learn how to bounce back from setbacks and develop mental toughness for life\'s challenges.',
     category: 'Growth',
     color: POP_COLORS[4],
+    imageUrl: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '6',
@@ -123,6 +128,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Navigate interpersonal dynamics and set healthy boundaries for better mental health.',
     category: 'Relationships',
     color: POP_COLORS[5],
+    imageUrl: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '7',
@@ -132,6 +138,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Understand the science of sleep and learn techniques to improve your rest and recovery.',
     category: 'Wellness',
     color: POP_COLORS[0],
+    imageUrl: 'https://images.unsplash.com/photo-1618172193622-ae2d025f4032?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '8',
@@ -141,6 +148,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Explore the gut-brain connection and learn which foods support optimal mental function.',
     category: 'Nutrition',
     color: POP_COLORS[1],
+    imageUrl: 'https://images.unsplash.com/photo-1605106702734-205df224ecce?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '9',
@@ -150,6 +158,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Discover how physical activity impacts mental health and create a sustainable movement practice.',
     category: 'Fitness',
     color: POP_COLORS[2],
+    imageUrl: 'https://images.unsplash.com/photo-1604076913837-52ab5629fba9?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '10',
@@ -159,6 +168,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Develop a healthy relationship with technology and learn to manage digital overwhelm.',
     category: 'Balance',
     color: POP_COLORS[3],
+    imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '11',
@@ -168,6 +178,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Explore what gives your life meaning and align your daily actions with your core values.',
     category: 'Purpose',
     color: POP_COLORS[4],
+    imageUrl: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=600&auto=format&fit=crop&q=80',
   },
   {
     id: '12',
@@ -177,6 +188,7 @@ const mentalWealthEvents: EventData[] = [
     description: 'Integrate everything you\'ve learned into a personalized, sustainable mental wealth action plan.',
     category: 'Integration',
     color: POP_COLORS[5],
+    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&auto=format&fit=crop&q=80',
   },
 ];
 
