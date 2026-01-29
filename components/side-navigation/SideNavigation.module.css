@@ -63,9 +63,25 @@
   box-shadow: 3px 3px 0 #1A1D33;
 }
 
+/* Top Account Section */
+.topAccountSection {
+  padding: 12px 16px;
+  border-bottom: 2px solid rgba(26, 29, 51, 0.1);
+  background: #ffffff;
+}
+
+.topAccountSection .accountSection {
+  position: relative;
+}
+
+.topAccountSection .accountMenu {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
 /* Music Player */
 .musicPlayerWrapper {
-  border-bottom: 3px solid #1A1D33;
+  border-bottom: none;
 }
 
 /* Search Bar */
@@ -279,6 +295,12 @@
   gap: 10px;
   background: #f5f5f5;
   flex-shrink: 0;
+}
+
+.bottomSection .musicPlayerWrapper {
+  margin: -12px -12px 0 -12px;
+  padding: 0;
+  border-bottom: 2px solid rgba(26, 29, 51, 0.15);
 }
 
 /* Shards Counter */
